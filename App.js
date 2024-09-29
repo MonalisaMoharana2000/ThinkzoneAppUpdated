@@ -1,6 +1,7 @@
 // App.js
 import React, {useEffect} from 'react';
-import {LogBox, Text} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import StackNavigator from './src/navigation/StackNavigator';
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchUserDataThunk} from './src/redux_toolkit/features/users/UserThunk';
 
@@ -15,7 +16,9 @@ const App = () => {
 
   return (
     <>
-      <Text>App</Text>
+      <NavigationContainer>
+        <StackNavigator />
+      </NavigationContainer>
     </>
   );
 };

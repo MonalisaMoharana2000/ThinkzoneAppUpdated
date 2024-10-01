@@ -1,6 +1,7 @@
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import HomeScreen from '../pages/HomeScreen';
+import HomeScreen from '../Pages/HomeScreen';
+import Home from '../Pages/Home';
 
 const Tab = createBottomTabNavigator();
 
@@ -9,8 +10,8 @@ const BottomTabNavigator = () => {
     <Tab.Navigator>
       <Tab.Screen
         name="HomeTab"
-        component={HomeScreen}
-        options={{title: 'Home'}}
+        component={Home}
+        options={{title: 'Home', headerShown: false}}
       />
     </Tab.Navigator>
   );

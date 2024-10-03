@@ -1186,14 +1186,14 @@ const Home = ({navigation}, props) => {
   };
 
   const openPedagogy = () => {
-    dispatch(TechSlice.clearState());
+    // dispatch(TechSlice.clearState());
     navigation.navigate('pedagogy', {
       type: 'training3',
       // head: ' ଶିକ୍ଷଣ ଓ ଶିକ୍ଷାଦାନ',
     });
   };
   const openTech = () => {
-    dispatch(TechSlice.clearState());
+    // dispatch(TechSlice.clearState());
     navigation.navigate('techmodule', {
       type: 'training2',
       // head: 'ପ୍ରଯୁକ୍ତିବିଦ୍ୟା',
@@ -1201,7 +1201,7 @@ const Home = ({navigation}, props) => {
   };
 
   const open21st = () => {
-    dispatch(TechSlice.clearState());
+    // dispatch(TechSlice.clearState());
     navigation.navigate('21st', {
       type: 'training1',
       // head: 'ଏକବିଂଶ ଶତାବ୍ଦୀକୌଶଳ',

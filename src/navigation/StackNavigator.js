@@ -15,6 +15,7 @@ import StudentAssessmentDetails from '../Pages/StudentAssessmentDetails';
 import Page1 from '../Pages/Page1';
 import Page2 from '../Pages/Page2';
 import Page3 from '../Pages/Page3';
+import LoginScreen from '../Pages/LoginScreen';
 
 const Stack = createNativeStackNavigator();
 

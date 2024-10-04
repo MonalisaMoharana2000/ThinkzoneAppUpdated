@@ -1,11 +1,17 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import StudentAssessmentPage from '../Pages/StudentAssessmentPage';
+import StudentAttendance from '../Pages/StudentAttendance';
+import Attendancelist from '../Pages/Attendancelist';
 import BottomTabNavigator from './BottomTabNavigator';
-import StudentRegister from '../pages/StudentRegister';
-import LoginScreen from '../pages/LoginScreen';
-import Page1 from '../pages/Page1';
-import Page2 from '../pages/Page2';
-import Page3 from '../pages/Page3';
+import StudentRegister from '../Pages/StudentRegister';
+import {FontFamily} from '../GlobalStyle';
+import StudentList from '../Pages/StudentList';
+import {TouchableOpacity} from 'react-native';
+import {Color} from '../GlobalStyle';
+import StudentListPage from '../Pages/StudentListPage';
+import StudentAssessmentDetails from '../Pages/StudentAssessmentDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +23,24 @@ const StackNavigator = ({navigation}) => {
       <Stack.Screen name="Page2" component={Page2} />
       <Stack.Screen name="Page3" component={Page3} />
       <Stack.Screen name="Home" component={BottomTabNavigator} />
+
+      {/*---------------------------------------------------- Student part starts-------------------------------------------------------- */}
+
+      <Stack.Screen
+        name="studentlist"
+        component={StudentList}
+        options={{
+          // headerShown: false,
+          title: 'ଶିକ୍ଷାର୍ଥୀ ସୂଚନା',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
+        }}
+      />
+
       <Stack.Screen
         name="studentregister"
         component={StudentRegister}
@@ -44,6 +68,10 @@ const StackNavigator = ({navigation}) => {
                   ],
                 );
               }}>
+              {/* <Image
+                source={require('../assets/Photos/logo1.png')}
+                style={styles.logo}
+              /> */}
               <AntDesign
                 style={{marginLeft: 15}}
                 name="arrowleft"
@@ -52,9 +80,83 @@ const StackNavigator = ({navigation}) => {
               />
             </TouchableOpacity>
           ),
-          headerTitleStyle: {},
+          headerTitleStyle: {
+            // fontWeight: '700',
+            // fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
         }}
       />
+
+      <Stack.Screen
+        name="studentAttendance"
+        component={StudentAttendance}
+        options={{
+          title: 'ଶିକ୍ଷାର୍ଥୀ ଉପସ୍ଥାନ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="attendancelist"
+        component={Attendancelist}
+        options={{
+          title: ' 7 ଦିନର ଉପସ୍ଥାନ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name="studentassessment"
+        component={StudentAssessmentPage}
+        options={{
+          title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerLeft: false,
+          // headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="studentlistpage"
+        component={StudentListPage}
+        options={{
+          title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerLeft: false,
+          // headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="studentassessmentdetails"
+        component={StudentAssessmentDetails}
+        options={{
+          // title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
+          // headerLeft: false,
+          headerShown: false,
+        }}
+      />
+
+      {/*----------------------------------------------------------------------- Student part ends ----------------------------------------------------------------*/}
     </Stack.Navigator>
   );
 };

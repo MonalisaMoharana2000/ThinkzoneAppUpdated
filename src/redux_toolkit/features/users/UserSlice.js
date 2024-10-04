@@ -1,8 +1,9 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {fetchUserDataThunk} from './UserThunk';
+import {fetchUserDataThunk, fetchUserTotalCoinsThunk} from './UserThunk';
 
 const initialState = {
-  data: [],
+  user: [],
+  rewards: [],
   loading: false,
   status: '',
   message: '',
@@ -16,19 +17,40 @@ const UserSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchUserDataThunk.pending, (state, action) => {
-        state.data = [];
+        state.user = [];
         state.loading = true;
         state.status = action.meta.requestStatus;
         state.message = 'loading';
       })
       .addCase(fetchUserDataThunk.fulfilled, (state, action) => {
-        state.data = action.payload;
+        state.user = action.payload;
         state.loading = false;
         state.status = 'succeeded';
         state.message = 'Data fetched successfully';
       })
       .addCase(fetchUserDataThunk.rejected, (state, action) => {
-        state.data = [];
+        state.user = [];
+        state.loading = false;
+        state.status = 'failed';
+        state.message = 'Error fetching data';
+      });
+
+    //Get Total Coins
+    builder
+      .addCase(fetchUserTotalCoinsThunk.pending, (state, action) => {
+        state.rewards = [];
+        state.loading = true;
+        state.status = action.meta.requestStatus;
+        state.message = 'loading';
+      })
+      .addCase(fetchUserTotalCoinsThunk.fulfilled, (state, action) => {
+        state.rewards = action.payload;
+        state.loading = false;
+        state.status = 'succeeded';
+        state.message = 'Data fetched successfully';
+      })
+      .addCase(fetchUserTotalCoinsThunk.rejected, (state, action) => {
+        state.rewards = [];
         state.loading = false;
         state.status = 'failed';
         state.message = 'Error fetching data';

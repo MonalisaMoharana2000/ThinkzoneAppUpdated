@@ -15,10 +15,12 @@ import {
   Modal,
   KeyboardAvoidingView,
   ToastAndroid,
+  TextInput,
 } from 'react-native';
 import storage from '../utils/AsyncStorage';
 import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
-
+import ClassName from 'react-native-vector-icons/MaterialIcons';
+import Classlabal from 'react-native-vector-icons/Ionicons';
 import API from '../environment/Api';
 
 import {useState, useEffect, useRef, useCallback} from 'react';
@@ -29,20 +31,22 @@ import {useTranslation} from 'react-i18next';
 import AppTextInput from '../components/TextInput';
 import ErrorMessage from '../components/ErrorMessage';
 import Gender from 'react-native-vector-icons/Foundation';
-import ClassName from 'react-native-vector-icons/MaterialIcons';
-import Classlabal from 'react-native-vector-icons/Ionicons';
 
 import {Picker} from '@react-native-picker/picker';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 import {useDispatch, useSelector} from 'react-redux';
 import {showMessage} from 'react-native-flash-message';
 
 import * as window from '../utils/dimensions';
 
-import DatePicker from 'react-native-datepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import axios from 'axios';
 import {app_versions} from './Home';
+import {
+  createStudentsDataThunk,
+  updateStudentsDataThunk,
+} from '../redux_toolkit/features/students/StudentThunk';
 
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
@@ -69,7 +73,8 @@ const StudentRegister = ({route, navigation}) => {
     state => state.studentdata?.studentPhone,
   );
   console.log('studentPhoneCount-->', studentPhoneCount);
-  const user = useSelector(state => state.userdata.user?.resData);
+  const user = useSelector(state => state.UserSlice.user);
+
   const capitalize = str => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
@@ -129,12 +134,7 @@ const StudentRegister = ({route, navigation}) => {
       ? moment(route.params.updateData?.dob).utc().format('DD-MM-YYYY')
       : '',
   );
-  //
-  //
-  // const chang = moment(dob).format("DD-MM-YYYY");
-  //
 
-  //
   const [open, setOpen] = useState(false);
   const [studentclass, setStudentClass] = useState(
     route.params ? route.params.updateData?.program : '',
@@ -161,6 +161,28 @@ const StudentRegister = ({route, navigation}) => {
   //State to handle error in image error
   const [error, setError] = useState(false);
 
+  const [showPicker, setShowPicker] = useState(false);
+
+  const onDateChange = (event, selectedDate) => {
+    setShowPicker(false); // Close the picker when a date is selected
+    if (selectedDate) {
+      setDob(moment(selectedDate).format('DD-MM-YYYY')); // Format and set the date
+    }
+  };
+
+  // Show DatePicker
+  const showDatepicker = () => {
+    setShowPicker(true);
+  };
+
+  useEffect(() => {
+    if (route.params) {
+      setUpdateStatus(true);
+    } else {
+      setUpdateStatus(false);
+    }
+  });
+
   useEffect(() => {
     API.get(`getStudentPhoneCountByPhonenumber/${phone}`)
       .then(response => {
@@ -174,15 +196,6 @@ const StudentRegister = ({route, navigation}) => {
         console.log(e);
       });
   }, [phone]);
-
-  useEffect(() => {
-    dispatch(FcmSlice.clearfcmMessage({}));
-    if (route.params) {
-      setUpdateStatus(true);
-    } else {
-      setUpdateStatus(false);
-    }
-  });
 
   const [studentList, setStudentList] = useState([]);
 
@@ -477,10 +490,9 @@ const StudentRegister = ({route, navigation}) => {
 
       console.log('studentUpdateDetails--->', studentUpdateDetails);
       dispatch(
-        studenttypes.updateStudentStart({
-          studentUpdateDetails,
-          studentId: route.params ? route.params.updateData._id : '',
-        }),
+        updateStudentsDataThunk(
+          route.params ? route.params.updateData._id : '',
+        ),
       );
       navigation.navigate('studentlist');
     }
@@ -636,9 +648,11 @@ const StudentRegister = ({route, navigation}) => {
               otp_expire_on: new Date(
                 new Date().setFullYear(new Date().getFullYear() + 1),
               ),
-              appVersion: app_versions,
+              appVersion: '2.1.2',
               // image: profileDetails.image,
             };
+
+            console.log('studentDetails------->', studentDetails);
 
             if (studentCreateError?.response?.status === 500) {
               Alert.alert(
@@ -652,14 +666,8 @@ const StudentRegister = ({route, navigation}) => {
                 ],
                 {cancelable: false},
               );
-              // showMessage({
-              //   message: `ଆପଣ ପୂର୍ବରୁ ଏହି ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିସାରିଛନ୍ତି । ଧ୍ୟାନ ଦେବେ ଆପଣ ଗୋଟିଏ ମୋବାଇଲ୍ ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିପାରିବେ।`,
-              //   // description: 'Successfully student deleted.',
-              //   type: 'danger',
-              //   backgroundColor: Colors.danger,
-              // });
             } else {
-              dispatch(studenttypes.createStudentStart(studentDetails));
+              dispatch(createStudentsDataThunk(studentDetails));
               showMessage({
                 message: `Good things take time! ଶିକ୍ଷାର୍ଥୀଙ୍କ ରୋଲନମ୍ବର ଅଭିଭାବକଙ୍କୁ ତାଙ୍କ ମୋବାଇଲ ନମ୍ବରରେ ପଠାଯାଇଛି । ଅଭିଭାବକଙ୍କୁ ଯୋଗାଯୋଗ କରି ପଞ୍ଜୀକରଣ ସଂପୂର୍ଣ୍ଣ କରନ୍ତୁ ।`,
                 // description: 'Successfully student deleted.',
@@ -852,100 +860,40 @@ const StudentRegister = ({route, navigation}) => {
               onChangeText={value => setPhone(value)}
             />
           )}
-          {/*Phone text inpute*/}
-          {/* <AppTextInput
-            autoCapitalize="none"
-            autoCorrect={false}
-            iconFirst="phone"
-            keyboardType="number-pad"
-            name="name"
-            placeholderTextColor="#000000"
-            maxLength={10}
-            placeholder="Phone Number"
-            value={phone}
-            onChangeText={value => setPhone(value)}
-          /> */}
 
           {phone === undefined || phone === null || phone === '' ? (
             <ErrorMessage visible={phoneError} error={t('phone_error')} />
           ) : null}
 
           {/* Student Dob */}
-          <View style={styles.dob}>
-            <MaterialIcons
-              name="date-range"
-              size={27}
-              color={Colors.greyPrimary}
-              style={styles.icon}
-            />
-            <DatePicker
-              style={{
-                width: 363,
-                marginLeft: -5,
-              }}
-              date={dob}
-              mode="date"
-              placeholder={`DD/MM/YYYY`}
-              placeholderTextColor={'black'}
-              dateFormat="DD-MM-YYYY"
-              //format="YYYY-MM-DD"
-              format="DD-MM-YYYY"
-              minDate="01-01-1990"
-              maxDate="31-12-2020"
-              // minDate="2009-01-01"
-              //maxDate="2019-12-31"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                // dateIcon: {
-                //   position: 'absolute',
-                //   right: 184,
-                //   top: 8,
-                //   marginLeft: 0,
-                // },
-                dateIcon: {
-                  display: 'none',
-                },
-                dateInput: {
-                  marginLeft: -195,
-                  // borderColor: 'white',
-                  // borderStyle: 'dotted',
-                  marginRight: -15,
-                  borderWidth: -1,
-                  // borderRadius: 1,
-                  position: 'relative',
-                  flex: 1,
 
-                  height: 50,
-                  marginBottom: -10,
-                  borderRadius: 22,
-                },
-                // ... You can check the source to find the other keys.
-              }}
-              onDateChange={date => {
-                setDob(date);
-              }}
-            />
-          </View>
           <ErrorMessage visible={dobError} error={t('dob_error')} />
-          {/* <Button title="DOB" onPress={() => setOpen(true)} />
-                <DatePicker
-                  modal
-                  mode="date"
-                  open={open}
-                  date={dob}
-                  onConfirm={date => {
-                    setOpen(false);
-                    setDob(date);
-                  }}
-                  onCancel={() => {
-                    setOpen(false);
-                  }}
-                />
-                <Text style={{color: Colors.black}}>{dob.toString()}</Text> */}
-          {/* <DatePicker mode="date"  date={dob} onDateChange={setDob} /> */}
+          <View>
+            {/* TextInput to display placeholder or selected date */}
+            <TouchableOpacity onPress={showDatepicker}>
+              <AppTextInput
+                value={dob} // Display the selected date or empty string
+                placeholder="DD/MM/YYYY" // Placeholder when no date is selected
+                placeholderTextColor="black"
+                editable={false} // Disable manual input
+              />
+            </TouchableOpacity>
+
+            {/* Show DateTimePicker when triggered */}
+            {showPicker && (
+              <DateTimePicker
+                value={dob ? moment(dob, 'DD-MM-YYYY').toDate() : new Date()}
+                mode="date"
+                display="default"
+                minimumDate={new Date(1990, 0, 1)} // Set min date to 01-01-1990
+                maximumDate={new Date(2020, 11, 31)} // Set max date to 31-12-2020
+                onChange={onDateChange} // Handle the date change
+              />
+            )}
+          </View>
 
           {/*Picker for gender */}
+
           <View style={styles.wrapper}>
             <Gender
               name="male-female"
@@ -1282,6 +1230,7 @@ const styles = StyleSheet.create({
     bottom: '0%',
     left: '0%',
   },
+
   statusPosition1: {
     height: '100%',
     bottom: '0%',

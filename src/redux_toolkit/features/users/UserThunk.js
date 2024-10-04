@@ -10,3 +10,14 @@ export const fetchUserDataThunk = createAsyncThunk(
     return response.data;
   },
 );
+
+//Rewards
+
+export const fetchUserTotalCoinsThunk = createAsyncThunk(
+  'user/fetchtotalcoins',
+  async userid => {
+    let response = await API.get(`getTotalCoins/${userid}`);
+
+    return response.data;
+  },
+);

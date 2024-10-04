@@ -12,6 +12,9 @@ import {TouchableOpacity} from 'react-native';
 import {Color} from '../GlobalStyle';
 import StudentListPage from '../Pages/StudentListPage';
 import StudentAssessmentDetails from '../Pages/StudentAssessmentDetails';
+import Page1 from '../Pages/Page1';
+import Page2 from '../Pages/Page2';
+import Page3 from '../Pages/Page3';
 
 const Stack = createNativeStackNavigator();
 

@@ -8,7 +8,6 @@ import React, {
 } from 'react';
 import {useFocusEffect, useNavigationState} from '@react-navigation/native';
 import Colors from '../utils/Colors';
-// import moment from 'moment';
 import {
   SafeAreaView,
   StyleSheet,
@@ -33,17 +32,11 @@ import {
   PermissionsAndroid,
   Easing,
 } from 'react-native';
-
 import API from '../environment/Api';
-
 import * as window from '../utils/dimensions';
-
 import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
-
 import {useDispatch, useSelector} from 'react-redux';
-
 import Header from '../components/Header';
-
 import moment from 'moment';
 
 const Home = ({navigation}, props) => {

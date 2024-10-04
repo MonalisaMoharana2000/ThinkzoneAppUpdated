@@ -20,46 +20,30 @@ import Colors from '../utils/Colors';
 import * as SIZES from '../utils/dimensions';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
-import * as studentstypes from '../redux/slices/StudentSlice';
+
 import * as window from '../utils/dimensions';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import DropdownComponent from '../components/DropdownComponent';
-import {
-  PinchGestureHandler,
-  State,
-  PanGestureHandler,
-} from 'react-native-gesture-handler';
+
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Api from '../environment/Api';
-import Norecord from '../components/Norecord';
-import moment from 'moment';
-import Foundation from 'react-native-vector-icons/Foundation';
 import Loading from '../components/Loading';
 import Nocontents from '../components/Nocontents';
 import {showMessage, hideMessage} from 'react-native-flash-message';
-const AnimatedMaterialIcons = Animated.createAnimatedComponent(Foundation);
+import {fetchStudentsDataThunk} from '../redux_toolkit/features/students/StudentThunk';
 
 const StudentListPage = ({navigation}) => {
-  const user = useSelector(state => state.userdata.user?.resData);
+  const user = useSelector(state => state.UserSlice.user);
   //   console.log('user--->', user);
-  const coin = useSelector(state => state.userdata.rewards);
+  const coin = useSelector(state => state.UserSlice.rewards);
   const userCoins = coin[0]?.coins; // Replace with the actual number of user coins
-  const studentData = useSelector(state => state.studentdata.students);
+  const studentData = useSelector(state => state.StudentSlice.students);
 
-  //const isLoading = useSelector(state => state.studentdata.isLoading);
-  const {username, userid, managerid, managername, usertype, passcode} =
-    user[0];
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [studentList, setStudentList] = useState([]);
   console.log('studentList page--------------', studentData);
-  const [perStudent, setPerStudent] = useState();
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
 
   useEffect(() => {
-    dispatch(studentstypes.getStudentStart(user[0].userid));
+    dispatch(fetchStudentsDataThunk(user[0].userid));
   }, []);
 
   useFocusEffect(

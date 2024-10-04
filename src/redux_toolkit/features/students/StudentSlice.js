@@ -4,6 +4,7 @@ import {
   createStudentsDataThunk,
   deleteStudentsDataThunk,
   updateStudentsDataThunk,
+  fetchStudentsAttendanceThunk,
 } from './StudentThunk';
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
   loading: false,
   status: '',
   message: '',
+  attendancedate: [],
 };
 
 const StudentSlice = createSlice({
@@ -102,6 +104,28 @@ const StudentSlice = createSlice({
         state.loading = false;
         state.status = 'failed';
         state.message = 'Error creating student';
+      });
+
+    //For student Attendance
+
+    builder
+      .addCase(fetchStudentsAttendanceThunk.pending, (state, action) => {
+        // state.createdStudent = null;
+        state.loading = true;
+        state.status = 'loading';
+        state.message = 'Get student attendance...';
+      })
+      .addCase(fetchStudentsAttendanceThunk.fulfilled, (state, action) => {
+        state.attendancedate = action.payload;
+        state.loading = false;
+        state.status = 'succeeded';
+        state.message = 'Student attendance get successfully';
+      })
+      .addCase(fetchStudentsAttendanceThunk.rejected, (state, action) => {
+        // state.createdStudent = null;
+        state.loading = false;
+        state.status = 'failed';
+        state.message = 'Error getting student attendance';
       });
   },
 });

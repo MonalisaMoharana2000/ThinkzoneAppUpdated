@@ -21,17 +21,16 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Loading from '../components/Loading';
 import Nocontents from '../components/Nocontents';
+import {fetchStudentsAttendanceThunk} from '../redux_toolkit/features/students/StudentThunk';
 const Attendancelist = ({navigation}) => {
   const date = new Date();
   const [dob, setDob] = useState(new Date());
 
   const [todayatt, setTodayatt] = useState(false);
   const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.studentdata.isLoading);
-  const user = useSelector(state => state.userdata.user?.resData);
-  const attendance = useSelector(state => state.studentdata.attendancedate);
-  const attendanceList = useSelector(state => state.studentdata.attendance);
-  const [customModal, setCustomModal] = useState(false);
+  const isLoading = useSelector(state => state.StudentSlice.loading);
+  const user = useSelector(state => state.UserSlice.user);
+  const attendance = useSelector(state => state.StudentSlice.attendancedate);
 
   const attendDate = attendance.map(item => {
     const jki = new Date(item);
@@ -58,14 +57,14 @@ const Attendancelist = ({navigation}) => {
     date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
   useEffect(() => {
+    // dispatch(
+    //   studenttypes.getAttendanceListStart({
+    //     userid: user[0].userid,
+    //     attendancedate: currentDate,
+    //   }),
+    // );
     dispatch(
-      studenttypes.getAttendanceListStart({
-        userid: user[0].userid,
-        attendancedate: currentDate,
-      }),
-    );
-    dispatch(
-      studenttypes.getAttendanceReportStart({
+      fetchStudentsAttendanceThunk({
         userid: user[0].userid,
         // userid: 'pinkurajesh88@gmail.com',
         attendancedate: currentDate,

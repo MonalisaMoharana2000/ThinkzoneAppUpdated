@@ -1,8 +1,9 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {fetchUserDataThunk} from './UserThunk';
+import {fetchUserDataThunk, fetchUserTotalCoinsThunk} from './UserThunk';
 
 const initialState = {
   user: [],
+  rewards: [],
   loading: false,
   status: '',
   message: '',
@@ -29,6 +30,27 @@ const UserSlice = createSlice({
       })
       .addCase(fetchUserDataThunk.rejected, (state, action) => {
         state.user = [];
+        state.loading = false;
+        state.status = 'failed';
+        state.message = 'Error fetching data';
+      });
+
+    //Get Total Coins
+    builder
+      .addCase(fetchUserTotalCoinsThunk.pending, (state, action) => {
+        state.rewards = [];
+        state.loading = true;
+        state.status = action.meta.requestStatus;
+        state.message = 'loading';
+      })
+      .addCase(fetchUserTotalCoinsThunk.fulfilled, (state, action) => {
+        state.rewards = action.payload;
+        state.loading = false;
+        state.status = 'succeeded';
+        state.message = 'Data fetched successfully';
+      })
+      .addCase(fetchUserTotalCoinsThunk.rejected, (state, action) => {
+        state.rewards = [];
         state.loading = false;
         state.status = 'failed';
         state.message = 'Error fetching data';

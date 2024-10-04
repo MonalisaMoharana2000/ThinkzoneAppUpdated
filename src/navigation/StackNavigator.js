@@ -14,6 +14,8 @@ import {FontFamily} from '../GlobalStyle';
 import StudentList from '../Pages/StudentList';
 import {TouchableOpacity} from 'react-native';
 import {Color} from '../GlobalStyle';
+import StudentListPage from '../Pages/StudentListPage';
+import StudentAssessmentDetails from '../Pages/StudentAssessmentDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -105,7 +107,7 @@ const StackNavigator = ({navigation}) => {
         }}
       />
       <Stack.Screen
-        name="attendanceList"
+        name="attendancelist"
         component={Attendancelist}
         options={{
           title: ' 7 ଦିନର ଉପସ୍ଥାନ',
@@ -132,6 +134,32 @@ const StackNavigator = ({navigation}) => {
           // headerShown: false,
         }}
       />
+
+      <Stack.Screen
+        name="studentlistpage"
+        component={StudentListPage}
+        options={{
+          title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerLeft: false,
+          // headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="studentassessmentdetails"
+        component={StudentAssessmentDetails}
+        options={{
+          // title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
+          // headerLeft: false,
+          headerShown: false,
+        }}
+      />
+
       {/*----------------------------------------------------------------------- Student part ends ----------------------------------------------------------------*/}
     </Stack.Navigator>
   );

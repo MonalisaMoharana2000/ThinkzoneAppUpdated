@@ -9,6 +9,7 @@ import {
   Image,
   BackHandler,
   Alert,
+  ScrollView,
 } from 'react-native';
 
 import CalendarPicker from 'react-native-calendar-picker';
@@ -20,7 +21,6 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import Colors from '../utils/Colors';
 
-import {ScrollView} from 'react-native-gesture-handler';
 import Modals from '../components/Modals';
 
 import {useFocusEffect} from '@react-navigation/native';
@@ -28,6 +28,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import Api from '../environment/Api';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {fetchStudentsAttendanceThunk} from '../redux_toolkit/features/students/StudentThunk';
 
 const StudentAttendance = ({navigation}) => {
   const date = new Date();
@@ -35,13 +36,9 @@ const StudentAttendance = ({navigation}) => {
   const [todayatt, setTodayatt] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector(state => state.UserSlice.user);
-  const attendance = useSelector(state => state.studentdata.attendancedate);
+  const attendance = useSelector(state => state.StudentSlice.attendancedate);
   const [customModal, setCustomModal] = useState(false);
   const [attendanceData, setAttendanceData] = useState([]);
-  const isHoliday = useSelector(state => state.studentdata.attendance);
-  const [load, setLoad] = useState(false);
-
-  const [offlineAttendance, setOfflineAttendance] = useState();
 
   console.log('check--------->', attendanceData);
   const [parsedData, setParsedData] = useState(null);
@@ -143,19 +140,10 @@ const StudentAttendance = ({navigation}) => {
   let currentDate =
     date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
 
-  useEffect(() => {
-    dispatch(
-      studenttypes.getAttendanceListStart({
-        userid: user[0].userid,
-        attendancedate: currentDate,
-      }),
-    );
-  }, []);
-
   useFocusEffect(
     React.useCallback(() => {
       dispatch(
-        studenttypes.getAttendanceReportStart({
+        fetchStudentsAttendanceThunk({
           userid: user[0].userid,
           attendancedate: currentDate,
         }),
@@ -198,9 +186,7 @@ const StudentAttendance = ({navigation}) => {
   };
 
   useEffect(() => {
-    const backAction = () => {
-      dispatch(FcmSlice.clearfcmMessage());
-    };
+    const backAction = () => {};
 
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',

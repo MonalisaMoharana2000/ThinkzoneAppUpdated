@@ -42,3 +42,14 @@ export const updateStudentsDataThunk = createAsyncThunk(
     return response.data;
   },
 );
+
+export const fetchStudentsAttendanceThunk = createAsyncThunk(
+  'student/attendance',
+  async data => {
+    let response = await API.get(
+      `getlast7attendancedates/${data.userid}/${data.attendancedate}`,
+    );
+    // console.log('student----->', response.data);
+    return response.data;
+  },
+);

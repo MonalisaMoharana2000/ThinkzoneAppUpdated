@@ -39,16 +39,16 @@ import Nocontents from '../components/Nocontents';
 const AnimatedMaterialIcons = Animated.createAnimatedComponent(Foundation);
 const StudentAssessmentPage = ({navigation, route}) => {
   const appState = useRef(AppState.currentState);
-  const user = useSelector(state => state.userdata.user?.resData);
+  const user = useSelector(state => state.UserSlice.user);
 
   const data = route.params.data;
   console.log('data--->', data);
   const {studentid, program, studentname, phone} = route.params.data;
   console.log('check------->', route.params.data);
-  const studentData = useSelector(state => state.StudentSlice.students);
+
   const {username, userid, managerid, managername, usertype, passcode} =
     user[0];
-  const dispatch = useDispatch();
+
   const [topic, setTopic] = useState([]);
   // console.log('topic-->', topic);
   const [isLoading, setIsLoading] = useState(false);
@@ -63,15 +63,6 @@ const StudentAssessmentPage = ({navigation, route}) => {
   useEffect(() => {
     // resetInactivityTimeout();
   }, []);
-  const windowWidth = Dimensions.get('window').width;
-  const windowHeight = Dimensions.get('window').height;
-  const panResponder = React.useRef(
-    PanResponder.create({
-      onStartShouldSetPanResponderCapture: () => {
-        // resetInactivityTimeout();
-      },
-    }),
-  ).current;
 
   const animation = useRef(new Animated.Value(0)).current;
 
@@ -84,11 +75,6 @@ const StudentAssessmentPage = ({navigation, route}) => {
       }),
     ).start();
   }, []);
-
-  const spin = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
 
   useFocusEffect(
     React.useCallback(() => {

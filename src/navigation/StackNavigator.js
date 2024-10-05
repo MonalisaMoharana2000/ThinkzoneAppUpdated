@@ -19,6 +19,8 @@ import LoginScreen from '../pages/LoginScreen';
 import Faq from '../pages/Faq';
 import EcContent from '../pages/EcContent';
 import Ecactivity from '../pages/Ecactivity';
+import Pgeactivity from '../pages/Pgeactivity';
+import Pgecontentdetails from '../pages/Pgecontentdetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -189,6 +191,24 @@ const StackNavigator = ({navigation}) => {
           title: 'ପ୍ରାକ୍ ଗତିବିଧି',
           headerShown: false,
         }}
+      />
+
+      <Stack.Screen
+        name="pgeactivity"
+        component={Pgeactivity}
+        options={{
+          title: 'ପ୍ରାଥମିକ ଗତିବିଧି',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Content"
+        component={Pgecontentdetails}
+        options={{title: 'ପ୍ରାଥମିକ ଗତିବିଧି', headerShown: false}}
       />
     </Stack.Navigator>
   );

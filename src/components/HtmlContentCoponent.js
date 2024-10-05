@@ -13,10 +13,7 @@ const HtmlContentCoponent = ({sourceData}) => {
 
   return (
     <View style={{backgroundColor: 'white'}}>
-      <RenderHtml
-        source={source}
-        tagsStyles={tagsStyles}
-      />
+      <RenderHtml source={source} tagsStyles={tagsStyles} />
     </View>
   );
 };
@@ -32,18 +29,14 @@ const tagsStyles = {
   p: {
     fontSize: 20,
     width: '90%',
-    // alignSelf: 'center',
-
     marginLeft: 15,
     color: 'black',
-    // fontWeight: '600',
   },
 
   a: {
     color: 'green',
   },
   ul: {
-    // paddingLeft: 20,
     fontSize: 24,
     width: '95%',
   },
@@ -51,8 +44,6 @@ const tagsStyles = {
     fontSize: 21,
     marginTop: -6,
   },
-
-  // th,
   table: {
     borderColor: '#666666',
     width: '90%',

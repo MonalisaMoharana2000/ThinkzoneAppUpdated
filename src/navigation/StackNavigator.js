@@ -169,7 +169,7 @@ const StackNavigator = ({navigation}) => {
         }}
       />
       {/*----------------------------------------------------------------------- Student part ends ----------------------------------------------------------------*/}
-      //~----------Student Activities--------------------------------------
+      {/*------------Student Activities------------------------------- */}
       <Stack.Screen
         name="ecactivity"
         component={Ecactivity}

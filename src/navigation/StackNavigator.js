@@ -17,6 +17,7 @@ import Page2 from '../Pages/Page2';
 import Page3 from '../Pages/Page3';
 import LoginScreen from '../Pages/LoginScreen';
 import Faq from '../Pages/Faq';
+import Feedback from '../Pages/Feedback';
 
 const Stack = createNativeStackNavigator();
 
@@ -172,6 +173,22 @@ const StackNavigator = ({navigation}) => {
             fontFamily: FontFamily.poppinsMedium,
             // letterSpacing: 2,
           },
+        }}
+      />
+
+      <Stack.Screen
+        name="Feedback"
+        component={Feedback}
+        options={{
+          title: 'ମତାମତ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerLeft: false,
+          // headerShown: false,
+          // headerTitleAlign: 'center',
         }}
       />
 

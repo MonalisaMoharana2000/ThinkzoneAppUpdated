@@ -17,6 +17,8 @@ import Page2 from '../pages/Page2';
 import Page3 from '../pages/Page3';
 import LoginScreen from '../pages/LoginScreen';
 import Faq from '../pages/Faq';
+import EcContent from '../pages/EcContent';
+import Ecactivity from '../pages/Ecactivity';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,9 +30,7 @@ const StackNavigator = ({navigation}) => {
       <Stack.Screen name="Page2" component={Page2} />
       <Stack.Screen name="Page3" component={Page3} />
       <Stack.Screen name="Home" component={BottomTabNavigator} />
-
       {/*---------------------------------------------------- Student part starts-------------------------------------------------------- */}
-
       <Stack.Screen
         name="studentlist"
         component={StudentList}
@@ -45,7 +45,6 @@ const StackNavigator = ({navigation}) => {
           // headerTitleAlign: 'center',
         }}
       />
-
       <Stack.Screen
         name="studentregister"
         component={StudentRegister}
@@ -93,7 +92,6 @@ const StackNavigator = ({navigation}) => {
           // headerTitleAlign: 'center',
         }}
       />
-
       <Stack.Screen
         name="studentAttendance"
         component={StudentAttendance}
@@ -120,7 +118,6 @@ const StackNavigator = ({navigation}) => {
           // headerTitleAlign: 'center',
         }}
       />
-
       <Stack.Screen
         name="studentassessment"
         component={StudentAssessmentPage}
@@ -135,7 +132,6 @@ const StackNavigator = ({navigation}) => {
           // headerShown: false,
         }}
       />
-
       <Stack.Screen
         name="studentlistpage"
         component={StudentListPage}
@@ -150,7 +146,6 @@ const StackNavigator = ({navigation}) => {
           // headerShown: false,
         }}
       />
-
       <Stack.Screen
         name="studentassessmentdetails"
         component={StudentAssessmentDetails}
@@ -160,7 +155,6 @@ const StackNavigator = ({navigation}) => {
           headerShown: false,
         }}
       />
-
       <Stack.Screen
         name="faq"
         component={Faq}
@@ -174,8 +168,28 @@ const StackNavigator = ({navigation}) => {
           },
         }}
       />
-
       {/*----------------------------------------------------------------------- Student part ends ----------------------------------------------------------------*/}
+      //~----------Student Activities--------------------------------------
+      <Stack.Screen
+        name="ecactivity"
+        component={Ecactivity}
+        options={{
+          title: 'ପ୍ରାକ୍ ଗତିବିଧି',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="eccontent"
+        component={EcContent}
+        options={{
+          title: 'ପ୍ରାକ୍ ଗତିବିଧି',
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };

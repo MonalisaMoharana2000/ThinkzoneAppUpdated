@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@dudigital/react-native-zoomable-view": "^1.1.4",
     "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-native-community/checkbox": "^0.5.17",
     "@react-native-community/datetimepicker": "^8.2.0",
@@ -37,6 +38,7 @@
     "react-native-modalize": "^2.1.1",
     "react-native-orientation-locker": "^1.7.0",
     "react-native-paper": "^5.0.0",
+    "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "^4.11.0",
     "react-native-screens": "^3.34.0",
     "react-native-simple-radio-button": "^2.7.4",

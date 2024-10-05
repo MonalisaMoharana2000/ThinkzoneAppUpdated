@@ -4,7 +4,6 @@ import RenderHtml from 'react-native-render-html';
 
 const HtmlContentCoponent = ({sourceData}) => {
   console.log(sourceData, 'sourceData');
-  // console.log(source, 'source');
   const {width} = useWindowDimensions();
   const formated_sourcedata = sourceData.replace('<p><br></p>', '');
 
@@ -15,7 +14,6 @@ const HtmlContentCoponent = ({sourceData}) => {
   return (
     <View style={{backgroundColor: 'white'}}>
       <RenderHtml
-        // contentWidth={width * 0.9}
         source={source}
         tagsStyles={tagsStyles}
       />

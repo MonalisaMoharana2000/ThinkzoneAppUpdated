@@ -16,6 +16,7 @@ import Page1 from '../Pages/Page1';
 import Page2 from '../Pages/Page2';
 import Page3 from '../Pages/Page3';
 import LoginScreen from '../Pages/LoginScreen';
+import Faq from '../Pages/Faq';
 
 const Stack = createNativeStackNavigator();
 
@@ -157,6 +158,20 @@ const StackNavigator = ({navigation}) => {
           // title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
           // headerLeft: false,
           headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="faq"
+        component={Faq}
+        options={{
+          title: 'FAQ',
+          // headerShown: false,
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
         }}
       />
 

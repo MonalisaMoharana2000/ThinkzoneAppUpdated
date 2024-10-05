@@ -1199,7 +1199,7 @@ const AudioAssessment = ({
                                       height: 200,
                                       top: '15%',
                                     }}
-                                    resizeMode="cover"
+                                    //resizeMode="cover"
                                     source={require('../assets/Image/uploadvideo.png')}
                                   />
                                 </TouchableOpacity>
@@ -1656,7 +1656,7 @@ const AudioAssessment = ({
                                     // alignSelf: 'center',
                                   }
                                 }
-                                resizeMode="cover"
+                                //resizeMode="cover"
                                 source={
                                   error
                                     ? null

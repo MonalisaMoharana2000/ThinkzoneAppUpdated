@@ -427,7 +427,7 @@ const StudentAttendance = ({navigation}) => {
                     top: '5%',
                     // marginTop: 30,
                   }}
-                  resizeMode="cover"
+                  //resizeMode="cover"
                   source={require('../assets/Image/calender-dynamic-gradient.png')}
                 />
               </View>

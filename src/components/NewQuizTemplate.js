@@ -927,7 +927,7 @@ const NewQuizTemplate = ({
 
                               borderRadius: 10,
                             }}
-                            resizeMode="cover"
+                            //resizeMode="cover"
                             source={
                               error
                                 ? require('../assets/Photos/userss.png')
@@ -1027,7 +1027,7 @@ const NewQuizTemplate = ({
                                 height: SIZES.WindowHeigth * 0.5,
                                 borderRadius: 20,
                               }}
-                              resizeMode="cover"
+                              //resizeMode="cover"
                               source={
                                 error
                                   ? require('../assets/Photos/userss.png')

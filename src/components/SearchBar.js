@@ -16,7 +16,7 @@ const SearchBar = ({placeholder, onChangeText, keyboardType, width}) => {
       /> */}
       <Image
         style={{marginHorizontal: 10, width: 24, height: 24}}
-        resizeMode="cover"
+        //resizeMode="cover"
         source={require('../assets/Image/search-status.png')}
       />
       <TextInput

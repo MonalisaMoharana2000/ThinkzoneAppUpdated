@@ -595,7 +595,7 @@ const StudentAssessmentPage = ({navigation, route}) => {
                   top: 20,
                 }}
                 source={require('../assets/Image/nostudent.gif')}
-                resizeMode="contain" // You can change the resizeMode as per your requirement
+                //resizeMode="contain" // You can change the //resizeMode as per your requirement
               />
             </View>
           )} */}

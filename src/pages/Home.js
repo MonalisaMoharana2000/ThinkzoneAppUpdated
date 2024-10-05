@@ -2098,7 +2098,7 @@ const Home = ({navigation}, props) => {
                           }}>
                           <Image
                             ref={exampleSixViewRef}
-                            resizeMode="cover"
+                            //resizeMode="cover"
                             style={[styles.tinyLogo]}
                             source={require('../assets/Image/iconusersprofile2user.png')}
                           />
@@ -2444,7 +2444,7 @@ const Home = ({navigation}, props) => {
                     style={{marginTop: 8}}>
                     <Image
                       source={require('../assets/Image/mopragati.png')}
-                      resizeMode="contain"
+                      //resizeMode="contain"
                       style={{
                         height: window.WindowHeigth * 0.2,
                         width: window.WindowWidth * 0.9,
@@ -2484,7 +2484,7 @@ const Home = ({navigation}, props) => {
                     style={{marginTop: 15}}>
                     <Image
                       source={require('../assets/Image/GroupRewards.png')}
-                      resizeMode="contain"
+                      //resizeMode="contain"
                       style={{
                         height: window.WindowHeigth * 0.2,
                         width: window.WindowWidth * 0.9,
@@ -2857,7 +2857,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: null,
     height: null,
-    resizeMode: 'cover',
+    //resizeMode: 'cover',
   },
   imagestext: {
     color: '#333333',
@@ -3106,7 +3106,7 @@ const styles = StyleSheet.create({
   arrowImage: {
     width: 70,
     height: 70,
-    resizeMode: 'contain',
+    //resizeMode: 'contain',
   },
   paginationContainer: {
     flexDirection: 'row',

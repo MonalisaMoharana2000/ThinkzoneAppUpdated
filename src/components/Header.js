@@ -210,7 +210,7 @@ const Header = ({route, navigation, handleClick}) => {
             style={styles.image}
             source={require('../assets/Photos/userss.png')}
             accessibilityLabel="Image not available"
-            resizeMode="cover"
+            //resizeMode="cover"
           />
           {/* <Text>Your Default Text Here</Text> */}
         </TouchableOpacity>
@@ -258,7 +258,7 @@ const Header = ({route, navigation, handleClick}) => {
                     }
               }
               accessibilityLabel="User Profile Image"
-              resizeMode="cover"
+              //resizeMode="cover"
               onError={error => {
                 console.log(
                   error.nativeEvent,
@@ -356,7 +356,7 @@ const Header = ({route, navigation, handleClick}) => {
             }>
             <Image
               source={require('../assets/Image/tzicon.png')}
-              style={{width: 38, height: 38, resizeMode: 'contain'}}
+              style={{width: 38, height: 38}}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -595,6 +595,6 @@ const styles = StyleSheet.create({
   logo: {
     width: 25, // Adjust the width as needed
     height: 25, // Adjust the height as needed
-    resizeMode: 'contain', // Maintain the aspect ratio of the logo
+    //resizeMode: 'contain', // Maintain the aspect ratio of the logo
   },
 });

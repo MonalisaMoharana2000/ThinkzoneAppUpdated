@@ -858,7 +858,7 @@ const Register = ({navigation, route}) => {
                 styles.statusBarBgLayout,
                 {paddingTop: 50},
               ]}
-              resizeMode="cover"
+              // resizeMode="cover"
               source={
                 error
                   ? require('../assets/Photos/userss.png')

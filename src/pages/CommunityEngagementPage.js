@@ -268,7 +268,7 @@ const CommunityEngagementPage = ({navigation, route}) => {
                       top: 20,
                     }}
                     source={require('../assets/Image/norec.jpg')}
-                    resizeMode="contain" // You can change the resizeMode as per your requirement
+                    // resizeMode="contain" // You can change the resizeMode as per your requirement
                   />
                 </View>
               </ReactNativeZoomableView>

@@ -1,167 +1,143 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Text, Alert} from 'react-native';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {authNewUserThunk} from '../redux_toolkit/features/users/UserThunk';
 import {clearUser} from '../redux_toolkit/features/users/UserSlice';
+
 const LoginScreen = ({navigation}) => {
-  const [isLoading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    GoogleSignin.configure();
+    GoogleSignin.configure({
+      webClientId: '<YOUR_WEB_CLIENT_ID>', // Firebase web client ID
+      offlineAccess: true,
+    });
+
     return () => {
-      GoogleSignin.signOut();
+      GoogleSignin.signOut(); // Clear token cache
     };
   }, []);
 
   const handleClick = async () => {
-    console.log('Navigating to Page 1 (handleClick function)');
-    // navigation.navigate('Page1');
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       checkEmailAvailability(userInfo.user.email);
     } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-      } else {
-      }
+      handleSignInError(error);
+    }
+  };
+
+  const handleSignInError = error => {
+    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      Alert.alert('Sign in cancelled by user.');
+    } else if (error.code === statusCodes.IN_PROGRESS) {
+      Alert.alert('Sign in already in progress.');
+    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      Alert.alert('Play services not available or outdated.');
+    } else {
+      Alert.alert('Something went wrong with the sign in.');
     }
   };
 
   const handleClearCachedToken = async () => {
-    // setIsloading(false);
     try {
       await GoogleSignin.signOut();
     } catch (error) {
-      if (error.response.status === 413) {
-        console.log('error is---------------->', error);
-        Alert.alert('The entity is too large !');
-      } else if (error.response.status === 504) {
-        console.log('Error is--------------------->', error);
-        Alert.alert('Gateway Timeout: The server is not responding!');
-      } else if (error.response.status === 500) {
-        console.error('Error is------------------->:', error);
-        Alert.alert(
-          'Internal Server Error: Something went wrong on the server.',
-        );
-      } else {
-        console.error('Error is------------------->:', error);
-      }
+      console.error('Error during sign out:', error);
+      Alert.alert('Failed to clear cached token.');
     }
   };
 
   const checkEmailAvailability = async email => {
     console.log('Email:', email);
-
     try {
-      setIsloading(true);
-
-      handleClearCachedToken(); // Clear the token cache before making the request
+      setIsLoading(true);
+      await handleClearCachedToken(); // Clear tokens before request
 
       const data = {
         loginType: 'google',
         emailid: email,
         contactnumber: '',
       };
+
       console.log('Data to be sent:', data);
-
-      // Dispatch the action for creating a new user
       const res = await dispatch(authNewUserThunk(data));
-
-      const resData = res.payload?.data?.resData?.[0];
-      const status = res.payload?.status;
-
-      if (resData) {
-        const {emailidVerified, phoneNumberVerified} = resData;
-
-        if (status === 200 && emailidVerified && phoneNumberVerified) {
-          await AsyncStorage.setItem(
-            'userData',
-            JSON.stringify(res.payload.data),
-          );
-          navigation.replace('Home');
-        } else if (emailidVerified && !phoneNumberVerified) {
-          showAlert('Phone Number not verified', 'Login');
-        } else if (!emailidVerified && phoneNumberVerified) {
-          showAlert('Email id not verified', 'Login');
-        } else if (!emailidVerified && !phoneNumberVerified) {
-          showAlert('Phone number and email id not verified', 'Login');
-        } else {
-          showAlert('Something went wrong!', 'Login');
-        }
-      } else if (res.payload?.data?.resData?.length > 1) {
-        Alert.alert(
-          'More than 1 data is being saved in this id! Please contact your manager.',
-          '',
-          [{text: 'OK', style: 'destructive'}],
-          {cancelable: false},
-        );
-      } else if (status === 401) {
-        showAlert(
-          'Passcode Requested',
-          'Login',
-          'Passcode has been requested. Please wait.',
-        );
-      }
-
-      console.log('===================res', res.payload?.data);
-
-      if (
-        res.payload?.data?.userExists === false &&
-        res.payload?.data?.unique === true &&
-        res.payload?.data?.contactnumber?.length === 0 &&
-        res.payload?.data?.emailid
-      ) {
-        navigation.navigate('Page1', {email: email});
-      }
-
-      if (res.payload?.data?.status === 'accessDenied') {
-        navigation.navigate('Login');
-      }
-
-      // Ensure the loading indicator is shown for at least 9 seconds
-      setTimeout(() => {
-        setIsloading(false);
-      }, 9000);
+      handleResponse(res, email);
     } catch (error) {
-      console.log('Error occurred:', error);
+      handleError(error);
+    } finally {
+      // Ensure loading state reset
+      setIsLoading(false);
+    }
+  };
 
-      // Ensure the loading state is reset in case of an error
-      setIsloading(false);
+  const handleResponse = async (res, email) => {
+    const resData = res.payload?.data?.resData?.[0];
+    const status = res.payload?.status;
 
-      if (error.response) {
-        const {status} = error.response;
+    if (resData) {
+      const {emailidVerified, phoneNumberVerified} = resData;
 
-        if (status === 413) {
-          console.error('Error 413: Entity too large.');
-          Alert.alert('Error', 'The entity is too large!');
-        } else if (status === 504) {
-          console.error('Error 504: Gateway Timeout.');
-          Alert.alert(
-            'Error',
-            'Gateway Timeout: The server is not responding!',
-          );
-        } else if (status === 500) {
-          console.error('Error 500: Internal Server Error.');
-          Alert.alert(
-            'Error',
-            'Internal Server Error: Something went wrong on the server.',
-          );
-        } else {
-          console.error('Unknown error:', error);
-          Alert.alert('Error', 'An unexpected error occurred.');
-        }
+      if (status === 200 && emailidVerified && phoneNumberVerified) {
+        await AsyncStorage.setItem(
+          'userData',
+          JSON.stringify(res.payload.data),
+        );
+        navigation.replace('Home');
       } else {
-        // Handle cases where `error.response` is undefined (like network errors)
-        console.error('Network or other error:', error.message);
-        Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+        handleVerification(emailidVerified, phoneNumberVerified);
       }
+    } else if (res.payload?.data?.resData?.length > 1) {
+      Alert.alert(
+        'More than 1 data is being saved in this id! Please contact your manager.',
+      );
+    } else if (status === 401) {
+      showAlert(
+        'Passcode Requested',
+        'Login',
+        'Passcode has been requested. Please wait.',
+      );
+    }
+  };
+
+  const handleVerification = (emailVerified, phoneVerified) => {
+    if (emailVerified && !phoneVerified) {
+      showAlert('Phone Number not verified', 'Login');
+    } else if (!emailVerified && phoneVerified) {
+      showAlert('Email id not verified', 'Login');
+    } else if (!emailVerified && !phoneVerified) {
+      showAlert('Phone number and email id not verified', 'Login');
+    } else {
+      showAlert('Something went wrong!', 'Login');
+    }
+  };
+
+  const handleError = error => {
+    console.error('Error occurred:', error);
+    Alert.alert('An error occurred. Please try again.');
+
+    if (error.response) {
+      const {status} = error.response;
+      handleErrorResponse(status);
+    } else {
+      console.error('Network error:', error.message);
+    }
+  };
+
+  const handleErrorResponse = status => {
+    if (status === 413) {
+      Alert.alert('Error 413: The entity is too large.');
+    } else if (status === 504) {
+      Alert.alert('Error 504: Gateway Timeout.');
+    } else if (status === 500) {
+      Alert.alert('Error 500: Internal Server Error.');
     }
   };
 
@@ -169,16 +145,7 @@ const LoginScreen = ({navigation}) => {
     Alert.alert(
       title || message,
       '',
-      [
-        {
-          text: 'OK',
-          onPress: () => {
-            dispatch(clearUser());
-            navigation.navigate(navigateTo);
-          },
-          style: 'default',
-        },
-      ],
+      [{text: 'OK', onPress: () => navigation.navigate(navigateTo)}],
       {cancelable: false},
     );
   };
@@ -186,15 +153,12 @@ const LoginScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={handleClick}>
-        <Text style={styles.buttonText}>Go to Page 1</Text>
+        <Text style={styles.buttonText}>Google Sign In</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => {
-          console.log('Navigating to Page 2');
-          navigation.navigate('Page2');
-        }}>
+        onPress={() => navigation.navigate('Page2')}>
         <Text style={styles.buttonText}>Go to Page 2</Text>
       </TouchableOpacity>
     </View>

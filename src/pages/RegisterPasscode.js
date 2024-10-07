@@ -495,7 +495,7 @@ const RegisterPasscode = ({navigation, route}) => {
         <View>
           <Image
             style={styles.connectedWorldBro11}
-            resizeMode="cover"
+            // resizeMode="cover"
             source={require('../assets/Image/passcode.png')}
           />
         </View>

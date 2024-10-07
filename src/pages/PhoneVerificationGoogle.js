@@ -119,7 +119,7 @@ const PhoneVerificationGoogle = ({navigation, route}) => {
 
       <Image
         style={styles.connectedWorldBro11}
-        resizeMode="cover"
+        // resizeMode="cover"
         source={require('../assets/Image/Enter.png')}
       />
 

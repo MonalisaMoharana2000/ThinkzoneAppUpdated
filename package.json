@@ -15,7 +15,7 @@
     "@react-native-community/checkbox": "^0.5.17",
     "@react-native-community/datetimepicker": "^8.2.0",
     "@react-native-community/netinfo": "^11.4.1",
-    "@react-native-google-signin/google-signin": "^8.2.2",
+    "@react-native-google-signin/google-signin": "^13.1.0",
     "@react-native-picker/picker": "^2.8.1",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",

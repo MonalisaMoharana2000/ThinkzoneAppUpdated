@@ -713,7 +713,7 @@ const FlnContentView = ({route, navigation}) => {
                                 source={{uri: `${item.value}`}}
                                 // onLoadStart={() => setLoadingImage(true)}
                                 onLoad={() => setLoadingImage(false)}
-                                resizeMode="contain"
+                                // resizeMode="contain"
                                 style={{
                                   width: window.WindowWidth * 0.9,
                                   // height: SIZES.WindowHeigth * 0.9,

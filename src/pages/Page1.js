@@ -179,7 +179,7 @@ const Page1 = ({navigation, route}) => {
     <ScrollView>
       <Image
         style={styles.connectedWorldBro11}
-        resizeMode="cover"
+        // resizeMode="cover"
         source={require('../assets/Image/Verified-pana.png')}
       />
       <View

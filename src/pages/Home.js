@@ -1382,39 +1382,6 @@ const Home = ({navigation}, props) => {
     }
   };
 
-  // useEffect(() => {
-  //   const updateAppSession = async () => {
-  //     try {
-  //       const currentDate = new Date(); // Get the current date and time
-  //       const formattedDate = currentDate.toISOString();
-
-  //       const body = {
-  //         userid,
-  //         username,
-  //         usertype,
-  //         managerid,
-  //         managername,
-  //         passcode,
-  //         app: 'tz',
-  //         appVersion: app_versions,
-  //         lastUsed: formattedDate,
-  //       };
-  //       console.log('bodysss', body);
-  //       const response = await API.post('/updateAppSession', body);
-  //       console.log('Updated app session:', response.data);
-
-  //       // Further handling or state updates after a successful update if needed
-  //     } catch (error) {
-  //       console.error('Error updating app session:', error);
-  //       // Handle errors if the update fails
-  //     } finally {
-  //       setIsLoadings(false); // Set loading state after the API call
-  //     }
-  //   };
-
-  //   updateAppSession();
-  // }, []);
-
   const carouselRef = useRef(null);
   const [loopCycles, setLoopCycles] = useState(0);
   const [isReadyForRender, setIsReadyForRender] = useState(false);

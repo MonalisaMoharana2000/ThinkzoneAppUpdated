@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import StudentAssessmentPage from '../pages/StudentAssessmentPage';
@@ -7,8 +7,9 @@ import Attendancelist from '../pages/Attendancelist';
 import BottomTabNavigator from './BottomTabNavigator';
 import StudentRegister from '../pages/StudentRegister';
 import {FontFamily} from '../GlobalStyle';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import StudentList from '../pages/StudentList';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, ActivityIndicator, View} from 'react-native';
 import {Color} from '../GlobalStyle';
 import StudentListPage from '../pages/StudentListPage';
 import StudentAssessmentDetails from '../pages/StudentAssessmentDetails';
@@ -27,76 +28,104 @@ import CommunityEngagementPage from '../pages/CommunityEngagementPage';
 import CommunityEngagementContentView from '../pages/CommunityEngagementContentView';
 import Payment from '../pages/Payment';
 import PaymentDetails from '../pages/PaymentDetails';
+import PhoneVerificationGoogle from '../pages/PhoneVerificationGoogle';
+import Register from '../pages/Register';
+import RegisterPasscode from '../pages/RegisterPasscode';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const userData = await AsyncStorage.getItem('userData');
+        if (userData) {
+          setIsLoggedIn(true);
+        }
+      } catch (error) {
+        console.error('Error checking login status:', error);
+      } finally {
+        setIsLoading(false); // Stop loading once check is complete
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
+  // Show loading indicator while checking async storage
+  if (isLoading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={Color.primary} />
+      </View>
+    );
+  }
+
   return (
-    <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Page1" component={Page1} />
-      <Stack.Screen name="Page2" component={Page2} />
-      <Stack.Screen name="Page3" component={Page3} />
+    <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'}>
+      {!isLoggedIn ? (
+        <>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Page1" component={Page1} />
+          <Stack.Screen
+            name="phoneverificationgoogle"
+            component={PhoneVerificationGoogle}
+          />
+          <Stack.Screen name="Page2" component={Page2} />
+          <Stack.Screen name="Page3" component={Page3} />
+
+          <Stack.Screen name="register" component={Register} />
+          <Stack.Screen name="registerpasscode" component={RegisterPasscode} />
+        </>
+      ) : null}
+
       <Stack.Screen name="Home" component={BottomTabNavigator} />
       {/*---------------------------------------------------- Student part starts-------------------------------------------------------- */}
       <Stack.Screen
         name="studentlist"
         component={StudentList}
         options={{
-          // headerShown: false,
           title: 'ଶିକ୍ଷାର୍ଥୀ ସୂଚନା',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
           },
-          // headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
         name="studentregister"
         component={StudentRegister}
         options={{
-          // headerShown: false,
           title: 'ଶିକ୍ଷାର୍ଥୀ ପଞ୍ଜୀକରଣ',
-          // headerLeft: false,
-          // headerLeft: () => (
-          //   <TouchableOpacity
-          //     onPress={() => {
-          //       Alert.alert(
-          //         'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
-          //         'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
-          //         [
-          //           {
-          //             text: 'Cancel',
-          //             onPress: () => null,
-          //             style: 'default',
-          //           },
-          //           {
-          //             text: 'Ok',
-          //             onPress: () => navigation.goBack(),
-          //             style: 'default',
-          //           },
-          //         ],
-          //       );
-          //     }}>
-          //     {/* <Image
-          //       source={require('../assets/Photos/logo1.png')}
-          //       style={styles.logo}
-          //     /> */}
-          //     <AntDesign
-          //       style={{marginLeft: 15}}
-          //       name="arrowleft"
-          //       size={25}
-          //       color={Color.white}
-          //     />
-          //   </TouchableOpacity>
-          // ),
-          headerTitleStyle: {
-            // fontWeight: '700',
-            // fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
-          },
-          // headerTitleAlign: 'center',
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                Alert.alert(
+                  'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
+                  'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
+                  [
+                    {
+                      text: 'Cancel',
+                      onPress: () => null,
+                      style: 'default',
+                    },
+                    {
+                      text: 'Ok',
+                      onPress: () => navigation.goBack(),
+                      style: 'default',
+                    },
+                  ],
+                );
+              }}>
+              <AntDesign
+                style={{marginLeft: 15}}
+                name="arrowleft"
+                size={25}
+                color={Color.white}
+              />
+            </TouchableOpacity>
+          ),
         }}
       />
       <Stack.Screen
@@ -105,11 +134,8 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ଶିକ୍ଷାର୍ଥୀ ଉପସ୍ଥାନ',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
           },
-          // headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -118,11 +144,8 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: ' 7 ଦିନର ଉପସ୍ଥାନ',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
           },
-          // headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -131,12 +154,8 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
           },
-          // headerLeft: false,
-          // headerShown: false,
         }}
       />
       <Stack.Screen
@@ -145,20 +164,14 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
           },
-          // headerLeft: false,
-          // headerShown: false,
         }}
       />
       <Stack.Screen
         name="studentassessmentdetails"
         component={StudentAssessmentDetails}
         options={{
-          // title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
-          // headerLeft: false,
           headerShown: false,
         }}
       />
@@ -221,9 +234,7 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'FLN ଗତିବିଧି',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
           },
         }}
       />
@@ -235,7 +246,6 @@ const StackNavigator = ({navigation}) => {
           // headerLeft: false
         }}
       />
-
       <Stack.Screen
         name="communityengagementpage"
         component={CommunityEngagementPage}

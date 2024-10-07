@@ -25,6 +25,8 @@ import FlnContent from '../pages/FlnContent';
 import FlnContentView from '../pages/FlnContentView';
 import CommunityEngagementPage from '../pages/CommunityEngagementPage';
 import CommunityEngagementContentView from '../pages/CommunityEngagementContentView';
+import Payment from '../pages/Payment';
+import PaymentDetails from '../pages/PaymentDetails';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
@@ -261,6 +263,28 @@ const StackNavigator = ({navigation}) => {
           },
           // headerLeft: false,
           // headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="payment"
+        component={Payment}
+        options={{
+          title: 'ଦେୟ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="paymentDetails"
+        component={PaymentDetails}
+        options={{
+          title: 'ଦେୟ ସୂଚନା',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
         }}
       />
     </Stack.Navigator>

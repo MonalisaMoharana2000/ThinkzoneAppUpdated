@@ -27,6 +27,10 @@ import {FontFamily} from '../GlobalStyle';
 // import * as types from '../redux/slices/UserSlice';
 import * as types from '../redux_toolkit/features/users/UserSlice';
 import Loading from '../components/Loading';
+import {
+  fetchPaymentDetails,
+  savePaymentDetails,
+} from '../redux_toolkit/features/users/UserThunk';
 
 const Payment = ({route, navigation}) => {
   const dispatch = useDispatch();

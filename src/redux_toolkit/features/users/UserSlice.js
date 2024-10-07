@@ -6,6 +6,8 @@ import {
   fetchDistrictDataThunk,
   fetchUserDataThunk,
   fetchUserTotalCoinsThunk,
+  fetchPaymentDetails,
+  savePaymentDetails,
 } from './UserThunk';
 
 const initialState = {
@@ -13,6 +15,7 @@ const initialState = {
   rewards: [],
   district: [],
   block: [],
+  payments: [],
   loading: false,
   status: '',
   message: '',
@@ -156,6 +159,27 @@ const UserSlice = createSlice({
         state.loading = false;
         state.status = 'failed';
         state.message = 'Error fetching data';
+      });
+
+    // fetching payment details
+    builder
+      .addCase(fetchPaymentDetails.pending, (state, action) => {
+        state.payments = [];
+        state.loading = true;
+        state.status = action.meta.requestStatus;
+        state.message = 'Loading payment details...';
+      })
+      .addCase(fetchPaymentDetails.fulfilled, (state, action) => {
+        state.payments = action.payload;
+        state.loading = false;
+        state.status = 'succeeded';
+        state.message = 'Payment details fetched successfully';
+      })
+      .addCase(fetchPaymentDetails.rejected, (state, action) => {
+        state.payments = [];
+        state.loading = false;
+        state.status = 'failed';
+        state.message = 'Error fetching payment details';
       });
   },
 });

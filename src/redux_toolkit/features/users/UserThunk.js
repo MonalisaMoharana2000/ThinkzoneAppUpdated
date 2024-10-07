@@ -61,3 +61,21 @@ export const fetchUserTotalCoinsThunk = createAsyncThunk(
     return response.data;
   },
 );
+
+export const fetchPaymentDetails = createAsyncThunk(
+  'user/payment',
+  async studentid => {
+    let response = await API.get(
+      `getalltchpaymentdetailsbystudentid/${studentid}`,
+    );
+
+    return response.data;
+  },
+);
+export const savePaymentDetails = createAsyncThunk(
+  'user/payment',
+  async data => {
+    let response = await API.post(`savetchpaymentdetails`, data);
+    return response.data;
+  },
+);

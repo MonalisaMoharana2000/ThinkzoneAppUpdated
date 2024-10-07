@@ -1,6 +1,11 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import LoginScreen from '../Pages/LoginScreen';
+import Page1 from '../Pages/Page1';
+import Page2 from '../Pages/Page2';
+import Page3 from '../Pages/Page3';
 import StudentAssessmentPage from '../Pages/StudentAssessmentPage';
 import StudentAttendance from '../Pages/StudentAttendance';
 import Attendancelist from '../Pages/Attendancelist';
@@ -8,10 +13,13 @@ import BottomTabNavigator from './BottomTabNavigator';
 import StudentRegister from '../Pages/StudentRegister';
 import {FontFamily} from '../GlobalStyle';
 import StudentList from '../Pages/StudentList';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, ActivityIndicator, View} from 'react-native';
 import {Color} from '../GlobalStyle';
 import StudentListPage from '../Pages/StudentListPage';
 import StudentAssessmentDetails from '../Pages/StudentAssessmentDetails';
+import PhoneVerificationGoogle from '../Pages/PhoneVerificationGoogle';
+import Register from '../Pages/Register';
+import RegisterPasscode from '../Pages/RegisterPasscode';
 import Page1 from '../Pages/Page1';
 import Page2 from '../Pages/Page2';
 import Page3 from '../Pages/Page3';
@@ -27,28 +35,65 @@ import PaymentDetails from '../Pages/PaymentDetails';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const userData = await AsyncStorage.getItem('userData');
+        if (userData) {
+          setIsLoggedIn(true);
+        }
+      } catch (error) {
+        console.error('Error checking login status:', error);
+      } finally {
+        setIsLoading(false); // Stop loading once check is complete
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
+  // Show loading indicator while checking async storage
+  if (isLoading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color={Color.primary} />
+      </View>
+    );
+  }
+
   return (
-    <Stack.Navigator initialRouteName="Login">
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Page1" component={Page1} />
-      <Stack.Screen name="Page2" component={Page2} />
-      <Stack.Screen name="Page3" component={Page3} />
+    <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'}>
+      {!isLoggedIn ? (
+        <>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Page1" component={Page1} />
+          <Stack.Screen
+            name="phoneverificationgoogle"
+            component={PhoneVerificationGoogle}
+          />
+          <Stack.Screen name="Page2" component={Page2} />
+          <Stack.Screen name="Page3" component={Page3} />
+
+          <Stack.Screen name="register" component={Register} />
+          <Stack.Screen name="registerpasscode" component={RegisterPasscode} />
+        </>
+      ) : null}
+
       <Stack.Screen name="Home" component={BottomTabNavigator} />
 
-      {/*---------------------------------------------------- Student part starts-------------------------------------------------------- */}
+      {/*----------------------------- Student part starts --------------------------------*/}
 
       <Stack.Screen
         name="studentlist"
         component={StudentList}
         options={{
-          // headerShown: false,
           title: 'ଶିକ୍ଷାର୍ଥୀ ସୂଚନା',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
           },
-          // headerTitleAlign: 'center',
         }}
       />
 
@@ -56,9 +101,7 @@ const StackNavigator = ({navigation}) => {
         name="studentregister"
         component={StudentRegister}
         options={{
-          // headerShown: false,
           title: 'ଶିକ୍ଷାର୍ଥୀ ପଞ୍ଜୀକରଣ',
-          // headerLeft: false,
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => {
@@ -79,10 +122,6 @@ const StackNavigator = ({navigation}) => {
                   ],
                 );
               }}>
-              {/* <Image
-                source={require('../assets/Photos/logo1.png')}
-                style={styles.logo}
-              /> */}
               <AntDesign
                 style={{marginLeft: 15}}
                 name="arrowleft"
@@ -91,12 +130,6 @@ const StackNavigator = ({navigation}) => {
               />
             </TouchableOpacity>
           ),
-          headerTitleStyle: {
-            // fontWeight: '700',
-            // fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
-          },
-          // headerTitleAlign: 'center',
         }}
       />
 
@@ -106,11 +139,8 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ଶିକ୍ଷାର୍ଥୀ ଉପସ୍ଥାନ',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
           },
-          // headerTitleAlign: 'center',
         }}
       />
       <Stack.Screen
@@ -119,11 +149,8 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: ' 7 ଦିନର ଉପସ୍ଥାନ',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
           },
-          // headerTitleAlign: 'center',
         }}
       />
 
@@ -133,12 +160,8 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
           },
-          // headerLeft: false,
-          // headerShown: false,
         }}
       />
 
@@ -148,12 +171,8 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
           },
-          // headerLeft: false,
-          // headerShown: false,
         }}
       />
 
@@ -161,11 +180,89 @@ const StackNavigator = ({navigation}) => {
         name="studentassessmentdetails"
         component={StudentAssessmentDetails}
         options={{
-          // title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
-          // headerLeft: false,
           headerShown: false,
         }}
       />
+
+      <Stack.Screen
+        name="faq"
+        component={Faq}
+        options={{
+          title: 'FAQ',
+          // headerShown: false,
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="Feedback"
+        component={Feedback}
+        options={{
+          title: 'ମତାମତ',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+          // headerLeft: false,
+          // headerShown: false,
+          // headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name="books"
+        component={Books}
+        options={{
+          title: 'ଦସ୍ତାବିଜ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="dictionary"
+        component={Dictionary}
+        options={{
+          title: 'ଅଭିଧାନ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="payment"
+        component={Payment}
+        options={{
+          title: 'ଦେୟ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="paymentDetails"
+        component={PaymentDetails}
+        options={{
+          title: 'ଦେୟ ସୂଚନା',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+        }}
+      />
+
+     
 
       <Stack.Screen
         name="faq"
@@ -191,9 +288,7 @@ const StackNavigator = ({navigation}) => {
             fontFamily: FontFamily.poppinsMedium,
             // letterSpacing: 2,
           },
-          // headerLeft: false,
-          // headerShown: false,
-          // headerTitleAlign: 'center',
+          
         }}
       />
 
@@ -256,7 +351,7 @@ const StackNavigator = ({navigation}) => {
         }}
       />
 
-      {/*----------------------------------------------------------------------- Student part ends ----------------------------------------------------------------*/}
+      {/*------------------------------ Student part ends --------------------------------*/}
     </Stack.Navigator>
   );
 };

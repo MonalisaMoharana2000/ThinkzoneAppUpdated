@@ -2,10 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import LoginScreen from '../Pages/LoginScreen';
-import Page1 from '../Pages/Page1';
-import Page2 from '../Pages/Page2';
-import Page3 from '../Pages/Page3';
 import StudentAssessmentPage from '../Pages/StudentAssessmentPage';
 import StudentAttendance from '../Pages/StudentAttendance';
 import Attendancelist from '../Pages/Attendancelist';
@@ -31,6 +27,7 @@ import ModuleUnderDevlopment from '../components/ModuleUnderDevlopment';
 import Dictionary from '../Pages/Dictionary';
 import Payment from '../Pages/Payment';
 import PaymentDetails from '../Pages/PaymentDetails';
+import Mopragati from '../Pages/Mopragati';
 
 const Stack = createNativeStackNavigator();
 
@@ -262,92 +259,28 @@ const StackNavigator = ({navigation}) => {
         }}
       />
 
-     
-
-      <Stack.Screen
-        name="faq"
-        component={Faq}
-        options={{
-          title: 'FAQ',
-          // headerShown: false,
-          headerTitleStyle: {
-            // fontWeight: '700',
-            fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
-          },
-        }}
-      />
-
-      <Stack.Screen
-        name="Feedback"
-        component={Feedback}
-        options={{
-          title: 'ମତାମତ',
-          headerTitleStyle: {
-            // fontWeight: '700',
-            fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
-          },
-          
-        }}
-      />
-
-      <Stack.Screen
-        name="books"
-        component={Books}
-        options={{
-          title: 'ଦସ୍ତାବିଜ',
-          headerTitleStyle: {
-            // fontWeight: '700',
-            fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
-          },
-        }}
-      />
-
-      <Stack.Screen
-        name="dictionary"
-        component={Dictionary}
-        options={{
-          title: 'ଅଭିଧାନ',
-          headerTitleStyle: {
-            // fontWeight: '700',
-            fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
-          },
-        }}
-      />
-
-      <Stack.Screen
-        name="payment"
-        component={Payment}
-        options={{
-          title: 'ଦେୟ',
-          headerTitleStyle: {
-            // fontWeight: '700',
-            fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
-          },
-        }}
-      />
-
-      <Stack.Screen
-        name="paymentDetails"
-        component={PaymentDetails}
-        options={{
-          title: 'ଦେୟ ସୂଚନା',
-          headerTitleStyle: {
-            fontFamily: FontFamily.poppinsMedium,
-          },
-        }}
-      />
-
       <Stack.Screen
         name="moduleunderdevlopment"
         component={ModuleUnderDevlopment}
         options={{
           // headerTitleAlign: 'center',
           headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="Mopragati"
+        component={Mopragati}
+        options={{
+          title: 'ମୋ ପ୍ରଗତି ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerLeft: false,
+          // headerShown: false,
+          // headerTitleAlign: 'center',
         }}
       />
 

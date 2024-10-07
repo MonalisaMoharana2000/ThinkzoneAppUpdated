@@ -8,7 +8,7 @@ import {fetchUserDataThunk} from './src/redux_toolkit/features/users/UserThunk';
 
 const App = () => {
   const dispatch = useDispatch();
-  const user = useSelector(state => state.UserSlice.data);
+  const user = useSelector(state => state.UserSlice.user);
   console.log('====================================user', user);
 
   useEffect(() => {

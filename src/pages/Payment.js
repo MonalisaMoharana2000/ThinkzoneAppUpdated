@@ -30,6 +30,7 @@ import Loading from '../components/Loading';
 import {
   fetchPaymentDetails,
   savePaymentDetails,
+  fetchUserDataThunk,
 } from '../redux_toolkit/features/users/UserThunk';
 
 const Payment = ({route, navigation}) => {
@@ -48,10 +49,12 @@ const Payment = ({route, navigation}) => {
   const [paymentRecord, setPaymentRecord] = useState([]);
   // const studentData = useSelector(state => state.studentdata.students);
   const teacherdata = useSelector(state => state.UserSlice?.user);
+  console.log('teacherdata-------------->', teacherdata);
 
   const modalHeight = window.WindowHeigth * 0.9;
 
   useEffect(() => {
+    dispatch(fetchUserDataThunk());
     // dispatch(studentstypes.getStudentStart(teacherdata[0].userid));
     // API.get(`getstudentswithpaymentdetails/${teacherdata[0].userid}`).then(
     //   response => {
@@ -62,10 +65,10 @@ const Payment = ({route, navigation}) => {
     //     setIsLoading(false);
     //   },
     // );
-    dispatch(types.getallpaymentsstart(teacherdata[0].userid));
+    dispatch(fetchPaymentDetails(teacherdata[0].userid));
   }, []);
 
-  const studentData = useSelector(state => state.userdata.payments);
+  const studentData = useSelector(state => state.UserSlice?.payments);
   // //console.log('paymentdata---->', studentData);
 
   // Get Payments Deatils.

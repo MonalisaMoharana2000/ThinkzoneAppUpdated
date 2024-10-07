@@ -143,18 +143,21 @@ const UserSlice = createSlice({
     //Get Total Coins
     builder
       .addCase(fetchUserTotalCoinsThunk.pending, (state, action) => {
+        state.user = [];
         state.rewards = [];
         state.loading = true;
         state.status = action.meta.requestStatus;
         state.message = 'loading';
       })
       .addCase(fetchUserTotalCoinsThunk.fulfilled, (state, action) => {
+        state.user = action.payload;
         state.rewards = action.payload;
         state.loading = false;
         state.status = 'succeeded';
         state.message = 'Data fetched successfully';
       })
       .addCase(fetchUserTotalCoinsThunk.rejected, (state, action) => {
+        state.user = [];
         state.rewards = [];
         state.loading = false;
         state.status = 'failed';
@@ -164,18 +167,21 @@ const UserSlice = createSlice({
     // fetching payment details
     builder
       .addCase(fetchPaymentDetails.pending, (state, action) => {
+        state.user = [];
         state.payments = [];
         state.loading = true;
         state.status = action.meta.requestStatus;
         state.message = 'Loading payment details...';
       })
       .addCase(fetchPaymentDetails.fulfilled, (state, action) => {
+        state.user = action.payload;
         state.payments = action.payload;
         state.loading = false;
         state.status = 'succeeded';
         state.message = 'Payment details fetched successfully';
       })
       .addCase(fetchPaymentDetails.rejected, (state, action) => {
+        state.user = [];
         state.payments = [];
         state.loading = false;
         state.status = 'failed';

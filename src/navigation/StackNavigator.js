@@ -21,7 +21,10 @@ import EcContent from '../pages/EcContent';
 import Ecactivity from '../pages/Ecactivity';
 import Pgeactivity from '../pages/Pgeactivity';
 import Pgecontentdetails from '../pages/Pgecontentdetails';
-
+import FlnContent from '../pages/FlnContent';
+import FlnContentView from '../pages/FlnContentView';
+import CommunityEngagementPage from '../pages/CommunityEngagementPage';
+import CommunityEngagementContentView from '../pages/CommunityEngagementContentView';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
@@ -54,38 +57,38 @@ const StackNavigator = ({navigation}) => {
           // headerShown: false,
           title: 'ଶିକ୍ଷାର୍ଥୀ ପଞ୍ଜୀକରଣ',
           // headerLeft: false,
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => {
-                Alert.alert(
-                  'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
-                  'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
-                  [
-                    {
-                      text: 'Cancel',
-                      onPress: () => null,
-                      style: 'default',
-                    },
-                    {
-                      text: 'Ok',
-                      onPress: () => navigation.goBack(),
-                      style: 'default',
-                    },
-                  ],
-                );
-              }}>
-              {/* <Image
-                source={require('../assets/Photos/logo1.png')}
-                style={styles.logo}
-              /> */}
-              <AntDesign
-                style={{marginLeft: 15}}
-                name="arrowleft"
-                size={25}
-                color={Color.white}
-              />
-            </TouchableOpacity>
-          ),
+          // headerLeft: () => (
+          //   <TouchableOpacity
+          //     onPress={() => {
+          //       Alert.alert(
+          //         'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
+          //         'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
+          //         [
+          //           {
+          //             text: 'Cancel',
+          //             onPress: () => null,
+          //             style: 'default',
+          //           },
+          //           {
+          //             text: 'Ok',
+          //             onPress: () => navigation.goBack(),
+          //             style: 'default',
+          //           },
+          //         ],
+          //       );
+          //     }}>
+          //     {/* <Image
+          //       source={require('../assets/Photos/logo1.png')}
+          //       style={styles.logo}
+          //     /> */}
+          //     <AntDesign
+          //       style={{marginLeft: 15}}
+          //       name="arrowleft"
+          //       size={25}
+          //       color={Color.white}
+          //     />
+          //   </TouchableOpacity>
+          // ),
           headerTitleStyle: {
             // fontWeight: '700',
             // fontFamily: FontFamily.poppinsMedium,
@@ -209,6 +212,56 @@ const StackNavigator = ({navigation}) => {
         name="Content"
         component={Pgecontentdetails}
         options={{title: 'ପ୍ରାଥମିକ ଗତିବିଧି', headerShown: false}}
+      />
+      <Stack.Screen
+        name="flncontent"
+        component={FlnContent}
+        options={{
+          title: 'FLN ଗତିବିଧି',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="flncontentview"
+        component={FlnContentView}
+        options={{
+          headerShown: false,
+          // headerLeft: false
+        }}
+      />
+
+      <Stack.Screen
+        name="communityengagementpage"
+        component={CommunityEngagementPage}
+        options={{
+          title: 'ଗୋଷ୍ଠୀ ସମ୍ପୃକ୍ତିକରଣ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerLeft: false,
+          // headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="communityengagementcontent"
+        component={CommunityEngagementContentView}
+        options={{
+          title: 'ସମୁଦାୟ ନିୟୋଜନ',
+          headerShown: false,
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerLeft: false,
+          // headerTitleAlign: 'center',
+        }}
       />
     </Stack.Navigator>
   );

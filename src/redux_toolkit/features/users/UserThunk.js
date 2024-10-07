@@ -11,6 +11,68 @@ export const fetchUserDataThunk = createAsyncThunk(
   },
 );
 
+export const authNewUserThunk = createAsyncThunk(
+  'user/createuser',
+  async (data, {rejectWithValue}) => {
+    try {
+      let response = await API.post(`authenticateuser`, data);
+      console.log('=========================auth', response.data);
+
+      return {
+        data: response.data,
+        status: response.status,
+      };
+    } catch (error) {
+      if (error.response) {
+        return rejectWithValue({
+          error: error.response.data,
+          status: error.response.status,
+        });
+      } else {
+        return rejectWithValue({
+          error: error.message,
+        });
+      }
+    }
+  },
+);
+
+export const fetchDistrictDataThunk = createAsyncThunk(
+  'user/district',
+  async user => {
+    let response = await API.get(`getdistrictsofstate/${20}`);
+    // authUserCred/:userid/:pswd
+    return response.data;
+  },
+);
+
+export const fetchBlockDataThunk = createAsyncThunk(
+  'user/block',
+  async districtId => {
+    let response = await API.get(`getblocksofdistricts/${20}/${districtId}`);
+    // authUserCred/:userid/:pswd
+    return response.data;
+  },
+);
+
+export const createNewUserThunk = createAsyncThunk(
+  'user/newuser',
+  async data => {
+    let response = await API.post(`createnewuser`, data);
+    // authUserCred/:userid/:pswd
+    return response.data;
+  },
+);
+
+export const phoneNumberVerifyThunk = createAsyncThunk(
+  'user/userphoneverify',
+  async data => {
+    let response = await API.post(`verifyUserCredentials`, data);
+    // authUserCred/:userid/:pswd
+    return response.data;
+  },
+);
+
 //Rewards
 
 export const fetchUserTotalCoinsThunk = createAsyncThunk(

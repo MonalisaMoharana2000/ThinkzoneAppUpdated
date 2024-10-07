@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Text, Alert} from 'react-native';
 import {
   GoogleSignin,
   statusCodes,
@@ -73,18 +73,20 @@ const LoginScreen = ({navigation}) => {
 
       // Dispatch the action for creating a new user
       const res = await dispatch(authNewUserThunk(data));
+      console.log('================pscd request-------->', res);
 
       const resData = res.payload?.data?.resData?.[0];
       const status = res.payload?.status;
-
+      console.log('req------>', res?.payload?.error);
+      const error = res?.payload?.error;
       if (resData) {
         const {emailidVerified, phoneNumberVerified} = resData;
 
         if (status === 200 && emailidVerified && phoneNumberVerified) {
-          await AsyncStorage.setItem(
-            'userData',
-            JSON.stringify(res.payload.data),
-          );
+          // await AsyncStorage.setItem(
+          //   'userData',
+          //   JSON.stringify(res.payload.data),
+          // );
           navigation.replace('Home');
         } else if (emailidVerified && !phoneNumberVerified) {
           showAlert('Phone Number not verified', 'Login');
@@ -102,11 +104,65 @@ const LoginScreen = ({navigation}) => {
           [{text: 'OK', style: 'destructive'}],
           {cancelable: false},
         );
-      } else if (status === 401) {
+      } else if (status === 401 && error?.passcodeStatus === 'requested') {
         showAlert(
           'Passcode Requested',
           'Login',
           'Passcode has been requested. Please wait.',
+        );
+      } else if (status === 401 && error?.passcodeStatus === 'rejected') {
+        showAlert(
+          'Passcode  Rejected',
+          'Login',
+          'Passcode has been Rejected. Please wait.',
+        );
+      } else if (status === 400) {
+        Alert.alert(
+          'Info',
+          `${msg}`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                dispatch(clearUser());
+                navigation.navigate('Login');
+              },
+              style: 'default',
+            },
+          ],
+          {cancelable: false},
+        );
+      } else if (status === 502) {
+        Alert.alert(
+          'Server Not Responding',
+          `We are working to fix this as soon as possible, please try again in a short while.`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                dispatch(clearUser());
+                navigation.navigate('Login');
+              },
+              style: 'default',
+            },
+          ],
+          {cancelable: false},
+        );
+      } else if (status === 500) {
+        Alert.alert(
+          'Server Issue',
+          `We are working to fix this as soon as possible, please try again in a short while.`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                dispatch(clearUser());
+                navigation.navigate('Login');
+              },
+              style: 'default',
+            },
+          ],
+          {cancelable: false},
         );
       }
 

@@ -39,7 +39,9 @@ const TechModule = ({navigation, route}) => {
   const dispatch = useDispatch();
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const user = useSelector(state => state.userdata.user?.resData);
+  const user = useSelector(state => state.UserSlice.user);
+  console.log('user------------>', user);
+
   const moduleArrNew = useSelector(state => state.techdata.techmodule);
   const submoduleArrNew = useSelector(state => state.techdata.techsubmodule);
   const loadingModule = useSelector(state => state.techdata.techsubmodule);

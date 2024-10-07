@@ -82,7 +82,17 @@ export const createNewUserThunk = createAsyncThunk(
   },
 );
 
-// Fetch total coins for a user
+export const phoneNumberVerifyThunk = createAsyncThunk(
+  'user/userphoneverify',
+  async data => {
+    let response = await API.post(`verifyUserCredentials`, data);
+    // authUserCred/:userid/:pswd
+    return response.data;
+  },
+);
+
+//Rewards
+
 export const fetchUserTotalCoinsThunk = createAsyncThunk(
   'user/fetchtotalcoins',
   async (userid, {rejectWithValue}) => {

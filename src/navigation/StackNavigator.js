@@ -28,6 +28,8 @@ import Dictionary from '../Pages/Dictionary';
 import Payment from '../Pages/Payment';
 import PaymentDetails from '../Pages/PaymentDetails';
 import Mopragati from '../Pages/Mopragati';
+import OtpLoginPhone from '../Pages/OtpLoginPhone';
+import GoogleVerificationPhone from '../Pages/GoogleVerificationPhone';
 
 const Stack = createNativeStackNavigator();
 
@@ -71,11 +73,20 @@ const StackNavigator = ({navigation}) => {
             name="phoneverificationgoogle"
             component={PhoneVerificationGoogle}
           />
-          <Stack.Screen name="Page2" component={Page2} />
+          <Stack.Screen
+            name="Page2"
+            component={Page2}
+            options={{headerShown: false}}
+          />
           <Stack.Screen name="Page3" component={Page3} />
 
-          <Stack.Screen name="register" component={Register} />
           <Stack.Screen name="registerpasscode" component={RegisterPasscode} />
+          <Stack.Screen name="otploginphone" component={OtpLoginPhone} />
+          <Stack.Screen
+            name="googleverificationphone"
+            component={GoogleVerificationPhone}
+          />
+          <Stack.Screen name="register" component={Register} />
         </>
       ) : null}
 

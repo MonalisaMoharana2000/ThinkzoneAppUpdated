@@ -18,6 +18,11 @@ import Page3 from '../Pages/Page3';
 import LoginScreen from '../Pages/LoginScreen';
 import Faq from '../Pages/Faq';
 import Feedback from '../Pages/Feedback';
+import Books from '../Pages/Books';
+import ModuleUnderDevlopment from '../components/ModuleUnderDevlopment';
+import Dictionary from '../Pages/Dictionary';
+import Payment from '../Pages/Payment';
+import PaymentDetails from '../Pages/PaymentDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -189,6 +194,65 @@ const StackNavigator = ({navigation}) => {
           // headerLeft: false,
           // headerShown: false,
           // headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name="books"
+        component={Books}
+        options={{
+          title: 'ଦସ୍ତାବିଜ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="dictionary"
+        component={Dictionary}
+        options={{
+          title: 'ଅଭିଧାନ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="payment"
+        component={Payment}
+        options={{
+          title: 'ଦେୟ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="paymentDetails"
+        component={PaymentDetails}
+        options={{
+          title: 'ଦେୟ ସୂଚନା',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="moduleunderdevlopment"
+        component={ModuleUnderDevlopment}
+        options={{
+          // headerTitleAlign: 'center',
+          headerShown: false,
         }}
       />
 

@@ -27,7 +27,7 @@ import Nocontents from './Nocontents';
 import * as SIZES from '../utils/dimensions';
 import * as window from '../utils/dimensions';
 const audioPlayer = new AudioRecorderPlayer();
-import VideoPlayer from 'react-native-video-player';
+//import VideoPlayer from 'react-native-video-player';
 import Orientation from 'react-native-orientation-locker';
 const SelectFromMultiple = ({
   questions,

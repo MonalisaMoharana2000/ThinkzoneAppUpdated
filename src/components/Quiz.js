@@ -26,7 +26,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {Row} from 'react-native-table-component';
 // import * as window from '../utils/dimensions';
 import * as window from '../utils/dimensions';
-import {log} from 'react-native-reanimated';
+// import {log} from 'react-native-reanimated';
 
 const Quiz = ({questions, onend_quiz, navigation, examType, callbackfun}) => {
   // console.log(examType, 'examType');

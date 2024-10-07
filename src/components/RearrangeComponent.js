@@ -10,9 +10,9 @@ import {
   Alert,
   Image,
 } from 'react-native';
-import DraggableFlatList, {
-  ScaleDecorator,
-} from 'react-native-draggable-flatlist';
+// import DraggableFlatList, {
+//   ScaleDecorator,
+// } from 'react-native-draggable-flatlist';
 import Api from '../environment/Api';
 import {FontFamily, Color} from '../GlobalStyle';
 import {color} from '@rneui/themed/dist/config';

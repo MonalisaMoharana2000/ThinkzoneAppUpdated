@@ -43,7 +43,7 @@ import {FontFamily, Color} from '../GlobalStyle';
 // import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import Orientation from 'react-native-orientation-locker';
 
-import VideoPlayer from 'react-native-video-player';
+//import VideoPlayer from 'react-native-video-player';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -54,7 +54,7 @@ import PdfViewer from '../components/PdfViewer';
 import Loading from '../components/Loading';
 import Nocontents from '../components/Nocontents';
 import {app_versions} from './Home';
-import YouTube from 'react-native-youtube-iframe';
+//import YouTube from 'react-native-youtube-iframe';
 const audioPlayer = new AudioRecorderPlayer();
 const CommunityEngagementContentView = ({route, navigation}) => {
   const data = route.params.item;

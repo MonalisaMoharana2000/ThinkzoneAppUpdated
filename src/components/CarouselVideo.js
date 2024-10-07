@@ -3,7 +3,7 @@ import React, {useEffect, useRef} from 'react';
 import Color from '../utils/Colors';
 import * as window from '../utils/dimensions';
 // import VideoPlayer from 'react-native-video-controls';
-import VideoPlayer from 'react-native-video-player';
+//import VideoPlayer from 'react-native-video-player';
 const CarouselVideo = ({data, navigation}) => {
   useEffect(() => {
     // Pause the video when navigating away from the screen

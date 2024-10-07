@@ -34,7 +34,7 @@ const StackNavigator = ({navigation}) => {
       <Stack.Screen name="Page1" component={Page1} />
       <Stack.Screen name="Page2" component={Page2} />
       <Stack.Screen name="Page3" component={Page3} />
-      <Stack.Screen name="Page3" component={Page3} />
+
       <Stack.Screen
         name="pedagogy"
         component={TechModule}

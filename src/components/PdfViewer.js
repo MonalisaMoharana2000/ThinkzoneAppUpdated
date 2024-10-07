@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import Pdf from 'react-native-pdf';
+// import Pdf from 'react-native-pdf';
 import * as SIZES from '../utils/dimensions';
 import RNFetchBlob from 'react-native-blob-util';
 // import utf8 from 'utf8';

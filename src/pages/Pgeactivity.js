@@ -149,6 +149,7 @@ const Pgeactivity = ({navigation}) => {
                 data={subjectArr}
                 onChange={getSubject}
                 label={'label'}
+                // image={require('../assets/Image/driver.png')}
                 image={require('../assets/Image/driver.png')}
               />
               {content.length > 0 ? (

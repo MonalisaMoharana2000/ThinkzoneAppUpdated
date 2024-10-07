@@ -2460,7 +2460,7 @@ const Home = ({navigation}, props) => {
                         borderColor: 'black',
                       }}
                     />
-                    <Image
+                    {/* <Image
                       source={require('../assets/Image/touch1.gif')}
                       style={{
                         width: 40,
@@ -2480,7 +2480,7 @@ const Home = ({navigation}, props) => {
 
                         // bottom: '-13%', // Ensure the GIF is on top
                       }}
-                    />
+                    /> */}
                   </TouchableOpacity>
                   {/* <TouchableOpacity
                     onPress={() => {

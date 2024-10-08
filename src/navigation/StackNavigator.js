@@ -38,6 +38,7 @@ import CommunityEngagementPage from '../Pages/CommunityEngagementPage';
 import CommunityEngagementContentView from '../Pages/CommunityEngagementContentView';
 import Payment from '../Pages/Payment';
 import PaymentDetails from '../Pages/PaymentDetails';
+import StudentListActivity from '../Pages/StudentListActivity';
 
 const Stack = createNativeStackNavigator();
 
@@ -225,6 +226,17 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ପ୍ରାକ୍ ଗତିବିଧି',
           headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="StudentsListActivity"
+        component={StudentListActivity}
+        options={{
+          title: 'STUDENT ACTIVITY',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
         }}
       />
 

@@ -70,6 +70,118 @@ const LoginScreen = ({navigation}) => {
       console.log('Data to be sent:', data);
       const res = await dispatch(authNewUserThunk(data));
       handleResponse(res, email);
+      console.log('================pscd request-------->', res);
+
+      const resData = res.payload?.data?.resData?.[0];
+      const status = res.payload?.status;
+      console.log('req------>', res?.payload?.error);
+      const error = res?.payload?.error;
+      if (resData) {
+        const {emailidVerified, phoneNumberVerified} = resData;
+
+        if (status === 200 && emailidVerified && phoneNumberVerified) {
+          // await AsyncStorage.setItem(
+          //   'userData',
+          //   JSON.stringify(res.payload.data),
+          // );
+          navigation.replace('Home');
+        } else if (emailidVerified && !phoneNumberVerified) {
+          showAlert('Phone Number not verified', 'Login');
+        } else if (!emailidVerified && phoneNumberVerified) {
+          showAlert('Email id not verified', 'Login');
+        } else if (!emailidVerified && !phoneNumberVerified) {
+          showAlert('Phone number and email id not verified', 'Login');
+        } else {
+          showAlert('Something went wrong!', 'Login');
+        }
+      } else if (res.payload?.data?.resData?.length > 1) {
+        Alert.alert(
+          'More than 1 data is being saved in this id! Please contact your manager.',
+          '',
+          [{text: 'OK', style: 'destructive'}],
+          {cancelable: false},
+        );
+      } else if (status === 401 && error?.passcodeStatus === 'requested') {
+        showAlert(
+          'Passcode Requested',
+          'Login',
+          'Passcode has been requested. Please wait.',
+        );
+      } else if (status === 401 && error?.passcodeStatus === 'rejected') {
+        showAlert(
+          'Passcode  Rejected',
+          'Login',
+          'Passcode has been Rejected. Please wait.',
+        );
+      } else if (status === 400) {
+        Alert.alert(
+          'Info',
+          `${msg}`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                dispatch(clearUser());
+                navigation.navigate('Login');
+              },
+              style: 'default',
+            },
+          ],
+          {cancelable: false},
+        );
+      } else if (status === 502) {
+        Alert.alert(
+          'Server Not Responding',
+          `We are working to fix this as soon as possible, please try again in a short while.`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                dispatch(clearUser());
+                navigation.navigate('Login');
+              },
+              style: 'default',
+            },
+          ],
+          {cancelable: false},
+        );
+      } else if (status === 500) {
+        Alert.alert(
+          'Server Issue',
+          `We are working to fix this as soon as possible, please try again in a short while.`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                dispatch(clearUser());
+                navigation.navigate('Login');
+              },
+              style: 'default',
+            },
+          ],
+          {cancelable: false},
+        );
+      }
+
+      console.log('===================res', res.payload?.data);
+
+      if (
+        res.payload?.data?.userExists === false &&
+        res.payload?.data?.unique === true &&
+        res.payload?.data?.contactnumber?.length === 0 &&
+        res.payload?.data?.emailid
+      ) {
+        navigation.navigate('Page1', {email: email});
+      }
+
+      if (res.payload?.data?.status === 'accessDenied') {
+        navigation.navigate('Login');
+      }
+
+      // Ensure the loading indicator is shown for at least 9 seconds
+      setTimeout(() => {
+        setIsloading(false);
+      }, 9000);
     } catch (error) {
       handleError(error);
     } finally {

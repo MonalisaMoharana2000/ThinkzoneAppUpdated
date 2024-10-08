@@ -1,36 +1,44 @@
 import React, {useState, useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import StudentAssessmentPage from '../pages/StudentAssessmentPage';
-import StudentAttendance from '../pages/StudentAttendance';
-import Attendancelist from '../pages/Attendancelist';
-import BottomTabNavigator from './BottomTabNavigator';
-import StudentRegister from '../pages/StudentRegister';
-import {FontFamily} from '../GlobalStyle';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import StudentList from '../pages/StudentList';
+import StudentAssessmentPage from '../Pages/StudentAssessmentPage';
+import StudentAttendance from '../Pages/StudentAttendance';
+import Attendancelist from '../Pages/Attendancelist';
+import BottomTabNavigator from './BottomTabNavigator';
+import StudentRegister from '../Pages/StudentRegister';
+import {FontFamily} from '../GlobalStyle';
+import StudentList from '../Pages/StudentList';
 import {TouchableOpacity, ActivityIndicator, View} from 'react-native';
 import {Color} from '../GlobalStyle';
-import StudentListPage from '../pages/StudentListPage';
-import StudentAssessmentDetails from '../pages/StudentAssessmentDetails';
-import Page1 from '../pages/Page1';
-import Page2 from '../pages/Page2';
-import Page3 from '../pages/Page3';
-import LoginScreen from '../pages/LoginScreen';
-import Faq from '../pages/Faq';
-import EcContent from '../pages/EcContent';
-import Ecactivity from '../pages/Ecactivity';
-import Pgeactivity from '../pages/Pgeactivity';
-import Pgecontentdetails from '../pages/Pgecontentdetails';
-import FlnContent from '../pages/FlnContent';
-import FlnContentView from '../pages/FlnContentView';
-import CommunityEngagementPage from '../pages/CommunityEngagementPage';
-import CommunityEngagementContentView from '../pages/CommunityEngagementContentView';
-import Payment from '../pages/Payment';
-import PaymentDetails from '../pages/PaymentDetails';
-import PhoneVerificationGoogle from '../pages/PhoneVerificationGoogle';
-import Register from '../pages/Register';
-import RegisterPasscode from '../pages/RegisterPasscode';
+import StudentListPage from '../Pages/StudentListPage';
+import StudentAssessmentDetails from '../Pages/StudentAssessmentDetails';
+import PhoneVerificationGoogle from '../Pages/PhoneVerificationGoogle';
+import Register from '../Pages/Register';
+import RegisterPasscode from '../Pages/RegisterPasscode';
+import Page1 from '../Pages/Page1';
+import Page2 from '../Pages/Page2';
+import Page3 from '../Pages/Page3';
+import LoginScreen from '../Pages/LoginScreen';
+import Faq from '../Pages/Faq';
+import Feedback from '../Pages/Feedback';
+import Books from '../Pages/Books';
+import ModuleUnderDevlopment from '../components/ModuleUnderDevlopment';
+import Dictionary from '../Pages/Dictionary';
+import Mopragati from '../Pages/Mopragati';
+import OtpLoginPhone from '../Pages/OtpLoginPhone';
+import GoogleVerificationPhone from '../Pages/GoogleVerificationPhone';
+import EcContent from '../Pages/EcContent';
+import Ecactivity from '../Pages/Ecactivity';
+import Pgeactivity from '../Pages/Pgeactivity';
+import Pgecontentdetails from '../Pages/Pgecontentdetails';
+import FlnContent from '../Pages/FlnContent';
+import FlnContentView from '../Pages/FlnContentView';
+import CommunityEngagementPage from '../Pages/CommunityEngagementPage';
+import CommunityEngagementContentView from '../Pages/CommunityEngagementContentView';
+import Payment from '../Pages/Payment';
+import PaymentDetails from '../Pages/PaymentDetails';
+
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
@@ -73,11 +81,20 @@ const StackNavigator = ({navigation}) => {
             name="phoneverificationgoogle"
             component={PhoneVerificationGoogle}
           />
-          <Stack.Screen name="Page2" component={Page2} />
+          <Stack.Screen
+            name="Page2"
+            component={Page2}
+            options={{headerShown: false}}
+          />
           <Stack.Screen name="Page3" component={Page3} />
 
-          <Stack.Screen name="register" component={Register} />
           <Stack.Screen name="registerpasscode" component={RegisterPasscode} />
+          <Stack.Screen name="otploginphone" component={OtpLoginPhone} />
+          <Stack.Screen
+            name="googleverificationphone"
+            component={GoogleVerificationPhone}
+          />
+          <Stack.Screen name="register" component={Register} />
         </>
       ) : null}
 
@@ -212,6 +229,20 @@ const StackNavigator = ({navigation}) => {
       />
 
       <Stack.Screen
+        name="Feedback"
+        component={Feedback}
+        options={{
+          title: 'ମତାମତ',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+          // headerLeft: false,
+          // headerShown: false,
+          // headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
         name="pgeactivity"
         component={Pgeactivity}
         options={{
@@ -223,6 +254,33 @@ const StackNavigator = ({navigation}) => {
           },
         }}
       />
+
+      <Stack.Screen
+        name="books"
+        component={Books}
+        options={{
+          title: 'ଦସ୍ତାବିଜ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="dictionary"
+        component={Dictionary}
+        options={{
+          title: 'ଅଭିଧାନ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
       <Stack.Screen
         name="Content"
         component={Pgecontentdetails}
@@ -297,6 +355,33 @@ const StackNavigator = ({navigation}) => {
           },
         }}
       />
+
+      <Stack.Screen
+        name="moduleunderdevlopment"
+        component={ModuleUnderDevlopment}
+        options={{
+          // headerTitleAlign: 'center',
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="Mopragati"
+        component={Mopragati}
+        options={{
+          title: 'ମୋ ପ୍ରଗତି ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerLeft: false,
+          // headerShown: false,
+          // headerTitleAlign: 'center',
+        }}
+      />
+
+      {/*------------------------------ Student part ends --------------------------------*/}
     </Stack.Navigator>
   );
 };

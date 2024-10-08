@@ -276,7 +276,12 @@ const RegisterPasscode = ({navigation, route}) => {
             contactnumber: phone,
           };
           // console.log('data---->', body);
-          dispatch(authNewUserThunk(body));
+          const res = await dispatch(authNewUserThunk(body));
+          if (res?.payload?.status === 200) {
+            navigation.navigate('Login');
+          } else {
+            navigation.navigate('Login');
+          }
         } else {
           Alert.alert(
             `${response.msg}`,

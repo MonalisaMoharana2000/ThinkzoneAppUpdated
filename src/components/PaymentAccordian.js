@@ -27,7 +27,6 @@ import Modals from '../components/Modals';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
-
 import {
   Table,
   TableWrapper,

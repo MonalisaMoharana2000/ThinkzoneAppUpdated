@@ -8,6 +8,7 @@ import {
   fetchUserTotalCoinsThunk,
   fetchPaymentDetails,
   savePaymentDetails,
+  phoneNumberVerifyThunk,
 } from './UserThunk';
 
 const initialState = {
@@ -135,6 +136,28 @@ const UserSlice = createSlice({
       })
       .addCase(fetchBlockDataThunk.rejected, (state, action) => {
         state.block = [];
+        state.loading = false;
+        state.status = 'failed';
+        state.message = 'Error fetching data';
+      });
+
+    //Phone number verified
+
+    builder
+      .addCase(phoneNumberVerifyThunk.pending, (state, action) => {
+        state.user = [];
+        state.loading = true;
+        state.status = action.meta.requestStatus;
+        state.message = 'loading';
+      })
+      .addCase(phoneNumberVerifyThunk.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+        state.status = 'succeeded';
+        state.message = 'Data fetched successfully';
+      })
+      .addCase(phoneNumberVerifyThunk.rejected, (state, action) => {
+        state.user = [];
         state.loading = false;
         state.status = 'failed';
         state.message = 'Error fetching data';

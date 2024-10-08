@@ -44,7 +44,7 @@ const Pgeactivity = ({navigation}) => {
   useEffect(() => {
     API.get(
       `getMasterStudActTopics/${program}/${
-        teacherdata[0].usertype
+        user[0]?.usertype
       }/${language}/${'formative'}/${sclass}/${subject.toLowerCase()}`,
     ).then(
       response => {

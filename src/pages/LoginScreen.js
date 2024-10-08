@@ -20,7 +20,7 @@ const LoginScreen = ({navigation}) => {
     });
 
     return () => {
-      GoogleSignin.signOut(); // Clear token cache
+      GoogleSignin.signOut(); // Clear token cache0
     };
   }, []);
 

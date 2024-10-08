@@ -48,7 +48,9 @@ const Payment = ({route, navigation}) => {
   // const [studentData, setStudentData] = useState([]);
   const [paymentRecord, setPaymentRecord] = useState([]);
   // const studentData = useSelector(state => state.studentdata.students);
-  const teacherdata = useSelector(state => state.UserSlice?.user);
+  const teacherdata = useSelector(
+    state => state.UserSlice?.user?.data?.resData,
+  );
   console.log('teacherdata-------------->', teacherdata);
 
   const modalHeight = window.WindowHeigth * 0.9;
@@ -65,7 +67,10 @@ const Payment = ({route, navigation}) => {
     //     setIsLoading(false);
     //   },
     // );
-    dispatch(fetchPaymentDetails(teacherdata[0].userid));
+    if (!teacherdata[0]?.userid) {
+    } else {
+      dispatch(fetchPaymentDetails(teacherdata[0]?.userid));
+    }
   }, []);
 
   const studentData = useSelector(state => state.UserSlice?.payments);

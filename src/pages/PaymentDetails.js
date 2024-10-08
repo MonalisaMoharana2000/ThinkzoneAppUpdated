@@ -67,8 +67,10 @@ const PaymentDetails = ({route, navigation}) => {
   const [customModal, setCustomModal] = useState(true);
   const [inputAmount, setInputAmount] = useState(0);
   const [paymentRecord, setPaymentRecord] = useState([]);
-  const Payment = useSelector(state => state.studentdata.students);
-  const teacherdata = useSelector(state => state.userdata.user?.resData);
+  const Payment = useSelector(state => state.StudentSlice.students);
+  const teacherdata = useSelector(
+    state => state.UserSlice?.user?.data?.resData,
+  );
   const modalHeight = window.WindowHeigth * 0.9;
   const [modal, setModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);

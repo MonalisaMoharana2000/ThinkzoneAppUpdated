@@ -46,7 +46,9 @@ const StudentList = ({navigation, route}) => {
   const windowHeight = Dimensions.get('window').height;
   const [refreshing, setRefreshing] = React.useState(false);
   const dispatch = useDispatch();
-  const teacherdata = useSelector(state => state.UserSlice.user);
+  const teacherdata = useSelector(
+    state => state.UserSlice?.user?.data?.resData,
+  );
   console.log('studentData list---->', teacherdata);
   const studentData = useSelector(state => state.StudentSlice.students);
   console.log('studentData list1---->', studentData);

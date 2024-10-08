@@ -73,7 +73,7 @@ const StudentRegister = ({route, navigation}) => {
     state => state.studentdata?.studentPhone,
   );
   console.log('studentPhoneCount-->', studentPhoneCount);
-  const user = useSelector(state => state.UserSlice.user);
+  const user = useSelector(state => state.UserSlice?.user?.data?.resData);
 
   const capitalize = str => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();

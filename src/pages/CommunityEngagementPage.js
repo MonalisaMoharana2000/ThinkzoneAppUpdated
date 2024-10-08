@@ -33,7 +33,9 @@ const CommunityEngagementPage = ({navigation, route}) => {
   const [customModal, setCustomModal] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  const teacherdata = useSelector(state => state.UserSlice?.user);
+  const teacherdata = useSelector(
+    state => state.UserSlice?.user?.data?.resData,
+  );
 
   const [sclass, setSclass] = useState(1);
   const [program, setProgram] = useState('pge');

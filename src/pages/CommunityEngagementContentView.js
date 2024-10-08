@@ -65,7 +65,7 @@ const CommunityEngagementContentView = ({route, navigation}) => {
   const {topicId, topicName} = data;
   const {program, sclass, subject} = route.params;
   const dispatch = useDispatch();
-  const user = useSelector(state => state.UserSlice?.user);
+  const user = useSelector(state => state.UserSlice?.user?.data?.resData);
   const {username, userid, managerid, managername, usertype, passcode} =
     user[0];
   const [currentIndex, setCurrentIndex] = useState(0);

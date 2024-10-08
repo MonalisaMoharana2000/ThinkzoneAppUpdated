@@ -38,7 +38,7 @@ const Pgeactivity = ({navigation}) => {
   console.log('content----------------->', topicName);
 
   const [isLoading, setIsloading] = useState(true);
-  const user = useSelector(state => state.UserSlice?.user);
+  const user = useSelector(state => state.UserSlice?.user?.data?.resData);
   const dispatch = useDispatch();
 
   useEffect(() => {

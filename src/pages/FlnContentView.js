@@ -72,7 +72,7 @@ const FlnContentView = ({route, navigation}) => {
   // console.log('====================================subject', program);
 
   const dispatch = useDispatch();
-  const user = useSelector(state => state.UserSlice?.user);
+  const user = useSelector(state => state.UserSlice?.user?.data?.resData);
   const {userid, username, usertype, managerid, managername, passcode} =
     user[0];
 
@@ -279,11 +279,11 @@ const FlnContentView = ({route, navigation}) => {
       setAppStateVisible(nextAppState);
     };
 
-    AppState.addEventListener('change', handleAppStateChange);
+    AppState?.addEventListener('change', handleAppStateChange);
 
     // Cleanup function
     return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
+      AppState?.removeEventListener('change', handleAppStateChange);
     };
   }, []);
 

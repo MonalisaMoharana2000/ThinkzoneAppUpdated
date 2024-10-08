@@ -84,7 +84,7 @@ const Pgecontentdetails = ({route, navigation}) => {
   // console.log('text2---->', text.length);
   const [status, setStatus] = useState();
 
-  const user = useSelector(state => state.UserSlice?.user);
+  const user = useSelector(state => state.UserSlice?.user?.data?.resData);
   const {userid, username, usertype, managerid, managername, passcode} =
     user[0];
 

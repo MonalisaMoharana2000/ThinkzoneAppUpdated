@@ -16,22 +16,12 @@ import React, {useState, useEffect, useRef} from 'react';
 import API from '../environment/Api';
 import {useDispatch, useSelector} from 'react-redux';
 import * as window from '../utils/dimensions';
-import HorizontalScrollView from '../components/HorizontalScrollView';
-import AccordianComponent from '../components/AccordianComponent';
 
-import TechAccoed from '../components/TechAccoed';
-// import * as TechSlice from '../redux/slices/TechSlice';
-import Norecord from '../components/Norecord';
-// import * as FcmSlice from '../redux/slices/FcmSlice';
-import {log} from 'console';
-import {useFocusEffect} from '@react-navigation/native';
-import HorizontalScrollViewNew from '../components/HorizontalScrollViewNew';
-import Api from '../environment/Api';
 import Colors from '../utils/Colors';
 import Nocontents from '../components/Nocontents';
 import Loading from '../components/Loading';
 import {Color, FontFamily} from '../GlobalStyle';
-import TrainingModulesPage from './TrainingModulesPage';
+
 
 const TechModule = ({navigation, route}) => {
   const type = route.params.type;
@@ -44,112 +34,14 @@ const TechModule = ({navigation, route}) => {
 
   const moduleArrNew = useSelector(state => state.techdata.techmodule);
   const submoduleArrNew = useSelector(state => state.techdata.techsubmodule);
-  const loadingModule = useSelector(state => state.techdata.techsubmodule);
-  const teacherdata = useSelector(state => state.userdata.user?.resData);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLoader, setIsLoader] = useState(false);
 
-  const [isLoadingSubmodule, setIsLoadingSubmodule] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [subModuleId, setSubModuleId] = useState([]);
-  const [submoduleArr, setSubModuleArr] = useState([]);
+
   const [moduleType, setModuleType] = useState(type ? type : null);
   const [selectedModule, setSelectedModule] = React.useState(0);
   const [modules, setModules] = useState([]);
-  const [submodules, setSubmodules] = useState([]);
-
-  // useEffect(() => {
-  //   const d_data = {
-  //     userid: user[0].userid,
-  //     usertype: user[0].usertype,
-  //     trainingType: moduleType,
-  //   };
-
-  //   dispatch(TechSlice.getTechModuleStart({d_data}));
-  // }, []);
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     const fetchData = async () => {
-  //       try {
-  //         setIsLoading(true);
-  //         const moduleResponse = await Api.get(
-  //           `getAllModulesWithMarks/${user[0].userid}/${user[0].usertype}/${moduleType}/od`,
-  //         );
-  //         setModules(moduleResponse.data);
-  //         setSubModuleArr(submoduleArrNew);
-  //         setIsLoading(false);
-  //         setIsLoader(false);
-
-  //         if (moduleResponse.data.length > 0) {
-  //           // const submoduleResponse = await Api.get(
-  //           //   `getAllSubmodulesAndTopics/${user[0].userid}/${user[0].usertype}/training2/od/${moduleResponse.data[0].moduleId}`,
-  //           // );
-  //           // setSubmodules(submoduleResponse.data);
-  //           setIsLoadingSubmodule(true);
-  //           const data = {
-  //             userid: user[0].userid,
-  //             usertype: user[0].usertype,
-  //             moduleId:
-  //               subModuleId.length > 0
-  //                 ? subModuleId
-  //                 : moduleResponse.data[0].moduleId,
-  //             // moduleId: selectedModule,
-  //             trainingType: moduleType,
-  //           };
-  //           dispatch(TechSlice.getTechSubModuleStart({data}));
-  //           setIsLoadingSubmodule(false);
-  //         }
-  //       } catch (error) {
-  //         if (error.response.status === 413) {
-  //           console.log('error is---------------->', error);
-  //           setIsLoading(false);
-  //           Alert.alert('The entity is too large !');
-  //         } else if (error.response.status === 504) {
-  //           console.log('Error is--------------------->', error);
-  //           setIsLoading(false);
-  //           Alert.alert('Gateway Timeout: The server is not responding!');
-  //         } else if (error.response.status === 500) {
-  //           console.error('Error is------------------->:', error);
-  //           setIsLoading(false);
-  //           Alert.alert(
-  //             'Internal Server Error: Something went wrong on the server.',
-  //           );
-  //         } else {
-  //           console.error('Error is------------------->:', error);
-  //           setIsLoading(false);
-  //         }
-  //       }
-  //     };
-
-  //     fetchData();
-  //   }, [subModuleId]),
-  // );
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const moduleResponse = await Api.get(
-  //         `getAllModulesWithMarks/${user[0].userid}/${user[0].usertype}/${moduleType}/od`,
-  //       );
-
-  //       console.log('module---->', moduleResponse.data);
-  //       setModules(moduleResponse.data);
-
-  //       if (moduleResponse.data.length > 0) {
-  //         const submoduleResponse = await Api.get(
-  //           `getAllSubmodulesAndTopics/${user[0].userid}/${user[0].usertype}/training2/od/${moduleResponse.data[0].moduleId}`,
-  //         );
-  //         console.log('submodule---->', submoduleResponse.data);
-  //         setSubmodules(submoduleResponse.data);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   //
   const getModuleId = (moduleid, index) => {
@@ -175,37 +67,16 @@ const TechModule = ({navigation, route}) => {
 
   // console.log('isLoadingsss------------------>', isLoading);
   const imageUrl = require('../assets/Image/books.jpg');
-  const defaultImageUrl = require('../assets/Image/books.jpg');
+
   const errorImageUrl = require('../assets/Image/books.jpg'); // Replace with your error image URL
-  const defaultAccessibilityLabel = `Default Image Accessibility Label`;
+
   const [imagesss, setImagesss] = useState(imageUrl);
-  const handleImageError = () => {
-    setImagesss(errorImageUrl);
-  };
+
   const [imageError, setImageError] = useState(false);
   return (
     <View style={{flex: 1}}>
       <ScrollView>
         <View>
-          {/* <View
-            style={{
-              backgroundColor: '#0060ca',
-              height: 66,
-              width: window.WindowWidth * 1.1,
-              marginTop: -16,
-              marginLeft: -20,
-            }}>
-            <Text
-              style={{
-                color: 'white',
-                fontSize: 20,
-                marginTop: 15,
-                textAlign: 'center',
-              }}>
-              {route.params.skillsetname}
-              {headerTYpe}
-            </Text>
-          </View> */}
           {isLoading ? (
             <View>
               {/* <PgeSkeleton /> */}
@@ -250,22 +121,6 @@ const TechModule = ({navigation, route}) => {
                       //   flexDirection: 'column',
                       // }}
                       >
-                        {/* <Text
-                          style={{
-                            color: 'black',
-                            fontSize: 15,
-                            fontWeight: '900',
-
-                            fontFamily: FontFamily.balooBhaiRegular,
-
-                            marginTop: 7,
-                            marginLeft: 5,
-                            paddingBottom: 20,
-                          }}>
-                          {item.moduleName}
-                        </Text> */}
-                        {/* {} */}
-
                         {item.moduleImage?.length != 0 ? (
                           <Image
                             style={{

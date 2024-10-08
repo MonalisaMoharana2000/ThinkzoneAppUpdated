@@ -16,18 +16,10 @@ import API from '../environment/Api';
 import React, {useState, useEffect, useRef} from 'react';
 import DropdownComponent from '../components/DropdownComponent';
 import {useDispatch, useSelector} from 'react-redux';
-// import ListColomItem from '../components/ListColomItem';
-// import Separator from '../components/Separator';
 import * as window from '../utils/dimensions';
-// import Color from '../utils/Colors';
-// import * as FcmSlice from '../redux/slices/FcmSlice';
 import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
-import Norecord from '../components/Norecord';
 import Loading from '../components/Loading';
 import Nocontents from '../components/Nocontents';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {app_versions} from './Home';
-import * as UserSlice from '../redux_toolkit/features/users/UserSlice';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -40,12 +32,10 @@ const Ecactivity = ({navigation}) => {
   const [isLoading, setIsloading] = useState(true);
 
   const [data, setData] = useState([]);
-  const user = useSelector(state => state.UserSlice.user);
-
-  console.log('user-------->', user);
+  const user = useSelector(state => state.UserSlice?.user?.data?.resData);
+  console.log('my user is ----------~~', user);
 
   const dispatch = useDispatch();
-
   const [topicName, setSkillname] = useState([]);
   console.log('====================================topicName check', topicName);
 
@@ -61,9 +51,7 @@ const Ecactivity = ({navigation}) => {
         console.log('set=================>', response.data[0].topicName); // Log the actual data, not the function
         setIsloading(false);
       })
-      .catch(err => {
-        // Handle error here, e.g., set an error state
-      });
+      .catch(err => {});
   }, [studentClass]);
 
   const getStudent = item => {
@@ -84,11 +72,14 @@ const Ecactivity = ({navigation}) => {
       });
     }
   };
-
+  const numColumns = 2;
   const [content, setContent] = useState([]);
 
   return (
-    <View style={{flex: 1, backgroundColor: Color.ghostwhite}}>
+    <View
+      style={{flex: 1, backgroundColor: Color.ghostwhite}}
+      // {...panResponder.panHandlers}
+    >
       <View style={styles.scrollView}>
         <View>
           {isLoading ? (
@@ -120,19 +111,30 @@ const Ecactivity = ({navigation}) => {
                       <TouchableOpacity
                         onPress={() => sikllSelected(item)}
                         style={{
+                          // borderWidth: 1.2,
+                          // borderColor: Color.royalblue,
+                          // borderRadius: 10,
                           backgroundColor: Color.ghostwhite,
                           alignSelf: 'center',
                           margin: 10,
                           shadowColor: '#000',
+
+                          // flexWrap: 'wrap',
+
+                          // shadowRadius: 8,
+                          // height: window.WindowWidth * 0.6,
                           width: window.WindowWidth * 0.43,
                           backgroundColor: Color.ghostwhite,
+                          // justifyContent: 'center',
+
+                          // padding:10
+                          // height: window.WindowWidth * 0.6,}}
                         }}>
                         {item.topicImage?.length > 0 ? (
                           <Image
                             style={{
                               width: window.WindowWidth * 0.427,
                               borderRadius: 5,
-
                               alignSelf: 'center',
                               aspectRatio: 15 / 15,
                             }}

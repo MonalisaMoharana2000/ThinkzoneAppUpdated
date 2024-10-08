@@ -56,7 +56,7 @@ const audioPlayer = new AudioRecorderPlayer();
 const EcContent = ({route, navigation}) => {
   const {t} = useTranslation();
   const dispatch = useDispatch();
-  const user = useSelector(state => state.UserSlice?.user);
+  const user = useSelector(state => state.UserSlice?.user?.data?.resData);
   const {userid, username, usertype, managerid, managername, passcode} =
     user[0];
   const dataEce = route.params;

@@ -62,8 +62,7 @@ const LoginScreen = ({navigation}) => {
     try {
       setIsloading(true);
 
-      handleClearCachedToken(); // Clear the token cache before making the request
-
+      handleClearCachedToken();
       const data = {
         loginType: 'google',
         emailid: email,
@@ -83,11 +82,11 @@ const LoginScreen = ({navigation}) => {
         const {emailidVerified, phoneNumberVerified} = resData;
 
         if (status === 200 && emailidVerified && phoneNumberVerified) {
-          // await AsyncStorage.setItem(
-          //   'userData',
-          //   JSON.stringify(res.payload.data),
-          // );
-          navigation.replace('Home');
+          await AsyncStorage.setItem(
+            'userData',
+            JSON.stringify(res.payload.data),
+          );
+          navigation.navigate('Home');
         } else if (emailidVerified && !phoneNumberVerified) {
           showAlert('Phone Number not verified', 'Login');
         } else if (!emailidVerified && phoneNumberVerified) {

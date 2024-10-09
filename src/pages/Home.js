@@ -7,7 +7,7 @@ import React, {
   useCallback,
 } from 'react';
 import {useFocusEffect, useNavigationState} from '@react-navigation/native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   SafeAreaView,
   StyleSheet,
@@ -47,6 +47,7 @@ import moment from 'moment';
 
 const Home = ({navigation}, props) => {
   const scrollRef = useRef();
+
   const image = [];
   const [activeSlide, setActiveSlide] = useState(0);
   const [maintainanceModal, setmaintainanceModal] = useState(false);
@@ -1032,46 +1033,46 @@ const Home = ({navigation}, props) => {
     );
   }, []);
 
-  const getToken = async () => {
-    const token = await messaging().getToken();
-    // Alert.alert(token);
-    // const smallIcon =
-    //   Platform.OS === 'android'
-    //     ? '@drawable/ic_notification' // Replace with the actual drawable resource name for Android
-    //     : 'ic_notification';
-    const largeIcon =
-      Platform.OS === 'android'
-        ? '@drawable/ic_notification' // Replace with the actual drawable resource name for Android
-        : 'ic_notification';
-    const fcm_obj = {
-      userid: user[0].userid,
-      username: user[0].username,
-      token: token,
-      refresh_token: token,
-      // smallIcon: smallIcon,
-      largeIcon: largeIcon, // Add the smallIcon property here
-    };
-    API.get(`getfcmtokenidbyuserid/${user[0].userid}`).then(
-      getRes => {
-        if (getRes.data.length > 0) {
-          const tid = getRes.data[0]._id;
-          API.put(`updatefcmtokenid/${tid}`, fcm_obj).then(upGet => {
-            //
-          });
-        } else {
-          API.post(`createnewfcmtokenid`, fcm_obj).then(res => {
-            //
-          });
-        }
-      },
-      err => {
-        // this.serverDownMsg.presentToast();
-      },
-    );
-  };
+  // const getToken = async () => {
+  //   const token = await messaging().getToken();
+  //   // Alert.alert(token);
+  //   // const smallIcon =
+  //   //   Platform.OS === 'android'
+  //   //     ? '@drawable/ic_notification' // Replace with the actual drawable resource name for Android
+  //   //     : 'ic_notification';
+  //   const largeIcon =
+  //     Platform.OS === 'android'
+  //       ? '@drawable/ic_notification' // Replace with the actual drawable resource name for Android
+  //       : 'ic_notification';
+  //   const fcm_obj = {
+  //     userid: user[0].userid,
+  //     username: user[0].username,
+  //     token: token,
+  //     refresh_token: token,
+  //     // smallIcon: smallIcon,
+  //     largeIcon: largeIcon, // Add the smallIcon property here
+  //   };
+  //   API.get(`getfcmtokenidbyuserid/${user[0].userid}`).then(
+  //     getRes => {
+  //       if (getRes.data.length > 0) {
+  //         const tid = getRes.data[0]._id;
+  //         API.put(`updatefcmtokenid/${tid}`, fcm_obj).then(upGet => {
+  //           //
+  //         });
+  //       } else {
+  //         API.post(`createnewfcmtokenid`, fcm_obj).then(res => {
+  //           //
+  //         });
+  //       }
+  //     },
+  //     err => {
+  //       // this.serverDownMsg.presentToast();
+  //     },
+  //   );
+  // };
 
   useEffect(() => {
-    getToken();
+    // getToken();
     // axios
     //   .get('https://comms.globalxchange.com/coin/vault/get/all/coins')
     //   .then(response => {

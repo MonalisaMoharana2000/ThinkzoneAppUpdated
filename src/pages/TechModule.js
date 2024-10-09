@@ -16,37 +16,115 @@ import React, {useState, useEffect, useRef} from 'react';
 import API from '../environment/Api';
 import {useDispatch, useSelector} from 'react-redux';
 import * as window from '../utils/dimensions';
-
 import Colors from '../utils/Colors';
 import Nocontents from '../components/Nocontents';
 import Loading from '../components/Loading';
 import {Color, FontFamily} from '../GlobalStyle';
-
+import {useFocusEffect} from '@react-navigation/native';
+import {
+  fetchAllModulesThunk,
+  fetchSubmodulesThunk,
+} from '../redux_toolkit/features/training/TrainingThunk';
+import {fetchUserDataThunk} from '../redux_toolkit/features/users/UserThunk';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TechModule = ({navigation, route}) => {
   const type = route.params.type;
   const headerTYpe = route.params.head;
   const dispatch = useDispatch();
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
+
+  // useEffect(() => {
+  //   const fetchStoredData = async () => {
+  //     storedData = await AsyncStorage.getItem('userData');
+  //     // console.log('storedData--------->', storedData);
+  //     if (storedData) {
+  //       const parsedData = JSON.parse(storedData);
+  //       //console.log('Parsed storedData--------->', parsedData);
+  //       const userSet = await dispatch(
+  //         fetchUserDataThunk(parsedData?.resData[0]?.userid),
+  //       );
+  //       // console.log('userSet----------->', userSet);
+  //     }
+  //   };
+  //   // fetchStoredData();
+  // }, []);
+
   const user = useSelector(state => state.UserSlice.user);
-  console.log('user------------>', user);
+  // console.log('user training------------>', user);
 
-  const moduleArrNew = useSelector(state => state.techdata.techmodule);
-  const submoduleArrNew = useSelector(state => state.techdata.techsubmodule);
-
+  const moduleArrNew = useSelector(state => state.TrainingSlice.techmodule);
+  // console.log('moduleArrNew------------>', moduleArrNew);
+  const submoduleArrNew = useSelector(
+    state => state.TrainingSlice.techsubmodule,
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const [subModuleId, setSubModuleId] = useState([]);
 
   const [moduleType, setModuleType] = useState(type ? type : null);
+  //console.log('moduleType------->', moduleType);
+
   const [selectedModule, setSelectedModule] = React.useState(0);
   const [modules, setModules] = useState([]);
+  const [imageError, setImageError] = useState(false);
 
-  //
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        const data = {
+          userid: user[0].userid,
+          usertype: user[0].usertype,
+          trainingType: moduleType,
+        };
+
+        try {
+          setIsLoading(true);
+          const moduleResponse = await dispatch(fetchAllModulesThunk(data));
+          // console.log('moduleResponse----------->', moduleResponse?.payload);
+          setModules(moduleResponse?.payload);
+          setIsLoading(false);
+
+          if (moduleResponse?.payload?.length > 0) {
+            // console.log('moduleResponse2----------->', moduleResponse?.payload);
+            // console.log(
+            //   'sub---------------------------------------------------------------------->',
+            //   moduledata,
+            // );
+            // const subModules = await dispatch(fetchSubmodulesThunk({data}));
+            // console.log(
+            //   'sub2---------------------------------------------------------------------->',
+            //   subModules,
+            // );
+          }
+        } catch (error) {
+          if (error.response.status === 413) {
+            console.log('error is---------------->', error);
+            setIsLoading(false);
+            Alert.alert('The entity is too large !');
+          } else if (error.response.status === 504) {
+            console.log('Error is--------------------->', error);
+            setIsLoading(false);
+            Alert.alert('Gateway Timeout: The server is not responding!');
+          } else if (error.response.status === 500) {
+            console.error('Error is------------------->:', error);
+            setIsLoading(false);
+            Alert.alert(
+              'Internal Server Error: Something went wrong on the server.',
+            );
+          } else {
+            console.error('Error is------------------->:', error);
+            setIsLoading(false);
+          }
+        }
+      };
+
+      fetchData();
+    }, [user]),
+  );
+
   const getModuleId = (moduleid, index) => {
     //
-    // console.log('moduleid---->', moduleid, index, moduleid.moduleIsComplete);
+    console.log('moduleid---->', moduleid);
     navigation.navigate('TrainingSubmodulePage', {
       moduleName: moduleid.moduleName,
       status: moduleid.moduleIsComplete,
@@ -56,23 +134,15 @@ const TechModule = ({navigation, route}) => {
     });
     setSubModuleId(moduleid.moduleId);
     setSelectedModule(index);
-    const data = {
-      userid: user[0].userid,
-      usertype: user[0].usertype,
-      moduleId: moduleid.moduleId,
-      trainingType: moduleType,
-    };
+    // const data = {
+    //   userid: user[0].userid,
+    //   usertype: user[0].usertype,
+    //   moduleId: moduleid.moduleId,
+    //   trainingType: moduleType,
+    // };
     // dispatch(TechSlice.getTechSubModuleStart({data}));
   };
 
-  // console.log('isLoadingsss------------------>', isLoading);
-  const imageUrl = require('../assets/Image/books.jpg');
-
-  const errorImageUrl = require('../assets/Image/books.jpg'); // Replace with your error image URL
-
-  const [imagesss, setImagesss] = useState(imageUrl);
-
-  const [imageError, setImageError] = useState(false);
   return (
     <View style={{flex: 1}}>
       <ScrollView>
@@ -82,7 +152,7 @@ const TechModule = ({navigation, route}) => {
               {/* <PgeSkeleton /> */}
               <Loading />
             </View>
-          ) : modules.length > 0 ? (
+          ) : modules?.length > 0 ? (
             <>
               <View
                 style={{
@@ -236,7 +306,7 @@ const TechModule = ({navigation, route}) => {
                 ))}
               </View>
             </>
-          ) : modules.length === 0 && submoduleArrNew.length === 0 ? (
+          ) : modules?.length === 0 && submoduleArrNew?.length === 0 ? (
             // <NoContent />
             <Nocontents />
           ) : (

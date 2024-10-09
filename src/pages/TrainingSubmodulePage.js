@@ -16,60 +16,74 @@ import * as window from '../utils/dimensions';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState} from 'react';
 import Colors from '../utils/Colors';
-import ColorName from '../utils/ColorName';
-import * as SIZES from '../utils/dimensions';
 import API from '../environment/Api';
-
-import {Avatar, Provider as PaperProvider} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-// import * as TechSlice from '../redux/slices/TechSlice';
+
 import {useSelector, useDispatch} from 'react-redux';
-import {List} from 'react-native-paper';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
+
 import {useEffect} from 'react';
 import {Color, FontFamily} from '../GlobalStyle';
 import Modals from '../components/Modals';
 import {useFocusEffect} from '@react-navigation/native';
 import ProgressBar from '../components/ProgressBar';
 import Loading from '../components/Loading';
-import {app_versions} from './Home';
 
-const TrainingSubmodulePage = ({
-  onPress,
-  userSubModule,
-  subModules,
-  navigation,
-  training_type,
-  route,
-}) => {
+import {fetchSubmodulesThunk} from '../redux_toolkit/features/training/TrainingThunk';
+
+const TrainingSubmodulePage = ({navigation, route}) => {
   const [customModal, setCustomModal] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [data, setData] = useState([]);
-  let contentDetails = useSelector(state => state.techdata.techsubmodule);
-  let loading = useSelector(state => state.techdata.loadingModule);
-
   const dispatch = useDispatch();
-  let userContentDetails = useSelector(
-    state => state.trainingdataNew.userTraingDetails,
-  );
-  // const users = useSelector(state => state.sdata.s?.resData);
+  const user = useSelector(state => state.UserSlice.user);
 
-  const [scontentDetails, setUsercontentDetails] = useState([]);
-  const user = useSelector(state => state.userdata.user?.resData);
-  const {userid, username, usertype, managerid, passcode} = user[0];
-
-  console.log('====================================', contentDetails);
+  console.log('====================================submodule', user);
   const {moduleName, moduleId, trainingType, moduleImage} = route.params;
   console.log(
     'ROUTESSSSS----------------->',
-    moduleName,
+    // user,
+    // moduleName,
     moduleId,
     trainingType,
-    moduleImage,
-    route.params,
+    // moduleImage,
+    // route.params,
   );
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        if (!user || user.length === 0) {
+          console.log('User data is not available');
+          return;
+        }
+
+        const data = {
+          userid: user[0]?.userid,
+          usertype: user[0]?.usertype,
+          trainingType: trainingType, // Correctly using trainingType
+          moduleId: moduleId, // Uncomment moduleId
+        };
+
+        console.log('Fetching data for moduleId:', moduleId);
+
+        try {
+          const moduleResponse = await dispatch(fetchSubmodulesThunk(data));
+          console.log('Module Response:', moduleResponse?.payload);
+        } catch (err) {
+          console.error('Error fetching module data:', err);
+        }
+      };
+
+      fetchData();
+    }, [user, moduleId, trainingType, dispatch]), // Added all necessary dependencies
+  );
+  let contentDetails = useSelector(state => state.TrainingSlice.techsubmodule);
+  let loading = useSelector(state => state.TrainingSlice.loading);
+
+  let userContentDetails = useSelector(
+    state => state.TrainingSlice.userTraingDetails,
+  );
+
+  const [scontentDetails, setUsercontentDetails] = useState([]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -101,21 +115,6 @@ const TrainingSubmodulePage = ({
 
       setUsercontentDetails(newArr);
     }, [contentDetails, userContentDetails]),
-  );
-
-  useFocusEffect(
-    React.useCallback(() => {
-      const data = {
-        userid: userid,
-        usertype: usertype,
-        moduleId: moduleId,
-        trainingType: trainingType,
-      };
-
-      console.log('data---->', data);
-
-      // dispatch(TechSlice.getTechSubModuleStart({data}));
-    }, []),
   );
 
   // const user = useSelector(state => state.userdata.user);
@@ -411,17 +410,17 @@ const TrainingSubmodulePage = ({
         const month = new Date().getMonth() + 1;
         console.log('month--->', month);
         const data = {
-          userid: userid,
-          username: username,
-          usertype: usertype,
-          managerid: managerid,
-          passcode: passcode,
+          userid: user[0]?.userid,
+          username: user[0]?.username,
+          usertype: user[0]?.usertype,
+          managerid: user[0]?.managerid,
+          passcode: user[0]?.passcode,
           modulename: route.params.trainingType,
           moduleId: route.params.moduleId,
           duration: duration,
           month: month,
           year: year,
-          appVersion: app_versions,
+          appVersion: '2.1.1',
           start: new Date(parseInt(value)),
           end: new Date(parseInt(y)),
         };

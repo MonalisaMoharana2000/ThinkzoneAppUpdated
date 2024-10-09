@@ -90,7 +90,11 @@ const StackNavigator = ({navigation}) => {
         </>
       ) : null}
 
-      <Stack.Screen name="Home" component={BottomTabNavigator} />
+      <Stack.Screen
+        name="Home"
+        component={BottomTabNavigator}
+        options={{headerShown: false}}
+      />
 
       {/*----------------------------- Student part starts --------------------------------*/}
 
@@ -214,7 +218,7 @@ const StackNavigator = ({navigation}) => {
         component={TechContent}
         options={{
           // title: 'ପ୍ରଯୁକ୍ତିବିଦ୍ୟା',
-          headerLeft: false,
+          // headerLeft: false,
           headerShown: false,
           headerTitleAlign: 'center',
         }}

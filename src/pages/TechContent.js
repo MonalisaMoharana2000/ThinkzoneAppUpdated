@@ -72,7 +72,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import SelectFromMultiple from '../components/SelectFromMultiple';
 // import Carousel, {Pagination} from 'react-native-snap-carousel';
 import CarouselImage from '../components/CarouselImage';
-import CarouselVideo from '../components/CarouselVideo';
+
 import Api from '../environment/Api';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DragWordComponent from '../components/DragWordComponent';
@@ -110,7 +110,7 @@ const TechContent = ({route, navigation}) => {
   // const {moduleId, submoduleId} = route.params.data;
 
   const dispatch = useDispatch();
-  const user = useSelector(state => state.userdata.user?.resData);
+  const user = useSelector(state => state.UserSlice.user);
   console.log('user--->', user);
   const [userdata, setUserdata] = useState(user);
   const {userid, username, usertype, managerid, managername, passcode} =
@@ -312,13 +312,13 @@ const TechContent = ({route, navigation}) => {
         // Handle success or error after deletion
         console.log('Deletion results:', results);
         alert('updated');
-        fetchData(); // Fetch data again after deletion
+        // fetchData(); // Fetch data again after deletion
       });
     });
   };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
     // deleteData();
     // deleteExistingData();
   }, []);
@@ -1868,6 +1868,7 @@ const TechContent = ({route, navigation}) => {
       Alert.alert('ଦୟାକରି ସଠିକ୍ ମତାମତ ଦିଅନ୍ତୁ ।');
     }
   };
+
   const [imageNotFound, setImageNotFound] = useState(false);
 
   const [videoLoading, setVideoLoading] = useState(true);
@@ -2186,12 +2187,10 @@ const TechContent = ({route, navigation}) => {
     );
   };
 
-  const userdatas = useSelector(state => state.userdata.user?.resData);
-
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused
-      Api.get(`getuserbyuserid/${userdatas[0]?.userid}`).then(response => {
+      Api.get(`getuserbyuserid/${user[0]?.userid}`).then(response => {
         setUserdata(response.data);
         setIsLoading(false);
       });
@@ -3652,13 +3651,6 @@ const TechContent = ({route, navigation}) => {
                       {' '}
                       ଆପଣ ପଢିଥିବା ବିଷୟଟିକୁ ରେଟିଂ ଦିଅନ୍ତୁ ।
                     </Text>
-                    <StarRating
-                      disabled={false}
-                      maxStars={5}
-                      rating={rating}
-                      fullStarColor={'rgb(245,191,3)'}
-                      selectedStar={rating => handleRatingChange(rating)}
-                    />
 
                     <Text style={styles.modalText}>
                       ଏହି ବିଷୟରେ ଆପଣଙ୍କର ମତାମତ ଲେଖନ୍ତୁ ।

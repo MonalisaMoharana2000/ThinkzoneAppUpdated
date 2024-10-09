@@ -241,7 +241,7 @@ const StackNavigator = ({navigation}) => {
         component={TechAssignment}
         options={{
           title: 'TechAssignment',
-          headerLeft: false,
+          // headerLeft: false,
           headerShown: false,
           headerTitleAlign: 'center',
         }}

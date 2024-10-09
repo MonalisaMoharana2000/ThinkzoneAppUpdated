@@ -22,10 +22,7 @@ import Color from '../utils/Colors';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useSelector, useDispatch} from 'react-redux';
 import Colors from '../utils/Colors';
-import ErrorMessage from '../components/ErrorMessage';
-import ButtomSheet from '../components/BottomSheet';
-import Feather from 'react-native-vector-icons/Feather';
-import Modals from '../components/Modals';
+
 import {Buffer} from 'buffer';
 import * as window from '../utils/dimensions';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
@@ -33,12 +30,11 @@ import DocumentPicker from 'react-native-document-picker';
 import {S3_BUCKET, REGION, ACCESS_KEY, SECRET_ACCESS_KEY} from '@env';
 // import AWS from 'aws-sdk';
 import RNFS from 'react-native-fs';
-import Norecord from './Norecord';
+
 import Nocontents from './Nocontents';
 import {useFocusEffect} from '@react-navigation/native';
 import Loading from './Loading';
-import {FontFamily} from '../GlobalStyle';
-import {log} from 'console';
+// import {FontFamily} from '../GlobalStyle';
 
 // // AWS.config.update({
 //   region: REGION,
@@ -62,7 +58,7 @@ const AssignmentNew = ({
   const modalRef = useRef(null);
   const modalHeight = window.WindowHeigth * 0.3;
   const dispatch = useDispatch();
-  const user = useSelector(state => state.userdata.user.resData);
+  const user = useSelector(state => state.UserSlice.user);
   const [imageUrl, setImageUrl] = useState(user[0].image);
   const [imageData, setImageData] = useState({});
   const [singleFile, setSingleFile] = useState({});
@@ -470,32 +466,32 @@ const AssignmentNew = ({
     }
     setSingleFile({});
   };
-  useFocusEffect(
-    React.useCallback(() => {
-      const backAction = () => {
-        Alert.alert(
-          'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
-          'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => null,
-              style: 'default',
-            },
-            {text: 'Ok', onPress: () => handleDelete(), style: 'default'},
-          ],
-        );
-        return true;
-      };
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     const backAction = () => {
+  //       Alert.alert(
+  //         'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
+  //         'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
+  //         [
+  //           {
+  //             text: 'Cancel',
+  //             onPress: () => null,
+  //             style: 'default',
+  //           },
+  //           {text: 'Ok', onPress: () => handleDelete(), style: 'default'},
+  //         ],
+  //       );
+  //       return true;
+  //     };
 
-      const backHandler = BackHandler.addEventListener(
-        'hardwareBackPress',
-        backAction,
-      );
+  //     const backHandler = BackHandler.addEventListener(
+  //       'hardwareBackPress',
+  //       backAction,
+  //     );
 
-      return () => backHandler.remove();
-    }, []),
-  );
+  //     return () => backHandler.remove();
+  //   }, []),
+  // );
 
   const cancel = () => {
     Alert.alert(
@@ -523,7 +519,7 @@ const AssignmentNew = ({
     <ScrollView style={{height: '300%', paddingBottom: 50}}>
       <ImageBackground
         style={[styles.root, {paddingBottom: 50}]}
-        source={require('../assets/Photos/assignmentbg.jpg')}
+        // source={require('../assets/Photos/assignmentbg.jpg')}
         //   imageStyle={{borderRadius: 60}}
       >
         <KeyboardAvoidingView
@@ -578,7 +574,7 @@ const AssignmentNew = ({
                             fontSize: 14,
                             paddingBottom: 5,
                             paddingTop: 5,
-                            fontFamily: FontFamily.poppinsMedium,
+                            // fontFamily: FontFamily.poppinsMedium,
                             fontWeight: '800',
                             left: '5%',
                             // marginLeft: 27,
@@ -672,7 +668,7 @@ const AssignmentNew = ({
                           fontSize: 14,
                           paddingBottom: 5,
                           paddingTop: 5,
-                          fontFamily: FontFamily.poppinsMedium,
+                          // fontFamily: FontFamily.poppinsMedium,
                           fontWeight: '800',
                           left: '5%',
                           // marginLeft: 27,
@@ -760,7 +756,7 @@ const AssignmentNew = ({
                           fontSize: 14,
                           paddingBottom: 5,
                           paddingTop: 5,
-                          fontFamily: FontFamily.poppinsMedium,
+                          // fontFamily: FontFamily.poppinsMedium,
                           fontWeight: '800',
                           left: '5%',
                           // marginLeft: 27,
@@ -831,7 +827,7 @@ const AssignmentNew = ({
                             <Text
                               style={{
                                 textAlign: 'center',
-                                fontFamily: FontFamily.poppinsMedium,
+                                // fontFamily: FontFamily.poppinsMedium,
                                 fontSize: 15,
                                 top: '10%',
                               }}>

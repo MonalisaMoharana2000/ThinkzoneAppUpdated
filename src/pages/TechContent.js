@@ -145,12 +145,14 @@ const TechContent = ({route, navigation}) => {
   const [checkUrl, setCheckUrl] = useState([]);
   const [feedbackModal, setFeedbackModal] = useState(false);
   const [topicQuizData2, setTopicQuizData2] = useState([]);
-  // console.log('topicQuizData2------->', topicQuizData2);
+  console.log('topicQuizData------->', topicQuizData);
   const [gamifiedData, setGamifiedData] = useState([]);
   // console.log('gamifiedData----->', gamifiedData);
   const [quiz_status, setQuiz_status] = useState(
     route.params.data_type == 'quiz1' ? true : false,
   );
+  console.log('quiz_status----------------->', quiz_status);
+
   const [text, onChangeText] = useState('');
   const [activeSlide, setActiveSlide] = useState(0);
   const [quiz_status2, setQuiz_status2] = useState(
@@ -347,7 +349,10 @@ const TechContent = ({route, navigation}) => {
     route.params?.data_type === 'content' ? true : false,
   );
 
-  console.log('====================================', content_status);
+  console.log(
+    '====================================content_status',
+    content_status,
+  );
 
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
@@ -548,6 +553,24 @@ const TechContent = ({route, navigation}) => {
   // useEffect(() => {
   //   setRearrangeWord(shuffleArray(rearrangeWord));
   // }, [rearrangeData]);
+  useEffect(() => {
+    const fetchQuizData = async () => {
+      try {
+        const responseQuiz = await API.get(
+          `/getTchTrainingQuiz/${user[0].userid}/quiz1/${route?.params?.whole_data?.topicId}`,
+        );
+        console.log(
+          'responseQuiz123=================>',
+          responseQuiz?.data?.quiz1Data,
+        );
+        setTopicQuizData(responseQuiz?.data?.quiz1Data);
+      } catch (error) {
+        console.error('Error fetching quiz data:', error);
+      }
+    };
+
+    fetchQuizData(); // Call the async function
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -655,14 +678,15 @@ const TechContent = ({route, navigation}) => {
         const responseQuiz = await API.get(
           `/getTchTrainingQuiz/${user[0].userid}/quiz1/${route?.params?.whole_data?.topicId}`,
         );
+        console.log('responseQuiz=================>', responseQuiz);
 
-        setTopicQuizData(responseQuiz.data.quiz1Data);
+        setTopicQuizData(responseQuiz?.data?.quiz1Data);
 
         const responseQuiz2 = await API.get(
           `/getTchTrainingQuiz/${user[0].userid}/quiz2/${route?.params?.whole_data?.topicId}`,
         );
 
-        setTopicQuizData2(responseQuiz2.data.quiz2Data);
+        setTopicQuizData2(responseQuiz2?.data?.quiz2Data);
 
         const responseGamified = await API.get(
           `/getTchTrainingGamified/${user[0].userid}/gamified/${route?.params?.whole_data?.topicId}`,
@@ -2328,7 +2352,7 @@ const TechContent = ({route, navigation}) => {
                           flexShrink: 0,
                           margin: '1.5%',
                         }}>
-                        {contentData.map((item, index) => {
+                        {contentData?.map((item, index) => {
                           return (
                             <>
                               <View>

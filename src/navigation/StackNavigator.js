@@ -31,6 +31,7 @@ import TechContent from '../Pages/TechContent';
 import TechAssignment from '../Pages/TechAssignment';
 import CommonMonthlyPage from '../Pages/CommonMonthlyPage';
 import CommonMonthlyQuiz from '../Pages/CommonMonthlyQuiz';
+import Profile from '../Pages/Profile';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
@@ -96,6 +97,17 @@ const StackNavigator = ({navigation}) => {
         options={{headerShown: false}}
       />
 
+      <Stack.Screen
+        name="profile"
+        component={Profile}
+        options={{
+          title: 'Profile',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+        }}
+      />
+
       {/*----------------------------- Student part starts --------------------------------*/}
 
       <Stack.Screen
@@ -155,6 +167,7 @@ const StackNavigator = ({navigation}) => {
           },
         }}
       />
+
       <Stack.Screen
         name="attendancelist"
         component={Attendancelist}

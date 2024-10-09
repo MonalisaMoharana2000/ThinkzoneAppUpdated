@@ -50,14 +50,14 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FabButton from '../components/FabButton';
 // import dynamicLinks from '@react-native-firebase/dynamic-links';
 import {FontFamily, Color} from '../GlobalStyle';
-//import VideoPlayer from 'react-native-video-player';
+import Video from 'react-native-video';
 import NewQuizTemplate from '../components/NewQuizTemplate';
 import NewQuiz from '../components/NewQuiz';
 import {useFocusEffect} from '@react-navigation/native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-// import {WebView} from 'react-native-webview';
+
+import {WebView} from 'react-native-webview';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {app_versions} from './Home';
 import {openDatabase} from 'react-native-sqlite-storage';
@@ -916,8 +916,8 @@ const TechContent = ({route, navigation}) => {
       contentData: contentData,
     };
     console.log('content data-------->', data);
-    const ch = contentData?.filter(item => item.type === 'puzzle');
-    console.log('content data1-------->', ch[0].inputAnswer);
+    // const ch = contentData?.filter(item => item.type === 'puzzle');
+    // console.log('content data1-------->', ch[0].inputAnswer);
     API.post('saveTransTchTrainingContent', data)
       .then(response => {
         if (response.status === 200) {
@@ -2662,7 +2662,7 @@ const TechContent = ({route, navigation}) => {
                                           }}
                                         />
 
-                                        <Svg
+                                        <View
                                           style={{
                                             position: 'absolute',
                                             top: 0,
@@ -2684,7 +2684,7 @@ const TechContent = ({route, navigation}) => {
                                               }
                                             />
                                           ))}
-                                        </Svg>
+                                        </View>
                                         {rectModalVisible === true && (
                                           <View
                                             style={{
@@ -2942,8 +2942,8 @@ const TechContent = ({route, navigation}) => {
                                   }}
                                 />
                               )}
-                              <VideoPlayer
-                                video={{
+                              <Video
+                                source={{
                                   uri: nowPlayingUrl,
                                 }}
                                 style={{

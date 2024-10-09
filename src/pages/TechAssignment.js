@@ -13,18 +13,15 @@ import {
 import * as window from '../utils/dimensions';
 // import Color from '../utils/Colors';
 import React, {useEffect, useMemo, useState} from 'react';
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import Norecord from '../components/Norecord';
-// import Login from './Login';
+
 import {useDispatch, useSelector} from 'react-redux';
 import API from '../environment/Api';
 import Colors from '../utils/Colors';
-import Assignment from '../components/Assignment ';
+
 import Modals from '../components/Modals';
 
 import AssignmentNew from '../components/AssignmentNew';
-import {showMessage} from 'react-native-flash-message';
-// import {Border, FontSize, FontFamily} from '../GlobalStyle';
+
 import {Color, Border, FontSize, FontFamily} from '../GlobalStyle';
 import Nocontents from '../components/Nocontents';
 import Loading from '../components/Loading';
@@ -33,9 +30,9 @@ const TechAssignment = ({navigation, route}) => {
   const dispatch = useDispatch();
   const data = route.params.data;
   console.log('data--->', data);
-  const user = useSelector(state => state.userdata.user?.resData);
+  const user = useSelector(state => state.UserSlice.user);
   const [loading, setLoading] = useState(false);
-  const [dataloading, setdataloading] = useState(false);
+
   const [language, setLanguage] = useState('od');
   const [modal, setModal] = useState(false);
   const [modals, setModals] = useState(false);

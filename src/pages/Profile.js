@@ -581,7 +581,7 @@ const Profile = ({navigation}) => {
                   style={{flexDirection: 'row'}}>
                   <Text
                     style={{
-                      color: Color.darkslategray_400,
+                      color: 'black',
                       fontSize: 13,
                       fontWeight: '500',
                       fontFamily: FontFamily.poppinsMedium,

@@ -49,6 +49,7 @@ import TechAssignment from '../Pages/TechAssignment';
 import CommonMonthlyPage from '../Pages/CommonMonthlyPage';
 import CommonMonthlyQuiz from '../Pages/CommonMonthlyQuiz';
 import Profile from '../Pages/Profile';
+import Games from '../Pages/Games';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
@@ -437,6 +438,34 @@ const StackNavigator = ({navigation}) => {
           // headerTitleAlign: 'center',
         }}
       />
+
+      <Stack.Screen
+        name="techmodule"
+        component={TechModule}
+        options={{
+          title: 'ପ୍ରଯୁକ୍ତିବିଦ୍ୟା',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name="21st"
+        component={TechModule}
+        options={{
+          title: 'ଏକବିଂଶ ଶତାବ୍ଦୀ ଓ କୌଶଳ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
+        }}
+      />
       <Stack.Screen
         name="techcontent"
         component={TechContent}
@@ -462,11 +491,12 @@ const StackNavigator = ({navigation}) => {
         component={TrainingSubmodulePage}
         options={{title: 'SUBMODULE', headerShown: false}}
       />
+
       <Stack.Screen
-        name="techmodule"
-        component={TechModule}
+        name="Games"
+        component={Games}
         options={{
-          title: 'ପ୍ରଯୁକ୍ତିବିଦ୍ୟା',
+          title: 'Games',
           headerTitleStyle: {
             // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
@@ -475,7 +505,6 @@ const StackNavigator = ({navigation}) => {
           // headerTitleAlign: 'center',
         }}
       />
-
       {/* traioning part ends here */}
     </Stack.Navigator>
   );

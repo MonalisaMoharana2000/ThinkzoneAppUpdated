@@ -3182,7 +3182,7 @@ const TechContent = ({route, navigation}) => {
                                                 styles.iconusersuserLayout,
                                               ]}
                                               resizeMode="cover"
-                                              source={require('../assets/Image/bluetik.png')}
+                                              // source={require('../assets/Image/bluetik.png')}
                                             />
                                           )}
                                         </Text>

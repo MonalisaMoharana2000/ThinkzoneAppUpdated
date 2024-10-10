@@ -53,46 +53,8 @@ const Home = ({navigation}, props) => {
   const [maintainanceModal, setmaintainanceModal] = useState(false);
   const [deviceId, setDeviceId] = useState('');
   // console.log('deviceId--->', deviceId);
-  // const user = useSelector(state => state.userdata.user?.resData);
-  const user = [
-    {
-      middlename: 'bhh',
-      passcode: 'GURUBBS0324',
-      passcodeRequested: false,
-      image: '',
-      userpolicy: 'agreed',
-      _id: '66a9f49bb4e0ca12a84fb500',
-      userid: 'mkhbhhhyh.7683939162@tz.in',
-      emailid: 'monalisamoharana99@gmail.com',
-      emailidVerified: true,
-      username: 'mkh bhh hyh',
-      firstname: 'mkh',
-      lastname: 'hyh',
-      usertype: 'fellow',
-      guardianname: 'guu',
-      contactnumber: '7683939162',
-      phoneNumberVerified: true,
-      qualification: 'Master of Arts',
-      gender: 'male',
-      dob: '2005-12-24T00:00:00.000Z',
-      aadhaar: '',
-      aadhaarUpdated: false,
-      managerid: 'guru@thinkzone.in',
-      managername: 'guru',
-      status: 'active',
-      stateid: '20',
-      statename: 'odisha',
-      districtid: '',
-      districtname: 'bhadrak',
-      blockid: '',
-      blockname: 'bhandari pokhari',
-      udisecode: '',
-      schoolname: '',
-      graduated: 'no',
-      createdon: '2024-07-31T08:23:55.464Z',
-      __v: 0,
-    },
-  ];
+  const user = useSelector(state => state.UserSlice.user);
+  console.log('==================', user);
 
   const fetchDeviceId = async () => {
     try {
@@ -466,6 +428,8 @@ const Home = ({navigation}, props) => {
       // smallIcon: smallIcon,
       largeIcon: largeIcon, // Add the smallIcon property here
     };
+    console.log('fcm_obj------->', fcm_obj);
+
     API.get(`getfcmtokenidbyuserid/${user[0].userid}`).then(
       getRes => {
         if (getRes.data.length > 0) {
@@ -550,12 +514,6 @@ const Home = ({navigation}, props) => {
   //   );
   // }, []);
   //^--------------------Attendance Modal to alert user------------------------------
-  const [openAttendanceModal, setOpenAttendanceModal] = useState(false);
-  const attendance = 12;
-  const userdatas = user;
-  const currentDate = moment();
-  const registrationDate = moment(userdatas[0]?.createdon);
-  const daysDifference = currentDate.diff(registrationDate, 'days');
 
   // console.log('attendane---------------->', attendance);
 
@@ -696,9 +654,6 @@ const Home = ({navigation}, props) => {
     }, []),
   );
 
-  const {userid, username, usertype, managerid, managername, passcode} =
-    user[0];
-
   const [isLoading, setIsloading] = useState(false);
   const [achieve, setAchieve] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -718,7 +673,7 @@ const Home = ({navigation}, props) => {
   }, []);
 
   useEffect(() => {
-    API.get(`getUserProgress/${user[0].userid}`).then(
+    API.get(`getUserProgress/${user[0]?.userid}`).then(
       // API.get(`getUserProgress/jayprakashbehera030@gmail.com`).then(
       response => {
         //
@@ -1020,7 +975,7 @@ const Home = ({navigation}, props) => {
   const [statusBaseline, setStatusBaseline] = useState('');
   //
   useEffect(() => {
-    API.get(`getteacherbaselinestatus/${user[0].userid}`).then(
+    API.get(`getteacherbaselinestatus/${user[0]?.userid}`).then(
       response => {
         //
         setStatusBaseline(response.data.status);
@@ -1035,7 +990,7 @@ const Home = ({navigation}, props) => {
   const [statusPPT, setStatusPPT] = useState(false);
 
   useEffect(() => {
-    API.get(`ppt_trans_getoverallstatus/${user[0].userid}/${language}`).then(
+    API.get(`ppt_trans_getoverallstatus/${user[0]?.userid}/${language}`).then(
       response => {
         //
         if (response.data.status == 'complete') {
@@ -1053,7 +1008,7 @@ const Home = ({navigation}, props) => {
   //
 
   useEffect(() => {
-    API.get(`gettrainingoverallmarks/${user[0].userid}/${language}`).then(
+    API.get(`gettrainingoverallmarks/${user[0]?.userid}/${language}`).then(
       response => {
         //
 
@@ -1065,7 +1020,7 @@ const Home = ({navigation}, props) => {
         //
       },
     );
-    API.get(`checknsdceligibility/${user[0].userid}`).then(
+    API.get(`checknsdceligibility/${user[0]?.userid}`).then(
       response => {
         if (response.data.status != 'endline incomplete') {
           setStatusEndline(true);
@@ -1123,8 +1078,8 @@ const Home = ({navigation}, props) => {
     //     setCoin(response.data.coins);
     //   });
     const d_data = {
-      userid: user[0].userid,
-      usertype: user[0].usertype,
+      userid: user[0]?.userid,
+      usertype: user[0]?.usertype,
       language: language,
     };
     // dispatch(TrainingSlice.getModuleStart({d_data}));
@@ -1147,7 +1102,7 @@ const Home = ({navigation}, props) => {
   // };
 
   useEffect(() => {
-    API.get(`checkUserInLboard/${user[0].userid}/${user[0].usertype}`)
+    API.get(`checkUserInLboard/${user[0]?.userid}/${user[0]?.usertype}`)
       .then(response => {
         //
         setResult(response.data);
@@ -1183,7 +1138,7 @@ const Home = ({navigation}, props) => {
   }, []);
 
   useEffect(() => {
-    API.get(`getAllStatus/${user[0].userid}`).then(
+    API.get(`getAllStatus/${user[0]?.userid}`).then(
       // API.get(`getUserProgress/jayprakashbehera030@gmail.com`).then(
       response => {
         setStatus(response.data);
@@ -1668,7 +1623,7 @@ const Home = ({navigation}, props) => {
                             color: 'black',
                           },
                         ]}>
-                        {user[0].firstname}
+                        {user[0]?.firstname}
                       </Text>
                       🎉{' '}
                     </Text>
@@ -1811,7 +1766,7 @@ const Home = ({navigation}, props) => {
                         color: '#666666',
                       },
                     ]}>
-                    {user[0].username}
+                    {user[0]?.username}
                   </Text>
                   <Text style={[styles.username, {fontSize: 12, top: 10}]}>
                     ଆପଣ ଲିଡରବୋର୍ଡରେ ସ୍ଥାନ ହାସଲ କରିଛନ୍ତି । ଆପଣ ଯଦି ଏହି ମାସ ଶେଷ
@@ -1893,7 +1848,7 @@ const Home = ({navigation}, props) => {
                       ଶିକ୍ଷକ ବିଭାଗ
                     </Text>
 
-                    {usertype === 'fellow' ? (
+                    {user[0]?.usertype === 'fellow' ? (
                       <View
                         style={{
                           paddingTop: 8,
@@ -1976,7 +1931,7 @@ const Home = ({navigation}, props) => {
                           </TouchableOpacity>
                         </ScrollView>
                       </View>
-                    ) : usertype === 'school' ? (
+                    ) : user[0]?.usertype === 'school' ? (
                       <View
                         style={{
                           paddingTop: 8,
@@ -2241,7 +2196,7 @@ const Home = ({navigation}, props) => {
                       ଗତିବିଧି ବିଭାଗ
                     </Text>
 
-                    {usertype === 'fellow' ? (
+                    {user[0]?.usertype === 'fellow' ? (
                       <View style={{paddingTop: 8, paddingBottom: 20}}>
                         <ScrollView
                           horizontal={true}
@@ -2346,7 +2301,7 @@ const Home = ({navigation}, props) => {
                           </TouchableOpacity>
                         </ScrollView>
                       </View>
-                    ) : usertype === 'school' ? (
+                    ) : user[0]?.usertype === 'school' ? (
                       <View style={{paddingTop: 8, paddingBottom: 20}}>
                         <ScrollView
                           horizontal={true}
@@ -2532,7 +2487,7 @@ const Home = ({navigation}, props) => {
                     </Text>
 
                     <View style={{paddingTop: 8, paddingBottom: 20}}>
-                      {usertype === 'fellow' ? (
+                      {user[0]?.usertype === 'fellow' ? (
                         <ScrollView
                           horizontal={true}
                           showsHorizontalScrollIndicator={false}>
@@ -2667,7 +2622,7 @@ const Home = ({navigation}, props) => {
                             </View>
                           </TouchableOpacity> */}
                         </ScrollView>
-                      ) : usertype === 'school' ? (
+                      ) : user[0]?.usertype === 'school' ? (
                         <ScrollView
                           horizontal={true}
                           showsHorizontalScrollIndicator={false}>

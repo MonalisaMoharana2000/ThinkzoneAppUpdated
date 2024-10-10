@@ -29,6 +29,7 @@ import TrainingSubmodulePage from '../Pages/TrainingSubmodulePage';
 import Certificate from '../Pages/Certificate';
 import TechContent from '../Pages/TechContent';
 import TechAssignment from '../Pages/TechAssignment';
+import SelectFromMultipleGames from '../Pages/SelectFromMultipleGames';
 import CommonMonthlyPage from '../Pages/CommonMonthlyPage';
 import CommonMonthlyQuiz from '../Pages/CommonMonthlyQuiz';
 import Profile from '../Pages/Profile';
@@ -292,6 +293,18 @@ const StackNavigator = ({navigation}) => {
             // letterSpacing: 2,
           },
           // headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="SelectFromMultiple"
+        component={SelectFromMultipleGames}
+        options={{
+          title: 'Select From Multiple',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
         }}
       />
       {/* traioning part ends here */}

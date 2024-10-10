@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance
 const API = axios.create({
-  baseURL: 'https://thinkzone.in.net/thinkzone', // Ensure this is correct 
+  baseURL: 'https://thinkzone.co/thinkzone', // Ensure this is correct
   headers: {
     'Content-Type': 'application/json',
   },

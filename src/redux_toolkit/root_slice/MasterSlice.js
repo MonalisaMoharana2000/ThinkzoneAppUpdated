@@ -2,11 +2,11 @@
 import {combineReducers} from '@reduxjs/toolkit';
 import UserSlice from '../features/users/UserSlice';
 import StudentSlice from '../features/students/StudentSlice';
-import {FcmActions} from '../features/fcm/FcmSlice';
+import TrainingSlice from '../features/training/TrainingSlice';
 
 const MasterSlice = combineReducers({
   UserSlice,
   StudentSlice,
-  FcmActions,
+  TrainingSlice,
 });
 export default MasterSlice;

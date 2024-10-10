@@ -27,14 +27,12 @@ import axios from 'axios';
 import API from '../environment/Api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useRef} from 'react';
-// import Quiz from '../components/Quiz';
+import Quiz from '../components/Quiz';
 import HtmlContentCoponent from '../components/HtmlContentCoponent';
 import Colors from '../utils/Colors';
 import {useSelector, useDispatch} from 'react-redux';
 import Norecord from '../components/Norecord';
-// import * as TrainingSliceNew from '../redux/slices/TrainingSliceNew';
-// import * as types from '../redux/slices/UserSlice';
-// import Popup from '../components/Popup';
+import Popup from '../components/Popup';
 import {useEffect} from 'react';
 import Modals from '../components/Modals';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -42,21 +40,21 @@ import FabButton from '../components/FabButton';
 // import dynamicLinks from '@react-native-firebase/dynamic-links';
 import {useFocusEffect} from '@react-navigation/native';
 import {FontFamily, Color} from '../GlobalStyle';
-import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
+// import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import Orientation from 'react-native-orientation-locker';
 
-import VideoPlayer from 'react-native-video-player';
+//import VideoPlayer from 'react-native-video-player';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 // import Entypo from 'react-native-vector-icons/Entypo';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// import PdfViewer from '../components/PdfViewer';
+import PdfViewer from '../components/PdfViewer';
 import Loading from '../components/Loading';
 import Nocontents from '../components/Nocontents';
 import {app_versions} from './Home';
-import YouTube from 'react-native-youtube-iframe';
+//import YouTube from 'react-native-youtube-iframe';
 const audioPlayer = new AudioRecorderPlayer();
 const CommunityEngagementContentView = ({route, navigation}) => {
   const data = route.params.item;
@@ -65,7 +63,7 @@ const CommunityEngagementContentView = ({route, navigation}) => {
   const {topicId, topicName} = data;
   const {program, sclass, subject} = route.params;
   const dispatch = useDispatch();
-  const user = useSelector(state => state.UserSlice?.user?.data?.resData);
+  const user = useSelector(state => state.userdata.user.resData);
   const {username, userid, managerid, managername, usertype, passcode} =
     user[0];
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -731,13 +729,13 @@ const CommunityEngagementContentView = ({route, navigation}) => {
                         <HtmlContentCoponent sourceData={item.value} />
                       )}
                       {item.type === 'image' && (
-                        <ReactNativeZoomableView
-                          maxZoom={3} // Example: The image can be zoomed in up to 3 times its original size.
-                          minZoom={1} // Example: The image cannot be zoomed out more than its original size.
-                          zoomStep={0.5} // Example: Each zoom-in or zoom-out changes the zoom level by 0.5.
-                          initialZoom={1} // Example: The image is displayed at its original size initially.
-                          bindToBorders={true}
-                          onZoomAfter={logOutZoomState}
+                        <View
+                          // maxZoom={3} // Example: The image can be zoomed in up to 3 times its original size.
+                          // minZoom={1} // Example: The image cannot be zoomed out more than its original size.
+                          // zoomStep={0.5} // Example: Each zoom-in or zoom-out changes the zoom level by 0.5.
+                          // initialZoom={1} // Example: The image is displayed at its original size initially.
+                          // bindToBorders={true}
+                          // onZoomAfter={logOutZoomState}
                           style={{
                             backgroundColor: Colors.white,
                             alignSelf: 'center',
@@ -752,7 +750,7 @@ const CommunityEngagementContentView = ({route, navigation}) => {
                               source={{uri: `${item.value}`}}
                               // onLoadStart={() => setLoadingImage(true)}
                               onLoad={() => setLoadingImage(false)}
-                              // resizeMode="contain"
+                              resizeMode="contain"
                               style={{
                                 width: window.WindowWidth * 0.9,
                                 // height: SIZES.WindowHeigth * 0.9,
@@ -765,7 +763,7 @@ const CommunityEngagementContentView = ({route, navigation}) => {
                               }}
                             />
                           )}
-                        </ReactNativeZoomableView>
+                        </View>
                       )}
                       {item.type === 'audio' && (
                         <>
@@ -907,26 +905,26 @@ const CommunityEngagementContentView = ({route, navigation}) => {
                                 alignItems: 'center',
                               }}>
                               {/* <ActivityIndicator
-                                        size="large"
-                                        color="#0060ca"
-                                      /> */}
+                                      size="large"
+                                      color="#0060ca"
+                                    /> */}
                             </View>
                           )}
                           <View style={{aspectRatio: 17 / 9}}>
                             {/* <TouchableOpacity onPress={openModal}>
-                                <Image
-                                  style={{
-                                    width: 40,
-                                    top: -8,
-                                    height: 40,
-                                    left: 20,
-  
-                                    paddingBottom: 10,
-                                    alignSelf: 'flex-start',
-                                  }}
-                                  source={{uri: `${item.thumbnail}`}}
-                                />
-                              </TouchableOpacity> */}
+                              <Image
+                                style={{
+                                  width: 40,
+                                  top: -8,
+                                  height: 40,
+                                  left: 20,
+
+                                  paddingBottom: 10,
+                                  alignSelf: 'flex-start',
+                                }}
+                                source={{uri: `${item.thumbnail}`}}
+                              />
+                            </TouchableOpacity> */}
 
                             {item.thumbnail?.length > 0 ? (
                               <TouchableOpacity onPress={openModal}>
@@ -969,39 +967,39 @@ const CommunityEngagementContentView = ({route, navigation}) => {
                         </View>
                       )}
                       {/* {item.type === 'youtube' && (
-                          <View style={{top: '2%', alignSelf: 'center'}}>
-                            <YouTube
-                              videoId={item.value}
-                              // height={windowHeight * 8}
-                              play={true}
-                              resumePlayAndroid={false}
-                              height={340}
-                              width={349}
-                              playerParams={{
-                                modestbranding: 1, // Enable YouTube logo
-                                controls: 0, // Disable player controls (including copy link button)
-                                disablekb: 1, // Disable keyboard controls
-                              }}
-                              onReady={onReady}
-                              webViewStyle={{
-                                opacity: 0.99,
-                                display: isReadyForRender ? 'flex' : 'none',
-                              }}
-                              webViewProps={{
-                                androidLayerType: isReadyForRender
-                                  ? 'hardware'
-                                  : 'software',
-                              }}
-                              onChangeState={event => {
-                                console.log('State:', event.state);
-                                if (event.state === 'ended') {
-                                  setFocusedIndex(null); // Reset focused index when the video ends
-                                }
-                              }}
-                              onError={error => console.log('Error:', error)}
-                            />
-                          </View>
-                        )} */}
+                        <View style={{top: '2%', alignSelf: 'center'}}>
+                          <YouTube
+                            videoId={item.value}
+                            // height={windowHeight * 8}
+                            play={true}
+                            resumePlayAndroid={false}
+                            height={340}
+                            width={349}
+                            playerParams={{
+                              modestbranding: 1, // Enable YouTube logo
+                              controls: 0, // Disable player controls (including copy link button)
+                              disablekb: 1, // Disable keyboard controls
+                            }}
+                            onReady={onReady}
+                            webViewStyle={{
+                              opacity: 0.99,
+                              display: isReadyForRender ? 'flex' : 'none',
+                            }}
+                            webViewProps={{
+                              androidLayerType: isReadyForRender
+                                ? 'hardware'
+                                : 'software',
+                            }}
+                            onChangeState={event => {
+                              console.log('State:', event.state);
+                              if (event.state === 'ended') {
+                                setFocusedIndex(null); // Reset focused index when the video ends
+                              }
+                            }}
+                            onError={error => console.log('Error:', error)}
+                          />
+                        </View>
+                      )} */}
                     </View>
                   );
                 })}
@@ -1014,8 +1012,8 @@ const CommunityEngagementContentView = ({route, navigation}) => {
                   <ScrollView>
                     <View style={{flex: 1}}>
                       {/* <Text>
-                                        hlo {Dimensions.get('window').height}
-                                      </Text> */}
+                                      hlo {Dimensions.get('window').height}
+                                    </Text> */}
                       {videoLoading && (
                         <ActivityIndicator
                           size="large"
@@ -1064,9 +1062,9 @@ const CommunityEngagementContentView = ({route, navigation}) => {
                         />
                       </TouchableOpacity>
                       {/* <Button
-                                        title="Close Full Screen"
-                                        onPress={closeModal}
-                                      /> */}
+                                      title="Close Full Screen"
+                                      onPress={closeModal}
+                                    /> */}
                     </View>
                   </ScrollView>
                 </Modal>
@@ -1079,7 +1077,7 @@ const CommunityEngagementContentView = ({route, navigation}) => {
                         // marginLeft: 10,
                       }
                     }>
-                    <FabButton
+                    {/* <FabButton
                       image={require('../assets/Image/share.png')}
                       // onPress={shareLink}
                       onPress={() =>
@@ -1088,7 +1086,7 @@ const CommunityEngagementContentView = ({route, navigation}) => {
                           ToastAndroid.SHORT,
                         )
                       }
-                    />
+                    /> */}
                     {responseSave === true ? (
                       <TouchableOpacity
                         style={styles.button}
@@ -1141,13 +1139,13 @@ const CommunityEngagementContentView = ({route, navigation}) => {
                   },
                 ]}>
                 {/* <Pressable onPress={() => setModal(false)}>
-                <Entypo
-                  name="circle-with-cross"
-                  // color={Color.primary}
-                  size={30}
-                  style={{marginLeft: 255, marginTop: -25}}
-                />
-              </Pressable> */}
+              <Entypo
+                name="circle-with-cross"
+                // color={Color.primary}
+                size={30}
+                style={{marginLeft: 255, marginTop: -25}}
+              />
+            </Pressable> */}
                 <Image
                   style={[
                     styles.tinyLogos,

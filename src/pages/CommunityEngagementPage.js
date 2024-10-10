@@ -11,10 +11,10 @@ import {
 } from 'react-native';
 import Colors from '../utils/Colors';
 
-// import ListItem from '../components/ListItem';
+import ListItem from '../components/ListItem';
 import React, {useEffect, useState} from 'react';
 import API from '../environment/Api';
-// import PdfViewer from '../components/PdfViewer';
+import PdfViewer from '../components/PdfViewer';
 import {FontFamily, FontSize, Border, Color} from '../GlobalStyle';
 import DropdownComponent from '../components/DropdownComponent';
 import {useDispatch, useSelector} from 'react-redux';
@@ -33,9 +33,7 @@ const CommunityEngagementPage = ({navigation, route}) => {
   const [customModal, setCustomModal] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  const teacherdata = useSelector(
-    state => state.UserSlice?.user?.data?.resData,
-  );
+  const teacherdata = useSelector(state => state.userdata.user?.resData);
 
   const [sclass, setSclass] = useState(1);
   const [program, setProgram] = useState('pge');
@@ -123,35 +121,35 @@ const CommunityEngagementPage = ({navigation, route}) => {
         ) : (
           <View>
             {/* <DropdownComponent
-                data={programArr}
-                onChange={getProgram}
-                label={'label'}
-                image={require('../assets/Image/book-square.png')}
-              /> */}
+              data={programArr}
+              onChange={getProgram}
+              label={'label'}
+              image={require('../assets/Image/book-square.png')}
+            /> */}
             {/* {program === 'pge' ? (
-                <DropdownComponent
-                  data={classArr}
-                  onChange={getClass}
-                  label={'class'}
-                  image={require('../assets/Image/driver.png')}
-                />
-              ) : null} */}
+              <DropdownComponent
+                data={classArr}
+                onChange={getClass}
+                label={'class'}
+                image={require('../assets/Image/driver.png')}
+              />
+            ) : null} */}
 
             {/* {program === 'ece' ? (
-                <DropdownComponent
-                  data={levelArr}
-                  onChange={getClass}
-                  label={'class'}
-                  image={require('../assets/Image/driver.png')}
-                />
-              ) : null} */}
+              <DropdownComponent
+                data={levelArr}
+                onChange={getClass}
+                label={'class'}
+                image={require('../assets/Image/driver.png')}
+              />
+            ) : null} */}
 
             {/* <DropdownComponent
-                data={subjectArr}
-                onChange={getSubject}
-                label={'label'}
-                image={require('../assets/Image/driver.png')}
-              /> */}
+              data={subjectArr}
+              onChange={getSubject}
+              label={'label'}
+              image={require('../assets/Image/driver.png')}
+            /> */}
             {fln.length != 0 ? (
               // <FlatList
               //   background
@@ -270,7 +268,7 @@ const CommunityEngagementPage = ({navigation, route}) => {
                       top: 20,
                     }}
                     source={require('../assets/Image/norec.jpg')}
-                    // resizeMode="contain" // You can change the resizeMode as per your requirement
+                    resizeMode="contain" // You can change the resizeMode as per your requirement
                   />
                 </View>
               </ReactNativeZoomableView>

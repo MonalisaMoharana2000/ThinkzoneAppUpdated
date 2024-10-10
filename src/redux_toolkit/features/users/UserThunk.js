@@ -4,17 +4,11 @@ import API from '../../../environment/Api';
 // Fetch user data by user ID
 export const fetchUserDataThunk = createAsyncThunk(
   'user/fetchuser',
-  async (user, {rejectWithValue}) => {
-    try {
-      let response = await API.get(`getuserbyuserid/${user}`);
-      console.log('response in API call', response.data);
-
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(
-        error.response ? error.response.data : 'Server Error',
-      );
-    }
+  async userid => {
+    // let response = await api.post("/authenticateuser", user);
+    let response = await API.get(`getuserbyuserid/${userid}`);
+    // authUserCred/:userid/:pswd
+    return response.data;
   },
 );
 

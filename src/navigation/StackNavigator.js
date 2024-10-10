@@ -13,6 +13,8 @@ import {TouchableOpacity, ActivityIndicator, View} from 'react-native';
 import {Color} from '../GlobalStyle';
 import StudentListPage from '../Pages/StudentListPage';
 import StudentAssessmentDetails from '../Pages/StudentAssessmentDetails';
+import TechModule from '../Pages/TechModule';
+import CommonMonthlyReviewPage from '../Pages/CommonMonthlyReviewPage';
 import PhoneVerificationGoogle from '../Pages/PhoneVerificationGoogle';
 import Register from '../Pages/Register';
 import RegisterPasscode from '../Pages/RegisterPasscode';
@@ -40,6 +42,13 @@ import Payment from '../Pages/Payment';
 import PaymentDetails from '../Pages/PaymentDetails';
 import StudentListActivity from '../Pages/StudentListActivity';
 
+import TrainingSubmodulePage from '../Pages/TrainingSubmodulePage';
+import Certificate from '../Pages/Certificate';
+import TechContent from '../Pages/TechContent';
+import TechAssignment from '../Pages/TechAssignment';
+import CommonMonthlyPage from '../Pages/CommonMonthlyPage';
+import CommonMonthlyQuiz from '../Pages/CommonMonthlyQuiz';
+import Profile from '../Pages/Profile';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
@@ -99,8 +108,25 @@ const StackNavigator = ({navigation}) => {
         </>
       ) : null}
 
-      <Stack.Screen name="Home" component={BottomTabNavigator} />
-      {/*---------------------------------------------------- Student part starts-------------------------------------------------------- */}
+      <Stack.Screen
+        name="Home"
+        component={BottomTabNavigator}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        name="profile"
+        component={Profile}
+        options={{
+          title: 'Profile',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+        }}
+      />
+
+      {/*----------------------------- Student part starts --------------------------------*/}
+
       <Stack.Screen
         name="studentlist"
         component={StudentList}
@@ -156,6 +182,7 @@ const StackNavigator = ({navigation}) => {
           },
         }}
       />
+
       <Stack.Screen
         name="attendancelist"
         component={Attendancelist}
@@ -394,6 +421,62 @@ const StackNavigator = ({navigation}) => {
       />
 
       {/*------------------------------ Student part ends --------------------------------*/}
+
+      {/* training part starts here */}
+
+      <Stack.Screen
+        name="pedagogy"
+        component={TechModule}
+        options={{
+          title: 'ଶିକ୍ଷଣ ଓ ଶିକ୍ଷାଦାନ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="techcontent"
+        component={TechContent}
+        options={{
+          // title: 'ପ୍ରଯୁକ୍ତିବିଦ୍ୟା',
+          // headerLeft: false,
+          headerShown: false,
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="techAssignment"
+        component={TechAssignment}
+        options={{
+          title: 'TechAssignment',
+          // headerLeft: false,
+          headerShown: false,
+          headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="TrainingSubmodulePage"
+        component={TrainingSubmodulePage}
+        options={{title: 'SUBMODULE', headerShown: false}}
+      />
+      <Stack.Screen
+        name="techmodule"
+        component={TechModule}
+        options={{
+          title: 'ପ୍ରଯୁକ୍ତିବିଦ୍ୟା',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
+        }}
+      />
+
+      {/* traioning part ends here */}
     </Stack.Navigator>
   );
 };

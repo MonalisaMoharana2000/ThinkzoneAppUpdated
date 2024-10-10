@@ -20,50 +20,17 @@ import {useFocusEffect} from '@react-navigation/native';
 import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
 
 import {Badge} from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {fetchUserDataThunk} from '../redux_toolkit/features/users/UserThunk';
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const Header = ({route, navigation, handleClick}) => {
-  const userdatas = [
-    {
-      middlename: 'bhh',
-      passcode: 'GURUBBS0324',
-      passcodeRequested: false,
-      image: '',
-      userpolicy: 'agreed',
-      _id: '66a9f49bb4e0ca12a84fb500',
-      userid: 'mkhbhhhyh.7683939162@tz.in',
-      emailid: 'monalisamoharana99@gmail.com',
-      emailidVerified: true,
-      username: 'mkh bhh hyh',
-      firstname: 'mkh',
-      lastname: 'hyh',
-      usertype: 'fellow',
-      guardianname: 'guu',
-      contactnumber: '7683939162',
-      phoneNumberVerified: true,
-      qualification: 'Master of Arts',
-      gender: 'male',
-      dob: '2005-12-24T00:00:00.000Z',
-      aadhaar: '',
-      aadhaarUpdated: false,
-      managerid: 'guru@thinkzone.in',
-      managername: 'guru',
-      status: 'active',
-      stateid: '20',
-      statename: 'odisha',
-      districtid: '',
-      districtname: 'bhadrak',
-      blockid: '',
-      blockname: 'bhandari pokhari',
-      udisecode: '',
-      schoolname: '',
-      graduated: 'no',
-      createdon: '2024-07-31T08:23:55.464Z',
-      __v: 0,
-    },
-  ];
+  let storedData;
 
-  const {usertype, schoolname} = userdatas[0];
-  const [userdata, setUserdata] = useState(userdatas);
+  const userdatas = useSelector(state => state.UserSlice?.user);
+  console.log('=========userdatas', userdatas);
+  const dispatch = useDispatch();
+  const {usertype, schoolname} = userdatas;
+
   const [notficationCount, setNotificationCount] = useState();
   const [imageNotFound, setImageNotFound] = useState(false);
 
@@ -71,6 +38,31 @@ const Header = ({route, navigation, handleClick}) => {
   const [imgerr, setImgerr] = useState(false);
 
   const [blinkAnimation] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    const fetchStoredData = async () => {
+      storedData = await AsyncStorage.getItem('userData');
+      console.log('storedData--------->', storedData);
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        console.log('Parsed storedData--------->', parsedData);
+        const userSet = await dispatch(
+          fetchUserDataThunk(parsedData?.resData[0]?.userid),
+        );
+        console.log('userSet----------->', userSet);
+      }
+    };
+    fetchStoredData();
+  }, []);
+
+  // useFocusEffect(
+  //   React.useCallback(async () => {
+  //     const data = await dispatch(
+  //       fetchUserDataThunk(storedData?.resData[0]?.userid),
+  //     );
+  //     console.log('======================data', data);
+  //   }, []),
+  // );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -101,12 +93,6 @@ const Header = ({route, navigation, handleClick}) => {
   // console.log('imageNotFound====>', imageNotFound);
   useFocusEffect(
     React.useCallback(() => {
-      // Do something when the screen is focused
-      Api.get(`getuserbyuserid/${userdatas[0]?.userid}`).then(response => {
-        setUserdata(response.data);
-        setIsloading(false);
-      });
-
       Api.get(`getUnreadNotifCount/${userdatas[0]?.userid}`).then(response => {
         // console.log('not--->', response.data);
         setNotificationCount(response.data);
@@ -135,7 +121,7 @@ const Header = ({route, navigation, handleClick}) => {
           //   `getUserProgress/${userdata[0]?.userid}`,
           // );
           const response = await Api.get(
-            `getCurrentMonthTimeSpent/${userdata[0]?.userid}`,
+            `getCurrentMonthTimeSpent/${userdatas[0]?.userid}`,
           );
           console.log(
             'responsetime---->',
@@ -193,7 +179,7 @@ const Header = ({route, navigation, handleClick}) => {
   return (
     <View style={styles.studentRegister}>
       <View style={[styles.studentRegisterChild, styles.rectangleViewBg]} />
-      {userdata[0]?.image === '' || !userdata[0]?.image ? (
+      {userdatas[0]?.image === '' || !userdatas[0]?.image ? (
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('profile', {
@@ -254,7 +240,7 @@ const Header = ({route, navigation, handleClick}) => {
                 imageNotFound
                   ? require('../assets/Photos/userss.png') // Local fallback image
                   : {
-                      uri: userdata[0]?.image, // Check if userdata[0] exists before accessing its image property
+                      uri: userdatas[0]?.image, // Check if userdata[0] exists before accessing its image property
                     }
               }
               accessibilityLabel="User Profile Image"
@@ -274,7 +260,7 @@ const Header = ({route, navigation, handleClick}) => {
       )}
 
       <Text style={[styles.helloRam]}>
-        Hello, {userdata[0]?.firstname}
+        Hello, {userdatas[0]?.firstname}
         {/* <MaterialCommunityIcons
           name="hand-wave"
           size={17}
@@ -314,38 +300,7 @@ const Header = ({route, navigation, handleClick}) => {
           schoolname
         </Text>
       ) : null}
-      {/* <View style={styles.logoContainer}>
-        <View style={styles.logoCont}>
-          <Image
-            source={require('../assets/Image/tzicon.png')}
-            style={styles.logo}
-          />
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('notification', {
-                type: 'notification',
-              })
-            }
-            style={[styles.logoContainer, {top: 50, left: 5}]}>
-            <Image
-              source={require('../assets/Image/notification.png')}
-              style={styles.logo}
-            />
-            {notficationCount?.unreadCount === 0 ? null : (
-              <Badge
-                style={{
-                  top: -30,
-                  backgroundColor: '#c70039',
-                  // color: Color.royalblue,
-                  // fontSize: 11,
-                  fontWeight: 'bold',
-                }}>
-                {notficationCount?.unreadCount}
-              </Badge>
-            )}
-          </TouchableOpacity>
-        </View>
-      </View> */}
+
       <View style={styles.logoContainer}>
         <View style={styles.logoCont}>
           <TouchableOpacity

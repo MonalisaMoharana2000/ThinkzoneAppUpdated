@@ -34,8 +34,7 @@ import {app_versions} from './Home';
 
 const Feedback = ({route, navigation}) => {
   const user = useSelector(state => state.UserSlice.user);
-  const {username, userid, managerid, managername, usertype, passcode} =
-    user[0];
+  const {username, userid, managerid, managername, usertype, passcode} = user;
   const [loading, setLoading] = useState(false);
   const [surveys, setSurveys] = useState([]);
   const [quizModal, setQuizModal] = useState(false);

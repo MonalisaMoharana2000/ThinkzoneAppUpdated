@@ -675,18 +675,6 @@ const TechContent = ({route, navigation}) => {
 
         setRefData(responseReference?.data?.referenceData);
         setRefLoad(false);
-        const responseQuiz = await API.get(
-          `/getTchTrainingQuiz/${user[0].userid}/quiz1/${route?.params?.whole_data?.topicId}`,
-        );
-        console.log('responseQuiz=================>', responseQuiz);
-
-        setTopicQuizData(responseQuiz?.data?.quiz1Data);
-
-        const responseQuiz2 = await API.get(
-          `/getTchTrainingQuiz/${user[0].userid}/quiz2/${route?.params?.whole_data?.topicId}`,
-        );
-
-        setTopicQuizData2(responseQuiz2?.data?.quiz2Data);
 
         const responseGamified = await API.get(
           `/getTchTrainingGamified/${user[0].userid}/gamified/${route?.params?.whole_data?.topicId}`,
@@ -756,6 +744,10 @@ const TechContent = ({route, navigation}) => {
       }
     }
   };
+
+  useEffect(() => {
+    fetchDataAgain();
+  }, []);
 
   const handleLinkPress = item => {
     // This function will be called when the link is pressed

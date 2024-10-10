@@ -32,6 +32,7 @@ import TechAssignment from '../Pages/TechAssignment';
 import CommonMonthlyPage from '../Pages/CommonMonthlyPage';
 import CommonMonthlyQuiz from '../Pages/CommonMonthlyQuiz';
 import Profile from '../Pages/Profile';
+import Games from '../Pages/Games';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
@@ -264,7 +265,19 @@ const StackNavigator = ({navigation}) => {
           // headerTitleAlign: 'center',
         }}
       />
-
+      <Stack.Screen
+        name="Games"
+        component={Games}
+        options={{
+          title: 'Games',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
+        }}
+      />
       {/* traioning part ends here */}
     </Stack.Navigator>
   );

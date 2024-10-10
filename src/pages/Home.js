@@ -32,7 +32,7 @@ import {
   PermissionsAndroid,
   Easing,
 } from 'react-native';
-
+import messaging from '@react-native-firebase/messaging';
 import API from '../environment/Api';
 
 import * as window from '../utils/dimensions';
@@ -444,6 +444,50 @@ const Home = ({navigation}, props) => {
     descriptionTextSize: 14,
     descriptionTextColor: '#ffffff',
   };
+
+  const getToken = async () => {
+    const token = await messaging().getToken();
+    console.log('================token', token);
+
+    // Alert.alert(token);
+    // const smallIcon =
+    //   Platform.OS === 'android'
+    //     ? '@drawable/ic_notification' // Replace with the actual drawable resource name for Android
+    //     : 'ic_notification';
+    const largeIcon =
+      Platform.OS === 'android'
+        ? '@drawable/ic_notification' // Replace with the actual drawable resource name for Android
+        : 'ic_notification';
+    const fcm_obj = {
+      userid: user[0].userid,
+      username: user[0].username,
+      token: token,
+      refresh_token: token,
+      // smallIcon: smallIcon,
+      largeIcon: largeIcon, // Add the smallIcon property here
+    };
+    API.get(`getfcmtokenidbyuserid/${user[0].userid}`).then(
+      getRes => {
+        if (getRes.data.length > 0) {
+          const tid = getRes.data[0]._id;
+          API.put(`updatefcmtokenid/${tid}`, fcm_obj).then(upGet => {
+            //
+          });
+        } else {
+          API.post(`createnewfcmtokenid`, fcm_obj).then(res => {
+            //
+          });
+        }
+      },
+      err => {
+        // this.serverDownMsg.presentToast();
+      },
+    );
+  };
+
+  useEffect(() => {
+    getToken();
+  }, []);
 
   //Intro QuiZ sTARTS
   const [checkIntro, setCheckIntro] = useState(false);

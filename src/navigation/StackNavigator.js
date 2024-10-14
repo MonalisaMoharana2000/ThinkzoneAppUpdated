@@ -24,16 +24,15 @@ import Register from '../Pages/Register';
 import RegisterPasscode from '../Pages/RegisterPasscode';
 import OtpLoginPhone from '../Pages/OtpLoginPhone';
 import GoogleVerificationPhone from '../Pages/GoogleVerificationPhone';
-
 import TrainingSubmodulePage from '../Pages/TrainingSubmodulePage';
-import Certificate from '../Pages/Certificate';
+
 import TechContent from '../Pages/TechContent';
 import TechAssignment from '../Pages/TechAssignment';
 import SelectFromMultipleGames from '../Pages/SelectFromMultipleGames';
-import CommonMonthlyPage from '../Pages/CommonMonthlyPage';
-import CommonMonthlyQuiz from '../Pages/CommonMonthlyQuiz';
 import Profile from '../Pages/Profile';
 import Games from '../Pages/Games';
+import RearrangeWords from '../Pages/RearrangeWords';
+import Puzzles from '../Pages/Puzzles';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
@@ -300,6 +299,31 @@ const StackNavigator = ({navigation}) => {
         component={SelectFromMultipleGames}
         options={{
           title: 'Select From Multiple',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="RearrangeWords"
+        component={RearrangeWords}
+        options={{
+          title: 'Re-arrange Words',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="Puzzles"
+        component={Puzzles}
+        options={{
+          title: 'Puzzles Words',
           headerTitleStyle: {
             // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,

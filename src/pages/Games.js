@@ -51,8 +51,8 @@ const Games = ({navigation, route}) => {
   );
 
   const gameTypeToScreen = {
-    rearrangement: {title: 'Re-arrange Words', screen: 'DragWords'},
-    puzzle: {title: 'Puzzle Game', screen: 'RearrangeWords'},
+    rearrangement: {title: 'Re-arrange Words', screen: 'RearrangeWords'},
+    puzzle: {title: 'Puzzle Game', screen: 'Puzzles'},
     matching: {title: 'Matching Exercises', screen: 'MatchingExercises'},
     fillInBlanks: {title: 'Fill In the Blanks', screen: 'FillInTheBlanks'},
     selectFromMultiple: {

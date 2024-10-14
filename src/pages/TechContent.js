@@ -22,7 +22,7 @@ import {
   ToastAndroid,
   Linking,
 } from 'react-native';
-import RearrangeComponent from '../components/RearrangeComponent';
+import RearrangeComponent from '../components/PuzzleComponent';
 // import DraggableFlatList, {
 //   ScaleDecorator,
 // } from 'react-native-draggable-flatlist';
@@ -75,7 +75,7 @@ import CarouselImage from '../components/CarouselImage';
 
 import Api from '../environment/Api';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import DragWordComponent from '../components/DragWordComponent';
+import DragWordComponent from '../components/RearrangeWordComponent';
 import Loader from '../components/Loader';
 const audioPlayer = new AudioRecorderPlayer();
 const textAudioPlayer = new AudioRecorderPlayer();

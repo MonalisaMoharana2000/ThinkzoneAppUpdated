@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {useNavigation} from '@react-navigation/native';
+
 import {
   View,
   Text,
@@ -8,15 +8,12 @@ import {
   Dimensions,
   SafeAreaView,
   Alert,
+  ScrollView,
   Image,
 } from 'react-native';
-// import DraggableFlatList, {
-//   ScaleDecorator,
-// } from 'react-native-draggable-flatlist';
-import Api from '../environment/Api';
-import {FontFamily, Color} from '../GlobalStyle';
-import {color} from '@rneui/themed/dist/config';
-import {ScrollView} from 'react-native-gesture-handler';
+import DraggableFlatList, {
+  ScaleDecorator,
+} from 'react-native-draggable-flatlist';
 const {width} = Dimensions.get('window');
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
@@ -100,20 +97,18 @@ const PuzzleItem = ({
           renderItem={({item, drag, isActive}) => (
             console.log('word item--->', item),
             (
-              <ScaleDecorator>
-                <TouchableOpacity
-                  onPressIn={contentStatus !== 'complete' ? drag : null}
-                  style={[
-                    styles.level,
-                    {
-                      backgroundColor: isActive ? 'gray ' : item.color,
-                      height: levelHeight,
-                    },
-                    // isActive && styles.activeLevel,
-                  ]}>
-                  <Text style={styles.levelText}>{item.wordValue}</Text>
-                </TouchableOpacity>
-              </ScaleDecorator>
+              <TouchableOpacity
+                onPressIn={contentStatus !== 'complete' ? drag : null}
+                style={[
+                  styles.level,
+                  {
+                    backgroundColor: isActive ? 'gray ' : item.color,
+                    height: levelHeight,
+                  },
+                  // isActive && styles.activeLevel,
+                ]}>
+                <Text style={styles.levelText}>{item.wordValue}</Text>
+              </TouchableOpacity>
             )
           )}
         />
@@ -122,15 +117,12 @@ const PuzzleItem = ({
   );
 };
 
-const RearrangeComponent = ({
-  route,
+const PuzzleComponent = ({
   puzzles,
   handleDragEnd,
   contentStatus,
   handleSave,
 }) => {
-  const navigation = useNavigation();
-
   return (
     <ScrollView
       showsHorizontalScrollIndicator={false}
@@ -180,7 +172,7 @@ const RearrangeComponent = ({
   );
 };
 
-export default RearrangeComponent;
+export default PuzzleComponent;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

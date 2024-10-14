@@ -2,13 +2,9 @@ import React, {useState, useEffect} from 'react';
 import * as window from '../utils/dimensions';
 
 import {View, StyleSheet, Text, ScrollView, Image} from 'react-native';
-// import DraggableFlatList, {
-//   ScaleDecorator,
-// } from 'react-native-draggable-flatlist';
-import {TouchableOpacity} from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
-import Api from '../environment/Api';
-import {useSelector, useDispatch} from 'react-redux';
+import DraggableFlatList, {
+  ScaleDecorator,
+} from 'react-native-draggable-flatlist';
 
 const DragWordComponent = ({
   data,
@@ -27,14 +23,8 @@ const DragWordComponent = ({
             <DraggableFlatList
               data={data}
               renderItem={renderItem}
-              keyExtractor={item => item.wordId}
-              onDragEnd={({from, to}) => {
-                handleDragEnd({
-                  from: from,
-                  to: to,
-                  data,
-                });
-              }}
+              keyExtractor={item => item.wordId.toString()}
+              onDragEnd={({data}) => handleDragEnd(data)}
               horizontal={true}
               contentContainerStyle={styles.buttonContainer}
             />

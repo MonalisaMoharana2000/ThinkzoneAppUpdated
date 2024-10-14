@@ -168,7 +168,20 @@ const Games = ({navigation, route}) => {
       Alert.alert(
         '🎉 Gamified Quiz Completed!',
         'Well done! You have completed the quiz! ✅',
-        [{text: 'Awesome!', onPress: () => null, style: 'default'}],
+        [
+          {
+            text: 'Awesome!',
+            onPress: () =>
+              navigation.navigate(screen, {
+                multipledata: rearrangementData,
+                topicData: data,
+                moduleData: route.params?.data,
+                match: button,
+                gamifiedData: gamifiedData,
+              }),
+            style: 'default',
+          },
+        ],
       );
     } else {
       navigation.navigate(screen, {

@@ -26,7 +26,7 @@ const Puzzles = ({route}) => {
 
   const topicData = route?.params?.topicData;
   const wholeData = route.params?.match;
-  console.log('wholeData---- ------>', wholeData);
+  console.log('wholeData---------->', data);
   const user = useSelector(state => state.UserSlice.user);
 
   const {userid, username, usertype, managerid, managername, passcode} =
@@ -206,10 +206,17 @@ const Puzzles = ({route}) => {
             puzzles={puzzles}
             handleDragEnd={handleDragEnd}
             handleSave={handleMatched}
+            answered={data?.otherData?.answered}
           />
         </GestureHandlerRootView>
 
-        <TouchableOpacity style={styles.button} onPress={handleSave}>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            data?.otherData?.answered ? styles.disabledButton : {},
+          ]}
+          disabled={data?.otherData?.answered}
+          onPress={data?.otherData?.answered ? null : handleSave}>
           <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
       </View>
@@ -238,6 +245,10 @@ const styles = StyleSheet.create({
     textShadowColor: 'black',
     textShadowOffset: {width: 2, height: 2},
     textShadowRadius: 5,
+  },
+  disabledButton: {
+    backgroundColor: '#cccccc',
+    textShadowColor: 'transparent',
   },
   title: {
     fontSize: 20,

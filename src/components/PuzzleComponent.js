@@ -18,11 +18,12 @@ const {width} = Dimensions.get('window');
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 
 const shuffleArray = array => {
-  for (let i = array.length - 1; i > 0; i--) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
-  return array;
+  return shuffled;
 };
 
 function getIdSequence(arr) {
@@ -32,9 +33,10 @@ function getIdSequence(arr) {
 const PuzzleItem = ({
   levels,
   onDragEnd,
-  navigation,
+
   handleSave,
-  contentStatus,
+
+  answered,
 }) => {
   const [data, setData] = useState(levels);
 
@@ -77,10 +79,7 @@ const PuzzleItem = ({
         },
         {
           text: 'Ok',
-          onPress: () =>
-            handleSave({
-              inputAnswer: data,
-            }),
+          onPress: () => handleSave(),
           style: 'default',
         },
       ]);
@@ -98,14 +97,13 @@ const PuzzleItem = ({
             console.log('word item--->', item),
             (
               <TouchableOpacity
-                onPressIn={contentStatus !== 'complete' ? drag : null}
+                onPressIn={answered ? null : drag}
                 style={[
                   styles.level,
                   {
                     backgroundColor: isActive ? 'gray ' : item.color,
                     height: levelHeight,
                   },
-                  // isActive && styles.activeLevel,
                 ]}>
                 <Text style={styles.levelText}>{item.wordValue}</Text>
               </TouchableOpacity>
@@ -122,6 +120,7 @@ const PuzzleComponent = ({
   handleDragEnd,
   contentStatus,
   handleSave,
+  answered,
 }) => {
   return (
     <ScrollView
@@ -134,10 +133,9 @@ const PuzzleComponent = ({
             console.log('item------------->', item),
             (
               <PuzzleItem
-                // title={item.title}
                 levels={
-                  item?.inputAnswer?.length > 0
-                    ? item?.inputAnswer
+                  answered
+                    ? item?.otherData?.inputAnswer
                     : item.value
                     ? item.value
                     : item.correctAnswer
@@ -145,6 +143,7 @@ const PuzzleComponent = ({
                 onDragEnd={newLevels => handleDragEnd(index, newLevels)}
                 handleSave={handleSave}
                 contentStatus={contentStatus}
+                answered={answered}
               />
             )
           )}
@@ -155,12 +154,9 @@ const PuzzleComponent = ({
         <Image
           style={{
             width: 70,
-            // width:window.WindowWidth0.8,
-            // top: '-5%',
             height: 70,
             position: 'absolute',
             right: 0,
-            borderColor: 'black',
             zIndex: 5,
             alignSelf: 'center',
             bottom: 0,

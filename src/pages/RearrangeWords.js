@@ -16,9 +16,9 @@ import {useNavigation} from '@react-navigation/native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const RearrangeWords = ({route}) => {
-  const {multipledata, topicData, gamifiedData, singledata} = route.params;
+  const {multipledata, topicData, gamifiedData, match} = route.params;
   const [data, setData] = useState(multipledata);
-  console.log('multipledata-------->', multipledata[0]?.correctAnswer);
+  console.log('multipledata-------->', match);
 
   const navigation = useNavigation();
   const user = useSelector(state => state.UserSlice.user);
@@ -26,7 +26,9 @@ const RearrangeWords = ({route}) => {
     user[0];
 
   const renderItem = ({item, drag, isActive}) => (
-    <TouchableOpacity onPressIn={drag} style={styles.buttonWrapper}>
+    <TouchableOpacity
+      onPressIn={match?.otherData?.answered ? null : drag}
+      style={styles.buttonWrapper}>
       <Text style={styles.buttonText}>{item.wordValue}</Text>
     </TouchableOpacity>
   );
@@ -209,7 +211,13 @@ const RearrangeWords = ({route}) => {
           </GestureHandlerRootView>
         </View>
       ))}
-      <TouchableOpacity style={styles.button} onPress={handleSave}>
+      <TouchableOpacity
+        style={[
+          styles.button,
+          match?.otherData?.answered ? styles.disabledButton : {},
+        ]}
+        disabled={match?.otherData?.answered}
+        onPress={match?.otherData?.answered ? null : handleSave}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -221,6 +229,10 @@ export default RearrangeWords;
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+  },
+  disabledButton: {
+    backgroundColor: '#cccccc',
+    textShadowColor: 'transparent',
   },
   buttonWrapper: {
     padding: 15,

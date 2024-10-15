@@ -54,8 +54,10 @@ const PuzzleItem = ({
   }));
 
   useEffect(() => {
-    setData(shuffleArray([...updatedArray]));
-  }, [levels]);
+    if (!answered) {
+      setData(shuffleArray([...updatedArray]));
+    }
+  }, [levels, answered]);
 
   const levelHeight = levels.length > 0 ? 400 / levels.length : 67;
 

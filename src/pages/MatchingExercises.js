@@ -7,7 +7,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import API from '../environment/Api';
 
 const MatchingExercises = ({navigation, route}) => {
-  const user = useSelector(state => state.userdata.user?.resData);
+  const user = useSelector(state => state.UserSlice.user);
   const {userid, username, usertype, managerid, managername, passcode} =
     user[0];
   const data = route.params.topicData;

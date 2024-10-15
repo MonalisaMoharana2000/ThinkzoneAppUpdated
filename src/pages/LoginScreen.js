@@ -1,11 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Alert} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Alert,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
+import {Color, FontFamily} from '../GlobalStyle';
+import Colors from '../utils/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch, useSelector} from 'react-redux';
+import * as window from '../utils/dimensions';
 import {authNewUserThunk} from '../redux_toolkit/features/users/UserThunk';
 import {clearUser} from '../redux_toolkit/features/users/UserSlice';
 const LoginScreen = ({navigation}) => {
@@ -239,41 +250,360 @@ const LoginScreen = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={handleClick}>
-        <Text style={styles.buttonText}>Go to Page 1</Text>
-      </TouchableOpacity>
+    <View style={styles.login}>
+      <View
+        style={{
+          position: 'absolute',
+          top: window.WindowHeigth * 0.013, // 1.5% of screen height
+          right: window.WindowWidth * 0.255, // 25.5% of screen width
+          zIndex: 1,
+        }}>
+        <TouchableOpacity
+          // onPress={() => setIsPlaying(true)}
+          style={styles.circleButton}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: window.WindowWidth * 0.5, // Adjust width as needed
+            }}>
+            <Text
+              style={{
+                marginRight: 3,
+                color: '#0072A0',
+                fontSize: 12,
+                fontWeight: '900',
+                fontFamily: FontFamily.robotoBold,
+                borderWidth: 1.2,
+                borderColor: '#0072A0',
+                padding: 1,
+                borderRadius: 5,
+              }}>
+              {' '}
+              Instruction
+            </Text>
+            <Image
+              source={require('../assets/Image/icons8-info.gif')} // Replace 'yourGif.gif' with the path to your GIF file
+              style={{width: 35, height: 35}} // Adjust width, height, and margins as needed
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.loginChild} />
+
+      <View style={{bottom: 5}}>
+        <TouchableOpacity
+          onPress={handleClick}
+          style={{
+            top: 15,
+            margin: 8,
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 5,
+            paddingBottom: 5,
+            height: 45,
+            width: window.WindowWidth * 0.75,
+            justifyContent: isLoading ? 'center' : 'flex-start',
+            alignItems: 'center',
+            marginTop: 420,
+            backgroundColor: 'white',
+            flexDirection: 'row',
+            // justifyContent: 'space-between',
+            marginRight: 10,
+            marginLeft: 50,
+            borderRadius: 22,
+          }}>
+          {isLoading ? (
+            <ActivityIndicator size="small" color={Colors.primary} style={{}} />
+          ) : (
+            <>
+              <Image
+                source={require('../assets/Photos/googles.png')}
+                style={{
+                  width: 24,
+                  height: 24,
+                  // marginTop: -1,
+
+                  // justifyContent: 'center',
+                  marginRight: 15,
+                }}
+              />
+              <Text
+                style={{
+                  width: '100%',
+
+                  textAlign: 'left',
+
+                  fontSize: 13,
+                  width: 250,
+                  fontWeight: '500',
+                  color: '#333333',
+                  fontFamily: FontFamily.poppinsMedium,
+                }}>
+                Continue With Google
+              </Text>
+            </>
+          )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.mobilrno}
+          onPress={() => {
+            console.log('Navigating to Page 2');
+            navigation.navigate('Page2');
+          }}>
+          <Image
+            source={require('../assets/Image/pngwing.png')}
+            style={{
+              marginTop: -1,
+              marginLeft: -7,
+              width: 26,
+              height: 26,
+            }}
+          />
+          <Text
+            style={{
+              width: '100%',
+              // marginTop: -12,
+              // justifyContent: 'center',
+              // letterSpacing: 1,
+              textAlign: 'left',
+              left: 7,
+              // marginLeft: 50,
+              fontSize: 13,
+              width: 250,
+              fontWeight: '500',
+              color: '#333333',
+              fontFamily: FontFamily.poppinsMedium,
+            }}>
+            Continue With Mobile No.
+          </Text>
+        </TouchableOpacity>
+      </View>
 
       <TouchableOpacity
+        style={styles.byContinuingYou}
+        onPress={() =>
+          Linking.openURL('https://sites.google.com/view/thinkzoneapp/home')
+        }>
+        <Text
+          style={{
+            fontSize: 13,
+            color: Color.primaryContrast,
+            textAlign: 'center',
+            marginTop: 30,
+            width: 315,
+            alignSelf: 'center',
+            fontFamily: FontFamily.poppinsMedium,
+            fontWeight: '500',
+          }}>
+          By continuing, You Agree to Our Terms and Conditions Privacy Policy
+        </Text>
+      </TouchableOpacity>
+
+      <Image
+        style={[styles.kindergartenStudentPana1, styles.groupChildPosition]}
+        resizeMode="cover"
+        source={require('../assets/Image/kindergarten-studentpana-1.png')}
+      />
+
+      {/* <TouchableOpacity style={styles.button} onPress={handleClick}>
+        <Text style={styles.buttonText}>Go to Page 1</Text>
+      </TouchableOpacity> */}
+
+      {/* <TouchableOpacity
         style={styles.button}
         onPress={() => {
           console.log('Navigating to Page 2');
           navigation.navigate('Page2');
         }}>
         <Text style={styles.buttonText}>Go to Page 2</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f8f8f8',
+  groupChildPosition: {
+    left: 0,
+    position: 'absolute',
   },
-  button: {
-    backgroundColor: '#007bff',
-    padding: 15,
-    borderRadius: 10,
-    marginVertical: 10,
-    width: 200,
-    alignItems: 'center',
+
+  loginChild: {
+    top: 370,
+    // marginTop: 420,
+    left: -25,
+    borderRadius: 72,
+    backgroundColor: Color.royalblue,
+    width: window.WindowWidth * 1.2,
+    // height: 470,
+    // alignSelf: 'center',
+    height: window.WindowHeigth * 0.8,
+    transform: [
+      {
+        rotate: '-10deg',
+      },
+    ],
+    position: 'absolute',
   },
+
+  circleButton: {
+    width: 30,
+    height: 35,
+    // borderWidth: 1,
+    // borderRadius: 12,
+    // borderColor: 'grey',
+    // backgroundColor: Colors.royalblue,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+  },
+
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: 'black',
+    fontSize: 18,
+    fontWeight: 'bold',
+    fontWeight: '800',
+    fontFamily: FontFamily.poppinsMedium,
+  },
+
+  modalContainer: {
+    flex: 1,
+    backgroundColor: Colors.lightSky,
+    height: '100%',
+  },
+  // questionContainer: {
+  //   backgroundColor: 'white',
+  //   textAlign: 'left',
+  //   // padding: 23,
+  //   paddingTop: 10,
+  //   paddingLeft: 20,
+  //   marginTop: 20,
+  //   borderRadius: 10,
+  //   // shadowColor: '#000',
+  //   // shadowOffset: {
+  //   //   width: 0,
+  //   //   height: 2,
+  //   // },
+  //   // shadowOpacity: 0.25,
+  //   // shadowRadius: 3.84,
+  //   // elevation: 5,
+  // },
+  questionText: {
+    fontSize: 17,
+    // color: 'black',
+    // textAlign: 'center',
+    color: Colors.lightDark,
+    fontWeight: '800',
+    fontFamily: FontFamily.robotoRegular,
+  },
+
+  videoContainer: {
+    // padding: 10,
+    // marginBottom: 20,
+    // backgroundColor: 'black',
+    borderRadius: 10,
+    overflow: 'hidden',
+    backgroundColor: Colors.white,
+    borderRadius: 8,
+    margin: 16,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    marginBottom: 20,
+  },
+
+  closeButton: {
+    // marginTop: 20,
+    // backgroundColor: Color.royalblue,
+    // padding: 10,
+    // borderRadius: 20,
+    // alignSelf: 'center',
+    alignContent: 'flex-end',
+  },
+  closeButtonText: {
+    color: 'white',
+    fontSize: 17,
+    fontWeight: 'bold',
+    // textAlign: 'center',
+    // width: 60,
+    fontWeight: '800',
+    fontFamily: FontFamily.poppinsMedium,
+  },
+
+  byContinuingYou: {
+    fontSize: 13,
+    color: Color.royalblue,
+    textAlign: 'center',
+    marginTop: 30,
+    width: 315,
+    alignSelf: 'center',
+    fontFamily: FontFamily.poppinsMedium,
+    fontWeight: '500',
+    position: 'absolute',
+    bottom: 5,
+  },
+
+  kindergartenStudentPana1: {
+    top: 5,
+    // width: 490,
+    width: window.WindowWidth * 1.21,
+
+    marginLeft: -25,
+    height: window.WindowWidth * 0.9,
+  },
+  login: {
+    flex: 1,
+    height: 800,
+    overflow: 'hidden',
+    width: '100%',
+    backgroundColor: Color.primaryContrast,
+  },
+  google: {},
+  whatsapp: {
+    top: 15,
+    margin: 8,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 5,
+    paddingBottom: 5,
+    height: 45,
+    width: window.WindowWidth * 0.75,
+    // justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    // justifyContent: 'space-between',
+    marginRight: 10,
+    marginLeft: 50,
+    borderRadius: 22,
+    marginTop: 20,
+  },
+  mobilrno: {
+    margin: 8,
+    top: 15,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 5,
+    paddingBottom: 5,
+    height: 45,
+    width: window.WindowWidth * 0.75,
+    // justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    // justifyContent: 'space-between',
+    marginRight: 10,
+    marginLeft: 50,
+    borderRadius: 22,
+    marginTop: 20,
+    // position: 'absolute',
   },
 });
 

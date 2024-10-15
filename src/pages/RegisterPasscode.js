@@ -468,7 +468,7 @@ const RegisterPasscode = ({navigation, route}) => {
             const userData = JSON.stringify(response?.payload?.resData);
             await AsyncStorage.setItem('userData', userData);
 
-            ToastAndroid.show('Created successfulyy!.', ToastAndroid.SHORT);
+            ToastAndroid.show('Created successfully!.', ToastAndroid.SHORT);
 
             // Navigate to HomeTab after successful registration
             setTimeout(() => {

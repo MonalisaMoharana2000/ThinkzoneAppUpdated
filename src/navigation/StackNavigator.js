@@ -33,6 +33,8 @@ import Profile from '../Pages/Profile';
 import Games from '../Pages/Games';
 import RearrangeWords from '../Pages/RearrangeWords';
 import Puzzles from '../Pages/Puzzles';
+import MatchingExercises from '../Pages/MatchingExercises';
+
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
@@ -69,7 +71,11 @@ const StackNavigator = ({navigation}) => {
     <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'}>
       {!isLoggedIn ? (
         <>
-          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{headerShown: false}}
+          />
           <Stack.Screen name="Page1" component={Page1} />
           <Stack.Screen
             name="phoneverificationgoogle"
@@ -324,6 +330,18 @@ const StackNavigator = ({navigation}) => {
         component={Puzzles}
         options={{
           title: 'Puzzles Words',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="MatchingExercises"
+        component={MatchingExercises}
+        options={{
+          title: 'MatchingExercises',
           headerTitleStyle: {
             // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,

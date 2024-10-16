@@ -64,7 +64,7 @@ const Mopragati = ({navigation}) => {
   const user = useSelector(state => state.UserSlice.user);
   const progress = useSelector(state => state.UserSlice.userProgress);
   console.log('progress---->', progress);
-  const coin = useSelector(state => state.userdata.rewards);
+  const coin = useSelector(state => state.UserSlice.rewards);
   const [blinkAnimation] = useState(new Animated.Value(0));
 
   const dates = moment(dates).format('YYYY');

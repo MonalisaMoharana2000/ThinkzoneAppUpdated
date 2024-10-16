@@ -40,6 +40,10 @@ import Dictionary from '../Pages/Dictionary';
 import Books from '../Pages/Books';
 import ModuleUnderDevlopment from '../components/ModuleUnderDevlopment';
 import Mopragati from '../Pages/Mopragati';
+import Leaderboard from '../Pages/Leaderboard';
+import Myachivement from '../Pages/Myachivement';
+import IntroQuizPage from '../Pages/IntroQuizPage';
+import RewardTransaction from '../Pages/RewardTransaction';
 
 const Stack = createNativeStackNavigator();
 
@@ -444,6 +448,49 @@ const StackNavigator = ({navigation}) => {
           // headerLeft: false,
           // headerShown: false,
           // headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name="leaderboard"
+        component={Leaderboard}
+        options={{
+          title: 'LEADERBOARD',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="myachievement"
+        component={Myachivement}
+        options={{
+          title: 'REWARDS',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="IntroQuiz"
+        component={IntroQuizPage}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        name="rewardtransaction"
+        component={RewardTransaction}
+        options={{
+          title: 'TRANSACTION',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
         }}
       />
     </Stack.Navigator>

@@ -31,6 +31,7 @@ import Nocontents from '../components/Nocontents';
 const audioPlayer = new AudioRecorderPlayer();
 
 import Orientation from 'react-native-orientation-locker';
+import Video from 'react-native-video';
 
 const Quiz = ({route}) => {
   const user = useSelector(state => state.UserSlice.user);
@@ -688,8 +689,8 @@ const Quiz = ({route}) => {
                 }}
               />
             )}
-            <VideoPlayer
-              video={{
+            <Video
+              source={{
                 uri: nowPlayingUrl,
               }}
               style={{
@@ -699,7 +700,7 @@ const Quiz = ({route}) => {
               autoplay
               showDuration
               onLoad={handleVideoLoad}
-              rate={playbackRate} // Apply the playback rate here
+              // rate={playbackRate} // Apply the playback rate here
             />
             {/* <Button
                               title="Increase Speed"

@@ -9,6 +9,9 @@ import {
   StyleSheet,
   Alert,
   ScrollView,
+  Modal,
+  StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import RadioForm, {
   RadioButton,
@@ -28,10 +31,10 @@ import Nocontents from '../components/Nocontents';
 const audioPlayer = new AudioRecorderPlayer();
 
 import Orientation from 'react-native-orientation-locker';
+import Video from 'react-native-video';
 
 const Quiz = ({route}) => {
   const user = useSelector(state => state.UserSlice.user);
-
   const {userid, username, usertype, managerid, managername, passcode} =
     user[0];
   const [selectedOption, setSelectedOption] = useState([]);
@@ -41,6 +44,9 @@ const Quiz = ({route}) => {
   console.log('showCorrectAnswer-------->', showCorrectAnswer);
   const [updatedAnswer, setUpdatedAnswer] = useState([]);
   const [loadingImage, setLoadingImage] = useState(false);
+  const [nowPlayingUrl, setNowPlayingUrl] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(true);
   const logOutZoomState = (event, gestureState, zoomableViewEventObject) => {};
   const data = route?.params?.match;
   const gameData = route?.params?.gamifiedData;
@@ -49,9 +55,9 @@ const Quiz = ({route}) => {
     item => item.gameType === 'selectFromMultiple',
   );
   console.log('updated--->', updated);
-
+  const [isPlaying, setIsPlaying] = useState(null);
   const [questions, setQuestions] = useState(updated);
-  console.log('====================================questions', questions);
+  console.log('==============questions', questions);
 
   const topicData = route?.params?.topicData;
   const wholeData = route.params?.match;
@@ -157,6 +163,7 @@ const Quiz = ({route}) => {
 
   const currentQuestion = questions[currentQuestionIndex];
   const options = currentQuestion.correctAnswer[0];
+  console.log('options-------->', options);
 
   const updatedOptions = {
     // ...options,
@@ -167,30 +174,32 @@ const Quiz = ({route}) => {
   };
   console.log('updatedOptions----->', updatedOptions);
 
-  const stopPlayback = async item => {
-    console.log('stop----->', item);
+  const stopPlayback = async (audioPath, itemId) => {
+    console.log('=========audioPath', audioPath);
+    console.log('itemIditemId========', itemId);
     try {
-      setIsLoader(true);
       await audioPlayer.stopPlayer();
       setIsPlaying(null);
-      setIsLoader(false);
     } catch (error) {
       console.log('Error stopping audio:', error);
     }
   };
 
-  const startPlaybackAudio = async item => {
+  const startPlaybackAudio = async (audioPath, itemId) => {
+    console.log('=========audioPath', audioPath);
+    console.log('itemIditemId========', itemId);
+
     try {
-      const path = item.questionMedia;
-      await audioPlayer.startPlayer(path);
-      setIsPlaying(item._id);
-      console.log(' playing audio:', path);
+      await audioPlayer.startPlayer(audioPath);
+      setIsPlaying(itemId); // Set the playing state for the current item
+      console.log('Playing audio:', audioPath);
     } catch (error) {
       console.log('Error playing audio:', error);
     }
   };
 
   const openVideoModal = item => {
+    console.log('video------->', item);
     setNowPlayingUrl(item.questionMedia);
     Orientation.lockToLandscape();
     setModalVisible(true);
@@ -198,7 +207,7 @@ const Quiz = ({route}) => {
 
   const closeModal = () => {
     setModalVisible(false);
-    setIsVideoPlaying(false); // Pause the main video when modal closes
+
     Orientation.lockToPortrait();
   };
   const handleVideoLoad = () => {
@@ -480,6 +489,81 @@ const Quiz = ({route}) => {
                       alignSelf: 'center',
                     }}
                   />
+                ) : options.optionMediaType === 'audio' ? (
+                  <>
+                    {isPlaying === key ? (
+                      <>
+                        <TouchableOpacity
+                          onPress={() => stopPlayback(updatedOptions[key], key)}
+                          style={{
+                            top: '8%',
+                            flexDirection: 'row',
+                          }}>
+                          <View>
+                            <Image
+                              style={{
+                                width: 40,
+                                top: -8,
+                                height: 40,
+                                left: 20,
+
+                                paddingBottom: 10,
+                                alignSelf: 'flex-start',
+                              }}
+                              source={require('../assets/Image/stops.png')}
+                            />
+                          </View>
+                          <View>
+                            <Image
+                              style={{
+                                width: 200,
+                                top: -55,
+                                height: 80,
+                                left: 40,
+
+                                paddingBottom: 10,
+                                alignSelf: 'flex-start',
+                              }}
+                              source={require('../assets/Image/waves.gif')}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      </>
+                    ) : (
+                      <TouchableOpacity
+                        style={{
+                          top: '8%',
+                          flexDirection: 'row',
+                        }}
+                        onPress={() =>
+                          startPlaybackAudio(updatedOptions[key], key)
+                        }>
+                        <Image
+                          style={{
+                            width: 40,
+                            top: -30,
+                            height: 40,
+                            left: 20,
+
+                            paddingBottom: 10,
+                            alignSelf: 'flex-start',
+                          }}
+                          source={require('../assets/Image/Player.png')}
+                        />
+                        <Text
+                          style={{
+                            fontSize: 17,
+                            color: 'black',
+                            fontFamily: FontFamily.poppinsMedium,
+                            left: 20,
+                            top: -23,
+                          }}>
+                          {' '}
+                          Play Audio
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  </>
                 ) : (
                   <TouchableOpacity
                     key={index}
@@ -584,6 +668,64 @@ const Quiz = ({route}) => {
           )}
         </View>
       </View>
+
+      {/* ------------------------Video Modal section-------------------------- */}
+      <Modal
+        animationType="slide"
+        transparent={false}
+        onRequestClose={closeModal}
+        visible={modalVisible}>
+        <StatusBar hidden />
+        <ScrollView>
+          <View style={{flex: 1}}>
+            {videoLoading && (
+              <ActivityIndicator
+                size="large"
+                color={Colors.primary}
+                style={{
+                  position: 'absolute',
+                  top: '45%',
+                  left: '45%',
+                }}
+              />
+            )}
+            <Video
+              source={{
+                uri: nowPlayingUrl,
+              }}
+              style={{
+                width: '100%',
+                height: 300,
+              }}
+              autoplay
+              showDuration
+              onLoad={handleVideoLoad}
+              // rate={playbackRate} // Apply the playback rate here
+            />
+            {/* <Button
+                              title="Increase Speed"
+                              onPress={increasePlaybackSpeed}
+                            />
+                            <Button
+                              title="Decrease Speed"
+                              onPress={decreasePlaybackSpeed}
+                            /> */}
+            <TouchableOpacity onPress={closeModal}>
+              <Image
+                style={{
+                  width: 40,
+                  top: 2,
+                  height: 40,
+                  backgroundColor: 'white',
+                  paddingBottom: 10,
+                  alignSelf: 'flex-end',
+                }}
+                source={require('../assets/Image/minimize.png')}
+              />
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </Modal>
     </ScrollView>
   );
 };

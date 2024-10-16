@@ -421,8 +421,8 @@ const Home = ({navigation}, props) => {
         ? '@drawable/ic_notification' // Replace with the actual drawable resource name for Android
         : 'ic_notification';
     const fcm_obj = {
-      userid: user[0].userid,
-      username: user[0].username,
+      userid: user[0]?.userid,
+      username: user[0]?.username,
       token: token,
       refresh_token: token,
       // smallIcon: smallIcon,
@@ -430,7 +430,7 @@ const Home = ({navigation}, props) => {
     };
     console.log('fcm_obj------->', fcm_obj);
 
-    API.get(`getfcmtokenidbyuserid/${user[0].userid}`).then(
+    API.get(`getfcmtokenidbyuserid/${user[0]?.userid}`).then(
       getRes => {
         if (getRes.data.length > 0) {
           const tid = getRes.data[0]._id;

@@ -25,7 +25,6 @@ import RegisterPasscode from '../Pages/RegisterPasscode';
 import OtpLoginPhone from '../Pages/OtpLoginPhone';
 import GoogleVerificationPhone from '../Pages/GoogleVerificationPhone';
 import TrainingSubmodulePage from '../Pages/TrainingSubmodulePage';
-
 import TechContent from '../Pages/TechContent';
 import TechAssignment from '../Pages/TechAssignment';
 import SelectFromMultipleGames from '../Pages/SelectFromMultipleGames';
@@ -37,6 +36,9 @@ import MatchingExercises from '../Pages/MatchingExercises';
 import About from '../Pages/About';
 import Faq from '../Pages/Faq';
 import Feedback from '../Pages/Feedback';
+import Dictionary from '../Pages/Dictionary';
+import Books from '../Pages/Books';
+import ModuleUnderDevlopment from '../components/ModuleUnderDevlopment';
 
 const Stack = createNativeStackNavigator();
 
@@ -392,6 +394,39 @@ const StackNavigator = ({navigation}) => {
           // headerLeft: false,
           // headerShown: false,
           // headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="dictionary"
+        component={Dictionary}
+        options={{
+          title: 'ଅଭିଧାନ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="books"
+        component={Books}
+        options={{
+          title: 'ଦସ୍ତାବିଜ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="moduleunderdevlopment"
+        component={ModuleUnderDevlopment}
+        options={{
+          // headerTitleAlign: 'center',
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

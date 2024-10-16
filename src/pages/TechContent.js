@@ -3330,11 +3330,11 @@ const TechContent = ({route, navigation}) => {
                               </Text>
                             </TouchableOpacity>
                           </View>
-                          {/* <FabButton
+                          <FabButton
                             image={require('../assets/Image/share.png')}
                             style={styles.customFabButton}
                             onPress={shareLink}
-                          /> */}
+                          />
                         </View>
                       </View>
                     </ScrollView>

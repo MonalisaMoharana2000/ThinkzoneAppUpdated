@@ -34,6 +34,7 @@ import Games from '../Pages/Games';
 import RearrangeWords from '../Pages/RearrangeWords';
 import Puzzles from '../Pages/Puzzles';
 import MatchingExercises from '../Pages/MatchingExercises';
+import About from '../Pages/About';
 
 const Stack = createNativeStackNavigator();
 
@@ -350,6 +351,19 @@ const StackNavigator = ({navigation}) => {
         }}
       />
       {/* traioning part ends here */}
+      <Stack.Screen
+        name="about"
+        component={About}
+        options={{
+          title: 'ABOUT US',
+          // headerShown: false,
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
     </Stack.Navigator>
   );
 };

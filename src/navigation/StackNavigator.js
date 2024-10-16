@@ -39,6 +39,7 @@ import Feedback from '../Pages/Feedback';
 import Dictionary from '../Pages/Dictionary';
 import Books from '../Pages/Books';
 import ModuleUnderDevlopment from '../components/ModuleUnderDevlopment';
+import Mopragati from '../Pages/Mopragati';
 
 const Stack = createNativeStackNavigator();
 
@@ -427,6 +428,22 @@ const StackNavigator = ({navigation}) => {
         options={{
           // headerTitleAlign: 'center',
           headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="Mopragati"
+        component={Mopragati}
+        options={{
+          title: 'ମୋ ପ୍ରଗତି ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerLeft: false,
+          // headerShown: false,
+          // headerTitleAlign: 'center',
         }}
       />
     </Stack.Navigator>

@@ -7,6 +7,7 @@ import {
   fetchUserDataThunk,
   fetchUserTotalCoinsThunk,
   phoneNumberVerifyThunk,
+  getUserProgressbyid,
 } from './UserThunk';
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
   rewards: [],
   district: [],
   block: [],
+  userProgress: [],
   loading: false,
   status: '',
   message: '',
@@ -176,6 +178,26 @@ const UserSlice = createSlice({
       })
       .addCase(fetchUserTotalCoinsThunk.rejected, (state, action) => {
         state.rewards = [];
+        state.loading = false;
+        state.status = 'failed';
+        state.message = 'Error fetching data';
+      });
+
+    builder
+      .addCase(getUserProgressbyid.pending, (state, action) => {
+        state.userProgress = [];
+        state.loading = true;
+        state.status = action.meta.requestStatus;
+        state.message = 'loading';
+      })
+      .addCase(getUserProgressbyid.fulfilled, (state, action) => {
+        state.userProgress = action.payload;
+        state.loading = false;
+        state.status = 'succeeded';
+        state.message = 'Data fetched successfully';
+      })
+      .addCase(getUserProgressbyid.rejected, (state, action) => {
+        state.userProgress = [];
         state.loading = false;
         state.status = 'failed';
         state.message = 'Error fetching data';

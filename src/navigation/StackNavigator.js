@@ -35,6 +35,7 @@ import RearrangeWords from '../Pages/RearrangeWords';
 import Puzzles from '../Pages/Puzzles';
 import MatchingExercises from '../Pages/MatchingExercises';
 import About from '../Pages/About';
+import Faq from '../Pages/Faq';
 
 const Stack = createNativeStackNavigator();
 
@@ -356,6 +357,19 @@ const StackNavigator = ({navigation}) => {
         component={About}
         options={{
           title: 'ABOUT US',
+          // headerShown: false,
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="faq"
+        component={Faq}
+        options={{
+          title: 'FAQ',
           // headerShown: false,
           headerTitleStyle: {
             // fontWeight: '700',

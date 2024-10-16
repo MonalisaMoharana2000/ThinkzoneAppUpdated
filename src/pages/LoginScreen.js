@@ -7,6 +7,9 @@ import {
   Alert,
   Image,
   ActivityIndicator,
+  Modal,
+  ScrollView,
+  Dimensions,
 } from 'react-native';
 import {
   GoogleSignin,
@@ -19,9 +22,22 @@ import {useDispatch, useSelector} from 'react-redux';
 import * as window from '../utils/dimensions';
 import {authNewUserThunk} from '../redux_toolkit/features/users/UserThunk';
 import {clearUser} from '../redux_toolkit/features/users/UserSlice';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import YouTube from 'react-native-youtube-iframe';
+
 const LoginScreen = ({navigation}) => {
-  const [isLoading, setIsloading] = useState(false);
   const dispatch = useDispatch();
+  const {width: screenWidth} = Dimensions.get('window');
+  const responsiveWidth = screenWidth * 0.9;
+  const responsiveHeight = (responsiveWidth * 9) / 16;
+  const [isLoading, setIsloading] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isReadyForRender, setIsReadyForRender] = useState(false);
+
+  function onReady() {
+    setIsReadyForRender(true);
+  }
+
   useEffect(() => {
     GoogleSignin.configure();
     return () => {
@@ -249,6 +265,18 @@ const LoginScreen = ({navigation}) => {
     );
   };
 
+  const questionsAndVideos = [
+    {
+      id: 'IlozDODJE34',
+      question: 'ଯିଏ ପ୍ରଥମ ଥର ଥିଙ୍କଜୋନ୍ ଆପ୍ପ ରେ ଗୁଗଲ୍ ମାଧ୍ୟମରେ ଲଗ୍ ଇନ କରିବେ...',
+    },
+    {
+      id: 'DW5_eyF9wyQ',
+      question:
+        'ଯିଏ ପ୍ରଥମ ଥର ଥିଙ୍କଜୋନ୍ ଆପ୍ପ ରେ ନିଜ ଫୋନ୍‌ ନମ୍ବର ମାଧ୍ୟମରେ ଲଗ୍ ଇନ କରିବେ...',
+    },
+  ];
+
   return (
     <View style={styles.login}>
       <View
@@ -259,7 +287,7 @@ const LoginScreen = ({navigation}) => {
           zIndex: 1,
         }}>
         <TouchableOpacity
-          // onPress={() => setIsPlaying(true)}
+          onPress={() => setIsPlaying(true)}
           style={styles.circleButton}>
           <View
             style={{
@@ -420,6 +448,79 @@ const LoginScreen = ({navigation}) => {
         }}>
         <Text style={styles.buttonText}>Go to Page 2</Text>
       </TouchableOpacity> */}
+      <Modal
+        visible={isPlaying}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setIsPlaying(false)}>
+        <ScrollView style={styles.modalContainer}>
+          <View
+            style={{
+              backgroundColor: '#0060ca',
+              height: 66,
+              width: window.WindowWidth * 1.1,
+              marginTop: -16,
+              marginLeft: -1,
+            }}>
+            <Text
+              style={{
+                color: 'white',
+                fontSize: 20,
+                marginTop: 25,
+                marginLeft: 25,
+                // textAlign: 'center',
+              }}>
+              INSTRUCTION
+            </Text>
+            <TouchableOpacity
+              onPress={() => setIsPlaying(false)}
+              style={{
+                position: 'absolute',
+                top: '30%',
+                right: '14%',
+                backgroundColor: 'white', // Semi-transparent white background
+                borderRadius: 50, // Border radius
+                padding: 5, // Padding inside the button
+              }}>
+              <Icon name="close" size={25} color={Colors.royalblue} />
+            </TouchableOpacity>
+          </View>
+          {questionsAndVideos &&
+            questionsAndVideos.length &&
+            questionsAndVideos.map((item, index) => (
+              <View key={index}>
+                <View style={styles.videoContainer}>
+                  <View style={{marginBottom: 10}}>
+                    <Text style={styles.questionText}>{item.question}</Text>
+                  </View>
+                  <YouTube
+                    videoId={item.id}
+                    width={responsiveWidth - 25} // Subtract padding from width
+                    height={responsiveHeight - 10} // Subtract padding from height
+                    webViewStyle={{
+                      opacity: 0.99,
+                      display: isReadyForRender ? 'flex' : 'none',
+                    }}
+                    webViewProps={{
+                      androidLayerType: isReadyForRender
+                        ? 'hardware'
+                        : 'software',
+                    }}
+                    onReady={onReady}
+                    onChangeState={event => {
+                      console.log('State:', event.state);
+                      // if (event.state === 'ended') {
+                      //   setFocusedIndex(null); // Reset focused index when the video ends
+                      // }
+                    }}
+                    onError={error => console.log('Error:', error)}
+                    onEnd={() => setIsPlaying(false)}
+                  />
+                </View>
+              </View>
+            ))}
+        </ScrollView>
+      </Modal>
     </View>
   );
 };

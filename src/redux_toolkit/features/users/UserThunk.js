@@ -83,3 +83,8 @@ export const fetchUserTotalCoinsThunk = createAsyncThunk(
     return response.data;
   },
 );
+
+export const getUserProgressbyid = async data =>
+  await API.get(
+    `getTchTrainingProgress/${data.userid}/${data.usertype}/${data.trainingType}/"od"`,
+  );

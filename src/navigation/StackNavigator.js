@@ -39,9 +39,11 @@ import Feedback from '../Pages/Feedback';
 import Dictionary from '../Pages/Dictionary';
 import Books from '../Pages/Books';
 import ModuleUnderDevlopment from '../components/ModuleUnderDevlopment';
-import Landingpage from '../Pages/Landingpage';
-import Landingpage1 from '../Pages/Landingpage1';
-import FirstScreen from '../Pages/FirstScreen';
+import Mopragati from '../Pages/Mopragati';
+import Leaderboard from '../Pages/Leaderboard';
+import Myachivement from '../Pages/Myachivement';
+import IntroQuizPage from '../Pages/IntroQuizPage';
+import RewardTransaction from '../Pages/RewardTransaction';
 
 const Stack = createNativeStackNavigator();
 
@@ -447,6 +449,65 @@ const StackNavigator = ({navigation}) => {
         options={{
           // headerTitleAlign: 'center',
           headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="Mopragati"
+        component={Mopragati}
+        options={{
+          title: 'ମୋ ପ୍ରଗତି ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerLeft: false,
+          // headerShown: false,
+          // headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name="leaderboard"
+        component={Leaderboard}
+        options={{
+          title: 'LEADERBOARD',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="myachievement"
+        component={Myachivement}
+        options={{
+          title: 'REWARDS',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="IntroQuiz"
+        component={IntroQuizPage}
+        options={{headerShown: false}}
+      />
+
+      <Stack.Screen
+        name="rewardtransaction"
+        component={RewardTransaction}
+        options={{
+          title: 'TRANSACTION',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
         }}
       />
     </Stack.Navigator>

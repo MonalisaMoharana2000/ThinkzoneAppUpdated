@@ -7,6 +7,7 @@ import {
   fetchUserDataThunk,
   fetchUserTotalCoinsThunk,
   phoneNumberVerifyThunk,
+  getUserProgressbyid,
 } from './UserThunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -15,6 +16,7 @@ const initialState = {
   rewards: [],
   district: [],
   block: [],
+  userProgress: [],
   loading: false,
   status: '',
   message: '',

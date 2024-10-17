@@ -9,6 +9,7 @@ import {
   phoneNumberVerifyThunk,
   getUserProgressbyid,
 } from './UserThunk';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
   user: [],
@@ -30,6 +31,7 @@ const UserSlice = createSlice({
       state.user = []; // Reset user to an empty array
       state.status = 'cleared';
       state.message = 'User data cleared';
+      AsyncStorage.clear();
     },
   },
 

@@ -71,37 +71,42 @@ const Page1 = ({navigation, route}) => {
           // console.log('checkcredential for true----->', response.data);
           var otp = Math.floor(1000 + Math.random() * 9000);
           // console.log('otp----->', otp);
-          var urls = `https://m1.sarv.com/api/v2.0/sms_campaign.php?token=19818771645efefd49187ff7.92128852&user_id=96192514&route=OT&template_id=11518&sender_id=THNKZN&language=EN&template=Dear+User%2C+Your+OTP+is+${otp}+for+your+login+to+ThinkZone+application+%26+valid+for+5+minutes.&contact_numbers=${phoneNumber}`;
+          // var urls = `https://m1.sarv.com/api/v2.0/sms_campaign.php?token=19818771645efefd49187ff7.92128852&user_id=96192514&route=OT&template_id=11518&sender_id=THNKZN&language=EN&template=Dear+User%2C+Your+OTP+is+${otp}+for+your+login+to+ThinkZone+application+%26+valid+for+5+minutes.&contact_numbers=${phoneNumber}`;
 
-          axios.get(urls).then(response => {
-            console.log('res: ', response.data);
-            if (response.data.code === 200) {
-              const body = {
-                appModule: 'user',
-                id: phoneNumber,
-                phoneNumber: phoneNumber,
-                otp: otp,
-              };
-              console.log(otp, 'otp------->');
-              Api.post(`saveOtp`, body).then(response => {
-                console.log('====================response', response?.data);
+          // axios.get(urls).then(response => {
+          // console.log('res: ', response.data);
+          // if (response.data.code === 200) {
+          const body = {
+            appModule: 'user',
+            id: phoneNumber,
+            phoneNumber: phoneNumber,
+            otp: otp,
+          };
+          console.log(otp, 'otp------->');
+          Api.post(`saveOtp`, body).then(response => {
+            console.log('====================response', response?.data);
 
-                if (response.data?.status === 'success') {
-                  navigation.navigate('phoneverificationgoogle', {
-                    phone: phoneNumber,
-                    email: email,
-                  });
-                }
+            if (response.data?.status === 'success') {
+              // navigation.navigate('phoneverificationgoogle', {
+              //   phone: phoneNumber,
+              //   email: email,
+              // });
+              navigation.navigate('register', {
+                email: email,
+                phone: phoneNumber,
+                loginType: 'google',
               });
-
-              ToastAndroid.show('Otp generate success.', ToastAndroid.SHORT);
-            } else {
-              ToastAndroid.show(
-                'Otp generate error. Please try again.',
-                ToastAndroid.SHORT,
-              );
             }
           });
+
+          ToastAndroid.show('Mobile Number Fetched.', ToastAndroid.SHORT);
+          // } else {
+          //   ToastAndroid.show(
+          //     'Otp generate error. Please try again.',
+          //     ToastAndroid.SHORT,
+          //   );
+          // }
+          // });
         } else if (response.data.status === 'fail') {
           // console.log('checkcredentialfalse----->', response.data);
           // ToastAndroid.show(response.data.msg, ToastAndroid.SHORT);
@@ -163,11 +168,6 @@ const Page1 = ({navigation, route}) => {
     }
   };
 
-  //For half email
-  const handleToggle = async value => {
-    // setLoadingVisible(true);
-    onGoggle(value);
-  };
   const [refreshPage, setRefreshPage] = useState(false);
   const backModal = () => {
     setRefreshPage(prevState => !prevState);

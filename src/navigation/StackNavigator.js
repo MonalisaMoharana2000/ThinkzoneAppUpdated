@@ -78,9 +78,26 @@ const StackNavigator = ({navigation}) => {
   }
 
   return (
-    <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'}>
+    <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'firstScreen'}>
       {!isLoggedIn ? (
         <>
+          <Stack.Screen
+            name="landing"
+            component={Landingpage}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="landing1"
+            component={Landingpage1}
+            options={{headerShown: false}}
+          />
+
+          <Stack.Screen
+            name="firstScreen"
+            component={FirstScreen}
+            options={{headerShown: false}}
+          />
+
           <Stack.Screen
             name="Login"
             component={LoginScreen}

@@ -292,10 +292,10 @@ const BottomTabNavigator = () => {
         style={{
           width:
             selectedTab === 'Leaderboard' ? getWidth() + 15 : getWidth() - 7, // Increase width for Leaderboard
-          height: 5,
+          height: 4.5,
           backgroundColor: Color.royalblue,
           position: 'absolute',
-          bottom: 4, // Moved it lower to display below the text
+          bottom: 65, // Moved it lower to display below the text
           left: selectedTab === 'Leaderboard' ? 0 : 20, // Adjust 'left' for Leaderboard
           borderRadius: 20,
           transform: [{translateX: tabOffsetValue}],

@@ -36,6 +36,7 @@ import moment from 'moment';
 import Api from '../environment/Api';
 import Loading from '../components/Loading';
 import ModuleUnderDevlopment from '../components/ModuleUnderDevlopment';
+import {clearUser} from '../redux_toolkit/features/users/UserSlice';
 
 const Profile = ({navigation}) => {
   const dispatch = useDispatch();
@@ -113,11 +114,15 @@ const Profile = ({navigation}) => {
         .then(res => {})
         .catch(err => {});
 
-      const logout = await Logout(userdatas, app_versions);
+      const logout = await Api.patch(
+        `updateLogoutSession/${userdatas[0].userid}/tz/${app_versions}`,
+      );
+
+      // await Logout(userdatas, app_versions);
       console.log('response--->', logout);
-      if (logout.success === 200) {
-        dispatch(types.logOutUser());
-        // navigation.navigate('login');
+      if (logout?.status === 200) {
+        dispatch(clearUser());
+        navigation.navigate('Login');
       }
       // dispatch(types.logOutUser());
       // navigation.navigate('login');

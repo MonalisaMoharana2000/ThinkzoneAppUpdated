@@ -39,6 +39,9 @@ import Feedback from '../Pages/Feedback';
 import Dictionary from '../Pages/Dictionary';
 import Books from '../Pages/Books';
 import ModuleUnderDevlopment from '../components/ModuleUnderDevlopment';
+import Landingpage from '../Pages/Landingpage';
+import Landingpage1 from '../Pages/Landingpage1';
+import FirstScreen from '../Pages/FirstScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -73,9 +76,26 @@ const StackNavigator = ({navigation}) => {
   }
 
   return (
-    <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'Login'}>
+    <Stack.Navigator initialRouteName={isLoggedIn ? 'Home' : 'firstScreen'}>
       {!isLoggedIn ? (
         <>
+          <Stack.Screen
+            name="landing"
+            component={Landingpage}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="landing1"
+            component={Landingpage1}
+            options={{headerShown: false}}
+          />
+
+          <Stack.Screen
+            name="firstScreen"
+            component={FirstScreen}
+            options={{headerShown: false}}
+          />
+
           <Stack.Screen
             name="Login"
             component={LoginScreen}

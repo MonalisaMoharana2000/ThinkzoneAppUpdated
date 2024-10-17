@@ -103,7 +103,7 @@ const LoginScreen = ({navigation}) => {
 
       const resData = res.payload?.data?.resData?.[0];
       const status = res.payload?.status;
-      console.log('req------>', res?.payload?.error);
+      console.log('req------>', res?.payload?.data);
       const error = res?.payload?.error;
       if (resData) {
         const {emailidVerified, phoneNumberVerified} = resData;
@@ -375,7 +375,7 @@ const LoginScreen = ({navigation}) => {
           )}
         </TouchableOpacity>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.mobilrno}
           onPress={() => {
             console.log('Navigating to Page 2');
@@ -407,7 +407,7 @@ const LoginScreen = ({navigation}) => {
             }}>
             Continue With Mobile No.
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <TouchableOpacity

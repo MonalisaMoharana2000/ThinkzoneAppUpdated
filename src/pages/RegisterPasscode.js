@@ -463,20 +463,24 @@ const RegisterPasscode = ({navigation, route}) => {
 
         try {
           const response = await dispatch(createNewUserThunk(userDetails));
-          console.log('data2----------->', response);
+          console.log('data2----------->', response?.payload);
+
           if (response?.payload?.status === 'success') {
             const userData = JSON.stringify(response?.payload?.resData);
-            await AsyncStorage.setItem('userData', userData);
+            await AsyncStorage.setItem(
+              'userData',
+              JSON.stringify(response?.payload),
+            );
 
             ToastAndroid.show('Created successfully!.', ToastAndroid.SHORT);
-
+            navigation.navigate('Home');
             // Navigate to HomeTab after successful registration
-            setTimeout(() => {
-              navigation.reset({
-                index: 0,
-                routes: [{name: 'Home'}],
-              });
-            }, 500);
+            // setTimeout(() => {
+            //   navigation.reset({
+            //     index: 0,
+            //     routes: [{name: 'Home'}],
+            //   });
+            // }, 500);
           } else {
             Alert.alert('Something went wrong!', '', [
               {

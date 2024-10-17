@@ -20,6 +20,7 @@ import {
 import {RadioButton} from 'react-native-paper';
 import {ToastAndroid} from 'react-native';
 import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import ImagePicker from 'react-native-image-crop-picker';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
@@ -48,6 +49,7 @@ import {useMemo} from 'react';
 import * as window from '../utils/dimensions';
 import {app_versions} from './Home';
 import {
+  createNewUserThunk,
   fetchBlockDataThunk,
   fetchDistrictDataThunk,
 } from '../redux_toolkit/features/users/UserThunk';
@@ -698,29 +700,105 @@ const Register = ({navigation, route}) => {
         setDistrictError(false);
         setBlockError(false);
         setAadhaarError(false);
-        navigation.navigate('registerpasscode', {
-          email: email,
-          name: name,
-          mname: mname,
-          lname: lname,
-          guardianName: guardianName,
-          phone: phone,
+
+        const userDetails = {
+          userid: email,
+          emailid: email,
+          emailidVerified: true,
+          username: name + ' ' + mname + ' ' + lname,
+          firstname: name.trim().split(/\s+/)[0],
+          middlename: mname.trim() || '',
+          lastname: lname.trim().split(/\s+/)[0],
+          usertype: 'fellow',
+          guardianname: guardianName,
+          contactnumber: phone,
+          phoneNumberVerified: true,
           qualification: qualification,
           gender: gender,
-          dob: dob,
-          aadhaar: aadhaar,
-          managerId: managerId,
-          managername: managername,
-          passcode: passcode,
-          state: state,
-          districtId: districtId,
-          district: district,
-          blockId: blockId,
-          block: block,
-          imageUrl: imageUrl,
-          app_versions: app_versions,
-          loginType: loginType,
-        });
+          dob: dob.split('-').reverse().join('-'),
+          aadhaar: '',
+          aadhaarUpdated: true,
+          loginType: data?.loginType,
+          userpolicy: 'agreed',
+          managerid: 'guru@thinkzone.in',
+          managername: 'guru',
+          passcode: 'GURUBBS0424',
+          passcodeRequested: false,
+          status: 'active',
+          stateid: 20,
+          statename: state,
+          districtid: districtId,
+          districtname: district,
+          blockid: blockId,
+          blockname: block,
+          image: imageUrl,
+          appVersion: '2.0.3',
+          udisecode: schoolId ? schoolId : '',
+          schoolname: schoolName ? schoolName : '',
+        };
+
+        const data = {
+          user: userDetails,
+          image: imageUrl,
+          userid: email,
+        };
+
+        try {
+          const response = await dispatch(createNewUserThunk(userDetails));
+          console.log('data2----------->', response?.payload);
+
+          if (response?.payload?.status === 'success') {
+            const userData = JSON.stringify(response?.payload?.resData);
+            await AsyncStorage.setItem(
+              'userData',
+              JSON.stringify(response?.payload),
+            );
+
+            ToastAndroid.show('Created successfully!.', ToastAndroid.SHORT);
+            navigation.navigate('Home');
+            // Navigate to HomeTab after successful registration
+            // setTimeout(() => {
+            //   navigation.reset({
+            //     index: 0,
+            //     routes: [{name: 'Home'}],
+            //   });
+            // }, 500);
+          } else {
+            Alert.alert('Something went wrong!', '', [
+              {
+                text: 'Ok',
+                onPress: () => signOut(),
+                style: 'cancel',
+              },
+            ]);
+          }
+        } catch (error) {
+          console.log('error-------->', error);
+        }
+
+        // navigation.navigate('registerpasscode', {
+        //   email: email,
+        //   name: name,
+        //   mname: mname,
+        //   lname: lname,
+        //   guardianName: guardianName,
+        //   phone: phone,
+        //   qualification: qualification,
+        //   gender: gender,
+        //   dob: dob,
+        //   aadhaar: aadhaar,
+        //   managerId: managerId,
+        //   managername: managername,
+        //   passcode: passcode,
+        //   state: state,
+        //   districtId: districtId,
+        //   district: district,
+        //   blockId: blockId,
+        //   block: block,
+        //   imageUrl: imageUrl,
+        //   app_versions: app_versions,
+        //   loginType: loginType,
+        // });
       }
     }
   };
@@ -1289,7 +1367,7 @@ const Register = ({navigation, route}) => {
 
                   marginTop: -5,
                 }}>
-                Next
+                Submit
               </Text>
             </TouchableOpacity>
           </View>

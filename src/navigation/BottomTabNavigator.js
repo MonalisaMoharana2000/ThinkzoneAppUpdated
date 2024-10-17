@@ -1,7 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react';
 import {Text, View, Image, Platform, Dimensions, Animated} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {NavigationContainer} from '@react-navigation/native';
 import Home from '../Pages/Home';
 import Profile from '../Pages/Profile';
 import Leaderboard from '../Pages/Leaderboard';
@@ -14,7 +13,6 @@ const {height, width} = Dimensions.get('window');
 
 const BottomTabNavigator = () => {
   const user = useSelector(state => state.UserSlice.user[0]);
-  console.log('bootom navigation', user?.usertype);
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
   const [selectedTab, setSelectedTab] = useState('Home');
   const [maintainanceStatus, setMaintainanceStatus] = useState({});
@@ -95,7 +93,7 @@ const BottomTabNavigator = () => {
   }, []);
 
   return (
-    <NavigationContainer independent={true}>
+    <>
       <Tab.Navigator
         initialRouteName="Home"
         screenOptions={{
@@ -302,7 +300,7 @@ const BottomTabNavigator = () => {
           borderRadius: 20,
           transform: [{translateX: tabOffsetValue}],
         }}></Animated.View>
-    </NavigationContainer>
+    </>
   );
 };
 

@@ -15,37 +15,30 @@ import {
   Pressable,
   Clipboard,
   BackHandler,
+  Dimensions,
 } from 'react-native';
 
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import API from '../environment/Api';
-
 import React, {useRef, useCallback, useState, useEffect} from 'react';
 import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
-
 import * as window from '../utils/dimensions';
-
 import {useDispatch, useSelector} from 'react-redux';
-
 import Feather from 'react-native-vector-icons/Feather';
-
 import {useFocusEffect} from '@react-navigation/native';
-
 import moment from 'moment';
-
 import Api from '../environment/Api';
 import Loading from '../components/Loading';
 import ModuleUnderDevlopment from '../components/ModuleUnderDevlopment';
 import {clearUser} from '../redux_toolkit/features/users/UserSlice';
+const {width} = Dimensions.get('window');
 
 const Profile = ({navigation}) => {
   const dispatch = useDispatch();
-
   const userdatas = useSelector(state => state.UserSlice.user);
   console.log('============================userdatas', userdatas);
-
   const [userdata, setUserdata] = useState(userdatas);
-
+  console.log('profileUser', userdata);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadings, setIsloadings] = useState(true);
   const [maintainanceStatus, setMaintainanceStatus] = useState({});
@@ -573,13 +566,13 @@ const Profile = ({navigation}) => {
                 <Text
                   style={{
                     marginLeft: 50,
-                    marginTop: 2,
+                    marginTop: 5,
                     color: '#000000',
                     fontWeight: '700',
                     fontFamily: FontFamily.poppinsMedium,
                     fontSize: 13,
                   }}>
-                  Userid :{' '}
+                  User ID :{' '}
                 </Text>
                 <TouchableOpacity
                   onPress={copyToClipboard}
@@ -638,11 +631,11 @@ const Profile = ({navigation}) => {
                     fontFamily: FontFamily.poppinsMedium,
                     fontSize: 13,
                   }}>
-                  Emailid :{' '}
+                  Email ID :{' '}
                 </Text>
                 <Text
                   style={{
-                    color: Color.darkslategray_400,
+                    color: 'black',
                     fontSize: 13,
                     fontWeight: '500',
                     fontFamily: FontFamily.poppinsMedium,
@@ -684,7 +677,7 @@ const Profile = ({navigation}) => {
                 </Text>
                 <Text
                   style={{
-                    color: Color.darkslategray_400,
+                    color: 'black',
                     fontSize: 13,
                     fontWeight: '500',
                     fontFamily: FontFamily.poppinsMedium,
@@ -725,7 +718,7 @@ const Profile = ({navigation}) => {
                 </Text>
                 <Text
                   style={{
-                    color: Color.darkslategray_400,
+                    color: 'black',
                     fontSize: 13,
                     fontWeight: '500',
                     fontFamily: FontFamily.poppinsMedium,
@@ -767,7 +760,7 @@ const Profile = ({navigation}) => {
                 {userdata[0]?.usertype === 'fellow' ? (
                   <Text
                     style={{
-                      color: Color.darkslategray_400,
+                      color: 'black',
                       fontSize: 13,
                       fontWeight: '500',
                       fontFamily: FontFamily.poppinsMedium,
@@ -779,7 +772,7 @@ const Profile = ({navigation}) => {
                 ) : (
                   <Text
                     style={{
-                      color: Color.darkslategray_400,
+                      color: 'black',
                       fontSize: 13,
                       fontWeight: '500',
                       fontFamily: FontFamily.poppinsMedium,
@@ -822,7 +815,7 @@ const Profile = ({navigation}) => {
                 </Text>
                 <Text
                   style={{
-                    color: Color.darkslategray_400,
+                    color: 'black',
                     fontSize: 13,
                     fontWeight: '500',
                     fontFamily: FontFamily.poppinsMedium,
@@ -862,7 +855,7 @@ const Profile = ({navigation}) => {
                 </Text>
                 <Text
                   style={{
-                    color: Color.darkslategray_400,
+                    color: 'black',
                     fontSize: 13,
                     fontWeight: '500',
                     fontFamily: FontFamily.poppinsMedium,
@@ -903,7 +896,7 @@ const Profile = ({navigation}) => {
                 </Text>
                 <Text
                   style={{
-                    color: Color.darkslategray_400,
+                    color: 'black',
                     fontSize: 13,
                     fontWeight: '500',
                     width: 250,
@@ -947,7 +940,7 @@ const Profile = ({navigation}) => {
                 </Text>
                 <Text
                   style={{
-                    color: Color.darkslategray_400,
+                    color: 'black',
                     fontSize: 13,
                     fontWeight: '500',
                     fontFamily: FontFamily.poppinsMedium,
@@ -989,7 +982,7 @@ const Profile = ({navigation}) => {
                 </Text>
                 <Text
                   style={{
-                    color: Color.darkslategray_400,
+                    color: 'black',
                     fontSize: 13,
                     fontWeight: '500',
                     fontFamily: FontFamily.poppinsMedium,
@@ -1029,7 +1022,7 @@ const Profile = ({navigation}) => {
                 </Text>
                 <Text
                   style={{
-                    color: Color.darkslategray_400,
+                    color: 'black',
                     fontSize: 13,
                     fontWeight: '500',
                     fontFamily: FontFamily.poppinsMedium,
@@ -1093,7 +1086,7 @@ const Profile = ({navigation}) => {
                   </Text>
                   <Text
                     style={{
-                      color: Color.darkslategray_400,
+                      color: 'black',
                       fontSize: 13,
                       fontWeight: '500',
                       fontFamily: FontFamily.poppinsMedium,
@@ -1134,7 +1127,7 @@ const Profile = ({navigation}) => {
                   </Text>
                   <Text
                     style={{
-                      color: Color.darkslategray_400,
+                      color: 'black',
                       fontSize: 13,
                       fontWeight: '500',
                       fontFamily: FontFamily.poppinsMedium,
@@ -1175,7 +1168,7 @@ const Profile = ({navigation}) => {
                   </Text>
                   <Text
                     style={{
-                      color: Color.darkslategray_400,
+                      color: 'black',
                       fontSize: 13,
                       fontWeight: '500',
                       fontFamily: FontFamily.poppinsMedium,
@@ -2062,7 +2055,7 @@ const styles = StyleSheet.create({
     color: Color.black,
   },
   rams123gmailcom: {
-    color: Color.darkslategray_400,
+    color: 'black',
   },
   userIdRams123gmailcomContainer: {
     top: '12.89%',

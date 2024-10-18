@@ -44,6 +44,10 @@ import Leaderboard from '../Pages/Leaderboard';
 import Myachivement from '../Pages/Myachivement';
 import IntroQuizPage from '../Pages/IntroQuizPage';
 import RewardTransaction from '../Pages/RewardTransaction';
+import Landingpage from '../Pages/Landingpage';
+import Landingpage1 from '../Pages/Landingpage1';
+import FirstScreen from '../Pages/FirstScreen';
+import Notification from '../Pages/Notification';
 
 const Stack = createNativeStackNavigator();
 
@@ -86,6 +90,7 @@ const StackNavigator = ({navigation}) => {
             component={Landingpage}
             options={{headerShown: false}}
           />
+
           <Stack.Screen
             name="landing1"
             component={Landingpage1}
@@ -508,6 +513,20 @@ const StackNavigator = ({navigation}) => {
             fontFamily: FontFamily.poppinsMedium,
             // letterSpacing: 2,
           },
+        }}
+      />
+
+      <Stack.Screen
+        name="notification"
+        component={Notification}
+        options={{
+          title: 'NOTIFICATION',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
         }}
       />
     </Stack.Navigator>

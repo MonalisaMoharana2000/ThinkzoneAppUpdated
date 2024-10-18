@@ -35,7 +35,7 @@ export const ProfileItem = ({iconSource, label, value}) => (
         style={{
           fontWeight: '700',
           fontFamily: FontFamily.poppinsMedium,
-          fontSize: 13,
+          fontSize: 13.5,
           color: '#000',
         }}>
         {label}
@@ -43,7 +43,7 @@ export const ProfileItem = ({iconSource, label, value}) => (
       <Text
         style={{
           color: 'black',
-          fontSize: 13,
+          fontSize: 13.5,
           fontWeight: '500',
           fontFamily: FontFamily.poppinsMedium,
           flex: 1,

@@ -31,7 +31,8 @@ import Api from '../environment/Api';
 import Loading from '../components/Loading';
 import ModuleUnderDevlopment from '../components/ModuleUnderDevlopment';
 import {clearUser} from '../redux_toolkit/features/users/UserSlice';
-const {width} = Dimensions.get('window');
+import {ProfileItem} from '../components/ProfileTemplate';
+const windowWidth = Dimensions.get('window').width;
 
 const Profile = ({navigation}) => {
   const dispatch = useDispatch();
@@ -477,7 +478,7 @@ const Profile = ({navigation}) => {
                 // marginLeft: 15,align
                 alignSelf: 'center',
                 backgroundColor: 'white',
-                paddingBottom: 25,
+                // paddingBottom: 25,
                 borderRadius: 12,
               }}>
               <View style={{flexDirection: 'row', paddingBottom: 20}}>
@@ -493,7 +494,7 @@ const Profile = ({navigation}) => {
                 <TouchableOpacity onPress={displayAlert}>
                   <Text
                     style={{
-                      marginLeft: 315,
+                      marginLeft: windowWidth * 0.89, // Use a percentage of the window width
                       color: Color.royalblue,
                       top: 12,
                       fontFamily: FontFamily.poppinsMedium,
@@ -503,534 +504,80 @@ const Profile = ({navigation}) => {
                   </Text>
                 </TouchableOpacity>
               </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 0.7,
-                  height: 47,
-                  borderBottomColor: Color.greyGrey300,
-                  // paddingBottom: 10,
-                  marginTop: 20,
-                }}>
-                <Image
-                  style={[
-                    // styles.iconusersuserTag,
-                    styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
-                  ]}
-                  resizeMode="cover"
-                  source={require('../assets/Image/user-tag.png')}
+              <ProfileItem
+                iconSource={require('../assets/Image/user-tag.png')}
+                label="User Name :"
+                value={userdata[0]?.username}
+              />
+              <TouchableOpacity onPress={copyToClipboard}>
+                <ProfileItem
+                  iconSource={require('../assets/Image/user-square.png')}
+                  label="User ID :"
+                  value={userdata[0]?.userid}
                 />
-                <Text
-                  style={{
-                    marginLeft: 50,
-                    marginTop: 2,
-                    color: '#000000',
-                    fontWeight: '700',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontSize: 13,
-                  }}>
-                  User Name :{' '}
-                </Text>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 13,
-                    fontWeight: '500',
-                    fontFamily: FontFamily.poppinsMedium,
-                    width: 250,
-                    marginTop: 2,
-                    // textTransform: 'capitalize',
-                  }}>
-                  {userdata[0]?.username}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 0.7,
-                  // height: 47,
-                  borderBottomColor: Color.greyGrey300,
-                  // paddingBottom: 10,
-                  marginTop: 20,
-                }}>
-                <Image
-                  style={[
-                    // styles.iconusersuserTag,
-                    styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
-                  ]}
-                  resizeMode="cover"
-                  source={require('../assets/Image/user-tag.png')}
+                <Feather
+                  name="copy"
+                  size={20}
+                  color={Color.royalblue}
+                  style={{position: 'absolute', right: 3, top: 13}}
                 />
-                <Text
-                  style={{
-                    marginLeft: 50,
-                    marginTop: 5,
-                    color: '#000000',
-                    fontWeight: '700',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontSize: 13,
-                  }}>
-                  User ID :{' '}
-                </Text>
-                <TouchableOpacity
-                  onPress={copyToClipboard}
-                  style={{flexDirection: 'row'}}>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontSize: 13,
-                      fontWeight: '500',
-                      fontFamily: FontFamily.poppinsMedium,
-                      width: 250,
-                      marginTop: 2,
-                    }}>
-                    {userdata[0]?.userid}{' '}
-                  </Text>
-                  <Feather
-                    name="copy"
-                    size={20}
-                    color={Color.royalblue}
-                    style={{
-                      // alignSelf: 'flex-end',
-                      position: 'absolute',
-                      right: 0,
-                      // paddingRight: '2%',
-                      // top: '-10%',
-                      // left: 10,
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 0.7,
-                  // height: 47,
-                  borderBottomColor: Color.greyGrey300,
-                  // paddingBottom: 10,
-                  marginTop: 20,
-                }}>
-                <Image
-                  style={[
-                    // styles.iconusersuserTag,
-                    styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
-                  ]}
-                  resizeMode="cover"
-                  source={require('../assets/Image/user-tag.png')}
-                />
-                <Text
-                  style={{
-                    marginLeft: 50,
-                    marginTop: 2,
-                    color: '#000000',
-                    fontWeight: '700',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontSize: 13,
-                  }}>
-                  Email ID :{' '}
-                </Text>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 13,
-                    fontWeight: '500',
-                    fontFamily: FontFamily.poppinsMedium,
-                    width: 250,
-                    marginTop: 2,
-                  }}>
-                  {userdata[0]?.emailid}
-                </Text>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 0.7,
-                  height: 40,
-                  borderBottomColor: Color.greyGrey300,
-                  paddingBottom: 10,
-                  marginTop: 20,
-                }}>
-                <Image
-                  style={[
-                    // styles.iconusersuserTag,
-                    styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
-                  ]}
-                  resizeMode="cover"
-                  source={require('../assets/Image/user-search.png')}
-                />
-                <Text
-                  style={{
-                    marginLeft: 50,
-                    marginTop: 2,
-                    color: '#000000',
-                    fontWeight: '700',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontSize: 13,
-                  }}>
-                  Contact Number :{' '}
-                </Text>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 13,
-                    fontWeight: '500',
-                    fontFamily: FontFamily.poppinsMedium,
-                    textTransform: 'capitalize',
-                    marginTop: 2,
-                  }}>
-                  {userdata[0]?.contactnumber}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 0.7,
-                  height: 40,
-                  borderBottomColor: Color.greyGrey300,
-                  paddingBottom: 10,
-                  marginTop: 20,
-                }}>
-                <Image
-                  style={[
-                    // styles.iconusersuserTag,
-                    styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
-                  ]}
-                  resizeMode="cover"
-                  source={require('../assets/Image/people.png')}
-                />
-                <Text
-                  style={{
-                    marginLeft: 50,
-                    marginTop: 2,
-                    color: '#000000',
-                    fontWeight: '700',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontSize: 13,
-                  }}>
-                  Parent Name :{' '}
-                </Text>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 13,
-                    fontWeight: '500',
-                    fontFamily: FontFamily.poppinsMedium,
-                    width: 250,
-                    marginTop: 2,
-                  }}>
-                  {userdata[0]?.guardianname ? userdata[0]?.guardianname : 'Na'}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 0.7,
-                  height: 40,
-                  borderBottomColor: Color.greyGrey300,
-                  paddingBottom: 10,
-                  marginTop: 20,
-                }}>
-                <Image
-                  style={[
-                    // styles.iconusersuserTag,
-                    styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
-                  ]}
-                  resizeMode="cover"
-                  source={require('../assets/Image/user-search.png')}
-                />
-                <Text
-                  style={{
-                    marginLeft: 50,
-                    marginTop: 2,
-                    color: '#000000',
-                    fontWeight: '700',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontSize: 13,
-                  }}>
-                  User Type :{' '}
-                </Text>
-                {userdata[0]?.usertype === 'fellow' ? (
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontSize: 13,
-                      fontWeight: '500',
-                      fontFamily: FontFamily.poppinsMedium,
-                      textTransform: 'capitalize',
-                      marginTop: 2,
-                    }}>
-                    Educators
-                  </Text>
-                ) : (
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontSize: 13,
-                      fontWeight: '500',
-                      fontFamily: FontFamily.poppinsMedium,
-                      textTransform: 'capitalize',
-                      marginTop: 2,
-                    }}>
-                    {userdata[0]?.usertype}
-                  </Text>
-                )}
-              </View>
-
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 0.7,
-                  height: 40,
-                  borderBottomColor: Color.greyGrey300,
-                  paddingBottom: 10,
-                  marginTop: 20,
-                }}>
-                <Image
-                  style={[
-                    // styles.iconusersuserTag,
-                    styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
-                  ]}
-                  resizeMode="cover"
-                  source={require('../assets/Image/cake.png')}
-                />
-                <Text
-                  style={{
-                    marginLeft: 50,
-                    marginTop: 2,
-                    color: '#000000',
-                    fontWeight: '700',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontSize: 13,
-                  }}>
-                  DOB :{' '}
-                </Text>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 13,
-                    fontWeight: '500',
-                    fontFamily: FontFamily.poppinsMedium,
-                    marginTop: 2,
-                  }}>
-                  {profileDob}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 0.7,
-                  height: 40,
-                  borderBottomColor: Color.greyGrey300,
-                  paddingBottom: 10,
-                  marginTop: 20,
-                }}>
-                <Image
-                  style={[
-                    // styles.iconusersuserTag,
-                    styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
-                  ]}
-                  resizeMode="cover"
-                  source={require('../assets/Image/gender@1.png')}
-                />
-                <Text
-                  style={{
-                    marginLeft: 50,
-                    marginTop: 2,
-                    color: '#000000',
-                    fontWeight: '700',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontSize: 13,
-                  }}>
-                  Gender :{' '}
-                </Text>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 13,
-                    fontWeight: '500',
-                    fontFamily: FontFamily.poppinsMedium,
-                    textTransform: 'capitalize',
-                    marginTop: 2,
-                  }}>
-                  {userdata[0]?.gender}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 0.7,
-                  height: 40,
-                  borderBottomColor: Color.greyGrey300,
-                  paddingBottom: 10,
-                  marginTop: 20,
-                }}>
-                <Image
-                  style={[
-                    // styles.iconusersuserTag,
-                    styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
-                  ]}
-                  resizeMode="cover"
-                  source={require('../assets/Image/teacher.png')}
-                />
-                <Text
-                  style={{
-                    marginLeft: 50,
-                    marginTop: 2,
-                    color: '#000000',
-                    fontWeight: '700',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontSize: 13,
-                  }}>
-                  Qualification :{' '}
-                </Text>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 13,
-                    fontWeight: '500',
-                    width: 250,
-                    fontFamily: FontFamily.poppinsMedium,
-                    textTransform: 'capitalize',
-                    justifyContent: 'center',
-                    textAlign: 'left',
-                    marginTop: 2,
-                  }}>
-                  {userdata[0]?.qualification}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 0.7,
-                  height: 40,
-                  borderBottomColor: Color.greyGrey300,
-                  paddingBottom: 10,
-                  marginTop: 20,
-                }}>
-                <Image
-                  style={[
-                    // styles.iconusersuserTag,
-                    styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
-                  ]}
-                  resizeMode="cover"
-                  source={require('../assets/Image/location.png')}
-                />
-                <Text
-                  style={{
-                    marginLeft: 50,
-                    marginTop: 2,
-                    color: '#000000',
-                    fontWeight: '700',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontSize: 13,
-                  }}>
-                  Lives In:{' '}
-                </Text>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 13,
-                    fontWeight: '500',
-                    fontFamily: FontFamily.poppinsMedium,
-                    textTransform: 'capitalize',
-                    width: 250,
-                    marginTop: 2,
-                  }}>
-                  {userdata[0]?.blockname},{userdata[0]?.districtname}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 0.7,
-                  height: 40,
-                  borderBottomColor: Color.greyGrey300,
-                  paddingBottom: 10,
-                  marginTop: 20,
-                }}>
-                <Image
-                  style={[
-                    // styles.iconusersuserTag,
-                    styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
-                  ]}
-                  resizeMode="cover"
-                  source={require('../assets/Image/note.png')}
-                />
-                <Text
-                  style={{
-                    marginLeft: 50,
-                    marginTop: 2,
-                    color: '#000000',
-                    fontWeight: '700',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontSize: 13,
-                  }}>
-                  Regd.Date:{' '}
-                </Text>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 13,
-                    fontWeight: '500',
-                    fontFamily: FontFamily.poppinsMedium,
-                    marginTop: 2,
-                  }}>
-                  {regDate}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  borderBottomWidth: 0.7,
-                  height: 40,
-                  borderBottomColor: Color.greyGrey300,
-                  paddingBottom: 10,
-                  marginTop: 20,
-                }}>
-                <Image
-                  style={[
-                    // styles.iconusersuserTag,
-                    styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
-                  ]}
-                  resizeMode="cover"
-                  source={require('../assets/Image/personalcard.png')}
-                />
-                <Text
-                  style={{
-                    marginLeft: 50,
-                    marginTop: 2,
-                    color: '#000000',
-                    fontWeight: '700',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontSize: 13,
-                  }}>
-                  Aadhaar Number :{' '}
-                </Text>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 13,
-                    fontWeight: '500',
-                    fontFamily: FontFamily.poppinsMedium,
-                    marginTop: 2,
-                  }}>
-                  {userdata[0]?.aadhaar}
-                </Text>
-              </View>
+              </TouchableOpacity>
+              <ProfileItem
+                iconSource={require('../assets/Image/email.png')}
+                label="Email ID :"
+                value={userdata[0]?.emailid}
+              />
+              <ProfileItem
+                iconSource={require('../assets/Image/user-search.png')}
+                label="Contact Number :"
+                value={userdata[0]?.contactnumber}
+              />
+              <ProfileItem
+                iconSource={require('../assets/Image/people.png')}
+                label="Parent Name :"
+                value={
+                  userdata[0]?.guardianname ? userdata[0]?.guardianname : 'Na'
+                }
+              />
+              <ProfileItem
+                iconSource={require('../assets/Image/user-search.png')}
+                label="User Type :"
+                value={
+                  userdata[0]?.usertype === 'fellow'
+                    ? 'Educators'
+                    : userdata[0]?.usertype
+                }
+              />
+              <ProfileItem
+                iconSource={require('../assets/Image/cake.png')}
+                label="DOB :"
+                value={profileDob}
+              />
+              <ProfileItem
+                iconSource={require('../assets/Image/gender@1.png')}
+                label="Gender :"
+                value={userdata[0]?.gender}
+              />
+              <ProfileItem
+                iconSource={require('../assets/Image/teacher.png')}
+                label="Qualification :"
+                value={userdata[0]?.qualification}
+              />
+              <ProfileItem
+                iconSource={require('../assets/Image/location.png')}
+                label="Lives In :"
+                value={`${userdata[0]?.blockname}, ${userdata[0]?.districtname}`}
+              />
+              <ProfileItem
+                iconSource={require('../assets/Image/note.png')}
+                label="Regd.Date :"
+                value={regDate}
+              />
+              <ProfileItem
+                iconSource={require('../assets/Image/personalcard.png')}
+                label="Aadhaar Number :"
+                value={userdata[0]?.aadhaar}
+              />
             </View>
             {/* <View
               style={{
@@ -2096,6 +1643,7 @@ const styles = StyleSheet.create({
   },
   myDetails: {
     top: 11,
+    marginLeft: 7,
   },
   iconessentialcake: {
     top: 176,

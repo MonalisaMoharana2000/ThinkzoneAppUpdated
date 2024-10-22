@@ -48,9 +48,10 @@ const Payment = ({route, navigation}) => {
   // const [studentData, setStudentData] = useState([]);
   const [paymentRecord, setPaymentRecord] = useState([]);
   // const studentData = useSelector(state => state.studentdata.students);
-  const teacherdata = useSelector(
-    state => state.UserSlice?.user?.data?.resData,
-  );
+  // const teacherdata = useSelector(
+  //   state => state.UserSlice?.user?.data?.resData,
+  // );
+  const teacherdata = useSelector(state => state.UserSlice.user);
   console.log('teacherdata-------------->', teacherdata);
 
   const modalHeight = window.WindowHeigth * 0.9;

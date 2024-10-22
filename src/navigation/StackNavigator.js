@@ -16,6 +16,7 @@ import StudentList from '../Pages/StudentList';
 import {TouchableOpacity, ActivityIndicator, View} from 'react-native';
 import {Color} from '../GlobalStyle';
 import StudentListPage from '../Pages/StudentListPage';
+import StudentListActivity from '../Pages/StudentListActivity';
 import StudentAssessmentDetails from '../Pages/StudentAssessmentDetails';
 import TechModule from '../Pages/TechModule';
 import CommonMonthlyReviewPage from '../Pages/CommonMonthlyReviewPage';
@@ -247,6 +248,16 @@ const StackNavigator = ({navigation}) => {
         component={StudentListPage}
         options={{
           title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="StudentsListActivity"
+        component={StudentListActivity}
+        options={{
+          title: 'STUDENT ACTIVITY',
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
           },

@@ -51,6 +51,16 @@ import Notification from '../Pages/Notification';
 import ReviewQuizPage from '../Pages/ReviewQuizPage';
 import AssignmentPreview from '../components/AssignmentPreview';
 import Certificate from '../Pages/Certificate';
+import EcContent from '../Pages/EcContent';
+import Ecactivity from '../Pages/Ecactivity';
+import Pgeactivity from '../Pages/Pgeactivity';
+import Pgecontentdetails from '../Pages/Pgecontentdetails';
+import FlnContent from '../Pages/FlnContent';
+import FlnContentView from '../Pages/FlnContentView';
+import CommunityEngagementPage from '../Pages/CommunityEngagementPage';
+import CommunityEngagementContentView from '../Pages/CommunityEngagementContentView';
+import Payment from '../Pages/Payment';
+import PaymentDetails from '../Pages/PaymentDetails';
 
 const Stack = createNativeStackNavigator();
 
@@ -566,6 +576,116 @@ const StackNavigator = ({navigation}) => {
           // headerLeft: false,
           headerShown: false,
           headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name="ecactivity"
+        component={Ecactivity}
+        options={{
+          title: 'ପ୍ରାକ୍ ଗତିବିଧି',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="eccontent"
+        component={EcContent}
+        options={{
+          title: 'ପ୍ରାକ୍ ଗତିବିଧି',
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
+        name="pgeactivity"
+        component={Pgeactivity}
+        options={{
+          title: 'ପ୍ରାଥମିକ ଗତିବିଧି',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="Content"
+        component={Pgecontentdetails}
+        options={{title: 'ପ୍ରାଥମିକ ଗତିବିଧି', headerShown: false}}
+      />
+      <Stack.Screen
+        name="flncontent"
+        component={FlnContent}
+        options={{
+          title: 'FLN ଗତିବିଧି',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="flncontentview"
+        component={FlnContentView}
+        options={{
+          headerShown: false,
+          // headerLeft: false
+        }}
+      />
+
+      <Stack.Screen
+        name="communityengagementpage"
+        component={CommunityEngagementPage}
+        options={{
+          title: 'ଗୋଷ୍ଠୀ ସମ୍ପୃକ୍ତିକରଣ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerLeft: false,
+          // headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="communityengagementcontent"
+        component={CommunityEngagementContentView}
+        options={{
+          title: 'ସମୁଦାୟ ନିୟୋଜନ',
+          headerShown: false,
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerLeft: false,
+          // headerTitleAlign: 'center',
+        }}
+      />
+      <Stack.Screen
+        name="payment"
+        component={Payment}
+        options={{
+          title: 'ଦେୟ',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="paymentDetails"
+        component={PaymentDetails}
+        options={{
+          title: 'ଦେୟ ସୂଚନା',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
         }}
       />
     </Stack.Navigator>

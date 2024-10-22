@@ -63,7 +63,8 @@ const CommunityEngagementContentView = ({route, navigation}) => {
   const {topicId, topicName} = data;
   const {program, sclass, subject} = route.params;
   const dispatch = useDispatch();
-  const user = useSelector(state => state.userdata.user.resData);
+  // const user = useSelector(state => state.userdata.user.resData);
+  const user = useSelector(state => state.UserSlice.user);
   const {username, userid, managerid, managername, usertype, passcode} =
     user[0];
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -514,12 +515,12 @@ const CommunityEngagementContentView = ({route, navigation}) => {
   //   setIsFullScreen(!isFullScreen);
   // };
   // const videoPlayer = React.useRef();
-  const goFullScreen = () => {
-    if (videoPlayer.current) {
-      videoPlayer.current.presentFullscreenPlayer();
-    }
-  };
-  const videoPlayer = useRef(null);
+  // const goFullScreen = () => {
+  //   if (videoPlayer.current) {
+  //     videoPlayer.current.presentFullscreenPlayer();
+  //   }
+  // };
+  // const videoPlayer = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
   // const [duration, setDuration] = useState(0);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -1025,7 +1026,7 @@ const CommunityEngagementContentView = ({route, navigation}) => {
                           }}
                         />
                       )}
-                      <VideoPlayer
+                      {/* <VideoPlayer
                         video={{
                           uri: `${nowPlayingUrl}`,
                         }}
@@ -1046,7 +1047,7 @@ const CommunityEngagementContentView = ({route, navigation}) => {
                         // onPause={handleVideoPause} // Pause video when modal is opened
                         // onPlay={handleVideoPlay} // Resume video when modal is closed
                         // other props...
-                      />
+                      /> */}
                       <TouchableOpacity onPress={closeModal}>
                         <Image
                           style={{

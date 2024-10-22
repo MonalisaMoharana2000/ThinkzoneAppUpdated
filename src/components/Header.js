@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   Pressable,
   Animated,
+  Dimensions,
 } from 'react-native';
 import Api from '../environment/Api';
 import React, {useEffect, useState, useCallback} from 'react';
@@ -23,20 +24,18 @@ import {Badge} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {fetchUserDataThunk} from '../redux_toolkit/features/users/UserThunk';
 // import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+const windowHeight = Dimensions.get('window').height;
+
 const Header = ({route, navigation, handleClick}) => {
   let storedData;
-
   const userdatas = useSelector(state => state.UserSlice?.user);
-  console.log('=========userdatas', userdatas);
   const dispatch = useDispatch();
-  const {usertype, schoolname} = userdatas;
 
+  const {usertype, schoolname} = userdatas;
   const [notficationCount, setNotificationCount] = useState();
   const [imageNotFound, setImageNotFound] = useState(false);
-
   const [isLoading, setIsloading] = useState(true);
   const [imgerr, setImgerr] = useState(false);
-
   const [blinkAnimation] = useState(new Animated.Value(0));
 
   useEffect(() => {
@@ -516,7 +515,6 @@ const styles = StyleSheet.create({
   studentRegister: {
     flex: 1,
     height: 800,
-
     // overflow: 'hidden',
     width: '100%',
     backgroundColor: Color.aliceblue_100,

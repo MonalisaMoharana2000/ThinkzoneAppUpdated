@@ -31,31 +31,24 @@ import * as window from '../utils/dimensions';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import DocumentPicker from 'react-native-document-picker';
 import {S3_BUCKET, REGION, ACCESS_KEY, SECRET_ACCESS_KEY} from '@env';
-// import AWS from 'aws-sdk';
 import Loading from './Loading';
 import {FontFamily} from '../GlobalStyle';
 import {log} from 'console';
 import {PinchGestureHandler, State} from 'react-native-gesture-handler';
-// import Animated, {
-//   useSharedValue,
-//   useAnimatedGestureHandler,
-//   useAnimatedStyle,
-//   withSpring,
-//   withTiming,
-//   Easing,
-// } from 'react-native-reanimated';
+import Animated, {
+  useSharedValue,
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
-//import VideoPlayer from 'react-native-video-player';
+// import VideoPlayer from 'react-native-video-player';
 import Video from 'react-native-video';
 // import VideoPlayer from 'react-native-video-controls';
 
 const audioPlayer = new AudioRecorderPlayer();
-
-// AWS.config.update({
-//   region: REGION,
-//   accessKeyId: ACCESS_KEY,
-//   secretAccessKey: SECRET_ACCESS_KEY,
-// });
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -66,7 +59,7 @@ const AssignmentPreview = ({navigation, route}) => {
   const modalRef = useRef(null);
   const dispatch = useDispatch();
   const modalHeight = window.WindowHeigth * 0.3;
-  const user = useSelector(state => state.userdata.user.resData);
+  const user = useSelector(state => state.UserSlice.user);
   const [multipleFile, setMultipleFile] = useState([]);
   const [error, setError] = useState(false);
   const [customModal, setCustomModal] = useState(true);
@@ -501,7 +494,7 @@ const AssignmentPreview = ({navigation, route}) => {
                           }}
                         />
                       )}
-                      <VideoPlayer
+                      {/* <VideoPlayer
                         video={{
                           uri: `${previewAssignment?.answer}`,
                           // uri: `https://tzeducdn.azureedge.net/tzeducontainer/${previewAssignment?.answer
@@ -523,7 +516,7 @@ const AssignmentPreview = ({navigation, route}) => {
                           console.log('xxxxxxxxxxxxxxx onload');
                           handleVideoLoad;
                         }}
-                      />
+                      /> */}
                       {/* <VLCPlayer
                         style={{width: '100%', height: 300}}
                         videoAspectRatio="16:9"

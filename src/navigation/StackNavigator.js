@@ -47,6 +47,14 @@ import RewardTransaction from '../Pages/RewardTransaction';
 import Landingpage from '../Pages/Landingpage';
 import Landingpage1 from '../Pages/Landingpage1';
 import FirstScreen from '../Pages/FirstScreen';
+import Landingpage from '../Pages/Landingpage';
+import Landingpage1 from '../Pages/Landingpage1';
+import FirstScreen from '../Pages/FirstScreen';
+import Notification from '../Pages/Notification';
+import ReviewQuizPage from '../Pages/ReviewQuizPage';
+import AssignmentPreview from '../components/AssignmentPreview';
+import Certificate from '../Pages/Certificate';
+
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
@@ -88,6 +96,7 @@ const StackNavigator = ({navigation}) => {
             component={Landingpage}
             options={{headerShown: false}}
           />
+
           <Stack.Screen
             name="landing1"
             component={Landingpage1}
@@ -444,7 +453,20 @@ const StackNavigator = ({navigation}) => {
           },
         }}
       />
-
+      <Stack.Screen
+        name="reviewquiz"
+        component={ReviewQuizPage}
+        options={{
+          headerShown: false,
+          title: 'Quiz Review',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            textTransform: 'uppercase',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
       <Stack.Screen
         name="moduleunderdevlopment"
         component={ModuleUnderDevlopment}
@@ -510,6 +532,46 @@ const StackNavigator = ({navigation}) => {
             fontFamily: FontFamily.poppinsMedium,
             // letterSpacing: 2,
           },
+        }}
+      />
+
+      <Stack.Screen
+        name="notification"
+        component={Notification}
+        options={{
+          title: 'NOTIFICATION',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name="assignmentpreview"
+        component={AssignmentPreview}
+        options={{
+          headerShown: false,
+          title: 'Assignment Review',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            textTransform: 'uppercase',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="Certificate"
+        component={Certificate}
+        options={{
+          title: 'Certificate',
+          // headerLeft: false,
+          headerShown: false,
+          headerTitleAlign: 'center',
         }}
       />
     </Stack.Navigator>

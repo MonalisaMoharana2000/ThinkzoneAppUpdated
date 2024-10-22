@@ -31,43 +31,37 @@ import {
   DeviceEventEmitter,
   PermissionsAndroid,
   Easing,
+  FlatList,
 } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import API from '../environment/Api';
-
 import * as window from '../utils/dimensions';
-
 import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
-
 import {useDispatch, useSelector} from 'react-redux';
-
 import Header from '../components/Header';
-
+import CarouselImage from '../components/CarouselImage';
+import CarouselVideo from '../components/CarouselVideo';
 import moment from 'moment';
+const {width} = Dimensions.get('window');
 
 const Home = ({navigation}, props) => {
   const scrollRef = useRef();
-
   const image = [];
   const [activeSlide, setActiveSlide] = useState(0);
   const [maintainanceModal, setmaintainanceModal] = useState(false);
   const [deviceId, setDeviceId] = useState('');
-  // console.log('deviceId--->', deviceId);
   const user = useSelector(state => state.UserSlice.user);
+  // const {usertype} = user[0];
   console.log('==================', user);
-
   const fetchDeviceId = async () => {
     try {
       const id = await DeviceInfo.getUniqueId();
       setDeviceId(id);
-
       await AsyncStorage.setItem('deviceId', id);
     } catch (error) {
       console.error('Error fetching device ID:', error);
     }
   };
-
-  // console.log('====================================deviceId', deviceId);
 
   const sessionFunction = async () => {
     const storedDeviceId = await AsyncStorage.getItem('deviceId');
@@ -659,8 +653,8 @@ const Home = ({navigation}, props) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [logOuts, setLogOuts] = useState(false);
   const [maintainanceStatus, setMaintainanceStatus] = useState({});
-
   const [imageSlider, setImageSlider] = useState([]);
+  console.log('Imageslide', imageSlider);
 
   const [modalVisibleIntro, setModalVisibleIntro] = useState(false);
 
@@ -1559,6 +1553,11 @@ const Home = ({navigation}, props) => {
     setModal(false);
     navigation.navigate('leaderboard');
   };
+
+  const handleScroll = event => {
+    const index = Math.round(event.nativeEvent.contentOffset.x / width);
+    setActiveSlide(index % imageSlider.length); // Adjust the activeSlide index
+  };
   return (
     <>
       <ScrollView
@@ -1820,14 +1819,19 @@ const Home = ({navigation}, props) => {
           {/* <AppHeader /> */}
 
           <ScrollView
-            style={{marginTop: -25}}
+            style={{marginTop: -30, marginBottom: 5}}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }>
             <Header navigation={navigation} handleClick={handleClick} />
-            <View style={{marginTop: -670, backgroundColor: Color.ghostwhite}}>
-              <View style={[styles.warp, {marginTop: 10}]}>
-                <View style={{marginTop: 5, marginBottom: 20}}>
+            <View
+              style={{
+                marginTop: -670,
+                backgroundColor: Color.ghostwhite,
+                marginBottom: 20,
+              }}>
+              <View style={[styles.warp, {marginTop: 10, marginBottom: 40}]}>
+                <View style={{marginTop: 5, marginBottom: 5}}>
                   <View style={styles.view}>
                     <Text
                       style={[
@@ -2015,6 +2019,24 @@ const Home = ({navigation}, props) => {
                       </View>
                     ) : null}
                   </View>
+
+                  <FlatList
+                    data={imageSlider}
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    renderItem={({item}) => (
+                      <TouchableOpacity
+                        onPress={() => handlePageChange(item?.navigateTo)}>
+                        <CarouselImage data={item.mediaUrl} />
+                      </TouchableOpacity>
+                    )}
+                    keyExtractor={(item, index) => index.toString()}
+                    onScroll={handleScroll}
+                    snapToAlignment="center"
+                    decelerationRate="fast"
+                    style={{width: width}} // Set the width dynamically
+                  />
 
                   <View style={styles.view}>
                     <Text

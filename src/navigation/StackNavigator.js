@@ -44,11 +44,14 @@ import Leaderboard from '../Pages/Leaderboard';
 import Myachivement from '../Pages/Myachivement';
 import IntroQuizPage from '../Pages/IntroQuizPage';
 import RewardTransaction from '../Pages/RewardTransaction';
+import FirstScreen from '../Pages/FirstScreen';
 import Landingpage from '../Pages/Landingpage';
 import Landingpage1 from '../Pages/Landingpage1';
-import FirstScreen from '../Pages/FirstScreen';
+
 import Notification from '../Pages/Notification';
 import ReviewQuizPage from '../Pages/ReviewQuizPage';
+import AssignmentPreview from '../components/AssignmentPreview';
+import Certificate from '../Pages/Certificate';
 
 const Stack = createNativeStackNavigator();
 
@@ -541,6 +544,32 @@ const StackNavigator = ({navigation}) => {
             // letterSpacing: 2,
           },
           // headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name="assignmentpreview"
+        component={AssignmentPreview}
+        options={{
+          headerShown: false,
+          title: 'Assignment Review',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            textTransform: 'uppercase',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="Certificate"
+        component={Certificate}
+        options={{
+          title: 'Certificate',
+          // headerLeft: false,
+          headerShown: false,
+          headerTitleAlign: 'center',
         }}
       />
     </Stack.Navigator>

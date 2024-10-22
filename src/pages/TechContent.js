@@ -3412,7 +3412,7 @@ const TechContent = ({route, navigation}) => {
                                   fontSize: 18,
                                   // marginTop: 15,
                                   alignSelf: 'center',
-                                  left: '75%',
+                                  left: '15%',
                                   top: 5,
                                 }}>
                                 {data.topicName}
@@ -3512,8 +3512,8 @@ const TechContent = ({route, navigation}) => {
                                   fontSize: 18,
                                   // marginTop: 15,
                                   alignSelf: 'center',
-                                  left: '75%',
-                                  top: 15,
+                                  left: '15%',
+                                  top: 5,
                                 }}>
                                 {data.topicName}
                               </Text>

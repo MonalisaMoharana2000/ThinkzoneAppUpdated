@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, Alert, BackHandler, style} from 'react-native';
+import {Text, View, Alert, BackHandler, style, ScrollView} from 'react-native';
 import ReviewPage from '../components/ReviewPage';
 import API from '../environment/Api';
 import {useSelector, useDispatch} from 'react-redux';
 import Loading from '../components/Loading';
 import {useFocusEffect} from '@react-navigation/native';
-import {ScrollView} from 'react-native-gesture-handler';
+// import {ScrollView} from 'react-native-gesture-handler';
 import * as window from '../utils/dimensions';
 import {FontFamily, Color, FontSize, Border} from '../GlobalStyle';
 

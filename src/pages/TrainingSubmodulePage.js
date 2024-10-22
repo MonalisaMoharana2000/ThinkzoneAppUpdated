@@ -1277,8 +1277,8 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                           }}>
                                           <Image
                                             style={{
-                                              top: '10%',
-                                              left: '-25%',
+                                              top: '3%',
+                                              left: '-5%',
                                             }}
                                             source={require('../assets/Image/Quiz2.png')}
                                           />

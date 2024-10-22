@@ -48,6 +48,7 @@ import Landingpage from '../Pages/Landingpage';
 import Landingpage1 from '../Pages/Landingpage1';
 import FirstScreen from '../Pages/FirstScreen';
 import Notification from '../Pages/Notification';
+import ReviewQuizPage from '../Pages/ReviewQuizPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -447,7 +448,20 @@ const StackNavigator = ({navigation}) => {
           },
         }}
       />
-
+      <Stack.Screen
+        name="reviewquiz"
+        component={ReviewQuizPage}
+        options={{
+          headerShown: false,
+          title: 'Quiz Review',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            textTransform: 'uppercase',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+        }}
+      />
       <Stack.Screen
         name="moduleunderdevlopment"
         component={ModuleUnderDevlopment}

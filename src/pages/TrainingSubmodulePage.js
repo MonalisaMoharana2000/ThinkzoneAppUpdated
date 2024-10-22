@@ -882,7 +882,7 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                             style={{
                                               flexDirection: 'row',
                                             }}>
-                                            {/* <Image
+                                            <Image
                                               style={{
                                                 top: '6%',
                                                 width: '50%',
@@ -890,13 +890,14 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                                 left: '-10%',
                                               }}
                                               source={require('../assets/Image/Quiz1.png')}
-                                            /> */}
+                                            />
                                             <View>
                                               <Text
                                                 style={{
                                                   top: '8%',
                                                   fontSize: 18,
                                                   marginLeft: '5%',
+                                                  color: 'black',
                                                 }}>
                                                 ପୂର୍ବ ଜ୍ଞାନ
                                               </Text>
@@ -905,6 +906,7 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                                   top: '8%',
                                                   fontSize: 18,
                                                   marginLeft: '10%',
+                                                  color: 'black',
                                                 }}>
                                                 ପରୀକ୍ଷା
                                               </Text>
@@ -942,7 +944,7 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                           style={{
                                             flexDirection: 'row',
                                           }}>
-                                          {/* <Image
+                                          <Image
                                             style={{
                                               top: '18%',
                                               width: '50%',
@@ -950,13 +952,14 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                               left: '-14%',
                                             }}
                                             source={require('../assets/Image/Quiz1.png')}
-                                          /> */}
+                                          />
                                           <View>
                                             <Text
                                               style={{
                                                 top: '25%',
                                                 fontSize: 18,
                                                 marginLeft: '5%',
+                                                color: 'black',
                                               }}>
                                               ପୂର୍ବ ଜ୍ଞାନ
                                             </Text>
@@ -965,6 +968,7 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                                 top: '25%',
                                                 fontSize: 18,
                                                 marginLeft: '10%',
+                                                color: 'black',
                                               }}>
                                               ପରୀକ୍ଷା
                                             </Text>
@@ -1031,11 +1035,12 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                           <View>
                                             <Text
                                               style={{
-                                                top: '20%',
+                                                top: '10%',
                                                 fontSize: 18,
                                                 marginLeft: '15%',
-                                                fontFamily: 'sans-serif-medium',
+                                                // fontFamily: 'sans-serif-medium',
                                                 width: '80%',
+                                                color: 'black',
                                               }}>
                                               Content
                                             </Text>
@@ -1081,7 +1086,8 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                                 top: '50%',
                                                 fontSize: 18,
                                                 marginLeft: '14%',
-                                                fontFamily: 'sans-serif-medium',
+                                                // fontFamily: 'sans-serif-medium',
+                                                color: 'black',
                                               }}>
                                               Content
                                             </Text>
@@ -1148,8 +1154,8 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                           }}>
                                           <Image
                                             style={{
-                                              // top: '10%',
-                                              left: '-24%',
+                                              top: '-5%',
+                                              left: '-10%',
                                             }}
                                             source={require('../assets/Image/Assignment.png')}
                                           />
@@ -1160,6 +1166,7 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                               fontSize: 14,
                                               marginLeft: '-13%',
                                               fontFamily: 'sans-serif-medium',
+                                              color: 'black',
                                             }}>
                                             Assignment
                                           </Text>
@@ -1196,18 +1203,19 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                           }}>
                                           <Image
                                             style={{
-                                              top: '10%',
-                                              left: '-25%',
+                                              top: '25%',
+                                              left: '-10%',
                                             }}
                                             source={require('../assets/Image/Assignment.png')}
                                           />
 
                                           <Text
                                             style={{
-                                              top: '26%',
+                                              top: '50%',
                                               fontSize: 14,
                                               marginLeft: '-14%',
                                               fontFamily: 'sans-serif-medium',
+                                              color: 'black',
                                             }}>
                                             Assignment
                                           </Text>
@@ -1267,19 +1275,20 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                           style={{
                                             flexDirection: 'row',
                                           }}>
-                                          {/* <Image
+                                          <Image
                                             style={{
-                                              top: '1%',
-                                              left: '-15%',
+                                              top: '10%',
+                                              left: '-25%',
                                             }}
                                             source={require('../assets/Image/Quiz2.png')}
-                                          /> */}
+                                          />
                                           <View>
                                             <Text
                                               style={{
                                                 top: '18%',
                                                 fontSize: 18,
                                                 marginLeft: '-10%',
+                                                color: 'black',
                                               }}>
                                               ପ୍ରାପ୍ତ ଜ୍ଞାନ
                                             </Text>
@@ -1288,6 +1297,7 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                                 top: '18%',
                                                 fontSize: 18,
                                                 marginLeft: '10%',
+                                                color: 'black',
                                               }}>
                                               ପରୀକ୍ଷା
                                             </Text>
@@ -1321,19 +1331,20 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                           style={{
                                             flexDirection: 'row',
                                           }}>
-                                          {/* <Image
+                                          <Image
                                             style={{
-                                              top: '13%',
-                                              left: '-13%',
+                                              top: '23%',
+                                              left: '-5%',
                                             }}
                                             source={require('../assets/Image/Quiz2.png')}
-                                          /> */}
+                                          />
                                           <View>
                                             <Text
                                               style={{
                                                 top: '40%',
                                                 fontSize: 18,
                                                 marginLeft: '-11%',
+                                                color: 'black',
                                               }}>
                                               ପ୍ରାପ୍ତ ଜ୍ଞାନ
                                             </Text>
@@ -1342,6 +1353,7 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                                 top: '40%',
                                                 fontSize: 18,
                                                 marginLeft: '8%',
+                                                color: 'black',
                                               }}>
                                               ପରୀକ୍ଷା
                                             </Text>
@@ -1375,7 +1387,7 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                       <Image
                                         style={{
                                           marginLeft: '82%',
-                                          top: '1%',
+                                          // top: '1%',
                                           width: 22,
                                           height: 22,
                                         }}
@@ -1411,7 +1423,7 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                             style={{
                                               height: 50,
                                               width: 50,
-                                              top: '14%',
+                                              top: '40%',
                                               marginLeft: '1%',
                                             }}
                                             source={require('../assets/Image/gameslogo.png')}
@@ -1422,7 +1434,8 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                                 top: '80%',
                                                 fontSize: 15,
                                                 marginLeft: '9%',
-                                                fontFamily: 'sans-serif-medium',
+                                                // fontFamily: 'sans-serif-medium',
+                                                color: 'black',
                                               }}>
                                               Gamified
                                             </Text>
@@ -1474,7 +1487,7 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                             style={{
                                               height: 50,
                                               width: 50,
-                                              top: '14%',
+                                              top: '40%',
                                               marginLeft: '1%',
                                             }}
                                             source={require('../assets/Image/gameslogo.png')}
@@ -1486,6 +1499,7 @@ const TrainingSubmodulePage = ({navigation, route}) => {
                                                 fontSize: 15,
                                                 marginLeft: '9%',
                                                 fontFamily: 'sans-serif-medium',
+                                                color: 'black',
                                               }}>
                                               Gamified
                                             </Text>

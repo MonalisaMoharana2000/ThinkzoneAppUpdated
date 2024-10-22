@@ -28,26 +28,25 @@ const Games = ({navigation, route}) => {
     React.useCallback(() => {
       const fetchData = async () => {
         try {
+          console.log('userid---------------->', userid, data[0]?.topicId);
           const responseGamified = await Api.get(
             `/getTchTrainingGamified/${userid}/gamified/${data[0]?.topicId}`,
           );
-          setGamifiedData(responseGamified?.data?.mediaProcessedData || []);
+
+          setGamifiedData(
+            responseGamified?.data?.mediaProcessedData[0]?.gamifiedData
+              ? responseGamified?.data?.mediaProcessedData[0]?.gamifiedData
+              : responseGamified?.data?.mediaProcessedData || [],
+          );
         } catch (error) {
           console.error('Error fetching data:', error);
-          // Alert.alert('Info', 'Unable to fetch game data. Please try again.', [
-          //   {
-          //     text: 'Ok',
-          //     onPress: () => navigation.goBack(),
-          //     style: 'default',
-          //   },
-          // ]);
         } finally {
-          setLoading(false); // Ensure loading ends
+          setLoading(false);
         }
       };
 
       fetchData();
-    }, [userid, data]),
+    }, []),
   );
 
   const gameTypeToScreen = {

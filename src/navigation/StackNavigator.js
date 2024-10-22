@@ -44,7 +44,9 @@ import Leaderboard from '../Pages/Leaderboard';
 import Myachivement from '../Pages/Myachivement';
 import IntroQuizPage from '../Pages/IntroQuizPage';
 import RewardTransaction from '../Pages/RewardTransaction';
-
+import Landingpage from '../Pages/Landingpage';
+import Landingpage1 from '../Pages/Landingpage1';
+import FirstScreen from '../Pages/FirstScreen';
 const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {

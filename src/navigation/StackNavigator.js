@@ -275,11 +275,8 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ପ୍ରଯୁକ୍ତିବିଦ୍ୟା',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
           },
-          // headerTitleAlign: 'center',
         }}
       />
 

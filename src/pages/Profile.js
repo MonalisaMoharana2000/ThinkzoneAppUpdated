@@ -113,10 +113,10 @@ const Profile = ({navigation}) => {
       );
 
       // await Logout(userdatas, app_versions);
-      console.log('response--->', logout);
+      console.log('response--->', logout?.status);
       if (logout?.status === 200) {
         dispatch(clearUser());
-        navigation.navigate('Login');
+        navigation.navigate('firstScreen');
       }
       // dispatch(types.logOutUser());
       // navigation.navigate('login');
@@ -514,6 +514,7 @@ const Profile = ({navigation}) => {
                   iconSource={require('../assets/Image/user-square.png')}
                   label="User ID :"
                   value={userdata[0]?.userid}
+                  noTextTransform={true}
                 />
                 <Feather
                   name="copy"
@@ -526,6 +527,7 @@ const Profile = ({navigation}) => {
                 iconSource={require('../assets/Image/email.png')}
                 label="Email ID :"
                 value={userdata[0]?.emailid}
+                noTextTransform={true}
               />
               <ProfileItem
                 iconSource={require('../assets/Image/user-search.png')}

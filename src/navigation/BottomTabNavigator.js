@@ -1,5 +1,15 @@
 import React, {useRef, useState, useEffect} from 'react';
-import {Text, View, Image, Platform, Dimensions, Animated} from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  Platform,
+  Dimensions,
+  Animated,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../Pages/Home';
 import Profile from '../Pages/Profile';
@@ -11,8 +21,8 @@ import {useSelector} from 'react-redux';
 const Tab = createBottomTabNavigator();
 const {height, width} = Dimensions.get('window');
 
-const BottomTabNavigator = () => {
-  const user = useSelector(state => state.UserSlice.user[0]);
+const BottomTabNavigator = ({navigation}) => {
+  const user = useSelector(state => state.UserSlice?.user[0]);
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
   const [selectedTab, setSelectedTab] = useState('Home');
   const [maintainanceStatus, setMaintainanceStatus] = useState({});
@@ -102,7 +112,7 @@ const BottomTabNavigator = () => {
             position: 'absolute',
             marginHorizontal: 0,
             width: width - 0.5,
-            height: 70,
+            height: 55,
             backgroundColor: 'white',
             shadowColor: '#000',
             shadowOpacity: 0.05,
@@ -205,7 +215,20 @@ const BottomTabNavigator = () => {
           component={Leaderboard}
           options={{
             title: 'Leaderboard',
-            headerShown: false,
+            headerTitleStyle: {
+              fontFamily: FontFamily.poppinsMedium,
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <AntDesign
+                  style={{marginLeft: 15}}
+                  name="arrowleft"
+                  size={25}
+                  color="black"
+                />
+              </TouchableOpacity>
+            ),
+            // headerShown: false,
             tabBarIcon: ({focused}) => (
               <View style={{alignItems: 'center'}}>
                 <Image
@@ -248,8 +271,18 @@ const BottomTabNavigator = () => {
           name="Myachivement"
           component={Myachivement}
           options={{
-            title: 'Myachivement',
-            headerShown: false,
+            title: 'Rewards',
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <AntDesign
+                  style={{marginLeft: 15}}
+                  name="arrowleft"
+                  size={25}
+                  color="black"
+                />
+              </TouchableOpacity>
+            ),
+            // headerShown: false,
             tabBarIcon: ({focused}) => (
               <View style={{alignItems: 'center'}}>
                 <Image
@@ -295,7 +328,7 @@ const BottomTabNavigator = () => {
           height: 4.5,
           backgroundColor: Color.royalblue,
           position: 'absolute',
-          bottom: 65, // Moved it lower to display below the text
+          bottom: 55, // Moved it lower to display below the text
           left: selectedTab === 'Leaderboard' ? 0 : 20, // Adjust 'left' for Leaderboard
           borderRadius: 20,
           transform: [{translateX: tabOffsetValue}],

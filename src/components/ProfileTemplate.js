@@ -2,7 +2,7 @@ import {Text, View, Image} from 'react-native';
 import React from 'react';
 import {Color, FontFamily} from '../GlobalStyle';
 
-export const ProfileItem = ({iconSource, label, value}) => (
+export const ProfileItem = ({iconSource, label, value, noTextTransform}) => (
   <View
     style={{
       flex: 1, // Takes up the full height of the screen
@@ -47,7 +47,7 @@ export const ProfileItem = ({iconSource, label, value}) => (
           fontWeight: '500',
           fontFamily: FontFamily.poppinsMedium,
           flex: 1,
-          textTransform: 'capitalize',
+          textTransform: noTextTransform ? 'none' : 'capitalize',
           marginLeft: 10, // Adjust margin for spacing between label and value
         }}>
         {value}

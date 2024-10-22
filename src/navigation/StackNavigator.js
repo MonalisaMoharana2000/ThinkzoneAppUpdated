@@ -47,7 +47,6 @@ import RewardTransaction from '../Pages/RewardTransaction';
 import FirstScreen from '../Pages/FirstScreen';
 import Landingpage from '../Pages/Landingpage';
 import Landingpage1 from '../Pages/Landingpage1';
-
 import Notification from '../Pages/Notification';
 import ReviewQuizPage from '../Pages/ReviewQuizPage';
 import AssignmentPreview from '../components/AssignmentPreview';

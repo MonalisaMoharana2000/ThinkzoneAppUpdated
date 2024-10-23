@@ -248,12 +248,13 @@ const EditProfile = ({navigation, route}) => {
         setImageData(filename);
         // console.log('response====>', response.data);
 
-        console.log(
-          'image---->',
-          fileUri,
-          uploadResult,
+        console
+          .log
+          // 'image---->',
+          // fileUri,
+          // uploadResult,
           // camelCaseFilename,
-        );
+          ();
         // const pathSegments = image.path.split('/');
         // const filename = pathSegments[pathSegments.length - 1];
         // const camelCaseFilename = generateNewFilename(filename);
@@ -455,6 +456,13 @@ const EditProfile = ({navigation, route}) => {
         setDistrictError(false);
         setBlockError(false);
         setAadhaarError(false);
+
+        const userId = userdata[0]._id;
+        if (!userId || typeof userId !== 'string') {
+          console.error('Invalid user ID');
+          return;
+        }
+
         const userDetails = {
           username: `${name} ${mname} ${lname}`,
           firstname: name.trim().split(/\s+/)[0],
@@ -477,7 +485,7 @@ const EditProfile = ({navigation, route}) => {
           aadhaar: aadhaar,
           aadhaarUpdated: false,
           passcode: userdata[0].passcode,
-          _id: userdata[0]._id,
+          _id: userdata[0]?._id,
           appVersion: app_versions,
           // loginType: userdata[0].loginType ? userdata[0].loginType : null,
         };
@@ -486,7 +494,7 @@ const EditProfile = ({navigation, route}) => {
         const data = {
           user: userDetails,
           image: imageData || userdata[0]?.image,
-          userid: userdata[0].userid,
+          userid: userdata[0]?._id,
         };
         console.log('userData post body ---->', data);
         // // console.log('userDetailsupdate---->', userDetails.firstname);

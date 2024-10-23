@@ -675,7 +675,8 @@ const AudioAssessment = ({
         newData[questionIndex].answer = newAnswer;
       }
       handleChangeText(questionId, newAnswer);
-      return console.log('newData---->', newData), newData;
+      return;
+      console.log('newData---->', newData), newData;
     });
   };
 

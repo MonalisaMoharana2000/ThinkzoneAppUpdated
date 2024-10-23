@@ -52,6 +52,36 @@ const CommonMonthlyPage = ({navigation}) => {
   // console.log('appStateVisible------------->', appStateVisible);
   const [getStartTime, setGetStartTime] = useState(null);
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          '',
+          'Do you want to Leave this page?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {
+              text: 'OK',
+              onPress: () => {
+                navigation.goBack();
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+
+        return true;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   //for user back button press timespent calculation
   //!----------------------Commented as per discussion since not required to spend more time on Quiz page-----------------
   // useEffect(() => {

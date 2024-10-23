@@ -1,3 +1,4 @@
+import React, {useEffect, useState, useRef, useCallback} from 'react';
 import {
   StyleSheet,
   Text,
@@ -19,7 +20,6 @@ import Foundation from 'react-native-vector-icons/Foundation';
 const AnimatedMaterialIcons = Animated.createAnimatedComponent(Foundation);
 import {showMessage} from 'react-native-flash-message';
 import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
-import React, {useEffect, useState} from 'react';
 import * as window from '../utils/dimensions';
 import Colors from '../utils/Colors';
 import {useFocusEffect} from '@react-navigation/native';
@@ -29,7 +29,6 @@ import {ScrollView} from 'react-native-gesture-handler';
 import Loading from '../components/Loading';
 import Nocontents from '../components/Nocontents';
 import SurveyComponent from '../components/SurveyComponent';
-import {useRef} from 'react';
 import {app_versions} from './Home';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
@@ -278,18 +277,23 @@ const Feedback = ({route, navigation}) => {
     };
   }, []);
 
-  const fetchData = async () => {
-    const response = await Api.get(`getAllTchSurveys/${userid}/${usertype}`);
-    console.log('response----->', response.data);
-    setSurveys(response.data);
-    setLoading(false);
-  };
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await Api.get(`getAllTchSurveys/${userid}/${usertype}`);
+      console.log('response----->', response.data);
+      setSurveys(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setLoading(false);
+    }
+  }, [userid, usertype]);
 
   useFocusEffect(
-    React.useCallback(() => {
-      setLoading(true);
+    useCallback(() => {
       fetchData();
-    }, []),
+    }, [fetchData]),
   );
 
   const onSurveyBack = () => {
@@ -685,7 +689,7 @@ const Feedback = ({route, navigation}) => {
                                         {item.surveyName}
                                       </Text>
                                       {item.viewStatus === true ? null : (
-                                        <View style={{left: '100%'}}>
+                                        <View style={{left: '60%'}}>
                                           <AnimatedMaterialIcons
                                             name="burst-new"
                                             size={50}

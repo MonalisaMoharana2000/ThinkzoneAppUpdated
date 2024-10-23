@@ -12,13 +12,13 @@ import {
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {Color, FontFamily} from '../GlobalStyle';
+import API from '../environment/Api';
+import {useSelector} from 'react-redux';
 import Home from '../Pages/Home';
 import Profile from '../Pages/Profile';
 import Leaderboard from '../Pages/Leaderboard';
 import Myachivement from '../Pages/Myachivement';
-import {Color, FontFamily} from '../GlobalStyle';
-import API from '../environment/Api';
-import {useSelector} from 'react-redux';
 const Tab = createBottomTabNavigator();
 const {height, width} = Dimensions.get('window');
 

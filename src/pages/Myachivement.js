@@ -69,14 +69,12 @@ const Myachivement = ({navigation}) => {
   const windowHeight = Dimensions.get('window').height;
   const [versionModal, setVersionModal] = useState(false);
   const [couponModal, setCouponModal] = useState(false);
-
   const [isStatus, setisStatus] = useState(false);
   const [achieve, setAchieve] = useState([]);
   const [isLoading, setIsloading] = useState(true);
   const [timeSpent_record, setTimeSpent_record] = useState([]);
   const [transaction_record, setTransaction_record] = useState([]);
   const [maintainanceStatus, setMaintainanceStatus] = useState({});
-  // console.log(transaction_record,"transaction_record====================");
   const [reward, setReward] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [open, setOpen] = React.useState(false);
@@ -88,8 +86,6 @@ const Myachivement = ({navigation}) => {
     {id: 5, value: 'NSDC'},
   ];
   let tableHead = ['Months', 'TimeSpent'];
-  // let tableTitle = ['Jan', 'Feb', 'Mar', 'Apr','May', 'Jun','Jul','Aug','Sep', 'Oct','Nov','Dec'];
-  //  let tableTitle = [];
   let tableData = [
     {month: 'Jan', time: 12},
     {month: 'Feb', time: 23},
@@ -146,9 +142,7 @@ const Myachivement = ({navigation}) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await dispatch(
-        fetchUserTotalCoinsThunk('monalisamo.7683939162@tz.in'),
-      );
+      const res = await dispatch(fetchUserTotalCoinsThunk(user[0].userid));
       console.log('res---------->', res?.payload);
     };
 

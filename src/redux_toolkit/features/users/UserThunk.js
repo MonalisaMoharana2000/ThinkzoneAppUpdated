@@ -73,6 +73,15 @@ export const phoneNumberVerifyThunk = createAsyncThunk(
   },
 );
 
+export const updateUserThunk = createAsyncThunk(
+  'user/userupdate',
+  async data => {
+    let response = await API.put(`updateuser/${data.userid}`, data.user);
+    // authUserCred/:userid/:pswd
+    return response.data;
+  },
+);
+
 //Rewards
 
 export const fetchUserTotalCoinsThunk = createAsyncThunk(

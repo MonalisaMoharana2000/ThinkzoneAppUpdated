@@ -8,6 +8,7 @@ import {
   fetchUserTotalCoinsThunk,
   phoneNumberVerifyThunk,
   getUserProgressbyid,
+  updateUserThunk,
 } from './UserThunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -71,6 +72,27 @@ const UserSlice = createSlice({
         state.message = 'Data fetched successfully';
       })
       .addCase(authNewUserThunk.rejected, (state, action) => {
+        state.user = [];
+        state.loading = false;
+        state.status = 'failed';
+        state.message = 'Error fetching data';
+      });
+
+    //Update user
+    builder
+      .addCase(updateUserThunk.pending, (state, action) => {
+        state.user = [];
+        state.loading = true;
+        state.status = action.meta.requestStatus;
+        state.message = 'loading';
+      })
+      .addCase(updateUserThunk.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.loading = false;
+        state.status = 'succeeded';
+        state.message = 'Data fetched successfully';
+      })
+      .addCase(updateUserThunk.rejected, (state, action) => {
         state.user = [];
         state.loading = false;
         state.status = 'failed';

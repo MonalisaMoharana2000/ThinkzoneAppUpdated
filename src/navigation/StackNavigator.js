@@ -51,6 +51,7 @@ import Notification from '../Pages/Notification';
 import ReviewQuizPage from '../Pages/ReviewQuizPage';
 import AssignmentPreview from '../components/AssignmentPreview';
 import Certificate from '../Pages/Certificate';
+import EditProfile from '../Pages/EditProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -144,6 +145,17 @@ const StackNavigator = ({navigation}) => {
         component={Profile}
         options={{
           title: 'Profile',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+        }}
+      />
+
+      <Stack.Screen
+        name="editprofile"
+        component={EditProfile}
+        options={{
+          title: 'Edit Profile',
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
           },

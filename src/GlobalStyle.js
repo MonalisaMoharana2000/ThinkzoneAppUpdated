@@ -37,7 +37,6 @@ export const Color = {
   primaryContrast: '#fff',
   primary: '#13538a',
   secondary: '#39AFEA',
-
   royalblue: '#0060ca',
   darkslategray_100: '#424242',
   darkslategray_200: '#333',

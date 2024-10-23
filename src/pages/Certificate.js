@@ -22,7 +22,7 @@ import ViewShot from 'react-native-view-shot';
 import * as window from '../utils/dimensions';
 import {Color, FontFamily} from '../GlobalStyle';
 import {Buffer} from 'buffer';
-import Share from 'react-native-share';
+// import Share from 'react-native-share';
 // import {S3_BUCKET, REGION, ACCESS_KEY, SECRET_ACCESS_KEY} from '@env';
 import {log} from 'react-native-reanimated';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';

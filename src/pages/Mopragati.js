@@ -23,39 +23,27 @@ import {
   Alert,
   Clipboard,
   BackHandler,
+  ScrollView,
 } from 'react-native';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import DropdownComponent from '../components/DropdownComponent';
 import * as Progress from 'react-native-progress';
-import {Rating, AirbnbRating} from 'react-native-ratings';
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-import Entypo from 'react-native-vector-icons/Entypo';
-import {ScrollView} from 'react-native-gesture-handler';
-import {Colors, DataTable} from 'react-native-paper';
-import Accordion from '../components/Accordion';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {useDispatch, useSelector} from 'react-redux';
 import API from '../environment/Api';
-import {Item} from 'react-native-paper/lib/typescript/components/List/List';
+
 import * as window from '../utils/dimensions';
 import {useFocusEffect} from '@react-navigation/native';
 import moment from 'moment';
 import {FontFamily, Color, FontSize, Border, Padding} from '../GlobalStyle';
 import LinearGradient from 'react-native-linear-gradient';
-import {
-  green200,
-  red200,
-} from 'react-native-paper/lib/typescript/styles/colors';
+
 import ModuleUnderDevlopment from '../components/ModuleUnderDevlopment';
 // import {Tooltip, Text, lightColors} from '@rneui/themed';
 const {width: windowWidth} = Dimensions.get('window');
 // import Tooltip from 'react-native-tooltip';
 const {height} = Dimensions.get('window');
-import {WebView} from 'react-native-webview';
-import Loading from '../components/Loading';
-import {useIsFocused} from '@react-navigation/native';
-// import * as FcmSlice from '../redux/slices/FcmSlice';
+
 import {LineChart} from 'react-native-chart-kit';
 import Api from '../environment/Api';
 import ProgressAccordion from '../components/ProgressAccordion';
@@ -328,7 +316,7 @@ const Mopragati = ({navigation}) => {
     React.useCallback(() => {
       //
       // Do something when the screen is focused
-      dispatch(types.rewardsUserstart(user[0].userid));
+      // dispatch(types.rewardsUserstart(user[0].userid));
     }, []),
   );
 
@@ -599,7 +587,7 @@ const Mopragati = ({navigation}) => {
       trainingType: dataClicked ? dataClicked : selData,
     };
 
-    const response = await dispatch(types.userProgressStart(data));
+    // const response = await dispatch(types.userProgressStart(data));
   };
 
   useEffect(() => {

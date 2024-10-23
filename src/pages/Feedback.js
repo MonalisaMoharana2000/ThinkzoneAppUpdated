@@ -277,6 +277,36 @@ const Feedback = ({route, navigation}) => {
     };
   }, []);
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          '',
+          'Do you want to Leave this page?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {
+              text: 'OK',
+              onPress: () => {
+                navigation.goBack();
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+
+        return true;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);

@@ -8,9 +8,10 @@ import {
   ScrollView,
   ActivityIndicator,
   Dimensions,
+  Alert,
+  BackHandler,
 } from 'react-native';
 import Colors from '../utils/Colors';
-
 import ListItem from '../components/ListItem';
 import React, {useEffect, useState} from 'react';
 import API from '../environment/Api';
@@ -18,7 +19,6 @@ import PdfViewer from '../components/PdfViewer';
 import {FontFamily, FontSize, Border, Color} from '../GlobalStyle';
 import DropdownComponent from '../components/DropdownComponent';
 import {useDispatch, useSelector} from 'react-redux';
-
 import * as window from '../utils/dimensions';
 import Modals from '../components/Modals';
 import {ReactNativeZoomableView} from '@dudigital/react-native-zoomable-view/dist';
@@ -109,6 +109,37 @@ const CommunityEngagementPage = ({navigation, route}) => {
 
     fetchData();
   }, [program, sclass, subject]);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          '',
+          'Do you want to Leave this page?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {
+              text: 'OK',
+              onPress: () => {
+                navigation.goBack();
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+
+        return true;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <ScrollView>
       <>

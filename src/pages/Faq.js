@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Dimensions,
   Image,
+  Alert,
 } from 'react-native';
 import YouTube from 'react-native-youtube-iframe';
 import {useFocusEffect} from '@react-navigation/native';
@@ -123,6 +124,17 @@ const Faq = ({navigation}) => {
   function onReady() {
     setIsReadyForRender(true);
   }
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.goBack();
+        return true;
+      },
+    );
+    return () => backHandler.remove();
+  }, [navigation]);
 
   return (
     <>

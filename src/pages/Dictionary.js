@@ -8,6 +8,8 @@ import {
   Dimensions,
   SectionList,
   ScrollView,
+  BackHandler,
+  Alert,
 } from 'react-native';
 // import Color from '../utils/Colors';
 import ListItem from '../components/ListItem';
@@ -40,7 +42,7 @@ import {style} from 'd3';
 
 const {height: SCREEN_HEIGHT} = Dimensions.get('window');
 // const MAX_TRANSLATE_Y = -SCREEN_HEIGHT + 1;
-const Dictionary = () => {
+const Dictionary = ({navigation}) => {
   // const userdata = useSelector(state => state.UserSlice.user[0]);
   const [word, setWord] = useState('');
   const [wordDetail, setWordDetail] = useState([]);
@@ -92,6 +94,17 @@ const Dictionary = () => {
       };
     });
   };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.goBack();
+        return true;
+      },
+    );
+    return () => backHandler.remove();
+  }, [navigation]);
 
   return (
     // <GestureDetector gesture={gesture}>

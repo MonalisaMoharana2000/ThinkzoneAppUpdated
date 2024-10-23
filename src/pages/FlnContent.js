@@ -4,6 +4,7 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  BackHandler,
   Image,
   ScrollView,
   ActivityIndicator,
@@ -11,29 +12,31 @@ import {
 } from 'react-native';
 import Colors from '../utils/Colors';
 
-import ListItem from '../components/ListItem';
+// import ListItem from '../components/ListItem';
 import React, {useEffect, useState} from 'react';
 import API from '../environment/Api';
-import PdfViewer from '../components/PdfViewer';
+// import PdfViewer from '../components/PdfViewer';
 import {FontFamily, FontSize, Border, Color} from '../GlobalStyle';
 import DropdownComponent from '../components/DropdownComponent';
 import {useDispatch, useSelector} from 'react-redux';
 
 import * as window from '../utils/dimensions';
 import Modals from '../components/Modals';
-import {ReactNativeZoomableView} from '@dudigital/react-native-zoomable-view/dist';
+import Norecord from '../components/Norecord';
 import Loading from '../components/Loading';
+import Nocontents from '../components/Nocontents';
 
-const CommunityEngagementPage = ({navigation, route}) => {
+const FlnContent = ({route, navigation}) => {
   const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const [fln, setFln] = useState([]);
-  console.log('fln----->', fln);
   // const {studentDetails} = route.params;
   const [customModal, setCustomModal] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
 
-  // const teacherdata = useSelector(state => state.userdata.user?.resData);
+  // const teacherdata = useSelector(
+  //   state => state.UserSlice?.user?.data?.resData,
+  // );
   const teacherdata = useSelector(state => state.UserSlice.user);
 
   const [sclass, setSclass] = useState(1);
@@ -54,14 +57,6 @@ const CommunityEngagementPage = ({navigation, route}) => {
     setSubject(item.class);
   };
 
-  const getTopicDetails = item => {
-    navigation.navigate('communityengagementcontent', {
-      item,
-      subject,
-      program,
-      sclass,
-    });
-  };
   const sikllSelected = item => {
     //
     if (studentClass == 0) {
@@ -76,28 +71,27 @@ const CommunityEngagementPage = ({navigation, route}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const body = {
-          activityType: 'fln',
-          usertype: teacherdata[0].usertype,
-          language: 'od',
-          program: program,
-          class: sclass,
-          subject: subject,
-        };
+        // const body = {
+        //   activityType: 'fln',
+        //   usertype: teacherdata[0].usertype,
+        //   language: 'od',
+        //   program: program,
+        //   class: sclass,
+        //   subject: subject,
+        // };
         // console.log('body======================', body);
         const response = await API.get(
-          `getMasterStudActTopics/${'community'}/${
+          `getMasterStudActTopics/${'fln'}/${
             teacherdata[0].usertype
-          }/${'od'}`,
+          }/${'od'}/${'formative'}/${sclass}/${subject}/${program}`,
         );
         setFln(response.data);
         setIsLoading(false);
-        console.log(
-          response.data,
-          'res---------------------------------------------------',
-        );
+        // console.log(response.data);
       } catch (error) {
-        if (error.response.status === 504) {
+        if (error.response.status === 413) {
+          console.log('error is---------------->', error);
+        } else if (error.response.status === 504) {
           console.log('Error is--------------------->', error);
         } else if (error.response.status === 500) {
           console.error('Error is------------------->:', error);
@@ -109,75 +103,70 @@ const CommunityEngagementPage = ({navigation, route}) => {
 
     fetchData();
   }, [program, sclass, subject]);
+  const getTopicDetails = item => {
+    navigation.navigate('flncontentview', {item, subject, program, sclass});
+  };
   return (
-    <ScrollView>
-      <>
-        {isLoading ? (
-          // <ActivityIndicator
-          //   size="large"
-          //   color={Colors.primary}
-          //   style={{justifyContent: 'center', alignSelf: 'center'}}
-          // />
-          <Loading />
-        ) : (
-          <View>
-            {/* <DropdownComponent
-              data={programArr}
-              onChange={getProgram}
-              label={'label'}
-              image={require('../assets/Image/book-square.png')}
-            /> */}
-            {/* {program === 'pge' ? (
-              <DropdownComponent
-                data={classArr}
-                onChange={getClass}
-                label={'class'}
-                image={require('../assets/Image/driver.png')}
-              />
-            ) : null} */}
-
-            {/* {program === 'ece' ? (
-              <DropdownComponent
-                data={levelArr}
-                onChange={getClass}
-                label={'class'}
-                image={require('../assets/Image/driver.png')}
-              />
-            ) : null} */}
-
-            {/* <DropdownComponent
-              data={subjectArr}
-              onChange={getSubject}
-              label={'label'}
+    <>
+      {isLoading ? (
+        // <ActivityIndicator
+        //   size="large"
+        //   color={Colors.primary}
+        //   style={{justifyContent: 'center', alignSelf: 'center'}}
+        // />
+        <Loading />
+      ) : (
+        <View>
+          <DropdownComponent
+            data={programArr}
+            onChange={getProgram}
+            label={'label'}
+            image={require('../assets/Image/book-square.png')}
+          />
+          {program === 'pge' ? (
+            <DropdownComponent
+              data={classArr}
+              onChange={getClass}
+              label={'class'}
               image={require('../assets/Image/driver.png')}
-            /> */}
-            {fln.length != 0 ? (
-              // <FlatList
-              //   background
-              //   removeClippedSubviews={true}
-              //   maxToRenderPerBatch={10}
-              //   initialNumToRender={10}
-              //   updateCellsBatchingPeriod={40}
-              //   data={fln}
-              //   renderItem={({item, index}) => (
-              //     <ListItem
-              //       backgroundColor="white"
-              //       color="black"
-              //       onPress={() => getTopicDetails(item)}
-              //       image={require('../assets/Photos/bookc.png')}
-              //       title={item.skillName}
-              //     />
-              //   )}
-              // />
-              <>
-                <ScrollView>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      flexWrap: 'wrap',
-                      justifyContent: 'space-evenly',
-                    }}>
-                    {fln.map((item, index) => (
+            />
+          ) : null}
+
+          {program === 'ece' ? (
+            <DropdownComponent
+              data={levelArr}
+              onChange={getClass}
+              label={'class'}
+              image={require('../assets/Image/driver.png')}
+            />
+          ) : null}
+
+          <DropdownComponent
+            data={subjectArr}
+            onChange={getSubject}
+            label={'label'}
+            image={require('../assets/Image/driver.png')}
+          />
+          {fln?.length > 0 ? (
+            <>
+              <ScrollView
+                style={{
+                  height: 500,
+                  overflow: 'scroll',
+                }}
+                nestedScrollEnabled={true}
+                showsVerticalScrollIndicator={false}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-evenly',
+                    height: window.WindowHeigth * 0.971,
+                  }}>
+                  {fln?.map((item, index) => (
+                    <ScrollView
+                      nestedScrollEnabled={true}
+                      showsVerticalScrollIndicator={false}>
                       <TouchableOpacity onPress={() => getTopicDetails(item)}>
                         {item.topicImage?.length > 0 ? (
                           <View
@@ -204,7 +193,7 @@ const CommunityEngagementPage = ({navigation, route}) => {
                                 // borderBottomRightRadius: 9,
                               }}
                               source={{uri: `${item.topicImage}`}}
-                              // loadingIndicatorSource={require('../assets/Image/loaderimage.png')}engagement
+                              // loadingIndicatorSource={require('../assets/Image/loaderimage.png')}
                               // onError={() => {
                               //   console.error('Image failed to load');
                               //   // Display a default/local image when an error occurs
@@ -215,7 +204,7 @@ const CommunityEngagementPage = ({navigation, route}) => {
                         ) : (
                           <View
                             style={{
-                              // borderWidth: 1.2,
+                              borderWidth: 1.2,
                               borderColor: Color.royalblue,
                               borderRadius: 10,
                               backgroundColor: Color.ghostwhite,
@@ -231,7 +220,7 @@ const CommunityEngagementPage = ({navigation, route}) => {
                                 color: 'black',
                                 fontSize: 15,
                                 fontWeight: '900',
-                                alignSelf: 'center',
+
                                 fontFamily: FontFamily.balooBhaiRegular,
 
                                 // marginTop: 7,
@@ -252,36 +241,62 @@ const CommunityEngagementPage = ({navigation, route}) => {
                             />
                           </View>
                         )}
+                        {/* <View>
+                            <Text
+                              style={{
+                                color: 'black',
+                                fontSize: 15,
+                                fontWeight: '900',
+    
+                                fontFamily: FontFamily.balooBhaiRegular,
+    
+                                // marginTop: 7,
+                                marginLeft: 5,
+                                paddingBottom: 10,
+                              }}>
+                              {item.topicName}
+                            </Text>
+                            <Image
+                              style={{
+                                width: window.WindowWidth * 0.425,
+                                height: window.WindowHeigth * 0.195,
+    
+                                alignSelf: 'center',
+                                borderRadius: 10,
+                              }}
+                              source={require('../assets/Image/books.jpg')}
+                            />
+                          </View> */}
                       </TouchableOpacity>
-                    ))}
-                  </View>
-                </ScrollView>
-              </>
-            ) : (
-              <ReactNativeZoomableView>
-                <View style={{flex: 1}}>
-                  <Image
-                    style={{
-                      width: windowWidth * 1, // You can adjust the scaling factor as needed
-                      height: windowHeight * 0.5, // You can adjust the scaling factor as needed
-                      flex: 1,
-                      alignSelf: 'center',
-                      top: 20,
-                    }}
-                    source={require('../assets/Image/norec.jpg')}
-                    resizeMode="contain" // You can change the resizeMode as per your requirement
-                  />
+                    </ScrollView>
+                  ))}
                 </View>
-              </ReactNativeZoomableView>
-            )}
-          </View>
-        )}
-      </>
-    </ScrollView>
+              </ScrollView>
+            </>
+          ) : (
+            <View style={{flex: 1}}>
+              <Image
+                style={{
+                  width: windowWidth * 1, // You can adjust the scaling factor as needed
+                  height: windowHeight * 0.5, // You can adjust the scaling factor as needed
+                  // flex: 1,
+                  // alignSelf: 'center',
+                  // top: 20,
+                }}
+                source={require('../assets/Image/Group76686.png')}
+                // resizeMode="contain" // You can change the resizeMode as per your requirement
+              />
+            </View>
+            // <Nocontents />
+          )}
+        </View>
+      )}
+    </>
   );
 };
 
-export default CommunityEngagementPage;
+export default FlnContent;
+
 const styles = StyleSheet.create({
   image: {
     width: window.WindowWidth * 0.99,
@@ -291,15 +306,12 @@ const styles = StyleSheet.create({
     top: 20,
   },
   tinyLogo: {
-    width: window.WindowWidth * 0.1,
-    height: window.WindowHeigth * 0.1,
-    // width: 60,
-    // height: 60,
-    marginLeft: 20,
-    marginTop: -20,
-
-    // marginLeft: -24,
-    // marginRight: -50,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 10,
+    top: -5,
   },
 });
 

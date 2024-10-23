@@ -13,7 +13,7 @@ import BottomTabNavigator from './BottomTabNavigator';
 import StudentRegister from '../Pages/StudentRegister';
 import {FontFamily} from '../GlobalStyle';
 import StudentList from '../Pages/StudentList';
-import {TouchableOpacity, ActivityIndicator, View} from 'react-native';
+import {TouchableOpacity, ActivityIndicator, View, Alert} from 'react-native';
 import {Color} from '../GlobalStyle';
 import StudentListPage from '../Pages/StudentListPage';
 import StudentListActivity from '../Pages/StudentListActivity';
@@ -446,6 +446,7 @@ const StackNavigator = ({navigation}) => {
         component={Feedback}
         options={{
           title: 'ମତାମତ',
+
           headerTitleStyle: {
             // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,

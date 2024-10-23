@@ -268,7 +268,7 @@ const Mopragati = ({navigation}) => {
   //For Transaction aPI
   useFocusEffect(
     React.useCallback(() => {
-      API.get(`getLast5CoinsTransaction/${user[0].userid}`).then(
+      API.get(`getLast5CoinsTransaction/${user[0]?.userid}`).then(
         response => {
           // console.log(
           //   'dataaaaaaaaaaaaaaaaaaa-----------------',

@@ -273,38 +273,8 @@ const Feedback = ({route, navigation}) => {
 
     // Cleanup function
     return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
+      // AppState.removeEventListener('change', handleAppStateChange);
     };
-  }, []);
-
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
-        Alert.alert(
-          '',
-          'Do you want to Leave this page?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => null,
-              style: 'cancel',
-            },
-            {
-              text: 'OK',
-              onPress: () => {
-                navigation.goBack();
-              },
-            },
-          ],
-          {cancelable: false},
-        );
-
-        return true;
-      },
-    );
-
-    return () => backHandler.remove();
   }, []);
 
   const fetchData = useCallback(async () => {
@@ -719,7 +689,7 @@ const Feedback = ({route, navigation}) => {
                                         {item.surveyName}
                                       </Text>
                                       {item.viewStatus === true ? null : (
-                                        <View style={{left: '60%'}}>
+                                        <View style={{marginLeft: 10}}>
                                           <AnimatedMaterialIcons
                                             name="burst-new"
                                             size={50}

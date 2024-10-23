@@ -705,19 +705,19 @@ const Home = ({navigation}, props) => {
     );
   }, []);
 
-  // useEffect(() => {
-  //   API.get(`getMaintainanceStatus/${user[0]?.usertype}`).then(
-  //     response => {
-  //       // setAchieve(response.data);
-  //       setMaintainanceStatus(response.data);
-  //       setmaintainanceModal(response.data?.overallApp);
-  //       // setmaintainanceModal(false);
-  //     },
-  //     err => {
-  //       //
-  //     },
-  //   );
-  // }, []);
+  useEffect(() => {
+    API.get(`getMaintainanceStatus/${user[0]?.usertype}`).then(
+      response => {
+        // setAchieve(response.data);
+        setMaintainanceStatus(response.data);
+        setmaintainanceModal(response.data?.overallApp);
+        // setmaintainanceModal(false);
+      },
+      err => {
+        //
+      },
+    );
+  }, []);
   useEffect(() => {
     API.get(`getDboardSliders/${user[0]?.usertype}/${'image'}`).then(
       response => {

@@ -58,6 +58,7 @@ import {useIsFocused} from '@react-navigation/native';
 // import AmazonGiftVoucherScreen from '../components/AmazonGiftVoucherScreen';
 import ProgressBar from '../components/ProgressBar';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {fetchUserTotalCoinsThunk} from '../redux_toolkit/features/users/UserThunk';
 
 const Myachivement = ({navigation}) => {
   const dispatch = useDispatch();
@@ -142,6 +143,17 @@ const Myachivement = ({navigation}) => {
     setisStatus(true);
     //
   }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await dispatch(
+        fetchUserTotalCoinsThunk('monalisamo.7683939162@tz.in'),
+      );
+      console.log('res---------->', res?.payload);
+    };
+
+    fetchData();
+  }, []);
   //For My achievement aPI
 
   // useEffect(() => {

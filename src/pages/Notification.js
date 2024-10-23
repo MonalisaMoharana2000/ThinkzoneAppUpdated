@@ -13,20 +13,13 @@ import {
   Animated,
 } from 'react-native';
 import moment from 'moment';
-import {Swipeable} from 'react-native-gesture-handler';
+
 import React, {useEffect, useState, useRef} from 'react';
-import DropdownComponent from '../components/DropdownComponent';
+
 import {useDispatch, useSelector} from 'react-redux';
 import API from '../environment/Api';
-import ListItem from '../components/ListItem';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
-import * as window from '../utils/dimensions';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {showMessage} from 'react-native-flash-message';
-import * as Animatable from 'react-native-animatable';
-import Norecord from '../components/Norecord';
-import Modals from '../components/Modals';
 import Loading from '../components/Loading';
 import {useFocusEffect} from '@react-navigation/native';
 import NoNotifyImg from '../components/NoNotifyImg';
@@ -43,7 +36,7 @@ const Notification = ({navigation, route}) => {
   const {userid = ''} = teacherdata?.[0] || {};
 
   //   const skillName = content[0]?.skillName;
-  // console.log('teacherdata----------------->', userid);
+  console.log('teacherdata----------------->', userid);
 
   const [isLoading, setIsloading] = useState(false);
   // const user = useSelector(state => state.userSlice.user);
@@ -58,7 +51,7 @@ const Notification = ({navigation, route}) => {
       try {
         const fetchData = async () => {
           const response = await API.get(`getAllNotifs/${userid}`);
-          // console.log('response---->', response.data);
+          console.log('response---->', response.data);
           setAllNotification(response.data);
           setIsloading(false);
         };

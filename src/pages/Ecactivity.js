@@ -11,6 +11,7 @@ import {
   AppState,
   PanResponder,
   Dimensions,
+  BackHandler,
 } from 'react-native';
 import API from '../environment/Api';
 import React, {useState, useEffect, useRef} from 'react';
@@ -39,6 +40,36 @@ const Ecactivity = ({navigation}) => {
   const dispatch = useDispatch();
   const [topicName, setSkillname] = useState([]);
   console.log('====================================topicName check', topicName);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          '',
+          'Do you want to Leave this page?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {
+              text: 'OK',
+              onPress: () => {
+                navigation.goBack();
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+
+        return true;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   useEffect(() => {
     API.get(

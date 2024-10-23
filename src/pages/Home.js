@@ -42,6 +42,7 @@ import Header from '../components/Header';
 import CarouselImage from '../components/CarouselImage';
 import CarouselVideo from '../components/CarouselVideo';
 import moment from 'moment';
+import {fetchUserDataThunk} from '../redux_toolkit/features/users/UserThunk';
 const {width} = Dimensions.get('window');
 
 const Home = ({navigation}, props) => {
@@ -51,8 +52,39 @@ const Home = ({navigation}, props) => {
   const [maintainanceModal, setmaintainanceModal] = useState(false);
   const [deviceId, setDeviceId] = useState('');
   const user = useSelector(state => state.UserSlice.user);
+  const [storageData, setStorageData] = useState([]);
+  console.log('storageData----->', storageData);
+
+  const fetchStoredData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('userData');
+      console.log('storedData1--------->', storedData);
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        console.log('Parsed storedData1--------->', parsedData);
+        return parsedData;
+      }
+    } catch (error) {
+      console.error('Error fetching stored data:', error);
+    }
+    return null; // Return null if no data or error occurs
+  };
+  useEffect(() => {
+    const initializeData = async () => {
+      const parsedData = await fetchStoredData();
+      if (parsedData) {
+        setStorageData(parsedData?.resData);
+        const userSet = await dispatch(
+          fetchUserDataThunk(parsedData?.resData[0]?.userid),
+        );
+        console.log('userSet1----------->', userSet);
+      }
+    };
+
+    initializeData();
+  }, []);
   // const {usertype} = user[0];
-  console.log('==================', user);
+
   const fetchDeviceId = async () => {
     try {
       const id = await DeviceInfo.getUniqueId();
@@ -136,14 +168,6 @@ const Home = ({navigation}, props) => {
       console.log('err---->', err);
     }
   };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      // sessionFunction();
-      // fetchDeviceId();
-      // fetchSessionData();
-    }, []),
-  );
 
   // -----------------------App Tour-------------------------------
   // const numberOfLoops = 3;
@@ -795,35 +819,35 @@ const Home = ({navigation}, props) => {
 
   //-----------To be replaced with the single navigation--------
 
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
-        Alert.alert(
-          'Exit App',
-          'Do you want to exit the app?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => null,
-              style: 'cancel',
-            },
-            {
-              text: 'OK',
-              onPress: () => {
-                BackHandler.exitApp();
-              },
-            },
-          ],
-          {cancelable: false},
-        );
+  // useEffect(() => {
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     () => {
+  //       Alert.alert(
+  //         'Exit App',
+  //         'Do you want to exit the app?',
+  //         [
+  //           {
+  //             text: 'Cancel',
+  //             onPress: () => null,
+  //             style: 'cancel',
+  //           },
+  //           {
+  //             text: 'OK',
+  //             onPress: () => {
+  //               BackHandler.exitApp();
+  //             },
+  //           },
+  //         ],
+  //         {cancelable: false},
+  //       );
 
-        return true;
-      },
-    );
+  //       return true;
+  //     },
+  //   );
 
-    return () => backHandler.remove();
-  }, []);
+  //   return () => backHandler.remove();
+  // }, []);
 
   const handleDynamiclink = async ({url}) => {
     let decodeUrl = url.split('=');
@@ -1852,7 +1876,7 @@ const Home = ({navigation}, props) => {
                       ଶିକ୍ଷକ ବିଭାଗ
                     </Text>
 
-                    {user[0]?.usertype === 'fellow' ? (
+                    {storageData[0]?.usertype === 'fellow' ? (
                       <View
                         style={{
                           paddingTop: 8,
@@ -2218,7 +2242,7 @@ const Home = ({navigation}, props) => {
                       ଗତିବିଧି ବିଭାଗ
                     </Text>
 
-                    {user[0]?.usertype === 'fellow' ? (
+                    {storageData[0]?.usertype === 'fellow' ? (
                       <View style={{paddingTop: 8, paddingBottom: 20}}>
                         <ScrollView
                           horizontal={true}

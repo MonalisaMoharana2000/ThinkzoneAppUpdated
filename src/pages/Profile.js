@@ -65,10 +65,6 @@ const Profile = ({navigation}) => {
     modalRef.current?.open();
   }, []);
 
-  const buttonClickedHandler = () => {
-    //
-    // do something
-  };
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused

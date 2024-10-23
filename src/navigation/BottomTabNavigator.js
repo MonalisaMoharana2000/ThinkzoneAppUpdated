@@ -8,6 +8,7 @@ import {
   Animated,
   TouchableOpacity,
   Alert,
+  BackHandler,
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -101,6 +102,50 @@ const BottomTabNavigator = ({navigation}) => {
         console.error('Failed to fetch maintenance status:', err);
       });
   }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (selectedTab === 'Home') {
+        // Exit the app if on the Home screen
+        Alert.alert(
+          'Exit App',
+          'Do you want to exit the app?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {
+              text: 'OK',
+              onPress: () => {
+                BackHandler.exitApp();
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+        return true;
+      } else if (
+        selectedTab === 'Profile' ||
+        selectedTab === 'Leaderboard' ||
+        selectedTab === 'Myachivement'
+      ) {
+        // Navigate back to Home if on the Profile screen
+        setSelectedTab('Home');
+        navigation.navigate('HomeTab');
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [selectedTab]);
 
   return (
     <>

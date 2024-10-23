@@ -66,6 +66,36 @@ const StudentList = ({navigation, route}) => {
 
   const sortedStudentList = [...studentList];
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          '',
+          'Do you want to Leave this page?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {
+              text: 'OK',
+              onPress: () => {
+                navigation.goBack();
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+
+        return true;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   sortedStudentList.sort((a, b) => {
     // If a's otp_isverified is false and b's is true, a comes first
     if (a.otp_isverified === false && b.otp_isverified === true) {

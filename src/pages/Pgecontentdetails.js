@@ -22,7 +22,7 @@ import {
   ToastAndroid,
   // BackHandler,
 } from 'react-native';
-import Share from 'react-native-share';
+// import Share from 'react-native-share';
 import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
 import * as window from '../utils/dimensions';

@@ -211,7 +211,7 @@ const Payment = ({route, navigation}) => {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      if (studentData.length === 0) {
+      if (studentData?.length === 0) {
         setCustomModal(true);
       }
     }, 2000);
@@ -231,7 +231,7 @@ const Payment = ({route, navigation}) => {
         <Loading />
       ) : (
         <>
-          {studentData.length > 0 ? (
+          {studentData?.length > 0 ? (
             <>
               {modalStatus ? (
                 <ButtomSheet modalRef={modalRef} modalHeight={modalHeight}>

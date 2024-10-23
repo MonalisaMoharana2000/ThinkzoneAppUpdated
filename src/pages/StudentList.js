@@ -616,7 +616,7 @@ const StudentList = ({navigation, route}) => {
                   fontFamily: FontFamily.poppinsMedium,
                   textTransform: 'capitalize',
                 }}>
-                {teacherdata[0].username}
+                {teacherdata[0]?.username}
               </Text>
               <Text
                 style={[

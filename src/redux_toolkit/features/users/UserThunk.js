@@ -97,3 +97,12 @@ export const getUserProgressbyid = async data =>
   await API.get(
     `getTchTrainingProgress/${data.userid}/${data.usertype}/${data.trainingType}/"od"`,
   );
+
+export const fetchPaymentDetails = createAsyncThunk(
+  'user/fetchtotalcoins',
+  async userid => {
+    let response = await API.get(`getstudentswithpaymentdetails/${userid}`);
+
+    return response.data;
+  },
+);

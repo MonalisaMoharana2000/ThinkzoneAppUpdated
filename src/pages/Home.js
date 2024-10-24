@@ -706,18 +706,20 @@ const Home = ({navigation}, props) => {
   }, []);
 
   useEffect(() => {
-    API.get(`getMaintainanceStatus/${user[0]?.usertype}`).then(
-      response => {
-        // setAchieve(response.data);
-        setMaintainanceStatus(response.data);
-        setmaintainanceModal(response.data?.overallApp);
-        // setmaintainanceModal(false);
-      },
-      err => {
-        //
-      },
-    );
-  }, []);
+    if (user?.length > 0 && user[0]?.usertype) {
+      console.log('useEffect is triggered');
+      API.get(`getMaintainanceStatus/${user[0].usertype}`)
+        .then(response => {
+          console.log('getMaintainanceStatus', response.data);
+          setMaintainanceStatus(response.data);
+          setmaintainanceModal(response.data?.overallApp);
+        })
+        .catch(err => {
+          console.error('Error in API call', err);
+        });
+    }
+  }, [user]);
+
   useEffect(() => {
     API.get(`getDboardSliders/${user[0]?.usertype}/${'image'}`).then(
       response => {

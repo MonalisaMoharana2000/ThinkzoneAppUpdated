@@ -576,6 +576,17 @@ const Feedback = ({route, navigation}) => {
     }
   };
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.goBack();
+        return true;
+      },
+    );
+    return () => backHandler.remove();
+  }, [navigation]);
+
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <ScrollView>

@@ -63,6 +63,7 @@ import CommunityEngagementContentView from '../Pages/CommunityEngagementContentV
 import Payment from '../Pages/Payment';
 import PaymentDetails from '../Pages/PaymentDetails';
 import EditProfile from '../Pages/EditProfile';
+import FillInTheBlank from '../components/FillInTheBlanks';
 
 const Stack = createNativeStackNavigator();
 
@@ -707,6 +708,16 @@ const StackNavigator = ({navigation}) => {
         component={PaymentDetails}
         options={{
           title: 'ଦେୟ ସୂଚନା',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+        }}
+      />
+      <Stack.Screen
+        name="FillInTheBlanks"
+        component={FillInTheBlank}
+        options={{
+          title: 'Fill In The Blanks',
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
           },

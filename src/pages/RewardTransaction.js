@@ -38,20 +38,14 @@ import Loading from '../components/Loading';
 import {style} from 'd3';
 
 const RewardTransaction = ({navigation}) => {
-  const user = useSelector(state => state.userdata.user?.resData);
-  //
-  const coin = useSelector(state => state.userdata.rewards);
-  // console.log(coin[0].streakDays, 'coins------------------------------->');
-
   const dispatch = useDispatch();
-  //
-
+  const user = useSelector(state => state.UserSlice.user);
+  const coin = useSelector(state => state.UserSlice.rewards);
   const [isStatus, setisStatus] = useState(false);
   const [achieve, setAchieve] = useState([]);
   const [isLoading, setIsloading] = useState(true);
   const [timeSpent_record, setTimeSpent_record] = useState([]);
   const [transaction_record, setTransaction_record] = useState([]);
-  // console.log(transaction_record,"transaction_record====================");
   const [reward, setReward] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [transactionType, sestTransactionType] = useState('');
@@ -158,6 +152,15 @@ const RewardTransaction = ({navigation}) => {
     }, []),
   );
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await dispatch(fetchUserTotalCoinsThunk(user[0].userid));
+      console.log('res---------->', res?.payload);
+    };
+
+    fetchData();
+  }, []);
+
   // useEffect(() => {
   //   // API.get(`getTotalCoins/${user[0].userid}`).then(response => {
   //   //
@@ -166,12 +169,12 @@ const RewardTransaction = ({navigation}) => {
   //   dispatch(types.rewardsUserstart(user[0].userid));
   // }, []);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      // Do something when the screen is focused
-      dispatch(types.rewardsUserstart(user[0].userid));
-    }, []),
-  );
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     // Do something when the screen is focused
+  //     dispatch(types.rewardsUserstart(user[0].userid));
+  //   }, []),
+  // );
 
   //
   // const checkStatuses = () => {
@@ -287,6 +290,7 @@ const RewardTransaction = ({navigation}) => {
               flexDirection: 'column',
               padding: 10,
               // width: 400,
+              paddingBottom: 10,
             }}>
             <View
               style={{
@@ -294,7 +298,8 @@ const RewardTransaction = ({navigation}) => {
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
                 paddingBottom: 15,
-                top: '-3%',
+                paddingTop: 15,
+                // top: '-3%',
               }}>
               <Text
                 style={[
@@ -387,7 +392,7 @@ const RewardTransaction = ({navigation}) => {
                     <View style={{flexDirection: 'column'}}>
                       <Image
                         style={{
-                          marginLeft: 58,
+                          marginLeft: '47%',
                           top: '15%',
                           width: 22,
                           height: 22,
@@ -396,9 +401,9 @@ const RewardTransaction = ({navigation}) => {
                       />
                       <Text
                         style={{
-                          marginLeft: 57,
+                          marginLeft: '47%',
                           color: 'red',
-                          top: '15%',
+                          top: '20%',
                         }}>
                         {item.currentBalance - item.previousBalance}
                       </Text>

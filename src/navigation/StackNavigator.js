@@ -192,34 +192,6 @@ const StackNavigator = ({navigation}) => {
         component={StudentRegister}
         options={{
           title: 'ଶିକ୍ଷାର୍ଥୀ ପଞ୍ଜୀକରଣ',
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => {
-                Alert.alert(
-                  'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
-                  'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
-                  [
-                    {
-                      text: 'Cancel',
-                      onPress: () => null,
-                      style: 'default',
-                    },
-                    {
-                      text: 'Ok',
-                      onPress: () => navigation.goBack(),
-                      style: 'default',
-                    },
-                  ],
-                );
-              }}>
-              <AntDesign
-                style={{marginLeft: 15}}
-                name="arrowleft"
-                size={25}
-                color={Color.white}
-              />
-            </TouchableOpacity>
-          ),
         }}
       />
 

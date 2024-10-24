@@ -20,7 +20,8 @@ const FillInTheBlank = ({navigation, route}) => {
   const [questions, setQuestions] = useState([]);
   const [selectedBlank, setSelectedBlank] = useState(null);
   const [loading, setLoading] = useState(true); // Loader state
-  const user = useSelector(state => state.userdata.user?.resData);
+  //   const user = useSelector(state => state.userdata.user?.resData);
+  const user = useSelector(state => state.UserSlice.user);
   const {userid, managername, passcode, managerid, usertype} = user[0];
   const data = route.params;
 

@@ -259,16 +259,19 @@ const StudentListActivity = ({route, navigation}) => {
       if (item.studentid === 0 && item.userid === 0) {
         setQuizModal(false);
         setModalVisible(false);
-      } else if (!item.otp_isverified) {
-        setPerStudent({});
-        Alert.alert(`${'Please Verify Your Student ।'}`, '', [
-          {
-            text: 'Ok',
-            onPress: () => navigation.navigate('studentlist'),
-            style: 'default',
-          },
-        ]);
-      } else if (quizStatus === 'complete') {
+      }
+      //// commented this part since not needed at the moment
+      // else if (!item.otp_isverified) {
+      //   setPerStudent({});
+      //   Alert.alert(`${'Please Verify Your Student ।'}`, '', [
+      //     {
+      //       text: 'Ok',
+      //       onPress: () => navigation.navigate('studentlist'),
+      //       style: 'default',
+      //     },
+      //   ]);
+      // }
+      else if (quizStatus === 'complete') {
         Alert.alert('Alert !!', `${' Quizzes already Submitted .'}`, [
           {
             text: 'Ok',

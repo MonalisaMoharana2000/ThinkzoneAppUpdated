@@ -5,15 +5,27 @@ import {
   Image,
   ScrollView,
   Dimensions,
+  BackHandler,
+  Alert,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Color, FontFamily} from '../GlobalStyle';
 import {black} from 'react-native-paper/lib/typescript/styles/colors';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const ModuleUnderDevlopment = () => {
+const ModuleUnderDevlopment = ({navigation}) => {
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.goBack();
+        return true;
+      },
+    );
+    return () => backHandler.remove();
+  }, [navigation]);
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.outerContainer}>

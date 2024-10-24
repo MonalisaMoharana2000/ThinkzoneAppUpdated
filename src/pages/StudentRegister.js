@@ -20,7 +20,7 @@ import {
 import storage from '../utils/AsyncStorage';
 import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
 import ClassName from 'react-native-vector-icons/MaterialIcons';
-import Classlabal from 'react-native-vector-icons/Ionicons';
+import Classlabal from 'react-native-vector-icons/MaterialIcons';
 import API from '../environment/Api';
 
 import {useState, useEffect, useRef, useCallback} from 'react';
@@ -406,7 +406,7 @@ const StudentRegister = ({route, navigation}) => {
     };
     fetchData();
   }, []);
-  const upadteSubmit = e => {
+  const upadteSubmit = async e => {
     e.preventDefault();
     if (count >= 3) {
       Alert.alert(
@@ -489,11 +489,14 @@ const StudentRegister = ({route, navigation}) => {
       };
 
       console.log('studentUpdateDetails--->', studentUpdateDetails);
-      dispatch(
-        updateStudentsDataThunk(
-          route.params ? route.params.updateData._id : '',
-        ),
+      const resp = await dispatch(
+        updateStudentsDataThunk({
+          studentId: route.params ? route.params.updateData._id : '',
+          studentUpdateDetails,
+        }),
       );
+
+      console.log('resp update----->', resp);
       navigation.navigate('studentlist');
     }
   };
@@ -603,91 +606,107 @@ const StudentRegister = ({route, navigation}) => {
       setGenderError(false);
       setProgramError(false);
       setDobError(false);
-      setModal(true);
+      // setModal(true);
       setBackStatus(false);
 
       var rollno = 'TZ' + Math.floor(1000 + Math.random() * 9000);
 
-      axios
-        .get(
-          `https://m1.sarv.com/api/v2.0/sms_campaign.php?token=19818771645efefd49187ff7.92128852&user_id=96192514&route=TR&template_id=11454&sender_id=THNKZN&language=UC&template=%E0%AC%A5%E0%AC%BF%E0%AC%99%E0%AD%8D%E0%AC%95%E0%AC%9C%E0%AD%8B%E0%AC%A8%E0%AD%8D+%E0%AC%B0%E0%AD%87+${name}%E0%AC%B0+%E0%AC%A8%E0%AC%BE%E0%AC%AE+%E0%AC%AA%E0%AC%9E%E0%AD%8D%E0%AC%9C%E0%AD%80%E0%AC%95%E0%AC%B0%E0%AC%A3+%E0%AC%95%E0%AC%B0%E0%AC%BF%E0%AC%AC%E0%AC%BE%E0%AC%B0+%E0%AC%B0%E0%AD%8B%E0%AC%B2+%E0%AC%A8%E0%AC%AE%E0%AD%8D%E0%AC%AC%E0%AC%B0+%E0%AC%B9%E0%AD%87%E0%AC%89%E0%AC%9B%E0%AC%BF+${rollno}+%E0%A5%A4+%E0%AC%8F%E0%AC%B9%E0%AC%BE%E0%AC%95%E0%AD%81+%E0%AC%B6%E0%AC%BF%E0%AC%95%E0%AD%8D%E0%AC%B7%E0%AC%95+${user[0].username}%20 %E0%AC%99%E0%AD%8D%E0%AC%95%E0%AD%81+%E0%AC%A6%E0%AD%87%E0%AC%87+%E0%AC%AA%E0%AC%9E%E0%AD%8D%E0%AC%9C%E0%AD%80%E0%AC%95%E0%AC%B0%E0%AC%A3+%E0%AC%A8%E0%AC%BF%E0%AC%B6%E0%AD%8D%E0%AC%9A%E0%AC%BF%E0%AC%A4+%E0%AC%95%E0%AC%B0%E0%AC%A8%E0%AD%8D%E0%AC%A4%E0%AD%81+%E0%A5%A4+ThinkZone&contact_numbers=${phone}`,
-        )
-        .then(response => {
-          if (response.data.code === 200) {
-            const studentDetails = {
-              userid: user[0].userid,
-              username: user[0].username,
-              centerid: '',
-              centername: '',
-              studentid: new Date().getTime(),
-              studentname: name,
-              studentcategory: studentcategory,
-              program: studentclass,
-              class: classlabal,
-              phone: phone,
-              gender: gender,
-              // dob: dob.toString(),
-              dob: dob.split('-').reverse().join('-'),
-              parentsname: parentname,
-              schoolname: user[0].schoolname,
-              udisecode: user[0].udisecode,
-              usertype: user[0].usertype,
-              passcode: user[0].passcode,
-              managerid: user[0].managerid,
-              managername: user[0].managername,
-              registration_date: new Date().toString(),
-              otp_status: response.data.code,
-              otp_status_message: response.data.msg,
-              otp_response_code: response.data.code,
-              otp_campain_id: response.data.data[0].campaign_id,
-              otp_mobile_number: response.data.data[0].number,
-              otp_message_id: response.data.data[0].message_id,
-              otp: rollno,
-              sentToServer: true,
-              otp_isverified: false,
-              otp_expire_on: new Date(
-                new Date().setFullYear(new Date().getFullYear() + 1),
-              ),
-              appVersion: '2.1.2',
-              // image: profileDetails.image,
-            };
+      const studentDetails = {
+        userid: user[0].userid,
+        username: user[0].username,
+        centerid: '',
+        centername: '',
+        studentid: new Date().getTime(),
+        studentname: name,
+        studentcategory: studentcategory,
+        program: studentclass,
+        class: classlabal,
+        phone: phone,
+        gender: gender,
+        // dob: dob.toString(),
+        dob: dob.split('-').reverse().join('-'),
+        parentsname: parentname,
+        schoolname: user[0].schoolname,
+        udisecode: user[0].udisecode,
+        usertype: user[0].usertype,
+        passcode: user[0].passcode,
+        managerid: user[0].managerid,
+        managername: user[0].managername,
+        registration_date: new Date().toString(),
+        otp_status: 200,
+        otp_status_message: 'success',
+        otp_response_code: 200,
+        otp_campain_id: 170197,
+        otp_mobile_number: phone,
+        otp_message_id: 170197_3_7683939162_2,
+        otp: rollno,
+        sentToServer: true,
+        otp_isverified: false,
+        otp_expire_on: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 1),
+        ),
+        appVersion: '2.1.2',
+        // image: profileDetails.image,
+      };
 
-            console.log('studentDetails------->', studentDetails);
+      console.log('studentDetails------->', studentDetails);
 
-            if (studentCreateError?.response?.status === 500) {
-              Alert.alert(
-                'Info',
-                'ଆପଣ ପୂର୍ବରୁ ଏହି ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିସାରିଛନ୍ତି । ଧ୍ୟାନ ଦେବେ ଆପଣ ଗୋଟିଏ ମୋବାଇଲ୍ ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିପାରିବେ।',
-                [
-                  {
-                    text: 'Ok',
-                    onPress: () => navigation.navigate('HomeScreen'),
-                  },
-                ],
-                {cancelable: false},
-              );
-            } else {
-              dispatch(createStudentsDataThunk(studentDetails));
-              showMessage({
-                message: `Good things take time! ଶିକ୍ଷାର୍ଥୀଙ୍କ ରୋଲନମ୍ବର ଅଭିଭାବକଙ୍କୁ ତାଙ୍କ ମୋବାଇଲ ନମ୍ବରରେ ପଠାଯାଇଛି । ଅଭିଭାବକଙ୍କୁ ଯୋଗାଯୋଗ କରି ପଞ୍ଜୀକରଣ ସଂପୂର୍ଣ୍ଣ କରନ୍ତୁ ।`,
-                // description: 'Successfully student deleted.',
-                type: 'success',
-                backgroundColor: Colors.success,
-              });
-              dispatch(types.rewardsUserstart(user[0].userid));
-              ToastAndroid.show(
-                'Roll number generate success.',
-                ToastAndroid.SHORT,
-              );
-              setButton(true);
-            }
-          } else {
-            ToastAndroid.show(
-              'Roll number generate error. Please try again.',
-              ToastAndroid.SHORT,
-            );
-          }
-        });
+      if (studentCreateError?.response?.status === 500) {
+        Alert.alert(
+          'Info',
+          'ଆପଣ ପୂର୍ବରୁ ଏହି ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିସାରିଛନ୍ତି । ଧ୍ୟାନ ଦେବେ ଆପଣ ଗୋଟିଏ ମୋବାଇଲ୍ ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିପାରିବେ।',
+          [
+            {
+              text: 'Ok',
+              onPress: () => navigation.navigate('HomeScreen'),
+            },
+          ],
+          {cancelable: false},
+        );
+      } else {
+        const resp = await dispatch(createStudentsDataThunk(studentDetails));
+        console.log('register----------->', resp);
+        if (resp?.payload?.status === 'success') {
+          Alert.alert(
+            'Success',
+            'Student Registered Successfully',
+            [
+              {
+                text: 'Ok',
+                onPress: () => navigation.navigate('studentlist'),
+              },
+            ],
+            {cancelable: false},
+          );
+          // showMessage({
+          //   message: 'Student Registered Successfully!',
+          //   // message: `Good things take time! ଶିକ୍ଷାର୍ଥୀଙ୍କ ରୋଲନମ୍ବର ଅଭିଭାବକଙ୍କୁ ତାଙ୍କ ମୋବାଇଲ ନମ୍ବରରେ ପଠାଯାଇଛି । ଅଭିଭାବକଙ୍କୁ ଯୋଗାଯୋଗ କରି ପଞ୍ଜୀକରଣ ସଂପୂର୍ଣ୍ଣ କରନ୍ତୁ ।`,
+          //   // description: 'Successfully student deleted.',
+          //   type: 'success',
+          //   backgroundColor: Colors.success,
+          // });
+          setButton(true);
+          // navigation.navigate('studentlist');
+        } else {
+          navigation.navigate('studentlist');
+        }
+      }
+
+      // axios
+      //   .get(
+      //     `https://m1.sarv.com/api/v2.0/sms_campaign.php?token=19818771645efefd49187ff7.92128852&user_id=96192514&route=TR&template_id=11454&sender_id=THNKZN&language=UC&template=%E0%AC%A5%E0%AC%BF%E0%AC%99%E0%AD%8D%E0%AC%95%E0%AC%9C%E0%AD%8B%E0%AC%A8%E0%AD%8D+%E0%AC%B0%E0%AD%87+${name}%E0%AC%B0+%E0%AC%A8%E0%AC%BE%E0%AC%AE+%E0%AC%AA%E0%AC%9E%E0%AD%8D%E0%AC%9C%E0%AD%80%E0%AC%95%E0%AC%B0%E0%AC%A3+%E0%AC%95%E0%AC%B0%E0%AC%BF%E0%AC%AC%E0%AC%BE%E0%AC%B0+%E0%AC%B0%E0%AD%8B%E0%AC%B2+%E0%AC%A8%E0%AC%AE%E0%AD%8D%E0%AC%AC%E0%AC%B0+%E0%AC%B9%E0%AD%87%E0%AC%89%E0%AC%9B%E0%AC%BF+${rollno}+%E0%A5%A4+%E0%AC%8F%E0%AC%B9%E0%AC%BE%E0%AC%95%E0%AD%81+%E0%AC%B6%E0%AC%BF%E0%AC%95%E0%AD%8D%E0%AC%B7%E0%AC%95+${user[0].username}%20 %E0%AC%99%E0%AD%8D%E0%AC%95%E0%AD%81+%E0%AC%A6%E0%AD%87%E0%AC%87+%E0%AC%AA%E0%AC%9E%E0%AD%8D%E0%AC%9C%E0%AD%80%E0%AC%95%E0%AC%B0%E0%AC%A3+%E0%AC%A8%E0%AC%BF%E0%AC%B6%E0%AD%8D%E0%AC%9A%E0%AC%BF%E0%AC%A4+%E0%AC%95%E0%AC%B0%E0%AC%A8%E0%AD%8D%E0%AC%A4%E0%AD%81+%E0%A5%A4+ThinkZone&contact_numbers=${phone}`,
+      //   )
+      //   .then(response => {
+      //     console.log('response------->', response.data);
+      //     if (response.data.code === 200) {
+
+      //     } else {
+      //       ToastAndroid.show(
+      //         'Roll number generate error. Please try again.',
+      //         ToastAndroid.SHORT,
+      //       );
+      //     }
+      //   });
 
       // db.transaction(tx => {
       //   //
@@ -901,6 +920,7 @@ const StudentRegister = ({route, navigation}) => {
               color={Colors.greyPrimary}
               style={styles.icon}
             />
+
             <Picker
               dropdownIconColor={Colors.primary}
               selectedValue={gender}
@@ -988,7 +1008,7 @@ const StudentRegister = ({route, navigation}) => {
               <View>
                 <View style={styles.wrapper}>
                   <Classlabal
-                    name="md-bookmark"
+                    name="bookmark"
                     size={25}
                     color={Colors.greyPrimary}
                     style={styles.icon}
@@ -1023,7 +1043,7 @@ const StudentRegister = ({route, navigation}) => {
               <View>
                 <View style={styles.wrapper}>
                   <Classlabal
-                    name="md-bookmark"
+                    name="bookmark"
                     size={25}
                     color={Colors.greyPrimary}
                     style={styles.icon}
@@ -1073,7 +1093,7 @@ const StudentRegister = ({route, navigation}) => {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 // alignSelf: 'flex-start',
-                top: '10%',
+                top: '5%',
               }}>
               <TouchableOpacity
                 style={{
@@ -1089,7 +1109,7 @@ const StudentRegister = ({route, navigation}) => {
                   // backgroundColor: '#00C0F0',
                   borderWidth: 1,
                   borderColor: Color.royalblue,
-                  right: '30%',
+                  right: '10%',
                 }}
                 onPress={Cancel}>
                 <Text style={[styles.text, {color: 'black'}]}>Cancel</Text>
@@ -1160,7 +1180,7 @@ const StudentRegister = ({route, navigation}) => {
 
                 textTransform: 'capitalize',
               }}>
-              {user[0].username}
+              {user[0]?.username}
             </Text>
             <Text
               style={[

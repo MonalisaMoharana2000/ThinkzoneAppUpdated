@@ -294,11 +294,17 @@ const StackNavigator = ({navigation}) => {
         component={TechModule}
         options={{
           title: 'ଶିକ୍ଷଣ ଓ ଶିକ୍ଷାଦାନ',
+          headerStyle: {
+            backgroundColor: '#0060ca', // Set background color here
+          },
           headerTitleStyle: {
             // fontWeight: '700',
+            color: 'white',
             fontFamily: FontFamily.poppinsMedium,
+
             // letterSpacing: 2,
           },
+          headerTintColor: 'white',
           // headerTitleAlign: 'center',
         }}
       />
@@ -308,8 +314,15 @@ const StackNavigator = ({navigation}) => {
         component={TechModule}
         options={{
           title: 'ପ୍ରଯୁକ୍ତିବିଦ୍ୟା',
+          backgroundColor: 'red',
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: '#0060ca', // Set background color here
+            color: 'white',
+          },
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
           },
         }}
       />
@@ -319,6 +332,11 @@ const StackNavigator = ({navigation}) => {
         component={TechModule}
         options={{
           title: 'ଏକବିଂଶ ଶତାବ୍ଦୀ ଓ କୌଶଳ',
+          headerTintColor: 'white',
+          headerStyle: {
+            backgroundColor: '#0060ca',
+            color: 'white', // Set background color here
+          },
           headerTitleStyle: {
             // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
@@ -358,11 +376,14 @@ const StackNavigator = ({navigation}) => {
         component={Games}
         options={{
           title: 'Games',
-          headerTitleStyle: {
-            // fontWeight: '700',
-            fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+
+          headerStyle: {
+            backgroundColor: Color.royalblue, // Set background color here
           },
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+          headerTintColor: 'white',
           // headerTitleAlign: 'center',
         }}
       />
@@ -371,11 +392,13 @@ const StackNavigator = ({navigation}) => {
         component={SelectFromMultipleGames}
         options={{
           title: 'Select From Multiple',
-          headerTitleStyle: {
-            // fontWeight: '700',
-            fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+          headerStyle: {
+            backgroundColor: Color.royalblue, // Set background color here
           },
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+          headerTintColor: 'white',
         }}
       />
 
@@ -384,11 +407,13 @@ const StackNavigator = ({navigation}) => {
         component={RearrangeWords}
         options={{
           title: 'Re-arrange Words',
-          headerTitleStyle: {
-            // fontWeight: '700',
-            fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+          headerStyle: {
+            backgroundColor: Color.royalblue, // Set background color here
           },
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen
@@ -396,11 +421,13 @@ const StackNavigator = ({navigation}) => {
         component={Puzzles}
         options={{
           title: 'Puzzles Words',
-          headerTitleStyle: {
-            // fontWeight: '700',
-            fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+          headerStyle: {
+            backgroundColor: Color.royalblue, // Set background color here
           },
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen
@@ -408,11 +435,13 @@ const StackNavigator = ({navigation}) => {
         component={MatchingExercises}
         options={{
           title: 'MatchingExercises',
-          headerTitleStyle: {
-            // fontWeight: '700',
-            fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+          headerStyle: {
+            backgroundColor: Color.royalblue, // Set background color here
           },
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+          headerTintColor: 'white',
         }}
       />
       {/* traioning part ends here */}

@@ -35,10 +35,12 @@ export const deleteStudentsDataThunk = createAsyncThunk(
 
 export const updateStudentsDataThunk = createAsyncThunk(
   'student/updatestudents',
-  async studentId => {
-    let response = await API.put(`updatemasterstudent/${studentId}`);
-    console.log('student----->', response.data);
-
+  async ({studentId, studentUpdateDetails}) => {
+    const response = await API.put(
+      `updatemasterstudent/${studentId}`,
+      studentUpdateDetails,
+    );
+    console.log('Updated student----->', response.data);
     return response.data;
   },
 );

@@ -406,7 +406,7 @@ const StudentRegister = ({route, navigation}) => {
     };
     fetchData();
   }, []);
-  const upadteSubmit = e => {
+  const upadteSubmit = async e => {
     e.preventDefault();
     if (count >= 3) {
       Alert.alert(
@@ -489,11 +489,14 @@ const StudentRegister = ({route, navigation}) => {
       };
 
       console.log('studentUpdateDetails--->', studentUpdateDetails);
-      dispatch(
-        updateStudentsDataThunk(
-          route.params ? route.params.updateData._id : '',
-        ),
+      const resp = await dispatch(
+        updateStudentsDataThunk({
+          studentId: route.params ? route.params.updateData._id : '',
+          studentUpdateDetails,
+        }),
       );
+
+      console.log('resp update----->', resp);
       navigation.navigate('studentlist');
     }
   };
@@ -1177,7 +1180,7 @@ const StudentRegister = ({route, navigation}) => {
 
                 textTransform: 'capitalize',
               }}>
-              {user[0].username}
+              {user[0]?.username}
             </Text>
             <Text
               style={[

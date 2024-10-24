@@ -57,6 +57,7 @@ const StudentList = ({navigation, route}) => {
   // console.log('modal---------->', studentData);
   const [verifiedModalStatus, setVerifiedModalStatus] = useState(false);
   const [studentList, setStudentList] = useState([]);
+
   const [roll_number_error, set_roll_number_error] = useState(false);
   const [change, setChange] = useState([]);
   const [verifiedStudent, setVerifiedStudent] = useState({});

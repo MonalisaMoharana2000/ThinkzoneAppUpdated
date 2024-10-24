@@ -69,10 +69,14 @@ const StudentSlice = createSlice({
         // state.createdStudent = null;
         state.loading = true;
         state.status = 'loading';
-        state.message = 'Creating student...';
+        state.message = 'Updating student...';
       })
       .addCase(updateStudentsDataThunk.fulfilled, (state, action) => {
-        state.students = action.payload;
+        state.students = state.students.map(student =>
+          student._id === action.payload._id ? action.payload : student,
+        );
+
+        console.log('thunk update------>', state.students);
         state.loading = false;
         state.status = 'succeeded';
         state.message = 'Student updated successfully';

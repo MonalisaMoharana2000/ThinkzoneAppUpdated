@@ -1699,224 +1699,6 @@ const Myachivement = ({navigation}) => {
                 </View>
               </TouchableOpacity>
             </Modal>
-
-            {/* ----------------------------------------------coupons List--------------------------------------------------------- */}
-
-            {/* ------------------------------------------Mile Stone---------------------------------------------- */}
-            <View style={{top: 20, paddingBottom: 25}}>
-              <View style={{position: 'absolute'}}>
-                {selectedIndex !== null && (
-                  <></>
-                  // <>
-                  //   <View
-                  //     style={{
-                  //       backgroundColor: 'ghostwhite',
-                  //       width: window.WindowWidth * 0.8,
-                  //       position: 'relative',
-                  //       alignSelf: 'flex-start',
-                  //       left: '10%',
-                  //       // height: 100,
-                  //       justifyContent: 'center',
-                  //       top: '60%',
-                  //       borderRadius: 20,
-                  //       alignItems: 'center',
-                  //       padding: 20, // Adding padding for better spacing
-                  //       shadowColor: 'rgba(0, 0, 0, 0.2)', // Adding shadow for tooltip effect
-                  //       shadowOffset: {width: 0, height: 2},
-                  //       shadowOpacity: 1,
-                  //       shadowRadius: 4,
-                  //       elevation: 3, // Elevation for Android shadow
-                  //     }}>
-                  //     {milstone[selectedIndex]?.heading?.length != '' ? (
-                  //       <Text
-                  //         style={{
-                  //           top: '-55%',
-                  //           // marginTop: '80%',
-                  //           fontSize: 15,
-                  //           width: 300,
-                  //           fontWeight: '800',
-                  //           color: 'black',
-                  //           position: 'absolute',
-                  //           paddingBottom: 20,
-                  //           paddingTop: 5,
-                  //           alignSelf: 'center',
-                  //           textAlign: 'center',
-                  //         }}>
-                  //         {milstone[selectedIndex]?.heading}
-                  //       </Text>
-                  //     ) : (
-                  //       <Text
-                  //         style={{
-                  //           top: '-65%',
-                  //           // marginTop: '80%',
-                  //           fontSize: 17,
-                  //           width: 300,
-                  //           fontWeight: '800',
-                  //           color: 'black',
-                  //           position: 'absolute',
-                  //           paddingBottom: 30,
-                  //           paddingTop: 5,
-                  //           alignSelf: 'center',
-                  //           textAlign: 'center',
-                  //         }}>
-                  //         ମୋ ପ୍ରଗତି
-                  //       </Text>
-                  //     )}
-
-                  //     <View>
-                  //       <Text
-                  //         style={{
-                  //           fontSize: 13,
-                  //           color: '#595F65',
-                  //           fontWeight: '800',
-                  //         }}>
-                  //         {milstone[selectedIndex]?.msg}
-                  //       </Text>
-                  //       {milstone[selectedIndex]?.msg ? (
-                  //         <View style={{top: '5%'}}>
-                  //           <Text
-                  //             style={{
-                  //               fontSize: 11,
-                  //               color: '#595F65',
-                  //               fontWeight: '800',
-                  //             }}>
-                  //             Date-
-                  //             {moment(
-                  //               milstone[selectedIndex]?.createdon,
-                  //             ).format('DD/MM/YY')}
-                  //           </Text>
-                  //           {milstone[selectedIndex]?.transactionType ===
-                  //           'credit' ? (
-                  //             <Text
-                  //               style={{
-                  //                 fontSize: 11,
-                  //                 top: '4%',
-                  //                 color: 'green',
-                  //                 fontWeight: '800',
-                  //               }}>
-                  //               <Text
-                  //                 style={{
-                  //                   fontSize: 11,
-                  //                   top: '4%',
-                  //                   color: '#595F65',
-                  //                   fontWeight: '800',
-                  //                 }}>
-                  //                 Coin: {''}
-                  //               </Text>
-                  //               +{milstone[selectedIndex]?.coins}
-                  //             </Text>
-                  //           ) : (
-                  //             <Text
-                  //               style={{
-                  //                 fontSize: 11,
-                  //                 top: '4%',
-                  //                 color: '#eb3875',
-                  //                 fontWeight: '800',
-                  //               }}>
-                  //               <Text
-                  //                 style={{
-                  //                   fontSize: 11,
-                  //                   top: '4%',
-                  //                   color: '#595F65',
-                  //                   fontWeight: '800',
-                  //                 }}>
-                  //                 Coin: {''}
-                  //               </Text>
-                  //               -{milstone[selectedIndex]?.coins}
-                  //             </Text>
-                  //           )}
-                  //         </View>
-                  //       ) : (
-                  //         <ActivityIndicator
-                  //           size="large"
-                  //           color="blue"
-                  //           style={{
-                  //             justifyContent: 'center',
-                  //             alignSelf: 'center',
-                  //           }}
-                  //         />
-                  //       )}
-                  //     </View>
-                  //   </View>
-                  // </>
-                )}
-              </View>
-
-              {/* <View
-                style={{
-                  flexDirection: 'row',
-                  width: window.WindowWidth * 0.95,
-                  backgroundColor: 'white',
-                  // position: 'absolute',
-                  top: 10,
-                  alignSelf: 'center',
-                  // borderRadius: 10,
-                  // justifyContent: 'space-evenly',
-                  // flexDirection: 'column',
-                  justifyContent: 'space-evenly',
-                  paddingTop: 200,
-                  borderRadius: 15,
-                }}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {milstone.map((item, index) => (
-                    <>
-                      <View
-                        key={index}
-                        style={{
-                          justifyContent: 'space-between',
-                          flexDirection: 'row',
-                          padding: 20,
-                          alignItems: 'flex-start',
-
-                          paddingRight: 50,
-
-                          margin: 7,
-                          borderBottomWidth: selectedIndex === index ? 2 : null,
-                          width: 50,
-                          borderColor:
-                            selectedIndex === index ? Color.royalblue : '',
-                        }}>
-                        <TouchableOpacity
-                          key={index}
-                          onPress={() => openMessage(index)}
-                          style={{
-                            // backgroundColor: '#A3D735',
-                            backgroundColor:
-                              selectedIndex === index ? '#0060CA' : '#A3D735',
-
-                            letterSpacing: selectedIndex === index ? 2 : 0,
-                            borderRadius: 50,
-                            width: 30.72,
-                            // alignSelf: 'center',
-                            height: 31.66,
-                            // left: '7%',
-                            // top: 15,
-                          }}>
-                          <Text>{item.msg}</Text>
-                          <Text
-                            style={{
-                              fontSize: 15,
-                              textAlign: 'center',
-                              // justifyContent: 'center',
-                              alignItems: 'center',
-                              // flex: 1,
-                              fontWeight: 'bold',
-                              // color: 'black',
-                              color:
-                                selectedIndex === index ? '#FFFFFF' : '#595F65',
-                              top: 3,
-                            }}>
-                            {index + 1}
-                          </Text>
-                        </TouchableOpacity>
-                      </View>
-                    </>
-                  ))}
-                </ScrollView>
-              </View> */}
-            </View>
-            {/* ------------------------------------------Mile Stone End---------------------------------------------- */}
-
             <Modal
               visible={modalOpen}
               onRequestClose={closeTransactionModal}
@@ -1938,7 +1720,7 @@ const Myachivement = ({navigation}) => {
                 </ScrollView>
               </View>
             </Modal>
-            <View style={{top: '1%', margin: 10, paddingBottom: 10}}>
+            <View style={{top: '1%', margin: 10, paddingBottom: '20%'}}>
               <View
                 style={{
                   width: window.WindowWidth * 0.92,
@@ -1975,7 +1757,7 @@ const Myachivement = ({navigation}) => {
                       justifyContent: 'space-around',
                       paddingBottom: 15,
                     }}>
-                    <Text style={[styles.headerText, {right: '145%'}]}>
+                    <Text style={[styles.headerText, {right: '15%'}]}>
                       Activity
                     </Text>
                     {/* <Text style={{fontSize: 17, fontWeight: 'bold', color: 'black'}}>
@@ -1984,7 +1766,7 @@ const Myachivement = ({navigation}) => {
                     <Text
                       style={[
                         styles.headerText,
-                        {alignSelf: 'center', right: 0, left: '125%'},
+                        {alignSelf: 'center', right: 0, left: '15%'},
                       ]}>
                       Coins
                     </Text>
@@ -2243,105 +2025,6 @@ const Myachivement = ({navigation}) => {
                 </Text>
               )}
             </View>
-            {/* <View
-              style={{
-                paddingLeft: -19,
-                paddingRight: -19,
-                width: window.WindowWidth * 0.92,
-                alignSelf: 'center',
-                // top: 50,
-                margin: 10,
-              }}>
-              <Text style={styles.text}>Time Spent Report</Text>
-            </View> */}
-
-            {/* {timeSpent_record.length > 0 ? (
-              <View
-                style={{
-                  width: window.WindowWidth * 0.92,
-                  alignSelf: 'center',
-                  backgroundColor: 'white',
-                  borderRadius: 6,
-                  // top: 20,
-                  margin: 10,
-                }}>
-                <DataTable>
-                  <DataTable.Header>
-                    <DataTable.Title style={{flex: 3, marginLeft: 36}}>
-                      Year
-                    </DataTable.Title>
-                    <DataTable.Title style={{flex: 3}}>Month</DataTable.Title>
-                    <DataTable.Title style={{flex: 3}}>
-                      Time Spent
-                    </DataTable.Title>
-                  </DataTable.Header>
-                  <FlatList
-                    removeClippedSubviews={true}
-                    maxToRenderPerBatch={10}
-                    initialNumToRender={10}
-                    updateCellsBatchingPeriod={40}
-                    data={timeSpent_record}
-                    renderItem={({item, index}) => (
-                      <DataTable.Row style={{flex: 3}}>
-                        <DataTable.Cell style={{marginLeft: 32}}>
-                          {item.year ? item.year : 'NA'}
-                        </DataTable.Cell>
-                        <DataTable.Cell style={{flex: 1, paddingLeft: 20}}>
-                          {item.month === 1
-                            ? 'Jan'
-                            : item.month === 2
-                            ? 'Feb'
-                            : item.month === 3
-                            ? 'March'
-                            : item.month === 4
-                            ? 'April'
-                            : item.month === 5
-                            ? 'May'
-                            : item.month === 6
-                            ? 'June'
-                            : item.month === 7
-                            ? 'July'
-                            : item.month === 8
-                            ? 'Aug'
-                            : item.month === 9
-                            ? 'Sep'
-                            : item.month === 10
-                            ? 'Oct'
-                            : item.month === 11
-                            ? 'Nov'
-                            : item.month === 12
-                            ? 'Dec'
-                            : 'NA'}
-                        </DataTable.Cell>
-                        <DataTable.Cell style={{paddingLeft: 13}}>
-                        
-
-                          {item.timeSpent ? item.timeSpent + 'mins' : '0 mins'}
-                        </DataTable.Cell>
-                      </DataTable.Row>
-                    )}
-                  />
-                </DataTable>
-              </View>
-            ) : isLoading ? (
-              <View>
-                <ActivityIndicator
-                  size="large"
-                  color="blue"
-                  style={{justifyContent: 'center', alignSelf: 'center'}}
-                />
-              </View>
-            ) : (
-              <Text
-                style={{
-                  fontSize: 22,
-                  textAlign: 'center',
-                  color: 'red',
-                  marginTop: 12,
-                }}>
-                No data found
-              </Text>
-            )} */}
           </View>
         </ScrollView>
       )}

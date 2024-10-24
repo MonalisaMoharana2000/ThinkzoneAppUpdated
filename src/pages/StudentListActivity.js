@@ -834,7 +834,7 @@ const StudentListActivity = ({route, navigation}) => {
                     Continue
                   </Text>
                 </TouchableOpacity> */}
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={() =>
                 navigation.navigate('myachievement', {
                   type: 'myachievement',
@@ -856,14 +856,14 @@ const StudentListActivity = ({route, navigation}) => {
                 }}>
                 Check Reward
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               onPress={() => backs()}
               style={[
                 styles.bu,
                 {
                   marginTop: 20,
-                  backgroundColor: Color.ghostwhite,
+                  backgroundColor: Color.royalblue,
                   width: window.WindowWidth * 0.5,
                   borderWidth: 1,
                   borderColor: Color.royalblue,
@@ -871,13 +871,13 @@ const StudentListActivity = ({route, navigation}) => {
               ]}>
               <Text
                 style={{
-                  fontSize: 15,
+                  fontSize: 16,
 
                   textAlign: 'center',
                   fontFamily: FontFamily.poppinsMedium,
-                  color: Color.royalblue,
+                  color: 'white',
                 }}>
-                Skip for now
+                Okay
               </Text>
             </TouchableOpacity>
           </View>

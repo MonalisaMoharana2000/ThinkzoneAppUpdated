@@ -126,6 +126,10 @@ const RearrangeWords = ({route}) => {
     }
   };
 
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <ScrollView style={styles.container}>
       {data.map((questionData, index) => (
@@ -214,11 +218,15 @@ const RearrangeWords = ({route}) => {
       <TouchableOpacity
         style={[
           styles.button,
-          match?.otherData?.answered ? styles.disabledButton : {},
+          // match?.otherData?.answered ? styles.disabledButton : {},
         ]}
-        disabled={match?.otherData?.answered}
-        onPress={match?.otherData?.answered ? null : handleSave}>
-        <Text style={styles.buttonText}>Submit</Text>
+        // disabled={match?.otherData?.answered}
+        onPress={match?.otherData?.answered ? handleBack : handleSave}>
+        {!match?.otherData?.answered ? (
+          <Text style={styles.buttonText}>Submit</Text>
+        ) : (
+          <Text style={styles.buttonText}>Back</Text>
+        )}
       </TouchableOpacity>
     </ScrollView>
   );

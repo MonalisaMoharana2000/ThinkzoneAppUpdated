@@ -117,6 +117,10 @@ const Puzzles = ({route}) => {
     }
   };
 
+  const handleBack = () => {
+    navigation.goBack();
+  };
+
   return (
     <ScrollView>
       <View style={{justifyContent: 'space-between', flex: 1, margin: '5%'}}>
@@ -213,11 +217,15 @@ const Puzzles = ({route}) => {
         <TouchableOpacity
           style={[
             styles.button,
-            data?.otherData?.answered ? styles.disabledButton : {},
+            // data?.otherData?.answered ? styles.disabledButton : {},
           ]}
-          disabled={data?.otherData?.answered}
-          onPress={data?.otherData?.answered ? null : handleSave}>
-          <Text style={styles.buttonText}>Submit</Text>
+          // disabled={data?.otherData?.answered}
+          onPress={data?.otherData?.answered ? handleBack : handleSave}>
+          {!data?.otherData?.answered ? (
+            <Text style={styles.buttonText}>Submit</Text>
+          ) : (
+            <Text style={styles.buttonText}>Back</Text>
+          )}
         </TouchableOpacity>
       </View>
     </ScrollView>

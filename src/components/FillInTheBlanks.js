@@ -18,6 +18,7 @@ const windowHeight = Dimensions.get('window').height;
 const FillInTheBlank = ({navigation, route}) => {
   const [gamifiedData, setGamifiedData] = useState([]);
   const [questions, setQuestions] = useState([]);
+
   const [selectedBlank, setSelectedBlank] = useState(null);
   const [loading, setLoading] = useState(true); // Loader state
   //   const user = useSelector(state => state.userdata.user?.resData);

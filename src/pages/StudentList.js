@@ -147,7 +147,7 @@ const StudentList = ({navigation, route}) => {
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused
-      dispatch(fetchStudentsDataThunk(teacherdata[0].userid));
+      dispatch(fetchStudentsDataThunk(teacherdata[0]?.userid));
     }, []),
   );
 
@@ -442,7 +442,7 @@ const StudentList = ({navigation, route}) => {
                               </Text>
                             </View>
 
-                            <View style={{}}>
+                            {/* <View style={{}}>
                               {item?.otp_isverified == true ? (
                                 <View onPress={() => {}}>
                                   <Text style={styles.verifi}>
@@ -497,7 +497,7 @@ const StudentList = ({navigation, route}) => {
                                   />
                                 </TouchableOpacity>
                               )}
-                            </View>
+                            </View> */}
                           </View>
                           <View
                             style={{

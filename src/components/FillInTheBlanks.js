@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Api from '../environment/Api';
 import {useSelector} from 'react-redux';
+import {Version} from '../environment/Api';
 import {app_versions} from '../Pages/Home';
 import Loading from './Loading';
 import {Dimensions} from 'react-native';
@@ -25,8 +26,6 @@ const FillInTheBlank = ({navigation, route}) => {
   const user = useSelector(state => state.UserSlice.user);
   const {userid, managername, passcode, managerid, usertype} = user[0];
   const data = route.params;
-
-  // console.log('data---------->>', route.params);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -204,9 +203,9 @@ const FillInTheBlank = ({navigation, route}) => {
       return;
     }
 
-    // Filter for gameType: fillInTheBlanks
+    // Filter for gameType: fillInBlanks
     const userInputData = gamifiedData
-      .filter(gameItem => gameItem.gameType === 'fillInBlanks') // Filter for gameType fillInBlanks
+      .filter(gameItem => gameItem.gameType === 'fillInBlanks')
       .map(gameItem => {
         const fillInBlanksArr = gameItem.fillInBlanksArr.map(fillInBlank => {
           // Find the corresponding question by comparing ids
@@ -225,41 +224,27 @@ const FillInTheBlank = ({navigation, route}) => {
                   answer: answer,
                 }));
 
-          // Return updated fillInBlank object with user input and spread all question data
+          // Return updated fillInBlank object with user input in inputAnswer
           return {
             ...fillInBlank,
-            ...question, // Spread all data from question into fillInBlank
-            userInput: userInput.map(input => ({
-              ...input,
-              correct: fillInBlank.correctInput.some(
-                correct =>
-                  correct.blank === input.blank &&
-                  correct.answer === input.answer,
-              ),
-              answered: true, // Default to true
-            })),
+            inputAnswer: userInput.map(input => input.answer),
           };
         });
 
-        // console.log('fillInBlanksArr------------------->', fillInBlanksArr);
-
-        // Return updated game item with the modified fillInBlanksArr
+        // Return updated game item with the modified fillInBlanksArr and inputAnswer
         return {
           ...gameItem,
           fillInBlanksArr,
-          inputAnswer: fillInBlanksArr.map(fillInBlank => ({
-            ...fillInBlank, // Spread all data from fillInBlank
-            optionsChosenByUser: fillInBlank?.userInput?.map(
-              input => input.answer,
-            ), // Include options chosen by the user
-          })),
+          inputAnswer: fillInBlanksArr.flatMap(
+            fillInBlank => fillInBlank.inputAnswer,
+          ), // Collect all user answers
         };
       });
 
     const updateData = userInputData.map(item => ({
       ...item,
       answered: true,
-      inputAnswer: item.correctAnswer,
+      inputAnswer: item.inputAnswer, // Directly use the correct inputAnswer from fillInBlanksArr
     }));
 
     const submissionPayload = {
@@ -270,53 +255,52 @@ const FillInTheBlank = ({navigation, route}) => {
       managername: managername,
       passcode: passcode,
       topicId: data.topicData[0].topicId,
-      transGamifiedData: updateData, // This will hold my user record
-      masterGamifiedData: gamifiedData, // This is what I am getting from get API
+      transGamifiedData: updateData, // Updated data with user's inputAnswer
+      masterGamifiedData: gamifiedData,
       userid: userid,
       username: user[0].username,
       usertype: usertype,
-      // moduleName: data.moduleData.moduleName,
-      // moduleId: data.moduleData.moduleId,
-      // submoduleName: data.moduleData.submoduleName,
-      // submoduleId: data.moduleData.submoduleId,
-      appVersion: app_versions,
+      appVersion: Version,
     };
 
-    Api.post(`saveTransTchTrainingGamified`, submissionPayload)
-      .then(res => {
-        if (res.status === 200 || res.status === 201) {
-          console.log('Woo hoo,  success');
-          Alert.alert(
-            '🎉 Success',
-            'ଆପଣଙ୍କର ଉତ୍ତର ସଫଳତାର ସହିତ ସଂରକ୍ଷିତ ହୋଇଛି! ✅',
-            [
-              {
-                text: 'ବହୁତ ଭଲ 🚀',
-                style: 'default',
-              },
-            ],
-            {cancelable: true},
-          );
-          // console.log('response data----------->', res.data);
-          navigation.goBack();
-          // navigation.navigate('TrainingSubmodulePage');
-        }
-      })
-      .catch(error => {
-        console.log('oh no...error');
-        Alert.alert(
-          '❌ ତ୍ରୁଟି',
-          `କିଛି ଭୁଲ ହୋଇଗଲା, ଦୟାକରି କିଛି ସମୟ ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।`,
-          [
-            {
-              text: 'ଠିକ ଅଛି 😟',
-              style: 'default',
-            },
-          ],
-          {cancelable: true},
-        );
-        // console.error('The error for saving fill in the blanks---->', error);
-      });
+    // Use JSON.stringify to expand and view the full object structure
+    console.log(
+      'Submission Payload:',
+      JSON.stringify(submissionPayload, null, 2),
+    );
+
+    // Api.post(`saveTransTchTrainingGamified`, submissionPayload)
+    //   .then(res => {
+    //     if (res.status === 200 || res.status === 201) {
+    //       console.log('Woo hoo, success');
+    //       Alert.alert(
+    //         '🎉 Success',
+    //         'ଆପଣଙ୍କର ଉତ୍ତର ସଫଳତାର ସହିତ ସଂରକ୍ଷିତ ହୋଇଛି! ✅',
+    //         [
+    //           {
+    //             text: 'ବହୁତ ଭଲ 🚀',
+    //             style: 'default',
+    //           },
+    //         ],
+    //         {cancelable: true},
+    //       );
+    //       navigation.goBack();
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log('oh no...error');
+    //     Alert.alert(
+    //       '❌ ତ୍ରୁଟି',
+    //       `କିଛି ଭୁଲ ହୋଇଗଲା, ଦୟାକରି କିଛି ସମୟ ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।`,
+    //       [
+    //         {
+    //           text: 'ଠିକ ଅଛି 😟',
+    //           style: 'default',
+    //         },
+    //       ],
+    //       {cancelable: true},
+    //     );
+    //   });
   };
 
   return (
@@ -469,8 +453,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   serialNumber: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
+    color: 'black',
   },
   questionButton: {
     marginBottom: 10,
@@ -480,6 +465,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 8,
     marginTop: -8,
+    color: 'black',
   },
   blank: {
     fontWeight: 'bold',

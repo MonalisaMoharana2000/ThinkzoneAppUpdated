@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
+  Button,
 } from 'react-native';
 import AppTextInput from './TextInput';
 import * as SIZES from '../utils/dimensions';
@@ -18,7 +19,8 @@ import Classlabal from 'react-native-vector-icons/Ionicons';
 import Colors from '../utils/Colors';
 import {Picker} from '@react-native-picker/picker';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import DatePicker from 'react-native-datepicker';
+// import DatePicker from 'react-native-datepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import {StepIndicator} from 'react-native-step-indicator';
 import Slider from '@react-native-community/slider';
 import {Col} from 'react-native-table-component';
@@ -44,10 +46,10 @@ const SurveyComponent = ({
   const [classLabal, setClassLabal] = useState('');
   const [dob, setDob] = useState('');
   const [feedbackTime, setFeedbackTime] = useState(new Date());
-
   const [input1, setInput1] = useState('');
   const [input2, setInput2] = useState('');
   const [selectedAmPm, setSelectedAmPm] = useState('AM');
+  const [showPicker, setShowPicker] = useState(false);
 
   const handleCheckboxChange = (questionId, optionId, option) => {
     setSelectedCheckedOption(prevSelectedOptions => {
@@ -109,6 +111,21 @@ const SurveyComponent = ({
     // else if (v == 3) setSelectedEmoji(emojis[3]);
     // else if (v == 4) setSelectedEmoji(emojis[4]);
     // else setSelectedEmoji(emojis[0]);
+  };
+
+  const showDatepicker = () => {
+    setShowPicker(true);
+  };
+
+  const onChange = (event, selectedDate) => {
+    setShowPicker(Platform.OS === 'ios'); // Keep picker open on iOS
+    if (event.type === 'neutralButtonPressed') {
+      setDob(null); // Clear the date
+    } else if (selectedDate) {
+      const currentDate = selectedDate || dob;
+      setDob(currentDate);
+      onDateChange(item.questionId, currentDate.toLocaleDateString('en-GB')); // Use DD/MM/YYYY format
+    }
   };
   return (
     <ScrollView
@@ -475,45 +492,32 @@ const SurveyComponent = ({
                                     color={Colors.greyPrimary}
                                     style={styles.icon}
                                   />
-                                  <DatePicker
-                                    style={
-                                      {
-                                        // width: 363,
-                                        // marginLeft: -5,
-                                      }
-                                    }
-                                    date={dob}
-                                    mode="date"
-                                    placeholder={`DD/MM/YYYY`}
-                                    placeholderTextColor={'black'}
-                                    dateFormat="DD-MM-YYYY"
-                                    //format="YYYY-MM-DD"
-                                    format="DD-MM-YYYY"
-                                    minDate="01-01-1990"
-                                    maxDate="31-12-2020"
-                                    confirmBtnText="Confirm"
-                                    cancelBtnText="Cancel"
-                                    customStyles={{
-                                      dateIcon: {
-                                        display: 'none',
-                                      },
-                                      dateInput: {
-                                        // marginLeft: -195,
-                                        marginRight: -15,
-                                        borderWidth: -1,
-                                        // position: 'relative',
-                                        flex: 1,
+                                  <View>
+                                    <TouchableOpacity
+                                      style={styles.dateButton}
+                                      onPress={showDatepicker}>
+                                      <Text style={styles.dateText}>
+                                        {dob
+                                          ? dob.toLocaleDateString('en-GB')
+                                          : 'DD/MM/YYYY'}
+                                      </Text>
+                                    </TouchableOpacity>
 
-                                        height: 50,
-                                        marginBottom: -10,
-                                        borderRadius: 22,
-                                      },
-                                    }}
-                                    onDateChange={date => {
-                                      setDob(date);
-                                      onDateChange(item.questionId, date);
-                                    }}
-                                  />
+                                    {showPicker && (
+                                      <DateTimePicker
+                                        value={dob || new Date(2000, 0, 1)}
+                                        mode="date"
+                                        display="default"
+                                        minimumDate={new Date(1990, 0, 1)}
+                                        maximumDate={new Date(2020, 11, 31)}
+                                        onChange={onChange}
+                                        neutralButton={{
+                                          label: 'Clear',
+                                          textColor: '#83dfe9',
+                                        }}
+                                      />
+                                    )}
+                                  </View>
                                 </View>
                               ) : null}
 
@@ -798,5 +802,25 @@ const styles = StyleSheet.create({
     // marginLeft: 25,
     top: '3%',
     fontWeight: 'bold',
+  },
+  dob: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f9',
+    padding: 10,
+    borderRadius: 22,
+    height: 50,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  dateButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  dateText: {
+    color: 'black',
+    fontSize: 16,
   },
 });

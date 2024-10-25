@@ -32,8 +32,10 @@ import {app_versions} from './Home';
 const AnimatedMaterialIcons = Animated.createAnimatedComponent(Foundation);
 
 const CommonMonthlyPage = ({navigation}) => {
-  const user = useSelector(state => state.userdata.user?.resData);
-  // console.log('user--->', user);
+  // const user = useSelector(state => state.userdata.user?.resData);
+
+  const user = useSelector(state => state.UserSlice.user);
+  console.log('user--->', user[0]?.username);
   const {username, userid, managerid, managername, usertype, passcode} =
     user[0];
   const [topic, setTopic] = useState([]);
@@ -51,36 +53,6 @@ const CommonMonthlyPage = ({navigation}) => {
   const [appStateVisible, setAppStateVisible] = useState(AppState.currentState);
   // console.log('appStateVisible------------->', appStateVisible);
   const [getStartTime, setGetStartTime] = useState(null);
-
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
-        Alert.alert(
-          '',
-          'Do you want to Leave this page?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => null,
-              style: 'cancel',
-            },
-            {
-              text: 'OK',
-              onPress: () => {
-                navigation.goBack();
-              },
-            },
-          ],
-          {cancelable: false},
-        );
-
-        return true;
-      },
-    );
-
-    return () => backHandler.remove();
-  }, []);
 
   //for user back button press timespent calculation
   //!----------------------Commented as per discussion since not required to spend more time on Quiz page-----------------

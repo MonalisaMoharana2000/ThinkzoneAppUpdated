@@ -1575,6 +1575,9 @@ const Home = ({navigation}, props) => {
   //   inputRange: [0, 1],
   //   outputRange: ['0deg', '360deg'],
   // });
+  const openCmq = () => {
+    navigation.navigate('commonmonthlypage');
+  };
   const badgemodal = () => {
     setModal(false);
     navigation.navigate('leaderboard');

@@ -45,6 +45,9 @@ import Leaderboard from '../Pages/Leaderboard';
 import Myachivement from '../Pages/Myachivement';
 import IntroQuizPage from '../Pages/IntroQuizPage';
 import RewardTransaction from '../Pages/RewardTransaction';
+import CommonMonthlyPage from '../Pages/CommonMonthlyPage';
+
+
 import FirstScreen from '../Pages/FirstScreen';
 import Landingpage from '../Pages/Landingpage';
 import Landingpage1 from '../Pages/Landingpage1';
@@ -64,6 +67,7 @@ import Payment from '../Pages/Payment';
 import PaymentDetails from '../Pages/PaymentDetails';
 import EditProfile from '../Pages/EditProfile';
 import FillInTheBlank from '../components/FillInTheBlanks';
+import CommonMonthlyQuiz from '../Pages/CommonMonthlyQuiz';
 
 const Stack = createNativeStackNavigator();
 
@@ -106,6 +110,7 @@ const StackNavigator = ({navigation}) => {
             component={Landingpage}
             options={{headerShown: false}}
           />
+         
 
           <Stack.Screen
             name="landing1"
@@ -442,6 +447,61 @@ const StackNavigator = ({navigation}) => {
             fontFamily: FontFamily.poppinsMedium,
           },
           headerTintColor: 'white',
+        }}
+      />
+       <Stack.Screen
+        name="commonmonthlypage"
+        component={CommonMonthlyPage}
+        options={{
+          title: 'ନିଜ ବୁଝାମଣା ଯାଞ୍ଜ କରନ୍ତୁ',
+          headerStyle: {
+            backgroundColor: '#0060ca', // Set background color here
+          },
+          headerTitleStyle: {
+            // fontWeight: '700',
+            color: 'white',
+            fontFamily: FontFamily.poppinsMedium,
+
+            // letterSpacing: 2,
+          },
+          headerTintColor: 'white',
+          // headerTitleAlign: 'center',
+        }}
+      />
+            <Stack.Screen
+        name="commonmonthlyquiz"
+        component={CommonMonthlyQuiz}
+        options={{
+          title: 'ନିଜ ବୁଝାମଣା ଯାଞ୍ଜ କରନ୍ତୁ',
+          headerStyle: {
+            backgroundColor: '#0060ca', // Set background color here
+          },
+          headerTitleStyle: {
+            // fontWeight: '700',
+            color: 'white',
+            fontFamily: FontFamily.poppinsMedium,
+
+            // letterSpacing: 2,
+          },
+          headerTintColor: 'white',
+          // headerTitleAlign: 'center',
+        }}
+      />
+    
+      <Stack.Screen
+        name="commonmonthlyquizreview"
+        component={CommonMonthlyReviewPage}
+        options={{
+          headerShown: false,
+          title: 'Quiz Review',
+          // headerLeft: false,
+          headerTitleStyle: {
+            textTransform: 'uppercase',
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
         }}
       />
       {/* traioning part ends here */}

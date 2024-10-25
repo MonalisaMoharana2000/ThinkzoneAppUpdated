@@ -41,7 +41,6 @@ const SurveyComponent = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   // console.log('selectedOption---->', selectedOption);
-
   const [selectedCheckedOption, setSelectedCheckedOption] = useState({});
   const [classLabal, setClassLabal] = useState('');
   const [dob, setDob] = useState('');
@@ -237,7 +236,9 @@ const SurveyComponent = ({
                       </Text>
                     </View>
 
-                    <Text style={{fontSize: 17}}>{surveyDescription}</Text>
+                    <Text style={{fontSize: 17, color: 'black'}}>
+                      {surveyDescription}
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -376,6 +377,7 @@ const SurveyComponent = ({
                                           }
                                         />
                                         <Text
+                                          style={{color: 'black'}}
                                           onPress={() => {
                                             // Update the selected options mapping with the clicked questionId
                                             setSelectedOption(prev => ({
@@ -424,6 +426,7 @@ const SurveyComponent = ({
                                         />
 
                                         <Text
+                                          style={{color: 'black'}}
                                           onPress={() =>
                                             handleCheckboxChange(
                                               item.questionId,
@@ -717,6 +720,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     textAlignVertical: 'top', // Aligns text to the top
     paddingLeft: 10,
+    color: 'black',
   },
   shortinput: {
     borderBottomWidth: 1,
@@ -724,6 +728,7 @@ const styles = StyleSheet.create({
     // paddingLeft: 10,
     height: window.WindowHeigth * 0.1,
     marginTop: -42,
+    color: 'black',
   },
 
   wrapper: {

@@ -57,6 +57,7 @@
     "react-native-share": "^11.0.4",
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-sqlite-storage": "^6.0.1",
+    "react-native-svg": "^12.1.1",
     "react-native-vector-icons": "^10.2.0",
     "react-native-video": "^6.6.4",
     "react-native-view-shot": "^3.8.0",

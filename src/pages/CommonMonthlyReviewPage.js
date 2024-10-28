@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, Alert, BackHandler, styles} from 'react-native';
-// import ReviewPage from '../components/ReviewPage';
+import {Text, View, Alert, BackHandler, styles,ScrollView} from 'react-native';
+import ReviewPage from '../components/ReviewPage';
 import API from '../environment/Api';
 import {useSelector, useDispatch} from 'react-redux';
 import Loading from '../components/Loading';
 import {useFocusEffect} from '@react-navigation/native';
-import {ScrollView} from 'react-native-gesture-handler';
+// import {ScrollView} from 'react-native-gesture-handler';
 import * as window from '../utils/dimensions';
 import {FontFamily, Color, FontSize, Border} from '../GlobalStyle';
 
@@ -13,7 +13,9 @@ const CommonMonthlyReviewPage = ({navigation, route}) => {
   const data = route.params.topic;
   const {topicId} = data;
   console.log(topicId);
-  const user = useSelector(state => state.userdata.user.resData);
+  // const user = useSelector(state => state.userdata.user.resData);
+  const user = useSelector(state => state.UserSlice.user);
+
   // console.log('user------>', user);
 
   const {userid, username, usertype, managerid, managername, passcode} =
@@ -117,7 +119,7 @@ const CommonMonthlyReviewPage = ({navigation, route}) => {
               </Text>
             </View>
 
-            {/* <ReviewPage topicQuizData={topicQuizData} navigation={navigation} /> */}
+            <ReviewPage topicQuizData={topicQuizData} navigation={navigation} />
           </>
         )}
       </View>

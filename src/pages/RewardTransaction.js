@@ -392,7 +392,7 @@ const RewardTransaction = ({navigation}) => {
                     <View style={{flexDirection: 'column'}}>
                       <Image
                         style={{
-                          marginLeft: '47%',
+                          marginLeft: '48%',
                           top: '15%',
                           width: 22,
                           height: 22,
@@ -401,7 +401,7 @@ const RewardTransaction = ({navigation}) => {
                       />
                       <Text
                         style={{
-                          marginLeft: '47%',
+                          marginLeft: '50%',
                           color: 'red',
                           top: '20%',
                         }}>

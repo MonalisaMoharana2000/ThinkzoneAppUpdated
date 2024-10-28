@@ -47,7 +47,6 @@ import IntroQuizPage from '../Pages/IntroQuizPage';
 import RewardTransaction from '../Pages/RewardTransaction';
 import CommonMonthlyPage from '../Pages/CommonMonthlyPage';
 
-
 import FirstScreen from '../Pages/FirstScreen';
 import Landingpage from '../Pages/Landingpage';
 import Landingpage1 from '../Pages/Landingpage1';
@@ -67,6 +66,8 @@ import Payment from '../Pages/Payment';
 import PaymentDetails from '../Pages/PaymentDetails';
 import EditProfile from '../Pages/EditProfile';
 import FillInTheBlank from '../components/FillInTheBlanks';
+import CallResponse from '../Pages/CallResponse';
+import AttendancemodalList from '../Pages/AttendancemodalList';
 import CommonMonthlyQuiz from '../Pages/CommonMonthlyQuiz';
 
 const Stack = createNativeStackNavigator();
@@ -110,7 +111,6 @@ const StackNavigator = ({navigation}) => {
             component={Landingpage}
             options={{headerShown: false}}
           />
-         
 
           <Stack.Screen
             name="landing1"
@@ -229,6 +229,17 @@ const StackNavigator = ({navigation}) => {
       />
 
       <Stack.Screen
+        name="callresponseList"
+        component={CallResponse}
+        options={{
+          title: 'Call Response',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+        }}
+      />
+
+      <Stack.Screen
         name="studentAttendance"
         component={StudentAttendance}
         options={{
@@ -248,6 +259,12 @@ const StackNavigator = ({navigation}) => {
             fontFamily: FontFamily.poppinsMedium,
           },
         }}
+      />
+
+      <Stack.Screen
+        name="studentsattendance"
+        component={AttendancemodalList}
+        options={{title: 'ଉପସ୍ଥାନ ସୂଚନା'}}
       />
 
       <Stack.Screen
@@ -449,7 +466,7 @@ const StackNavigator = ({navigation}) => {
           headerTintColor: 'white',
         }}
       />
-       <Stack.Screen
+      <Stack.Screen
         name="commonmonthlypage"
         component={CommonMonthlyPage}
         options={{
@@ -468,7 +485,7 @@ const StackNavigator = ({navigation}) => {
           // headerTitleAlign: 'center',
         }}
       />
-            <Stack.Screen
+      <Stack.Screen
         name="commonmonthlyquiz"
         component={CommonMonthlyQuiz}
         options={{
@@ -487,7 +504,7 @@ const StackNavigator = ({navigation}) => {
           // headerTitleAlign: 'center',
         }}
       />
-    
+
       <Stack.Screen
         name="commonmonthlyquizreview"
         component={CommonMonthlyReviewPage}

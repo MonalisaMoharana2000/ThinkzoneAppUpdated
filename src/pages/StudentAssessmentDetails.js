@@ -55,7 +55,7 @@ const StudentAssessmentDetails = ({navigation, route}) => {
   const studentData = route.params.studentData;
   // console.log('studentData----->', studentData);
   const {phone, studentname, studentid} = studentData;
-  const user = useSelector(state => state.userdata.user?.resData);
+  const user = useSelector(state => state.UserSlice.user);
   const {userid, username, usertype, managerid, managername, passcode} =
     user[0];
 
@@ -312,9 +312,9 @@ const StudentAssessmentDetails = ({navigation, route}) => {
     AppState.addEventListener('change', handleAppStateChange);
 
     // Cleanup function
-    return () => {
-      AppState.removeEventListener('change', handleAppStateChange);
-    };
+    // return () => {
+    //   AppState.removeEventListener('change', handleAppStateChange);
+    // };
   }, []);
 
   // useEffect(() => {

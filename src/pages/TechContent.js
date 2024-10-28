@@ -2105,6 +2105,7 @@ const TechContent = ({route, navigation}) => {
         submoduleId: route?.params?.data?.submoduleId,
         submoduleName: route?.params?.data?.submoduleName,
       };
+      console.log('body---->', body);
 
       const response = await API.post(
         `saveTransTchTrainingContentDiscussion`,
@@ -4435,6 +4436,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginRight: 10,
+    color: 'black',
   },
   sendButton: {
     backgroundColor: '#007bff',

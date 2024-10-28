@@ -29,6 +29,7 @@ import Api from '../environment/Api';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {fetchStudentsAttendanceThunk} from '../redux_toolkit/features/students/StudentThunk';
+import API from '../environment/Api';
 
 const StudentAttendance = ({navigation}) => {
   const date = new Date();
@@ -120,7 +121,7 @@ const StudentAttendance = ({navigation}) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      Api.get(`getattendanceofteacherbydate/${user[0].userid}/${newDob}`).then(
+      Api.get(`getattendanceofteacherbydate/${user[0]?.userid}/${newDob}`).then(
         response => setAttendanceData(response.data),
       );
     }, [newDob]),
@@ -144,14 +145,14 @@ const StudentAttendance = ({navigation}) => {
     React.useCallback(() => {
       dispatch(
         fetchStudentsAttendanceThunk({
-          userid: user[0].userid,
+          userid: user[0]?.userid,
           attendancedate: currentDate,
         }),
       );
     }, []),
   );
 
-  const setHoliday = () => {
+  const setHoliday = async () => {
     setCustomModal(false);
 
     const data = [
@@ -171,7 +172,17 @@ const StudentAttendance = ({navigation}) => {
       },
     ];
 
-    dispatch(studenttypes.postAttendanceStart(data));
+    const res = await API.post(`saveattendance`, data);
+    console.log('holiday------------->', res?.data);
+    if (res?.data?.status === 'success') {
+      dispatch(
+        fetchStudentsAttendanceThunk({
+          userid: user[0]?.userid,
+          attendancedate: currentDate,
+        }),
+      );
+    }
+    // dispatch(studenttypes.postAttendanceStart(data));
   };
 
   const minDate = new Date() - 7 * 24 * 60 * 60 * 1000;
@@ -314,7 +325,7 @@ const StudentAttendance = ({navigation}) => {
                   {
                     checkCalendar.length > 0
                       ? navigation.navigate('studentAttendance', {})
-                      : navigation.navigate('attendancelist', {
+                      : navigation.navigate('studentsattendance', {
                           takeAttendance: true,
                           userid: user[0].userid,
                           studentcategory: 'app',
@@ -451,7 +462,7 @@ const StudentAttendance = ({navigation}) => {
                 />
               </View>
               <TouchableOpacity
-                onPress={() => navigation.navigate('attendanceList')}
+                onPress={() => navigation.navigate('attendancelist')}
                 style={{
                   backgroundColor: Color.royalblue,
                   marginLeft: 20,

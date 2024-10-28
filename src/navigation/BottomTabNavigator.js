@@ -26,6 +26,8 @@ const BottomTabNavigator = ({navigation}) => {
   const user = useSelector(state => state.UserSlice?.user[0]);
   const tabOffsetValue = useRef(new Animated.Value(0)).current;
   const [selectedTab, setSelectedTab] = useState('Home');
+  console.log('selectedTab--->', selectedTab);
+
   const [maintainanceStatus, setMaintainanceStatus] = useState({});
   const [maintainanceModal, setmaintainanceModal] = useState(false);
 

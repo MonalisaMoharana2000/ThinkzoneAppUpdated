@@ -515,7 +515,10 @@ export default function CallResponse({navigation, route}) {
                                         )
                                       }>
                                       <Text
-                                        style={styles.tpoicText}
+                                        style={[
+                                          styles.tpoicText,
+                                          {color: 'black'},
+                                        ]}
                                         key={queIndex + 1}>
                                         {que.question} ?
                                       </Text>

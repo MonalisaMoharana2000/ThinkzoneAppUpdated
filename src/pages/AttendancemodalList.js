@@ -32,6 +32,9 @@ import API from '../environment/Api';
 const AttendancemodalList = ({navigation, route}) => {
   const [attendanceList, setAttendanceList] = useState([]);
 
+  const students = route.params;
+  console.log('===students', students);
+
   const [loader, setLoader] = useState(null);
   useEffect(() => {
     const delayLoader = () => {
@@ -56,7 +59,7 @@ const AttendancemodalList = ({navigation, route}) => {
 
   const [newStudentList, setNewStudentList] = useState([]);
 
-  console.log('newStudentList-------->', newStudentList);
+  console.log('newStudentList-------->', user);
 
   const [modal, setModal] = useState(false);
 
@@ -79,7 +82,7 @@ const AttendancemodalList = ({navigation, route}) => {
       };
 
       fetchData();
-    }, []),
+    }, [route.params.date]),
   );
 
   // useEffect(() => {

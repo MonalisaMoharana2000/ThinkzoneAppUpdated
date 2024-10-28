@@ -2695,7 +2695,7 @@ const styles = StyleSheet.create({
     width: 116,
     paddingBottom: 15,
     // padding: 10,
-    top: '-1%',
+    // top: '-%',
     flexDirection: 'row',
     alignSelf: 'center',
     // alignItems: 'center',

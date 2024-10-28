@@ -923,13 +923,14 @@ const AudioAssessment = ({
                       <View
                         style={{
                           backgroundColor: '#0060ca',
-                          height: 66,
-                          width: window.WindowWidth * 1.1,
+                          height: 46,
+                          width: window.WindowWidth * 0.9 ,
                           alignSelf: 'center',
-                          marginTop: 22,
+                          // marginTop: 22,
                           flexDirection: 'row',
                           // marginLeft: -20,
-                          // marginBottom: 3,
+                          marginBottom: 3,
+                          borderRadius:20
                         }}>
                         <TouchableOpacity
                           onPress={() => {
@@ -950,20 +951,15 @@ const AudioAssessment = ({
                               ],
                             );
                           }}>
-                          {/* <AntDesign
-                            name="arrowleft"
-                            size={23}
-                            style={{left: '122%', marginTop: 25}}
-                            color="white"
-                          /> */}
+                        
                         </TouchableOpacity>
                         <Text
                           style={{
                             color: 'white',
-                            fontSize: 18,
+                            fontSize: 15,
                             // marginTop: 15,
                             alignSelf: 'center',
-                            left: '75%',
+                            left: '20%',
                             // top: 5,
                           }}>
                           {topicName}

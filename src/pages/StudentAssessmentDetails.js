@@ -943,6 +943,7 @@ const StudentAssessmentDetails = ({navigation, route}) => {
                     handleOptionSelectMulti={handleOptionSelectMulti2}
                     handleChangeText={handleChangeText}
                     backClear={back}
+                    topicName={topicName}
                   />
                 ) : (
                   // <View style={{alignSelf: 'center', right: '27%'}}>

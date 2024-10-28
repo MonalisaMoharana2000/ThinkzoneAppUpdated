@@ -279,9 +279,9 @@ const StudentRegister = ({route, navigation}) => {
 
   useEffect(() => {
     if (user) {
-      if (user[0].usertype === 'fellow') {
+      if (user[0]?.usertype === 'fellow') {
         setStudentcategory('app');
-      } else if (user[0].usertype === 'school') {
+      } else if (user[0]?.usertype === 'school') {
         setStudentcategory('hbl');
       } else {
         setStudentcategory('');

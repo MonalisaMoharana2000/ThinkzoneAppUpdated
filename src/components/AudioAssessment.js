@@ -920,6 +920,52 @@ const AudioAssessment = ({
                         },
                       ]}
                       key={index}>
+                      <View
+                        style={{
+                          backgroundColor: '#0060ca',
+                          height: 46,
+                          width: window.WindowWidth * 0.9 ,
+                          alignSelf: 'center',
+                          // marginTop: 22,
+                          flexDirection: 'row',
+                          // marginLeft: -20,
+                          marginBottom: 3,
+                          borderRadius:20
+                        }}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            Alert.alert(
+                              'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
+                              'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
+                              [
+                                {
+                                  text: 'Cancel',
+                                  onPress: () => null,
+                                  style: 'default',
+                                },
+                                {
+                                  text: 'Ok',
+                                  onPress: () => navigation.goBack(),
+                                  style: 'default',
+                                },
+                              ],
+                            );
+                          }}>
+                        
+                        </TouchableOpacity>
+                        <Text
+                          style={{
+                            color: 'white',
+                            fontSize: 15,
+                            // marginTop: 15,
+                            alignSelf: 'center',
+                            left: '20%',
+                            // top: 5,
+                          }}>
+                          {topicName}
+                        </Text>
+                      </View>
+
                       <Text
                         style={{
                           fontSize: 18,
@@ -2649,12 +2695,12 @@ const styles = StyleSheet.create({
     width: 116,
     paddingBottom: 15,
     // padding: 10,
-    top: '20%',
+    top: '-1%',
     flexDirection: 'row',
     alignSelf: 'center',
     // alignItems: 'center',
     justifyContent: 'center',
-    top: '-3%',
+    // top: '-3%',
     // position: 'absolute',
     // bottom: 0,
     // // flexGrow: 1,
@@ -2669,7 +2715,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FontFamily.poppinsMedium,
     alignSelf: 'center',
-    top: '6%',
+    top: '18%',
     left: 2,
   },
   modalButtonContainer: {

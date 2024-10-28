@@ -78,58 +78,35 @@ const FillInTheBlank = ({navigation, route}) => {
   const handleOptionClick = (questionId, option) => {
     const question = questions.find(q => q.id === questionId);
 
+    // Alert for already selected options in paragraph type
     if (
       question.type === 'paragraph' &&
       question.selectedOptions.includes(option)
     ) {
       Alert.alert(
-        '⚠️ ବିକଳ୍ପ ଆଗରୁ ଚୟନ କରାଯାଇଛି',
-        'ଏହି ବିକଳ୍ପଟି ଆଗରୁ ଅନ୍ୟ ଏକ ଶୂନ୍ୟସ୍ଥାନ ପାଇଁ ଚୟନ କରାଯାଇଛି। ଦୟାକରି ଅନ୍ୟ ଏକ  ବିକଳ୍ପ ଚୟନ କରନ୍ତୁ। 🤔',
-        [
-          {
-            text: 'ଠିକ ଅଛି 👍',
-            style: 'default',
-          },
-        ],
-        {cancelable: true},
-      );
-      return;
-    }
-
-    if (question.type === 'paragraph' && selectedBlank === null) {
-      Alert.alert(
-        '✋ ପ୍ରଥମେ ଏକ ଶୂନ୍ୟସ୍ଥାନ ଚୟନ କରନ୍ତୁ',
-        'ଦୟାକରି ଏକ ଶୂନ୍ୟସ୍ଥାନ ଉପରେ ଟାପ୍ କରନ୍ତୁ ଯାହାକୁ ଏହି ବିକଳ୍ପ ଦ୍ୱାରା ପୂରଣ କରାଯିବ। 📝',
-        [
-          {
-            text: 'ନିଶ୍ଚିତ 👍',
-            style: 'default',
-          },
-        ],
-        {cancelable: true},
+        '⚠️ Option Already Selected',
+        'Please choose another option.',
       );
       return;
     }
 
     if (selectedBlank === null) {
       setQuestions(prevQuestions =>
-        prevQuestions.map(question =>
-          question.id === questionId
-            ? {...question, selectedOption: option}
-            : question,
+        prevQuestions.map(q =>
+          q.id === questionId ? {...q, selectedOption: option} : q,
         ),
       );
     } else {
       setQuestions(prevQuestions =>
-        prevQuestions.map(question =>
-          question.id === questionId
+        prevQuestions.map(q =>
+          q.id === questionId
             ? {
-                ...question,
-                selectedOptions: question.selectedOptions.map((opt, idx) =>
+                ...q,
+                selectedOptions: q.selectedOptions.map((opt, idx) =>
                   idx === selectedBlank ? option : opt,
                 ),
               }
-            : question,
+            : q,
         ),
       );
       setSelectedBlank(null);
@@ -203,48 +180,60 @@ const FillInTheBlank = ({navigation, route}) => {
       return;
     }
 
-    // Filter for gameType: fillInBlanks
+    // Prepare user input data
     const userInputData = gamifiedData
       .filter(gameItem => gameItem.gameType === 'fillInBlanks')
       .map(gameItem => {
         const fillInBlanksArr = gameItem.fillInBlanksArr.map(fillInBlank => {
-          // Find the corresponding question by comparing ids
           const question = questions.find(q => q.id === fillInBlank.id);
 
           if (!question) {
             return fillInBlank; // If no matching question found, return as is
           }
 
-          // Determine user input based on question type
-          const userInput =
-            question.type === 'single'
-              ? [{blank: 1, answer: question.selectedOption}]
-              : question.selectedOptions.map((answer, idx) => ({
-                  blank: idx + 1,
-                  answer: answer,
-                }));
+          // Get user input based on question type
+          let userInput = [];
+          if (question.type === 'single') {
+            const selectedOption = question.selectedOption; // This should hold the user's selection
+            if (selectedOption) {
+              userInput = [{blank: 1, answer: selectedOption}]; // Only one option for single type
+            }
+          } else if (question.type === 'paragraph') {
+            userInput = question.selectedOptions.map((answer, idx) => ({
+              blank: idx + 1,
+              answer: answer || '', // Ensure there's a default value to avoid undefined
+            }));
+          }
 
           // Return updated fillInBlank object with user input in inputAnswer
           return {
             ...fillInBlank,
-            inputAnswer: userInput.map(input => input.answer),
+            inputAnswer: userInput.map(input => input.answer), // Collect user's answers for this fillInBlank
           };
         });
 
-        // Return updated game item with the modified fillInBlanksArr and inputAnswer
+        // Collect all user answers into inputAnswer for the game item
+        const allUserAnswers = fillInBlanksArr
+          .flatMap(fillInBlank => fillInBlank.inputAnswer)
+          .filter(answer => answer !== undefined);
+
+        // Return updated game item with the modified fillInBlanksArr
         return {
           ...gameItem,
           fillInBlanksArr,
-          inputAnswer: fillInBlanksArr.flatMap(
-            fillInBlank => fillInBlank.inputAnswer,
-          ), // Collect all user answers
+          inputAnswer: allUserAnswers, // Collect all user answers
         };
       });
+
+    console.log('userInputData--------->', userInputData);
 
     const updateData = userInputData.map(item => ({
       ...item,
       answered: true,
-      inputAnswer: item.inputAnswer, // Directly use the correct inputAnswer from fillInBlanksArr
+      // Ensure we're using the correct inputAnswer array for each item
+      inputAnswer: item.fillInBlanksArr.flatMap(
+        fillInBlank => fillInBlank.inputAnswer,
+      ), // Collecting all answers from the fillInBlanksArr
     }));
 
     const submissionPayload = {
@@ -269,6 +258,7 @@ const FillInTheBlank = ({navigation, route}) => {
       JSON.stringify(submissionPayload, null, 2),
     );
 
+    // Uncomment the API call to submit data
     // Api.post(`saveTransTchTrainingGamified`, submissionPayload)
     //   .then(res => {
     //     if (res.status === 200 || res.status === 201) {

@@ -50,6 +50,7 @@ import Loading from '../components/Loading';
 import Nocontents from '../components/Nocontents';
 import {app_versions} from './Home';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Video from 'react-native-video';
 
 let STORAGE_KEY = '@pge_content';
 const audioPlayer = new AudioRecorderPlayer();
@@ -106,6 +107,7 @@ const Pgecontentdetails = ({route, navigation}) => {
   const [appStateVisible, setAppStateVisible] = useState(AppState.currentState);
   console.log('appStateVisible------------->', appStateVisible);
   const [getStartTime, setGetStartTime] = useState(null);
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   //for user back button press timespent calculation
   useEffect(() => {
@@ -877,14 +879,11 @@ const Pgecontentdetails = ({route, navigation}) => {
                               <View
                                 style={{
                                   width: '100%',
-                                  paddingBottom: 10,
+                                  paddingBottom: 30,
                                   backgroundColor: 'white',
                                   borderRadius: 10,
-                                  // borderWidth: 1,
-                                  // borderColor: Color.royalblue,
-                                  // paddingTop: 20,
-                                  // paddingLeft: 20,
-                                  // paddingRight: 20,
+                                  paddingLeft: 20,
+                                  paddingRight: 20,
                                   alignSelf: 'center',
                                   top: '-5%',
                                 }}>
@@ -894,46 +893,42 @@ const Pgecontentdetails = ({route, navigation}) => {
                                       flex: 1,
                                       justifyContent: 'center',
                                       alignItems: 'center',
-                                    }}></View>
+                                    }}>
+                                    {/* Loader */}
+                                  </View>
                                 )}
                                 <View style={{aspectRatio: 17 / 9}}>
-                                  {item.thumbnail?.length > 0 ? (
-                                    <TouchableOpacity onPress={openModal}>
+                                  {!videoPlaying && ( // Show thumbnail only if video is not playing
+                                    <TouchableOpacity
+                                      onPress={() => setVideoPlaying(true)}>
                                       <Image
                                         style={{
                                           width: 336,
                                           top: 2,
                                           height: 181,
-                                          // left: 20,
                                           backgroundColor: 'white',
-                                          // paddingBottom: 20,
-                                          // borderWidth: 0.1,
+                                          paddingBottom: 20,
                                           borderColor: 'black',
-                                          // borderRadius: 20,
-                                          alignSelf: 'flex-end',
-                                        }}
-                                        source={{uri: `${item.thumbnail}`}}
-                                      />
-                                    </TouchableOpacity>
-                                  ) : (
-                                    <TouchableOpacity
-                                      onPress={() => openModal(item)}>
-                                      <Image
-                                        style={{
-                                          width: 336,
-                                          // top: 2,
-                                          height: 181,
-                                          // left: 20,
-                                          backgroundColor: 'white',
-                                          // paddingBottom: 20,
-                                          // borderWidth: 0.1,
-                                          borderColor: 'black',
-                                          // borderRadius: 20,
                                           alignSelf: 'center',
                                         }}
-                                        source={require('../assets/Image/thumbnail.png')}
+                                        source={
+                                          item.thumbnail?.length > 0
+                                            ? {uri: `${item.thumbnail}`}
+                                            : require('../assets/Image/thumbnail.png')
+                                        }
                                       />
                                     </TouchableOpacity>
+                                  )}
+                                  {videoPlaying && (
+                                    <Video
+                                      source={{uri: `${item.value}`}}
+                                      style={{width: 336, height: 181}}
+                                      controls={true}
+                                      resizeMode="cover"
+                                      onBuffer={() => setBuffering(true)} // Callback when remote video is buffering
+                                      onLoad={() => setBuffering(false)} // Callback when video starts to play
+                                      onEnd={() => setVideoPlaying(false)} // Stop video when it ends
+                                    />
                                   )}
                                 </View>
                               </View>

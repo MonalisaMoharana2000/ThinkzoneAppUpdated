@@ -50,6 +50,7 @@ import Nocontents from '../components/Nocontents';
 import {app_versions} from './Home';
 import {WebView} from 'react-native-webview';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Video from 'react-native-video';
 
 const audioPlayer = new AudioRecorderPlayer();
 
@@ -169,6 +170,7 @@ const EcContent = ({route, navigation}) => {
   const [duration, setDuration] = useState(0);
   const [buffering, setBuffering] = useState(true);
   const [program, setProgram] = useState('ece');
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   // const [progress, setProgress] = useState(null);
 
@@ -750,26 +752,11 @@ const EcContent = ({route, navigation}) => {
                                   paddingBottom: 30,
                                   backgroundColor: 'white',
                                   borderRadius: 10,
-                                  // borderWidth: 1,
-                                  // borderColor: Color.royalblue,
-                                  // paddingTop: 20,
                                   paddingLeft: 20,
                                   paddingRight: 20,
                                   alignSelf: 'center',
                                   top: '-5%',
                                 }}>
-                                {/* <Text
-                                      style={{
-                                        fontFamily: FontFamily.poppinsMedium,
-                                        fontSize: 22,
-                                        color: 'black',
-                                        alignSelf: 'center',
-                                        padding: 10,
-                                        paddingBottom: -10,
-                                        fontWeight: 'bold',
-                                      }}>
-                                      {item.label}
-                                    </Text> */}
                                 {buffering && (
                                   <View
                                     style={{
@@ -777,87 +764,41 @@ const EcContent = ({route, navigation}) => {
                                       justifyContent: 'center',
                                       alignItems: 'center',
                                     }}>
-                                    {/* <ActivityIndicator
-                                          size="large"
-                                          color="#0060ca"
-                                        /> */}
+                                    {/* Loader */}
                                   </View>
                                 )}
                                 <View style={{aspectRatio: 17 / 9}}>
-                                  {/* <TouchableOpacity onPress={openModal}>
-                                        <Image
-                                          style={{
-                                            width: 40,
-                                            top: -8,
-                                            height: 40,
-                                            left: 20,
-    
-                                            paddingBottom: 10,
-                                            alignSelf: 'flex-start',
-                                          }}
-                                          source={{uri: `${item.thumbnail}`}}
-                                        />
-                                      </TouchableOpacity> */}
-
-                                  {/* <VideoPlayer
-                                      video={{
-                                        uri: `${item.value}`,
-                                      }}
-                                      thumbnail={{
-                                        uri: `${item.thumbnail}`,
-                                      }}
-                                      // buffering={buffering}
-                                      onLoad={handleLoad}
-                                      onPause={handleVideoPause}
-                                      onPlay={handleVideoPlay}
-                                      showDuration={true}
-                                      fullScreenOnLongPress={true}
-                                      controlTimeout={5000}
-                                      resizeMode={'cover'}
-                                      volume={1.0}
-                                      rate={1.0}
-                                      disableFullscreen={true} // Enable full-screen functionality
-                                      // onEnterFullscreen={handleVideoPause} // Pause video when entering fullscreen
-                                      onExitFullscreen={handleVideoPlay}
-                                    /> */}
-                                  {item.thumbnail?.length > 0 ? (
-                                    <TouchableOpacity onPress={openModal}>
-                                      <Image
-                                        style={{
-                                          width: 336,
-                                          top: 2,
-                                          height: 181,
-                                          // left: 20,
-                                          backgroundColor: 'white',
-                                          paddingBottom: 20,
-                                          // borderWidth: 0.1,
-                                          borderColor: 'black',
-                                          // borderRadius: 20,
-                                          alignSelf: 'center',
-                                        }}
-                                        source={{uri: `${item.thumbnail}`}}
-                                      />
-                                    </TouchableOpacity>
-                                  ) : (
+                                  {!videoPlaying && ( // Show thumbnail only if video is not playing
                                     <TouchableOpacity
-                                      onPress={() => openModal(item)}>
+                                      onPress={() => setVideoPlaying(true)}>
                                       <Image
                                         style={{
                                           width: 336,
                                           top: 2,
                                           height: 181,
-                                          // left: 20,
                                           backgroundColor: 'white',
                                           paddingBottom: 20,
-                                          // borderWidth: 0.1,
                                           borderColor: 'black',
-                                          // borderRadius: 20,
                                           alignSelf: 'center',
-                                          //
                                         }}
-                                        source={require('../assets/Image/thumbnail.png')}
+                                        source={
+                                          item.thumbnail?.length > 0
+                                            ? {uri: `${item.thumbnail}`}
+                                            : require('../assets/Image/thumbnail.png')
+                                        }
                                       />
                                     </TouchableOpacity>
+                                  )}
+                                  {videoPlaying && (
+                                    <Video
+                                      source={{uri: `${item.value}`}}
+                                      style={{width: 336, height: 181}}
+                                      controls={true}
+                                      resizeMode="cover"
+                                      onBuffer={() => setBuffering(true)} // Callback when remote video is buffering
+                                      onLoad={() => setBuffering(false)} // Callback when video starts to play
+                                      onEnd={() => setVideoPlaying(false)} // Stop video when it ends
+                                    />
                                   )}
                                 </View>
                               </View>

@@ -870,10 +870,10 @@ const StudentAssessmentDetails = ({navigation, route}) => {
                   backgroundColor: '#0060ca',
                   // height: 66,
                   width: window.WindowWidth * 1.1,
-                  marginTop: 20,
+                  // marginTop: 20,
                   marginLeft: 20,
                   paddingBottom: 20,
-                  top: '-4%',
+                  top: '-0.2%',
                   display: 'flex',
                   flexDirection: 'row',
                 }}>

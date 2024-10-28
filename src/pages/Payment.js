@@ -7,13 +7,13 @@ import {
   Alert,
   ActivityIndicator,
   Pressable,
+  BackHandler,
 } from 'react-native';
 import Color from '../utils/Colors';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import React from 'react';
 import {useEffect, useState, useCallback, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-// import * as studentstypes from '../redux/slices/StudentSlice';
 import Colors from '../utils/Colors';
 import API from '../environment/Api';
 import ButtomSheet from '../components/BottomSheet';
@@ -24,7 +24,6 @@ import Norecord from '../components/Norecord';
 import Modals from '../components/Modals';
 import PaymentAccordion from '../components/PaymentAccordian';
 import {FontFamily} from '../GlobalStyle';
-// import * as types from '../redux/slices/UserSlice';
 import * as types from '../redux_toolkit/features/users/UserSlice';
 import Loading from '../components/Loading';
 import {
@@ -32,10 +31,13 @@ import {
   savePaymentDetails,
   fetchUserDataThunk,
 } from '../redux_toolkit/features/users/UserThunk';
+import {fetchStudentsDataThunk} from '../redux_toolkit/features/students/StudentThunk';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Payment = ({route, navigation}) => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
+  const modalHeight = window.WindowHeigth * 0.9;
   const [selectedStudent, setSlectedStudent] = useState({});
   const [modalStatus, setModalStatus] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
@@ -45,16 +47,42 @@ const Payment = ({route, navigation}) => {
   const [paindingAmount, setPaindingAmount] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [customModal, setCustomModal] = useState(true);
-  // const [studentData, setStudentData] = useState([]);
   const [paymentRecord, setPaymentRecord] = useState([]);
-  // const studentData = useSelector(state => state.studentdata.students);
-  // const teacherdata = useSelector(
-  //   state => state.UserSlice?.user?.data?.resData,
-  // );
+  const [studentData, setStudentData] = useState([]);
+  console.log('studentData_UseState', studentData);
+  const studentList = useSelector(state => state.StudentSlice.students);
+  // console.log('student_List_payment---->', studentList);
   const teacherdata = useSelector(state => state.UserSlice.user);
   console.log('teacherdata-------------->', teacherdata);
+  // const studentData = useSelector(state => state.UserSlice?.payments);
 
-  const modalHeight = window.WindowHeigth * 0.9;
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!teacherdata[0]?.userid) {
+        console.warn('User ID is undefined.');
+        return;
+      }
+      console.log(
+        'Fetching payment details for user ID:',
+        teacherdata[0].userid,
+      );
+      setIsLoading(true);
+
+      try {
+        const response = await API.get(
+          `getstudentswithpaymentdetails/${teacherdata[0].userid}`,
+        );
+        console.log('Fetched payment data:', response.data.data);
+        setStudentData(response.data.data);
+      } catch (error) {
+        console.error('Error fetching payment data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [teacherdata]);
 
   useEffect(() => {
     dispatch(fetchUserDataThunk());
@@ -63,19 +91,24 @@ const Payment = ({route, navigation}) => {
     //   response => {
     //     setStudentData(response.data.data);
     setIsLoading(false);
-    //   },
-    //   error => {
-    //     setIsLoading(false);
-    //   },
-    // );
     if (!teacherdata[0]?.userid) {
     } else {
       dispatch(fetchPaymentDetails(teacherdata[0]?.userid));
     }
   }, []);
 
-  const studentData = useSelector(state => state.UserSlice?.payments);
-  // //console.log('paymentdata---->', studentData);
+  useFocusEffect(
+    useCallback(() => {
+      try {
+        dispatch(fetchStudentsDataThunk(teacherdata[0]?.userid));
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error fetching or modifying student data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }, []),
+  );
 
   // Get Payments Deatils.
   const getPayDetails = item => {
@@ -219,11 +252,35 @@ const Payment = ({route, navigation}) => {
     return () => clearTimeout(timeoutId);
   }, [studentData]);
 
-  //console.log(
-  //   '----------------------------------------------------------------------------------',
-  // );
-  //console.log('isLoading------------->', isLoading);
-  //console.log('studentData.length------------->', studentData.length);
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          '',
+          'Do you want to Leave this page?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {
+              text: 'OK',
+              onPress: () => {
+                navigation.goBack();
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+
+        return true;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <>

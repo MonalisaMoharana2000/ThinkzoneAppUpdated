@@ -63,7 +63,9 @@ const AttendancemodalList = ({navigation, route}) => {
 
   const [modal, setModal] = useState(false);
 
-  const [attendanceCheck, setAttendanceCheck] = useState([]);
+  const [attendanceCheck, setAttendanceCheck] = useState(
+    route?.params?.attendanceData,
+  );
   console.log('attendance check-------->', attendanceCheck);
 
   useFocusEffect(

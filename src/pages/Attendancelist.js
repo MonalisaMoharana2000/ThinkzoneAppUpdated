@@ -102,7 +102,7 @@ const Attendancelist = ({navigation}) => {
                     {moment(item).format('DD/MM/YYYY')}
                   </Text>
                   <Ionicons
-                    name="md-checkmark-done-circle-sharp"
+                    name="checkbox-outline"
                     size={20}
                     color={Colors.success}
                     style={[styles.icon, {marginRight: 10}]}
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   listtext: {
     paddingLeft: 15,
     textAlign: 'center',
-    // color: Colors.black,
+    color: Colors.black,
     fontSize: 16,
     fontWeight: 'bold',
     fontFamily: FontFamily.poppinsMedium,

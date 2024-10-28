@@ -12,6 +12,7 @@ import {
   AppState,
   Easing,
   Alert,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
 import moment from 'moment';
@@ -22,9 +23,7 @@ import API from '../environment/Api';
 
 // import Color from '../utils/Colors';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import Icon from 'react-native-vector-icons/Feather';
-import {ScrollView} from 'react-native-gesture-handler';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
 import {log} from 'console';
 const windowWidth = Dimensions.get('window').width;
@@ -67,7 +66,7 @@ const ListItemScroll = ({
     );
   };
 
-  const teacherdata = useSelector(state => state.userdata.user?.resData);
+  const teacherdata = useSelector(state => state.UserSlice.user);
 
   let stTime = new Date().getTime();
   const [animatedValue] = useState(new Animated.Value(0));
@@ -151,7 +150,9 @@ const ListItemScroll = ({
                   flexDirection: 'row',
                   // justifyContent: 'space-evenly',
                 }}>
-                <Text style={[styles.title, {color: color}]} numberOfLines={1}>
+                <Text
+                  style={[styles.title, {color: 'black'}]}
+                  numberOfLines={1}>
                   {title}
                 </Text>
                 {viewStatus === 'unread' ? (
@@ -185,7 +186,9 @@ const ListItemScroll = ({
                 ) : null}
               </View>
               {/* {subTitle && ( */}
-              <Text style={[styles.subTitle, {color: color}]} numberOfLines={1}>
+              <Text
+                style={[styles.subTitle, {color: 'black'}]}
+                numberOfLines={1}>
                 {subTitle}
               </Text>
               <View

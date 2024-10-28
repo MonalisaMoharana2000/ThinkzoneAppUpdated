@@ -24,6 +24,7 @@ import Loading from '../components/Loading';
 import {useFocusEffect} from '@react-navigation/native';
 import NoNotifyImg from '../components/NoNotifyImg';
 import ListItemScroll from '../components/ListItemScroll';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -50,7 +51,9 @@ const Notification = ({navigation, route}) => {
       setIsloading(true);
       try {
         const fetchData = async () => {
-          const response = await API.get(`getAllNotifs/${userid}`);
+          const response = await API.get(
+            `getAllNotifs/${teacherdata[0]?.userid}`,
+          );
           console.log('response---->', response.data);
           setAllNotification(response.data);
           setIsloading(false);
@@ -149,68 +152,70 @@ const Notification = ({navigation, route}) => {
   // }, []);
 
   return (
-    <ScrollView>
-      <View>
-        {isLoading ? (
-          <Loading />
-        ) : allNotification.length > 0 ? (
-          <FlatList
-            data={allNotification}
-            keyExtractor={item => item.notifId}
-            renderItem={({item, index}) => {
-              const createdOn = moment(item.createdOn);
-              const relativeTime = createdOn.fromNow();
+    <GestureHandlerRootView>
+      <ScrollView>
+        <View>
+          {isLoading ? (
+            <Loading />
+          ) : allNotification.length > 0 ? (
+            <FlatList
+              data={allNotification}
+              keyExtractor={item => item.notifId}
+              renderItem={({item, index}) => {
+                const createdOn = moment(item.createdOn);
+                const relativeTime = createdOn.fromNow();
 
-              return (
-                <ListItemScroll
-                  style={styles.card}
-                  key={item.notifId}
-                  title={item.title}
-                  subTitle={item.body}
-                  time={relativeTime}
-                  viewStatus={item.viewStatus}
-                  onPress={() => handleViewStatusUpdate(item)}
-                  call={
-                    <>
-                      <TouchableOpacity onPress={() => handleDelete(item)}>
-                        <View
-                          style={[
-                            //styles.card,
-                            {
-                              margin: 10,
-                            },
-                          ]}>
-                          <Text
-                            style={{
-                              color: 'white',
+                return (
+                  <ListItemScroll
+                    style={styles.card}
+                    key={item.notifId}
+                    title={item.title}
+                    subTitle={item.body}
+                    time={relativeTime}
+                    viewStatus={item.viewStatus}
+                    onPress={() => handleViewStatusUpdate(item)}
+                    call={
+                      <>
+                        <TouchableOpacity onPress={() => handleDelete(item)}>
+                          <View
+                            style={[
+                              //styles.card,
+                              {
+                                margin: 10,
+                              },
+                            ]}>
+                            <Text
+                              style={{
+                                color: 'white',
 
-                              alignSelf: 'flex-end',
-                              // bottom: 0,
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              top: '120%',
-                              right: 5,
-                            }}>
-                            <MaterialIcons
-                              name="delete"
-                              size={28}
-                              color={'#eb3875'}
-                              style={{top: '20%'}}
-                            />
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
-                    </>
-                  }
-                />
-              );
-            }}
-          />
-        ) : (
-          <NoNotifyImg />
-        )}
-      </View>
-    </ScrollView>
+                                alignSelf: 'flex-end',
+                                // bottom: 0,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                top: '120%',
+                                right: 5,
+                              }}>
+                              <MaterialIcons
+                                name="delete"
+                                size={28}
+                                color={'#eb3875'}
+                                style={{top: '20%'}}
+                              />
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      </>
+                    }
+                  />
+                );
+              }}
+            />
+          ) : (
+            <NoNotifyImg />
+          )}
+        </View>
+      </ScrollView>
+    </GestureHandlerRootView>
   );
 };
 

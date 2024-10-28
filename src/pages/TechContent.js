@@ -2105,6 +2105,7 @@ const TechContent = ({route, navigation}) => {
         submoduleId: route?.params?.data?.submoduleId,
         submoduleName: route?.params?.data?.submoduleName,
       };
+      console.log('body---->', body);
 
       const response = await API.post(
         `saveTransTchTrainingContentDiscussion`,
@@ -2336,8 +2337,8 @@ const TechContent = ({route, navigation}) => {
                         style={{
                           borderWidth: 2,
                           borderColor: Color.royalblue,
-                          padding: '1%',
-                          paddingBottom: -5,
+                          padding: '2%',
+                          paddingBottom:"20%",
                           // paddingTop:45,
                           borderRadius: 5,
                           flexGrow: 5,
@@ -3272,7 +3273,7 @@ const TechContent = ({route, navigation}) => {
 
                         {/* ------------------------button section-------------------------- */}
 
-                        <View style={{marginTop: '10%', paddingBottom: '25%'}}>
+                        <View style={{marginTop: '30%', paddingBottom: '45%'}}>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -3330,12 +3331,13 @@ const TechContent = ({route, navigation}) => {
                               </Text>
                             </TouchableOpacity>
                           </View>
-                          <FabButton
+                          
+                        </View>
+                        <FabButton
                             image={require('../assets/Image/share.png')}
                             style={styles.customFabButton}
                             onPress={shareLink}
                           />
-                        </View>
                       </View>
                     </ScrollView>
                   ) : (
@@ -4337,8 +4339,10 @@ const styles = StyleSheet.create({
     // alignSelf: 'center', // Adjust the marginTop as needed
   },
   customFabButton: {
-    top: '155%',
-    paddingBottom: '5%',
+    // top: '165%',
+    position:"absolute",
+    // bottom:-20,
+    // paddingBottom: '2%',
   },
   container: {
     flex: 1,
@@ -4432,6 +4436,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginRight: 10,
+    color: 'black',
   },
   sendButton: {
     backgroundColor: '#007bff',

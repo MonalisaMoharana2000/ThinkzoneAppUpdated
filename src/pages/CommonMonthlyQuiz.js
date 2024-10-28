@@ -33,7 +33,10 @@ const CommonMonthlyQuiz = ({route, navigation}) => {
 
   const {topicId, topicName} = data_quiz;
   console.log('data_quiz--->', data_quiz, topicId);
-  const user = useSelector(state => state.userdata.user?.resData);
+  // const user = useSelector(state => state.userdata.user?.resData);
+
+  const user = useSelector(state => state.UserSlice.user);
+
   // console.log('user--->', user);
   const {userid, username} = user[0];
   const [topicQuizData, setTopicQuizData] = useState([]);

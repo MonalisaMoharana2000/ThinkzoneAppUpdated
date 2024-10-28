@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import {useFocusEffect, useNavigationState} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppTourProvider } from '@nghinv/react-native-app-tour';
 import {
   SafeAreaView,
   StyleSheet,
@@ -1575,6 +1576,9 @@ const Home = ({navigation}, props) => {
   //   inputRange: [0, 1],
   //   outputRange: ['0deg', '360deg'],
   // });
+  const openCmq = () => {
+    navigation.navigate('commonmonthlypage');
+  };
   const badgemodal = () => {
     setModal(false);
     navigation.navigate('leaderboard');

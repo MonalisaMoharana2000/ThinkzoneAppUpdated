@@ -39,7 +39,7 @@ import Nocontents from '../components/Nocontents';
 const AnimatedMaterialIcons = Animated.createAnimatedComponent(Foundation);
 const StudentAssessmentPage = ({navigation, route}) => {
   const appState = useRef(AppState.currentState);
-  const user = useSelector(state => state.UserSlice.user);
+  const user = useSelector(state => state.UserSlice?.user);
 
   const data = route.params.data;
   console.log('data--->', data);

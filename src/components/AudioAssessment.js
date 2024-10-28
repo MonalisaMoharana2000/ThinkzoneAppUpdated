@@ -920,56 +920,6 @@ const AudioAssessment = ({
                         },
                       ]}
                       key={index}>
-                      <View
-                        style={{
-                          backgroundColor: '#0060ca',
-                          height: 66,
-                          width: window.WindowWidth * 1.1,
-                          alignSelf: 'center',
-                          marginTop: 22,
-                          flexDirection: 'row',
-                          // marginLeft: -20,
-                          // marginBottom: 3,
-                        }}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            Alert.alert(
-                              'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
-                              'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
-                              [
-                                {
-                                  text: 'Cancel',
-                                  onPress: () => null,
-                                  style: 'default',
-                                },
-                                {
-                                  text: 'Ok',
-                                  onPress: () => navigation.goBack(),
-                                  style: 'default',
-                                },
-                              ],
-                            );
-                          }}>
-                          {/* <AntDesign
-                            name="arrowleft"
-                            size={23}
-                            style={{left: '122%', marginTop: 25}}
-                            color="white"
-                          /> */}
-                        </TouchableOpacity>
-                        <Text
-                          style={{
-                            color: 'white',
-                            fontSize: 18,
-                            // marginTop: 15,
-                            alignSelf: 'center',
-                            left: '75%',
-                            // top: 5,
-                          }}>
-                          {topicName}
-                        </Text>
-                      </View>
-
                       <Text
                         style={{
                           fontSize: 18,

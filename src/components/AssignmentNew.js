@@ -828,8 +828,10 @@ const AssignmentNew = ({
                               style={{
                                 textAlign: 'center',
                                 // fontFamily: FontFamily.poppinsMedium,
-                                fontSize: 15,
+                                fontSize: 18,
                                 top: '10%',
+                              color:"black"
+
                               }}>
                               Cancel
                             </Text>
@@ -956,7 +958,8 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     fontSize: 18,
     // marginBottom: 25,
-    // height: 52,
+    // height: 52,'
+    color:"black",
     borderBottomWidth: 1,
     textAlignVertical: 'top',
     borderRadius: 12,
@@ -1006,6 +1009,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: '#137BD4',
     color: 'white',
+    padding:"2%",
     borderWidth: 1,
     fontSize: 24,
     alignItems: 'center',

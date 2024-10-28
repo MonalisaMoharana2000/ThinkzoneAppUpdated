@@ -227,8 +227,10 @@ const AssignmentPreview = ({navigation, route}) => {
         </Text>
       </View>
       <ImageBackground
-        style={[styles.root, {paddingBottom: 50}]}
-        source={require('../assets/Photos/assignmentbg.jpg')}>
+      style={styles.root}
+      source={require('../assets/Photos/assignmentbg.jpg')}
+      resizeMode="cover"
+    >
         <KeyboardAvoidingView
           behavior={Platform.OS === 'android' ? 'height' : 'padding'}
           style={{flex: 1}}>

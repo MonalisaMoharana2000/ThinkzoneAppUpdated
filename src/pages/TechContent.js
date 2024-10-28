@@ -2914,7 +2914,7 @@ const TechContent = ({route, navigation}) => {
                             </>
                           );
                         })}
-
+ 
                         {/* ------------------------Video Modal section-------------------------- */}
                         <Modal
                           animationType="slide"
@@ -2980,7 +2980,8 @@ const TechContent = ({route, navigation}) => {
                           style={{
                             flexDirection: 'row',
                             justifyContent: 'space-evenly',
-                            top: '5%',
+                            bottom: '5%', 
+                            position:"absolute",
                             flexWrap: 'wrap',
                           }}>
                           <TouchableOpacity
@@ -4226,7 +4227,7 @@ const styles = StyleSheet.create({
   input: {
     height: window.WindowHeigth * 0.15,
     width: window.WindowWidth * 0.9,
-
+color:"black",
     borderWidth: 1,
     borderRadius: 12,
     textAlign: 'left',

@@ -8,6 +8,7 @@ import React, {
 } from 'react';
 import {useFocusEffect, useNavigationState} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AppTourProvider } from '@nghinv/react-native-app-tour';
 import {
   SafeAreaView,
   StyleSheet,

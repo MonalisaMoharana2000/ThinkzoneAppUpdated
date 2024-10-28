@@ -36,12 +36,13 @@ const StudentAttendance = ({navigation}) => {
   const [dob, setDob] = useState(new Date());
   const [todayatt, setTodayatt] = useState(false);
   const dispatch = useDispatch();
+  const students = useSelector(state => state.StudentSlice.students);
   const user = useSelector(state => state.UserSlice.user);
   const attendance = useSelector(state => state.StudentSlice.attendancedate);
   const [customModal, setCustomModal] = useState(false);
   const [attendanceData, setAttendanceData] = useState([]);
 
-  console.log('check--------->', attendanceData);
+  console.log('check--------->', students);
   const [parsedData, setParsedData] = useState(null);
   const fetchData = async () => {
     try {
@@ -200,25 +201,7 @@ const StudentAttendance = ({navigation}) => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       () => {
-        Alert.alert(
-          '',
-          'Do you want to Leave this page?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => null,
-              style: 'cancel',
-            },
-            {
-              text: 'OK',
-              onPress: () => {
-                navigation.goBack();
-              },
-            },
-          ],
-          {cancelable: false},
-        );
-
+        navigation.goBack();
         return true;
       },
     );
@@ -331,7 +314,7 @@ const StudentAttendance = ({navigation}) => {
                           studentcategory: 'app',
                           date: dob,
                           day: '',
-                          attendanceData: attendanceData,
+                          attendanceData: students,
                         });
                   }
                 }}>

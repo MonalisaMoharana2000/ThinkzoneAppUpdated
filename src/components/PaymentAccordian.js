@@ -67,12 +67,12 @@ const PaymentAccordian = ({
   const [paymentRecord, setPaymentRecord] = useState([]);
   const [selectedStudent, setSlectedStudent] = useState({});
 
-  const studentData = useSelector(state => state.studentdata.students);
+  const studentData = useSelector(state => state.StudentSlice.students);
   console.log(studentData, 'studentData---------------------------------->');
   //
   // const Name = studentData.studentname;
   // const className = studentData.class;
-  const teacherdata = useSelector(state => state.userdata.user);
+  const teacherdata = useSelector(state => state.UserSlice.user);
   const toggleListItem = () => {
     // const config = {
     //   duration: 300,

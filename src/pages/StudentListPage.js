@@ -44,7 +44,7 @@ const StudentListPage = ({navigation}) => {
   console.log('studentList page--------------', studentData);
 
   useEffect(() => {
-    dispatch(fetchStudentsDataThunk(user[0].userid));
+    dispatch(fetchStudentsDataThunk(user[0]?.userid));
   }, []);
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -214,6 +214,7 @@ const StudentListPage = ({navigation}) => {
                                 width: '100%',
                                 flexDirection: 'row',
                                 justifyContent: 'space-evenly',
+                                right: '-35%',
                               }}>
                               <Text style={styles.pogram}>
                                 Program -
@@ -369,11 +370,11 @@ const styles = StyleSheet.create({
   class: {
     marginTop: 5,
     fontSize: 11,
-    color: Colors.darkslategray_200,
+
     fontFamily: FontFamily.poppinsMedium,
     fontWeight: '500',
     textTransform: 'capitalize',
-    color: Colors.dimgray_100,
-    left: '17%',
+    color: 'black',
+    left: '5%',
   },
 });

@@ -2576,7 +2576,7 @@ const AudioAssessment = ({
                 }}
               />
             )}
-            <VideoPlayer
+            {/* <VideoPlayer
               video={{
                 uri: nowPlayingUrl,
               }}
@@ -2588,7 +2588,7 @@ const AudioAssessment = ({
               showDuration
               onLoad={handleVideoLoad}
               rate={playbackRate} // Apply the playback rate here
-            />
+            /> */}
             <Button title="Increase Speed" onPress={increasePlaybackSpeed} />
             <Button title="Decrease Speed" onPress={decreasePlaybackSpeed} />
             <TouchableOpacity onPress={closeModal}>

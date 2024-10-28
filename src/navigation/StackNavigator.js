@@ -64,6 +64,8 @@ import Payment from '../Pages/Payment';
 import PaymentDetails from '../Pages/PaymentDetails';
 import EditProfile from '../Pages/EditProfile';
 import FillInTheBlank from '../components/FillInTheBlanks';
+import CallResponse from '../Pages/CallResponse';
+import AttendancemodalList from '../Pages/AttendancemodalList';
 
 const Stack = createNativeStackNavigator();
 
@@ -224,6 +226,17 @@ const StackNavigator = ({navigation}) => {
       />
 
       <Stack.Screen
+        name="callresponseList"
+        component={CallResponse}
+        options={{
+          title: 'Call Response',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+        }}
+      />
+
+      <Stack.Screen
         name="studentAttendance"
         component={StudentAttendance}
         options={{
@@ -243,6 +256,12 @@ const StackNavigator = ({navigation}) => {
             fontFamily: FontFamily.poppinsMedium,
           },
         }}
+      />
+
+      <Stack.Screen
+        name="studentsattendance"
+        component={AttendancemodalList}
+        options={{title: 'ଉପସ୍ଥାନ ସୂଚନା'}}
       />
 
       <Stack.Screen

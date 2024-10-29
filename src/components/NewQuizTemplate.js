@@ -2656,6 +2656,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     textAlignVertical: 'top', // Aligns text to the top
     paddingLeft: 10,
+    color:"black"
   },
   bu: {
     backgroundColor: Color.royalblue,

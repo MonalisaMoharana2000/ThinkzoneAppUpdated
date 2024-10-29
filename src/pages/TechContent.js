@@ -56,7 +56,7 @@ import NewQuiz from '../components/NewQuiz';
 import {useFocusEffect} from '@react-navigation/native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import StarRating from 'react-native-star-rating-widget';
 import {WebView} from 'react-native-webview';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {app_versions} from './Home';
@@ -139,7 +139,7 @@ const TechContent = ({route, navigation}) => {
   const [duration, setDuration] = useState(0);
   const [buffering, setBuffering] = useState(true);
   const [topicQuizData, setTopicQuizData] = useState([]);
-  const [successModal, setSuccessModal] = useState(false);
+  const [successModal, setSuccessModal] = useState(true);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [checkUrl, setCheckUrl] = useState([]);
@@ -328,21 +328,22 @@ const TechContent = ({route, navigation}) => {
   //------------------------------------Sqlite Storage-----------------------------------------
 
   const handleToNextTopic = () => {
-    if (dataType === 'quiz2') {
-      const nextIncompleteTopic = topicData?.topicData?.find(
-        topics => topics.quiz1Status === 'incomplete',
-      );
-      setFeedbackModal(false);
-      navigation.goBack();
+    setFeedbackModal(false);
+    // if (dataType === 'quiz2') {
+    //   const nextIncompleteTopic = topicData?.topicData?.find(
+    //     topics => topics.quiz1Status === 'incomplete',
+    //   );
+    //   setFeedbackModal(false);
+    //   navigation.goBack();
 
-      if (nextIncompleteTopic) {
-        navigation.navigate('techcontent', {
-          data_type: 'quiz1',
-          data: data,
-          whole_data: nextIncompleteTopic,
-        });
-      }
-    }
+    //   if (nextIncompleteTopic) {
+    //     navigation.navigate('techcontent', {
+    //       data_type: 'quiz1',
+    //       data: data,
+    //       whole_data: nextIncompleteTopic,
+    //     });
+    //   }
+    // }
   };
 
   const [content_status, setContent_status] = useState(
@@ -2980,7 +2981,7 @@ const TechContent = ({route, navigation}) => {
                           style={{
                             flexDirection: 'row',
                             justifyContent: 'space-evenly',
-                            bottom: '5%', 
+                            bottom: '3.5%', 
                             position:"absolute",
                             flexWrap: 'wrap',
                           }}>
@@ -3274,7 +3275,7 @@ const TechContent = ({route, navigation}) => {
 
                         {/* ------------------------button section-------------------------- */}
 
-                        <View style={{marginTop: '30%', paddingBottom: '45%'}}>
+                        <View style={{marginTop: '20%', paddingBottom: '45%'}}>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -3670,7 +3671,18 @@ const TechContent = ({route, navigation}) => {
                       {' '}
                       ଆପଣ ପଢିଥିବା ବିଷୟଟିକୁ ରେଟିଂ ଦିଅନ୍ତୁ ।
                     </Text>
-
+                   
+                    <View style={{ width: '100%', alignItems: 'center' }}> 
+      <StarRating
+        disabled={false}
+        maxStars={5}
+        rating={rating}
+        onChange={handleRatingChange}
+        starSize={60} 
+        fullStarColor="black" 
+        style={{alignItems:"center"}}
+      />
+    </View>
                     <Text style={styles.modalText}>
                       ଏହି ବିଷୟରେ ଆପଣଙ୍କର ମତାମତ ଲେଖନ୍ତୁ ।
                     </Text>
@@ -3734,7 +3746,7 @@ const TechContent = ({route, navigation}) => {
                         alignItems: 'center',
                       },
                     ]}
-                    source={require('../assets/Image/https_coin.gif')}
+                    source={require('../assets/Image/success.gif')}
                   />
 
                   <Text
@@ -4296,8 +4308,13 @@ color:"black",
     paddingBottom: 60,
   },
   modalText: {
-    fontSize: 16,
-    marginBottom: 20,
+    marginBottom: 15,
+    color: 'black',
+    fontWeight: '700',
+    textAlign: 'center',
+    width: 350,
+    paddingBottom: 30,
+    paddingTop: 30,
   },
   closeButton: {
     marginTop: 20,

@@ -390,13 +390,10 @@ const EcContent = ({route, navigation}) => {
     }
   };
 
-  // console.log(route.params, 'route');
-  // const logOutZoomState = (event, gestureState, zoomableViewEventObject) => {
-  //   // console.log(
-  //   //   `Zoomed from ${zoomableViewEventObject.lastZoomLevel} to  ${zoomableViewEventObject.zoomLevel}`,
-  //   // );
-  // };
-  // const [loadingImage, setLoadingImage] = useState(false);
+  // Calculate width and height based on full-screen state
+  const videoWidth = isFullScreen ? Dimensions.get('window').height : 336;
+  const videoHeight = isFullScreen ? Dimensions.get('window').width : 181;
+
   const toggleFullScreen = () => {
     setIsFullScreen(!isFullScreen);
   };
@@ -748,14 +745,15 @@ const EcContent = ({route, navigation}) => {
                             {item.type === 'video' && (
                               <View
                                 style={{
-                                  width: '100%',
+                                  width: '90%',
                                   paddingBottom: 30,
                                   backgroundColor: 'white',
                                   borderRadius: 10,
                                   paddingLeft: 20,
                                   paddingRight: 20,
                                   alignSelf: 'center',
-                                  top: '-5%',
+                                  top: '2%',
+                                  alignSelf: 'center',
                                 }}>
                                 {buffering && (
                                   <View
@@ -792,7 +790,11 @@ const EcContent = ({route, navigation}) => {
                                   {videoPlaying && (
                                     <Video
                                       source={{uri: `${item.value}`}}
-                                      style={{width: 336, height: 181}}
+                                      style={{
+                                        width: '125%',
+                                        height: '120%',
+                                        marginLeft: '-12.6%',
+                                      }}
                                       controls={true}
                                       resizeMode="cover"
                                       onBuffer={() => setBuffering(true)} // Callback when remote video is buffering

@@ -7,7 +7,8 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
-
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -41,6 +42,10 @@ public class MainApplication extends Application implements ReactApplication {
   @Override
   public void onCreate() {
     super.onCreate();
+    ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+            .setDownsampleEnabled(true)  // enables better quality
+            .build();
+    Fresco.initialize(this, config);
     SoLoader.init(this, /* native exopackage */ false);
-  }
+}
 }

@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import {useFocusEffect, useNavigationState} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AppTourProvider } from '@nghinv/react-native-app-tour';
+import {AppTourProvider} from '@nghinv/react-native-app-tour';
 import {
   SafeAreaView,
   StyleSheet,
@@ -2539,122 +2539,106 @@ const Home = ({navigation}, props) => {
                     </Text>
 
                     <View style={{paddingTop: 8, paddingBottom: 20}}>
-                      {user[0]?.usertype === 'fellow' ? (
-                        <ScrollView
-                          horizontal={true}
-                          showsHorizontalScrollIndicator={false}>
-                          <TouchableOpacity
-                            onPress={() => {
-                              maintainanceStatus?.payment
-                                ? navigation.navigate('moduleunderdevlopment')
-                                : navigation.navigate('payment', {
-                                    type: 'payment',
-                                  });
-                            }}>
-                            <Image
-                              // ref={exampleThirteenViewRef}
-                              style={[styles.tinyLogo, {marginLeft: 17}]}
-                              // source={require('../assets/img/hbl/bill.png')}
+                      <ScrollView
+                        horizontal={true}
+                        showsHorizontalScrollIndicator={false}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            maintainanceStatus?.payment
+                              ? navigation.navigate('moduleunderdevlopment')
+                              : navigation.navigate('payment', {
+                                  type: 'payment',
+                                });
+                          }}>
+                          <Image
+                            // ref={exampleThirteenViewRef}
+                            style={[styles.tinyLogo, {marginLeft: 17}]}
+                            // source={require('../assets/img/hbl/bill.png')}
 
-                              source={require('../assets/Image/iconmoneyemptywallettime.png')}
-                            />
-                            <View style={styles.text_sign}>
-                              <Text
-                                style={[
-                                  styles.FlngatiTexts,
-                                  {marginRight: 18},
-                                ]}>
-                                ଦେୟ
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
+                            source={require('../assets/Image/iconmoneyemptywallettime.png')}
+                          />
+                          <View style={styles.text_sign}>
+                            <Text
+                              style={[styles.FlngatiTexts, {marginRight: 18}]}>
+                              ଦେୟ
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
 
-                          <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate('dictionary', {
-                                type: 'dictionary',
-                              })
-                            }>
-                            <Image
-                              // ref={exampleFourteenViewRef}
-                              style={[styles.tinyLogo, {marginLeft: 17}]}
-                              source={require('../assets/Image/icondesign-toolscolorswatch.png')}
-                            />
-                            <View style={styles.text_sign}>
-                              <Text
-                                style={[
-                                  styles.FlngatiTexts,
-                                  {marginRight: 18},
-                                ]}>
-                                ଅଭିଧାନ
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() =>
+                            navigation.navigate('dictionary', {
+                              type: 'dictionary',
+                            })
+                          }>
+                          <Image
+                            // ref={exampleFourteenViewRef}
+                            style={[styles.tinyLogo, {marginLeft: 17}]}
+                            source={require('../assets/Image/icondesign-toolscolorswatch.png')}
+                          />
+                          <View style={styles.text_sign}>
+                            <Text
+                              style={[styles.FlngatiTexts, {marginRight: 18}]}>
+                              ଅଭିଧାନ
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
 
-                          <TouchableOpacity
-                            onPress={() =>
-                              maintainanceStatus?.gallery
-                                ? navigation.navigate('moduleunderdevlopment')
-                                : navigation.navigate('books', {
-                                    type: 'books',
-                                  })
-                            }>
-                            <Image
-                              style={[styles.tinyLogo, {marginLeft: 17}]}
-                              source={require('../assets/Image/iconcontent-editarchivebook.png')}
-                            />
-                            <View style={styles.text_sign}>
-                              <Text
-                                style={[
-                                  styles.FlngatiTexts,
-                                  {marginRight: 18},
-                                ]}>
-                                ଦସ୍ତାବିଜ
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() =>
+                            maintainanceStatus?.gallery
+                              ? navigation.navigate('moduleunderdevlopment')
+                              : navigation.navigate('books', {
+                                  type: 'books',
+                                })
+                          }>
+                          <Image
+                            style={[styles.tinyLogo, {marginLeft: 17}]}
+                            source={require('../assets/Image/iconcontent-editarchivebook.png')}
+                          />
+                          <View style={styles.text_sign}>
+                            <Text
+                              style={[styles.FlngatiTexts, {marginRight: 18}]}>
+                              ଦସ୍ତାବିଜ
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
 
-                          <TouchableOpacity
-                            onPress={() => {
-                              maintainanceStatus?.tchSurvey
-                                ? navigation.navigate('moduleunderdevlopment')
-                                : navigation.navigate('Feedback');
-                            }}>
-                            <Image
-                              // ref={exampleSixteenViewRef}
-                              style={[styles.tinyLogo, {marginLeft: 17}]}
-                              source={require('../assets/Image/messages.png')}
-                            />
-                            <View style={styles.text_sign}>
-                              <Text
-                                style={[
-                                  styles.FlngatiTexts,
-                                  {marginRight: 17},
-                                ]}>
-                                ମତାମତ
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
+                        <TouchableOpacity
+                          onPress={() => {
+                            maintainanceStatus?.tchSurvey
+                              ? navigation.navigate('moduleunderdevlopment')
+                              : navigation.navigate('Feedback');
+                          }}>
+                          <Image
+                            // ref={exampleSixteenViewRef}
+                            style={[styles.tinyLogo, {marginLeft: 17}]}
+                            source={require('../assets/Image/messages.png')}
+                          />
+                          <View style={styles.text_sign}>
+                            <Text
+                              style={[styles.FlngatiTexts, {marginRight: 17}]}>
+                              ମତାମତ
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
 
-                          <TouchableOpacity
-                            onPress={() => {
-                              navigation.navigate('faq');
-                            }}>
-                            <Image
-                              style={[styles.tinyLogo, {marginLeft: 17}]}
-                              source={require('../assets/Image/faq.jpg')}
-                            />
-                            <View style={styles.text_sign}>
-                              <Text
-                                style={[
-                                  styles.FlngatiTexts,
-                                  {marginRight: 17},
-                                ]}>
-                                FAQ
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-                          {/* 
+                        <TouchableOpacity
+                          onPress={() => {
+                            navigation.navigate('faq');
+                          }}>
+                          <Image
+                            style={[styles.tinyLogo, {marginLeft: 17}]}
+                            source={require('../assets/Image/faq.jpg')}
+                          />
+                          <View style={styles.text_sign}>
+                            <Text
+                              style={[styles.FlngatiTexts, {marginRight: 17}]}>
+                              FAQ
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                        {/* 
                           <TouchableOpacity
                             onPress={() => {
                               navigation.navigate('downloadfile');
@@ -2673,79 +2657,7 @@ const Home = ({navigation}, props) => {
                               </Text>
                             </View>
                           </TouchableOpacity> */}
-                        </ScrollView>
-                      ) : user[0]?.usertype === 'school' ? (
-                        <ScrollView
-                          horizontal={true}
-                          showsHorizontalScrollIndicator={false}>
-                          <TouchableOpacity
-                            onPress={() =>
-                              maintainanceStatus?.gallery
-                                ? navigation.navigate('moduleunderdevlopment')
-                                : navigation.navigate('books', {
-                                    type: 'books',
-                                  })
-                            }>
-                            <Image
-                              style={[styles.tinyLogo, {marginLeft: 17}]}
-                              source={require('../assets/Image/iconcontent-editarchivebook.png')}
-                            />
-                            <View style={styles.text_sign}>
-                              <Text
-                                style={[
-                                  styles.FlngatiTexts,
-                                  {marginRight: 18},
-                                ]}>
-                                ଦସ୍ତାବିଜ
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-
-                          <TouchableOpacity
-                            onPress={() =>
-                              navigation.navigate('dictionary', {
-                                type: 'dictionary',
-                              })
-                            }>
-                            <Image
-                              // ref={exampleFourteenViewRef}
-                              style={[styles.tinyLogo, {marginLeft: 17}]}
-                              source={require('../assets/Image/icondesign-toolscolorswatch.png')}
-                            />
-                            <View style={styles.text_sign}>
-                              <Text
-                                style={[
-                                  styles.FlngatiTexts,
-                                  {marginRight: 18},
-                                ]}>
-                                ଅଭିଧାନ
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-
-                          <TouchableOpacity
-                            onPress={() => {
-                              maintainanceStatus?.tchSurvey
-                                ? navigation.navigate('moduleunderdevlopment')
-                                : navigation.navigate('Feedback');
-                            }}>
-                            <Image
-                              // ref={exampleSixteenViewRef}
-                              style={[styles.tinyLogo, {marginLeft: 17}]}
-                              source={require('../assets/Image/messages.png')}
-                            />
-                            <View style={styles.text_sign}>
-                              <Text
-                                style={[
-                                  styles.FlngatiTexts,
-                                  {marginRight: 17},
-                                ]}>
-                                Worksheet
-                              </Text>
-                            </View>
-                          </TouchableOpacity>
-                        </ScrollView>
-                      ) : null}
+                      </ScrollView>
                     </View>
                   </View>
                 </View>

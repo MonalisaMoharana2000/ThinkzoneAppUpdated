@@ -878,14 +878,15 @@ const Pgecontentdetails = ({route, navigation}) => {
                             {item.type === 'video' && (
                               <View
                                 style={{
-                                  width: '100%',
+                                  width: '90%',
                                   paddingBottom: 30,
                                   backgroundColor: 'white',
                                   borderRadius: 10,
                                   paddingLeft: 20,
                                   paddingRight: 20,
                                   alignSelf: 'center',
-                                  top: '-5%',
+                                  top: '2%',
+                                  alignSelf: 'center',
                                 }}>
                                 {buffering && (
                                   <View
@@ -922,7 +923,11 @@ const Pgecontentdetails = ({route, navigation}) => {
                                   {videoPlaying && (
                                     <Video
                                       source={{uri: `${item.value}`}}
-                                      style={{width: 336, height: 181}}
+                                      style={{
+                                        width: '125%',
+                                        height: '120%',
+                                        marginLeft: '-12%',
+                                      }}
                                       controls={true}
                                       resizeMode="cover"
                                       onBuffer={() => setBuffering(true)} // Callback when remote video is buffering

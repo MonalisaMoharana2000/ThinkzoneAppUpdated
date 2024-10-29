@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useCallback} from 'react';
 import Cameraicon from 'react-native-vector-icons/Feather';
 import CloseIcon from 'react-native-vector-icons/AntDesign';
-
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import DocumentPicker from 'react-native-document-picker';
 // import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 
@@ -886,6 +886,58 @@ const AudioAssessment = ({
             />
           ) : (
             <View style={styles.centeredView}>
+              <View
+                style={{
+                  backgroundColor: '#0060ca',
+                  // height: 66,
+                  width: window.WindowWidth * 1.1,
+                  // marginTop: 20,
+                  marginLeft: 20,
+                  paddingBottom: 20,
+                  top: '-1.5%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    Alert.alert(
+                      'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
+                      'Are you sure you want to exit?',
+                      [
+                        {
+                          text: 'Cancel',
+                          onPress: () => null,
+                          style: 'default',
+                        },
+                        {
+                          text: 'Ok',
+                          onPress: () => handleDelete(),
+                          style: 'default',
+                        },
+                      ],
+                    );
+                  }}>
+                  <AntDesign
+                    name="arrowleft"
+                    size={23}
+                    style={{marginLeft: 26, marginTop: 16}}
+                    color="white"
+                  />
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 18,
+                    marginTop: 10,
+                    alignSelf: 'flex-start',
+                    marginLeft: 28,
+                    top: 5,
+                    width: 320,
+                  }}>
+                  {topicName}
+                  {/* {eceHeading.map(x => x.header)} */}
+                </Text>
+              </View>
               {Array.isArray(selectedItem) ? (
                 selectedItem?.map((item, index) => {
                   // console.log('check map---->', item);
@@ -920,52 +972,6 @@ const AudioAssessment = ({
                         },
                       ]}
                       key={index}>
-                      <View
-                        style={{
-                          backgroundColor: '#0060ca',
-                          height: 46,
-                          width: window.WindowWidth * 0.9 ,
-                          alignSelf: 'center',
-                          // marginTop: 22,
-                          flexDirection: 'row',
-                          // marginLeft: -20,
-                          marginBottom: 3,
-                          borderRadius:20
-                        }}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            Alert.alert(
-                              'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
-                              'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
-                              [
-                                {
-                                  text: 'Cancel',
-                                  onPress: () => null,
-                                  style: 'default',
-                                },
-                                {
-                                  text: 'Ok',
-                                  onPress: () => navigation.goBack(),
-                                  style: 'default',
-                                },
-                              ],
-                            );
-                          }}>
-                        
-                        </TouchableOpacity>
-                        <Text
-                          style={{
-                            color: 'white',
-                            fontSize: 15,
-                            // marginTop: 15,
-                            alignSelf: 'center',
-                            left: '20%',
-                            // top: 5,
-                          }}>
-                          {topicName}
-                        </Text>
-                      </View>
-
                       <Text
                         style={{
                           fontSize: 18,
@@ -2693,6 +2699,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.royalblue,
     borderRadius: 30,
     width: 116,
+    top: -6,
     paddingBottom: 15,
     // padding: 10,
     // top: '-%',
@@ -2715,7 +2722,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FontFamily.poppinsMedium,
     alignSelf: 'center',
-    top: '18%',
+    top: '31%',
     left: 2,
   },
   modalButtonContainer: {

@@ -64,7 +64,7 @@ const AttendancemodalList = ({navigation, route}) => {
   const [modal, setModal] = useState(false);
 
   const [attendanceCheck, setAttendanceCheck] = useState(
-    route?.params?.attendanceData,
+    route?.params?.attendanceData ? route?.params?.attendanceData : [],
   );
   console.log('attendance check-------->', attendanceCheck);
 
@@ -72,9 +72,11 @@ const AttendancemodalList = ({navigation, route}) => {
     React.useCallback(() => {
       const fetchData = async () => {
         const res = await API.get(
-          `getattendanceofteacherbydate/${user[0]?.userid}/${route.params.date}`,
+          `getattendanceofteacherbydate/${user[0]?.userid}/${
+            route.params.date ? route.params.date : students?.date
+          }`,
         );
-        console.log('attendance check-------->', res.data);
+        console.log('attendance check2-------->', res.data);
         const uniqueAttendance = res.data.filter(
           (entry, index, self) =>
             index === self.findIndex(e => e.studentid === entry.studentid),
@@ -233,13 +235,13 @@ const AttendancemodalList = ({navigation, route}) => {
     return createdOnDate.isSameOrBefore(routeDate, 'day');
   });
 
-  const filteredNames = filteredStudents.map(item => {
-    return {name: item.studentname, createdOn: item.createdon};
-  });
+  // const filteredNames = filteredStudents.map(item => {
+  //   return {name: item.studentname, createdOn: item.createdon};
+  // });
 
-  const allStudents = newStudentList.map(item => {
-    return {name: item.studentname, createdOn: item.createdon};
-  });
+  // const allStudents = newStudentList.map(item => {
+  //   return {name: item.studentname, createdOn: item.createdon};
+  // });
 
   const saveBut = async () => {
     {

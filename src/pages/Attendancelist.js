@@ -90,7 +90,7 @@ const Attendancelist = ({navigation}) => {
             renderItem={({item}) => (
               <Pressable
                 onPress={() =>
-                  navigation.navigate('attendancelist', {
+                  navigation.navigate('studentsattendance', {
                     // navigation.navigate('Attendancelist', {
                     takeAttendance: false,
                     userid: user[0].userid,

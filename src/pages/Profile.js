@@ -36,7 +36,7 @@ const windowWidth = Dimensions.get('window').width;
 
 const Profile = ({navigation}) => {
   const dispatch = useDispatch();
-  const userdatas = useSelector(state => state.UserSlice.user);
+  const userdatas = useSelector(state => state.UserSlice?.user);
   console.log('============================userdatas', userdatas);
   const [userdata, setUserdata] = useState(userdatas);
   console.log('profileUser', userdata);
@@ -183,6 +183,7 @@ const Profile = ({navigation}) => {
             response.data,
             Object.keys(response.data).length,
             response.status,
+            userdatas[0]?.userid,
           );
           if (response.status === 200) {
             setTimeSpent_record(response.data);

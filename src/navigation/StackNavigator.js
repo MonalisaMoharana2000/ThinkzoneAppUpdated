@@ -129,7 +129,11 @@ const StackNavigator = ({navigation}) => {
             component={LoginScreen}
             options={{headerShown: false}}
           />
-          <Stack.Screen name="Page1" component={Page1} />
+          <Stack.Screen
+            name="Page1"
+            options={{headerShown: false}}
+            component={Page1}
+          />
           <Stack.Screen
             name="phoneverificationgoogle"
             component={PhoneVerificationGoogle}

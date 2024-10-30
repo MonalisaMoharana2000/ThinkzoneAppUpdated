@@ -528,6 +528,13 @@ const StudentRegister = ({route, navigation}) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
+    if (phone.length < 10) {
+      Alert.alert(
+        'Warning',
+        'ଦୟାକରି ମୋବାଇଲ୍ ନମ୍ୱର ଲମ୍ବାଇ ୧୦ ଡିଜିଟ୍ ହେବା ଆବଶ୍ୟକ।',
+      );
+      return;
+    }
 
     if (count >= 3) {
       Alert.alert(

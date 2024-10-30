@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import {useFocusEffect, useNavigationState} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { AppTourProvider } from '@nghinv/react-native-app-tour';
+import {AppTourProvider} from '@nghinv/react-native-app-tour';
 import {
   SafeAreaView,
   StyleSheet,
@@ -52,10 +52,10 @@ const Home = ({navigation}, props) => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [maintainanceModal, setmaintainanceModal] = useState(false);
   const [deviceId, setDeviceId] = useState('');
-  const user = useSelector(state => state.UserSlice.user);
+  const user = useSelector(state => state.UserSlice?.user);
   const [storageData, setStorageData] = useState([]);
   console.log('storageData----->', storageData);
-
+  console.log('user1----->', user);
   const fetchStoredData = async () => {
     try {
       const storedData = await AsyncStorage.getItem('userData');
@@ -489,6 +489,12 @@ const Home = ({navigation}, props) => {
         const response = await API.get(
           `getTransIntroQuiz/${user[0]?.userid}/${user[0]?.usertype}`,
         );
+        console.log(
+          '===================intro',
+          response.data,
+          user[0]?.userid,
+          // user[0]?.usertype,
+        );
 
         if (response.data.completionStatus === 'complete') {
           setIntroStatus(response.data.completionStatus);
@@ -499,7 +505,9 @@ const Home = ({navigation}, props) => {
         } else {
           setIntroStatus(null);
           {
-            usertype === 'fellow' ? navigation.navigate('IntroQuiz') : null;
+            storageData[0]?.usertype === 'fellow'
+              ? navigation.navigate('IntroQuiz')
+              : null;
           }
           // setLoading(false);
 
@@ -515,7 +523,7 @@ const Home = ({navigation}, props) => {
     };
 
     fetchData();
-  }, [x]);
+  }, [user[0]]);
 
   //iNTRO qUIZ eNDS
 

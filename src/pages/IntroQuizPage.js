@@ -50,10 +50,7 @@ import LinearGradient from 'react-native-linear-gradient';
 const IntroQuizPage = ({navigation, route}) => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
-  const user = useSelector(state => {
-    // console.log('state----------##########--------------', state);
-    return state.userdata?.user?.resData;
-  });
+  const user = useSelector(state => state.UserSlice?.user);
   const {userid, username, usertype, managerid, managername, passcode} =
     user[0];
   const [quiz_status, set_Quiz_status] = useState(false);
@@ -619,6 +616,7 @@ const IntroQuizPage = ({navigation, route}) => {
                   left: '15%',
                   width: '75%',
                   paddingBottom: 10,
+                  color: 'black',
                 }}>
                 {header + 1}. {introDatas[header]?.question}
               </Text>
@@ -780,7 +778,7 @@ const IntroQuizPage = ({navigation, route}) => {
                   }}>
                   <TextInput
                     allowFontScaling={false}
-                    style={{padding: 10}}
+                    style={{padding: 10, color: 'black'}}
                     underlineColorAndroid="transparent"
                     placeholder="ଆପଣଙ୍କ ଉତ୍ତର ଦିଅନ୍ତୁ"
                     placeholderTextColor="grey"

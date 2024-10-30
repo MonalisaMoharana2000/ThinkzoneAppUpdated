@@ -1112,11 +1112,11 @@ const Register = ({navigation, route}) => {
                         name="calendar"
                         size={26}
                         color={'#808080'}
-                        style={{marginRight: 10}}
+                        style={{marginRight: 12, top: 13}}
                       />
                     </View>
 
-                    <View style={{marginLeft: 10}}>
+                    <View style={{marginLeft: 39, top: -9}}>
                       {/* Display the selected date or placeholder */}
                       <Text style={{color: dob ? 'black' : 'gray'}}>
                         {dob ? moment(dob).format('DD/MM/YYYY') : 'DD/MM/YYYY'}

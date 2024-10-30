@@ -30,6 +30,7 @@ const Header = ({route, navigation, handleClick}) => {
   let storedData;
   const userdatas = useSelector(state => state.UserSlice?.user);
   const dispatch = useDispatch();
+  console.log('userdatas home-------------->', userdatas);
 
   const {usertype, schoolname} = userdatas;
   const [notficationCount, setNotificationCount] = useState();
@@ -127,6 +128,7 @@ const Header = ({route, navigation, handleClick}) => {
             response.data,
             Object.keys(response.data).length,
             response.status,
+            userdatas[0]?.userid,
           );
           if (response.status === 200) {
             setTimeSpent_record(response.data);
@@ -157,7 +159,7 @@ const Header = ({route, navigation, handleClick}) => {
       //   },
       //   err => {},
       // );
-    }, []),
+    }, [userdatas]),
   );
   // const timeHeader = timespent_record[timespent_record.length - 1];
   // console.log('timeHeader--->', timeHeader);
@@ -271,7 +273,7 @@ const Header = ({route, navigation, handleClick}) => {
           }}
         /> */}
       </Text>
-      {usertype === 'fellow' ? (
+      {userdatas[0]?.usertype === 'fellow' ? (
         <Text style={[styles.completeYourNext, {width: 150}]}>
           This month you have {''}spent{' '}
           {/* {timespent_record?.timespent != 0

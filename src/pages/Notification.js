@@ -11,6 +11,7 @@ import {
   AppState,
   Dimensions,
   Animated,
+  BackHandler,
 } from 'react-native';
 import moment from 'moment';
 
@@ -78,6 +79,18 @@ const Notification = ({navigation, route}) => {
       }
     }, []),
   );
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.goBack();
+        return true;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const handleViewStatusUpdate = async item => {
     navigation.navigate('notificationPage', {data: item});

@@ -17,7 +17,7 @@ import {
   BackHandler,
   Dimensions,
 } from 'react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import API from '../environment/Api';
 import React, {useRef, useCallback, useState, useEffect} from 'react';
@@ -64,6 +64,37 @@ const Profile = ({navigation}) => {
   const handleOpenBottomSheet = useCallback(() => {
     modalRef.current?.open();
   }, []);
+  const [storageData, setStorageData] = useState([]);
+  console.log('storageData34--------->', storageData);
+  const fetchStoredData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('userData');
+      console.log('storedData1--------->', storedData);
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        console.log('Parsed storedData1--------->', parsedData);
+        return parsedData;
+      }
+    } catch (error) {
+      console.error('Error fetching stored data:', error);
+    }
+    return null; // Return null if no data or error occurs
+  };
+
+  useEffect(() => {
+    const initializeData = async () => {
+      const parsedData = await fetchStoredData();
+      if (parsedData) {
+        setStorageData(parsedData?.resData);
+        const userSet = await dispatch(
+          fetchUserDataThunk(parsedData?.resData[0]?.userid),
+        );
+        console.log('userSet1----------->', userSet);
+      }
+    };
+
+    initializeData();
+  }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -71,7 +102,7 @@ const Profile = ({navigation}) => {
       setIsLoading(true);
       setIsloadings(true);
       setImageNotFound(true);
-      Api.get(`getuserbyuserid/${userdatas[0]?.userid}`)
+      Api.get(`getuserbyuserid/${storageData[0]?.userid}`)
         .then(response => {
           //console.log(response.data, 'profileresponse------>');
           setUserdata(response.data);
@@ -90,8 +121,21 @@ const Profile = ({navigation}) => {
         });
       // const email = userdatas[0]?.userid;
       // dispatch(types.loadUserStart(email));
-    }, []),
+    }, [userdata]),
   );
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.goBack();
+
+        return true;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const displayAlert = () => {
     navigation.navigate('editprofile', [userdata]);

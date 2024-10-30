@@ -102,15 +102,30 @@ const Header = ({route, navigation, handleClick}) => {
     opacity: blinkAnimation,
     top: '60%',
   };
-
-  // console.log('imageNotFound====>', imageNotFound);
+  const [userdata, setUserdata] = useState([]);
+  console.log('userdata====>', userdata);
   useFocusEffect(
     React.useCallback(() => {
-      Api.get(`getUnreadNotifCount/${userdatas[0]?.userid}`).then(response => {
-        // console.log('not--->', response.data);
-        setNotificationCount(response.data);
-      });
-    }, []),
+      setIsloading(true);
+      const fetchData = async () => {
+        const res = await Api.get(
+          `getUnreadNotifCount/${userdatas[0]?.userid}`,
+        );
+        if (res.status === 200) {
+          setIsloading(false);
+          setNotificationCount(res.data);
+        }
+
+        const res2 = await Api.get(`getuserbyuserid/${userdatas[0]?.userid}`);
+
+        console.log('res2------>', res.status);
+        if (res2.status === 200) {
+          setIsloading(false);
+          setUserdata(res2.data);
+        }
+      };
+      fetchData();
+    }, [storageData]),
   );
   const [timespent_record, setTimeSpent_record] = useState({});
   // console.log('timespent_record---->', timespent_record);
@@ -193,10 +208,10 @@ const Header = ({route, navigation, handleClick}) => {
   return (
     <View style={styles.studentRegister}>
       <View style={[styles.studentRegisterChild, styles.rectangleViewBg]} />
-      {userdatas[0]?.image === '' || !userdatas[0]?.image ? (
+      {userdata[0]?.image === '' || !userdata[0]?.image ? (
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate('profile', {
+            navigation.navigate('Profile', {
               type: 'Profile',
             })
           }>
@@ -254,7 +269,7 @@ const Header = ({route, navigation, handleClick}) => {
                 imageNotFound
                   ? require('../assets/Photos/userss.png') // Local fallback image
                   : {
-                      uri: userdatas[0]?.image, // Check if userdata[0] exists before accessing its image property
+                      uri: userdata[0]?.image, // Check if userdata[0] exists before accessing its image property
                     }
               }
               accessibilityLabel="User Profile Image"

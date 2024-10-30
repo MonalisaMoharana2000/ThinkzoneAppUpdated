@@ -498,6 +498,7 @@ const Home = ({navigation}, props) => {
 
         if (response.data.completionStatus === 'complete') {
           setIntroStatus(response.data.completionStatus);
+          navigation.navigate('Home');
           // setCheckIntro(true);
 
           // setLoading(false);
@@ -523,7 +524,7 @@ const Home = ({navigation}, props) => {
     };
 
     fetchData();
-  }, [user[0]]);
+  }, [introStatus]);
 
   //iNTRO qUIZ eNDS
 
@@ -1604,7 +1605,7 @@ const Home = ({navigation}, props) => {
         scrollEnabled={scrollEnabled}>
         <SafeAreaView style={styles.safeview}>
           <View style={styles.centeredView}>
-          <Modal
+            <Modal
               animationType="fade"
               transparent={true}
               visible={modalVisible}

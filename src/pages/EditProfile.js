@@ -511,7 +511,7 @@ const EditProfile = ({navigation, route}) => {
           });
 
           setTimeout(() => {
-            navigation.goBack();
+            navigation.navigate('Profile');
             setIsLoading(false);
           }, 2000);
         } catch (error) {

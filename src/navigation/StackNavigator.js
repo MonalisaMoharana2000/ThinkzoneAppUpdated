@@ -208,18 +208,37 @@ const StackNavigator = ({navigation}) => {
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
           },
+          headerShown: false,
         }}
       />
 
       <Stack.Screen
         name="editprofile"
         component={EditProfile}
-        options={{
+        options={({navigation}) => ({
           title: 'Edit Profile',
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
           },
-        }}
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <AntDesign
+                style={{marginLeft: 15}}
+                name="arrowleft"
+                size={25}
+                color="white"
+              />
+            </TouchableOpacity>
+          ),
+        })}
       />
 
       {/*----------------------------- Student part starts --------------------------------*/}

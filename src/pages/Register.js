@@ -933,7 +933,9 @@ const Register = ({navigation, route}) => {
             }}>
             <ImageBackground
               style={[
-                styles.userRegisterChild,
+                imageUrl
+                  ? styles.userRegisterChildNew
+                  : styles.userRegisterChild,
                 styles.statusBarBgLayout,
                 {paddingTop: 53},
               ]}
@@ -1662,8 +1664,18 @@ const styles = StyleSheet.create({
     // top: 50,
     right: '33.39%',
     // bottom: '50.94%',
-    left: '33.69%',
+    left: '29%',
     marginTop: -70,
+  },
+  userRegisterChildNew: {
+    height: 160,
+    width: 159,
+    top: '5%',
+    // top: 50,
+    right: '33.39%',
+    // bottom: '50.94%',
+    left: '25%',
+    marginTop: -40,
   },
   iconmessagesmessageEdit: {
     top: 143,

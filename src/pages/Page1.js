@@ -140,7 +140,7 @@ const Page1 = ({navigation, route}) => {
             [
               {
                 text: 'OK',
-                onPress: () => statusFail(),
+                onPress: () => navigation.navigate('Login'),
                 style: 'destructive',
               },
             ],
@@ -187,10 +187,11 @@ const Page1 = ({navigation, route}) => {
           justifyContent: 'space-evenly',
           marginTop: 60,
           alignItems: 'flex-start',
+          left: 15,
         }}>
         <Text style={styles.title}>Verify Your Phone Number</Text>
       </View>
-      <View style={{top: 5, marginLeft: 1}}>
+      <View style={{top: 5, left: 15}}>
         <TextInput
           allowFontScaling={false}
           style={styles.textInput}
@@ -199,6 +200,7 @@ const Page1 = ({navigation, route}) => {
           name="name"
           keyboardType="number-pad"
           placeholder="Enter Mobile Number ...."
+          placeholderTextColor="black"
           iconFirst="phone"
           onChangeText={handleNumberChange}
           value={phoneNumber}

@@ -146,13 +146,51 @@ const StackNavigator = ({navigation}) => {
           />
           <Stack.Screen name="Page3" component={Page3} />
 
-          <Stack.Screen name="registerpasscode" component={RegisterPasscode} />
+          <Stack.Screen
+            name="registerpasscode"
+            options={{headerShown: false}}
+            component={RegisterPasscode}
+          />
           <Stack.Screen name="otploginphone" component={OtpLoginPhone} />
           <Stack.Screen
             name="googleverificationphone"
             component={GoogleVerificationPhone}
           />
-          <Stack.Screen name="register" component={Register} />
+          <Stack.Screen
+            name="register"
+            options={({navigation}) => ({
+              title: 'Register',
+              headerLeft: () => (
+                <TouchableOpacity
+                  onPress={() => {
+                    Alert.alert(
+                      'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
+                      'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
+                      [
+                        {
+                          text: 'Cancel',
+                          onPress: () => null,
+                          style: 'default',
+                        },
+                        {
+                          text: 'Ok',
+                          onPress: () => navigation.navigate('Login'),
+                          style: 'default',
+                        },
+                      ],
+                    );
+                  }}>
+                  <AntDesign
+                    style={{marginLeft: 15}}
+                    name="arrowleft"
+                    size={25}
+                    color="black"
+                  />
+                </TouchableOpacity>
+              ),
+            })}
+            component={Register}
+          />
         </>
       ) : null}
 

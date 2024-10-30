@@ -10,6 +10,7 @@ import {
   Modal,
   ScrollView,
   Dimensions,
+  Linking,
 } from 'react-native';
 import {
   GoogleSignin,

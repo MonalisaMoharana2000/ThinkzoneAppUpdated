@@ -643,21 +643,29 @@ const TechContent = ({route, navigation}) => {
             } catch (error) {
               if (error.response.status === 413) {
                 console.log('error is---------------->', error);
-                setIsLoading(false);
+                setTimeout(() => {
+                  setIsLoading(false);
+                }, 2000);
                 Alert.alert('The entity is too large !');
               } else if (error.response.status === 504) {
                 console.log('Error is--------------------->', error);
-                setIsLoading(false);
+                setTimeout(() => {
+                  setIsLoading(false);
+                }, 2000);
                 Alert.alert('Gateway Timeout: The server is not responding!');
               } else if (error.response.status === 500) {
                 console.error('Error is------------------->:', error);
-                setIsLoading(false);
+                setTimeout(() => {
+                  setIsLoading(false);
+                }, 2000);
                 Alert.alert(
                   'Internal Server Error: Something went wrong on the server.',
                 );
               } else {
                 console.error('Error is------------------->:', error);
-                setIsLoading(false);
+                setTimeout(() => {
+                  setIsLoading(false);
+                }, 2000);
               }
             }
           }
@@ -683,25 +691,35 @@ const TechContent = ({route, navigation}) => {
 
         setGamifiedData(responseGamified.data?.gamifiedData);
 
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
       } catch (error) {
         if (error.response.status === 413) {
           console.log('error is---------------->', error);
-          setIsLoading(false);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 2000);
           Alert.alert('The entity is too large !');
         } else if (error.response.status === 504) {
           console.log('Error is--------------------->', error);
-          setIsLoading(false);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 2000);
           Alert.alert('Gateway Timeout: The server is not responding!');
         } else if (error.response.status === 500) {
           console.error('Error is------------------->:', error);
-          setIsLoading(false);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 2000);
           Alert.alert(
             'Internal Server Error: Something went wrong on the server.',
           );
         } else {
           console.error('Error is------------------->:', error);
-          setIsLoading(false);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 2000);
         }
       }
     };
@@ -723,25 +741,35 @@ const TechContent = ({route, navigation}) => {
 
       setTopicQuizData2(responseQuiz2.data.quiz2Data);
       // setAnserReset('');
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
     } catch (error) {
       if (error.response.status === 413) {
         console.log('error is---------------->', error);
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
         Alert.alert('The entity is too large !');
       } else if (error.response.status === 504) {
         console.log('Error is--------------------->', error);
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
         Alert.alert('Gateway Timeout: The server is not responding!');
       } else if (error.response.status === 500) {
         console.error('Error is------------------->:', error);
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
         Alert.alert(
           'Internal Server Error: Something went wrong on the server.',
         );
       } else {
         console.error('Error is------------------->:', error);
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
       }
     }
   };
@@ -778,7 +806,9 @@ const TechContent = ({route, navigation}) => {
             throw new Error(`HTTP status ${response.status}`);
           }
         } catch (error) {
-          setIsLoading(false);
+          setTimeout(() => {
+            setIsLoading(false);
+          }, 2000);
           console.error('Error accessing video URL:', error.message);
           alert(`Error accessing video URL: ${error.message}`);
           return;
@@ -812,11 +842,13 @@ const TechContent = ({route, navigation}) => {
             const result = await response.promise;
 
             if (result.statusCode === 200) {
-              setIsLoading(false);
+              setTimeout(() => {});
               videoPath = destPath;
               console.log('Video saved at:', destPath);
             } else {
-              setIsLoading(false);
+              setTimeout(() => {
+                setIsLoading(false);
+              }, 2000);
               console.error(
                 'Error downloading video. Status code:',
                 result.statusCode,
@@ -875,7 +907,9 @@ const TechContent = ({route, navigation}) => {
             data.videoPath,
           ],
           function () {
-            setIsLoading(false);
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 2000);
             console.log('Data saved offline successfully!');
             showMessage({
               message: 'Successfully Saved offline',
@@ -1779,7 +1813,9 @@ const TechContent = ({route, navigation}) => {
   };
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
     }, 5000); // 5000 milliseconds = 5 seconds
 
     return () => clearTimeout(timer); // Clean up the timer if the component unmounts
@@ -2210,7 +2246,9 @@ const TechContent = ({route, navigation}) => {
       // Do something when the screen is focused
       Api.get(`getuserbyuserid/${user[0]?.userid}`).then(response => {
         setUserdata(response.data);
-        setIsLoading(false);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 2000);
       });
     }, []),
   );
@@ -2339,7 +2377,7 @@ const TechContent = ({route, navigation}) => {
                           borderWidth: 2,
                           borderColor: Color.royalblue,
                           padding: '2%',
-                          paddingBottom:"20%",
+                          paddingBottom: '20%',
                           // paddingTop:45,
                           borderRadius: 5,
                           flexGrow: 5,
@@ -2915,7 +2953,7 @@ const TechContent = ({route, navigation}) => {
                             </>
                           );
                         })}
- 
+
                         {/* ------------------------Video Modal section-------------------------- */}
                         <Modal
                           animationType="slide"
@@ -2981,8 +3019,8 @@ const TechContent = ({route, navigation}) => {
                           style={{
                             flexDirection: 'row',
                             justifyContent: 'space-evenly',
-                            bottom: '3.5%', 
-                            position:"absolute",
+                            bottom: '3.5%',
+                            position: 'absolute',
                             flexWrap: 'wrap',
                           }}>
                           <TouchableOpacity
@@ -3333,13 +3371,12 @@ const TechContent = ({route, navigation}) => {
                               </Text>
                             </TouchableOpacity>
                           </View>
-                          
                         </View>
                         <FabButton
-                            image={require('../assets/Image/share.png')}
-                            style={styles.customFabButton}
-                            onPress={shareLink}
-                          />
+                          image={require('../assets/Image/share.png')}
+                          style={styles.customFabButton}
+                          onPress={shareLink}
+                        />
                       </View>
                     </ScrollView>
                   ) : (
@@ -3671,18 +3708,18 @@ const TechContent = ({route, navigation}) => {
                       {' '}
                       ଆପଣ ପଢିଥିବା ବିଷୟଟିକୁ ରେଟିଂ ଦିଅନ୍ତୁ ।
                     </Text>
-                   
-                    <View style={{ width: '100%', alignItems: 'center' }}> 
-      <StarRating
-        disabled={false}
-        maxStars={5}
-        rating={rating}
-        onChange={handleRatingChange}
-        starSize={60} 
-        fullStarColor="black" 
-        style={{alignItems:"center"}}
-      />
-    </View>
+
+                    <View style={{width: '100%', alignItems: 'center'}}>
+                      <StarRating
+                        disabled={false}
+                        maxStars={5}
+                        rating={rating}
+                        onChange={handleRatingChange}
+                        starSize={60}
+                        fullStarColor="black"
+                        style={{alignItems: 'center'}}
+                      />
+                    </View>
                     <Text style={styles.modalText}>
                       ଏହି ବିଷୟରେ ଆପଣଙ୍କର ମତାମତ ଲେଖନ୍ତୁ ।
                     </Text>
@@ -4239,7 +4276,7 @@ const styles = StyleSheet.create({
   input: {
     height: window.WindowHeigth * 0.15,
     width: window.WindowWidth * 0.9,
-color:"black",
+    color: 'black',
     borderWidth: 1,
     borderRadius: 12,
     textAlign: 'left',
@@ -4358,7 +4395,7 @@ color:"black",
   },
   customFabButton: {
     // top: '165%',
-    position:"absolute",
+    position: 'absolute',
     // bottom:-20,
     // paddingBottom: '2%',
   },

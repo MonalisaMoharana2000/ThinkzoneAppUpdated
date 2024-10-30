@@ -142,7 +142,7 @@ const Myachivement = ({navigation}) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await dispatch(fetchUserTotalCoinsThunk(user[0].userid));
+      const res = await dispatch(fetchUserTotalCoinsThunk(user[0]?.userid));
       console.log('res---------->', res?.payload);
     };
 
@@ -151,7 +151,7 @@ const Myachivement = ({navigation}) => {
   //For My achievement aPI
 
   // useEffect(() => {
-  //   API.get(`getUserProgress/${user[0].userid}`).then(
+  //   API.get(`getUserProgress/${user[0]?.userid}`).then(
   //     // API.get(`getUserProgress/jayprakashbehera030@gmail.com`).then(
   //     response => {
   //       //
@@ -167,7 +167,7 @@ const Myachivement = ({navigation}) => {
     React.useCallback(() => {
       const fetchData = async () => {
         try {
-          const response = await API.get(`getUserProgress/${user[0].userid}`);
+          const response = await API.get(`getUserProgress/${user[0]?.userid}`);
           setAchieve(response.data);
           setTimeSpent_record(response.data[0].timeSpentData);
           setIsloading(false);
@@ -200,7 +200,7 @@ const Myachivement = ({navigation}) => {
           // console.log(
           //   'dataaaaaaaaaaaaaaaaaaa-----------------',
           //   response.data,
-          //   // user[0].userid,
+          //   // user[0]?.userid,
           // );
           setTransaction_record(response.data.data);
           //  console.log(response.data.data,"response.data------------------------------------------");
@@ -212,18 +212,18 @@ const Myachivement = ({navigation}) => {
   );
 
   // useEffect(() => {
-  //   // API.get(`getTotalCoins/${user[0].userid}`).then(response => {
+  //   // API.get(`getTotalCoins/${user[0]?.userid}`).then(response => {
   //   //
   //   //   setReward(response.data[0].coins);
   //   // });
-  //   dispatch(types.rewardsUserstart(user[0].userid));
+  //   dispatch(types.rewardsUserstart(user[0]?.userid));
   // }, []);
 
   // useFocusEffect(
   //   React.useCallback(() => {
   //     //
   //     // Do something when the screen is focused
-  //     dispatch(types.rewardsUserstart(user[0].userid));
+  //     dispatch(types.rewardsUserstart(user[0]?.userid));
   //   }, []),
   // );
 
@@ -258,7 +258,7 @@ const Myachivement = ({navigation}) => {
   // console.log('couponsData', couponsData);
 
   // useEffect(() => {
-  //   API.get(`getTransUserProgress/${user[0].userid}`).then(
+  //   API.get(`getTransUserProgress/${user[0]?.userid}`).then(
   //     // API.get(`getUserProgress/jayprakashbehera030@gmail.com`).then(
   //     response => {
   //       //
@@ -305,7 +305,7 @@ const Myachivement = ({navigation}) => {
   );
 
   useEffect(() => {
-    API.get(`checkUserInLboard/${user[0].userid}/${user[0].usertype}`)
+    API.get(`checkUserInLboard/${user[0]?.userid}/${user[0]?.usertype}`)
       .then(response => {
         // console.log('leaderboardAPI', response?.data[0]?.useridExists);
         setInLeaderBoard(response?.data[0]?.useridExists);
@@ -511,12 +511,12 @@ const Myachivement = ({navigation}) => {
 
   const closeModel = () => {
     setVersionModal(false);
-    dispatch(types.rewardsUserstart(user[0].userid));
+    dispatch(types.rewardsUserstart(user[0]?.userid));
     fetchData();
   };
   const closeCouponModal = () => {
     setCouponModal(false);
-    dispatch(types.rewardsUserstart(user[0].userid));
+    dispatch(types.rewardsUserstart(user[0]?.userid));
   };
 
   const closeTooltip = () => {

@@ -95,7 +95,7 @@ const IntroQuizPage = ({navigation, route}) => {
         },
       );
     } else {
-      navigation.navigate('login');
+      navigation.navigate('firstScreen');
     }
   }, []);
 

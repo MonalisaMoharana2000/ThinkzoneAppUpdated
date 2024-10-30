@@ -101,7 +101,7 @@ const Leaderboard = ({navigation}) => {
       );
     } else if (dates == year && curMonth == month) {
       //
-      API.get(`getLboarddata/${user[0].usertype}/${month}/${year}`)
+      API.get(`getLboarddata/${user[0]?.usertype}/${month}/${year}`)
         .then(response => {
           //
           setResult(response.data);
@@ -113,7 +113,7 @@ const Leaderboard = ({navigation}) => {
         });
     } else {
       //
-      API.get(`getleaderboarddata/${user[0].usertype}/${month}/${year}`)
+      API.get(`getleaderboarddata/${user[0]?.usertype}/${month}/${year}`)
         .then(response => {
           console.log('leaderboard-------->', response.data);
           setResult(response.data);
@@ -141,7 +141,7 @@ const Leaderboard = ({navigation}) => {
   };
 
   useEffect(() => {
-    API.get(`checkUserInLboard/${user[0].userid}/${user[0].usertype}`)
+    API.get(`checkUserInLboard/${user[0]?.userid}/${user[0]?.usertype}`)
       .then(response => {
         //
         setResults(response.data);

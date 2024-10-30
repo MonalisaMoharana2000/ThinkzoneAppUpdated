@@ -71,7 +71,7 @@ const Profile = ({navigation}) => {
       setIsLoading(true);
       setIsloadings(true);
       setImageNotFound(true);
-      Api.get(`getuserbyuserid/${userdatas[0].userid}`)
+      Api.get(`getuserbyuserid/${userdatas[0]?.userid}`)
         .then(response => {
           //console.log(response.data, 'profileresponse------>');
           setUserdata(response.data);
@@ -88,7 +88,7 @@ const Profile = ({navigation}) => {
           setIsloadings(false);
           // setImageNotFound(false);
         });
-      // const email = userdatas[0].userid;
+      // const email = userdatas[0]?.userid;
       // dispatch(types.loadUserStart(email));
     }, []),
   );
@@ -105,14 +105,14 @@ const Profile = ({navigation}) => {
         .catch(err => {});
 
       const logout = await Api.patch(
-        `updateLogoutSession/${userdatas[0].userid}/tz/${app_versions}`,
+        `updateLogoutSession/${userdatas[0]?.userid}/tz/${app_versions}`,
       );
 
       // await Logout(userdatas, app_versions);
       console.log('response--->', logout?.status);
       if (logout?.status === 200) {
         dispatch(clearUser());
-        navigation.navigate('firstScreen');
+        navigation.navigate('Login');
       }
       // dispatch(types.logOutUser());
       // navigation.navigate('login');
@@ -265,7 +265,7 @@ const Profile = ({navigation}) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
   useEffect(() => {
-    API.get(`getCreditedCoinsTransData/${userdatas[0].userid}`).then(
+    API.get(`getCreditedCoinsTransData/${userdatas[0]?.userid}`).then(
       // API.get(`getUserProgress/jayprakashbehera030@gmail.com`).then(
       response => {
         //

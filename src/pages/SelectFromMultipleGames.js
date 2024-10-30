@@ -185,7 +185,19 @@ const QuestionComponent = ({route}) => {
         disabled={isAnswered}>
         {questions[currentIndex].correctAnswer[0].optionMediaType ===
         'image' ? (
-          <Image source={{uri: optionValue}} style={styles.optionImage} />
+          <View
+            style={{
+              // marginVertical: 10,
+              flexDirection:
+                questions[currentIndex]?.correctAnswer[0].optionMediaType ===
+                'image'
+                  ? 'row'
+                  : 'column',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+            }}>
+            <Image source={{uri: optionValue}} style={styles.optionImage} />
+          </View>
         ) : questions[currentIndex].correctAnswer[0].optionMediaType ===
           'audio' ? (
           <>
@@ -561,8 +573,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
   },
   questionContainer: {
-    alignItems: 'center',
-    marginVertical: 16,
+    // alignItems: 'center',
+    // marginVertical: 16,
   },
   questionText: {
     fontSize: 20,
@@ -633,9 +645,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   optionImage: {
-    width: 80,
-    height: 80,
-    resizeMode: 'contain',
+    width: '100%',
+    height: '100%',
+    alignSelf: 'center',
+    aspectRatio: 1,
   },
   navigationContainer: {
     flexDirection: 'row',

@@ -139,7 +139,7 @@ const TechContent = ({route, navigation}) => {
   const [duration, setDuration] = useState(0);
   const [buffering, setBuffering] = useState(true);
   const [topicQuizData, setTopicQuizData] = useState([]);
-  const [successModal, setSuccessModal] = useState(true);
+  const [successModal, setSuccessModal] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
   const [checkUrl, setCheckUrl] = useState([]);

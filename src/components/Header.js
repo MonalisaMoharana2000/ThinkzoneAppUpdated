@@ -35,26 +35,39 @@ const Header = ({route, navigation, handleClick}) => {
   const {usertype, schoolname} = userdatas;
   const [notficationCount, setNotificationCount] = useState();
   const [imageNotFound, setImageNotFound] = useState(false);
-  const [isLoading, setIsloading] = useState(true);
+  const [isLoading, setIsloading] = useState(false);
   const [imgerr, setImgerr] = useState(false);
   const [blinkAnimation] = useState(new Animated.Value(0));
-
-  useEffect(() => {
-    const fetchStoredData = async () => {
-      storedData = await AsyncStorage.getItem('userData');
-      console.log('storedData--------->', storedData);
+  const [storageData, setStorageData] = useState([]);
+  const fetchStoredData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('userData');
+      console.log('storedData1--------->', storedData);
       if (storedData) {
         const parsedData = JSON.parse(storedData);
-        console.log('Parsed storedData--------->', parsedData);
+        console.log('Parsed storedData1--------->', parsedData);
+        return parsedData;
+      }
+    } catch (error) {
+      console.error('Error fetching stored data:', error);
+    }
+    return null; // Return null if no data or error occurs
+  };
+
+  useEffect(() => {
+    const initializeData = async () => {
+      const parsedData = await fetchStoredData();
+      if (parsedData) {
+        setStorageData(parsedData?.resData);
         const userSet = await dispatch(
           fetchUserDataThunk(parsedData?.resData[0]?.userid),
         );
-        console.log('userSet----------->', userSet);
+        console.log('userSet1----------->', userSet);
       }
     };
-    fetchStoredData();
-  }, []);
 
+    initializeData();
+  }, []);
   // useFocusEffect(
   //   React.useCallback(async () => {
   //     const data = await dispatch(
@@ -204,7 +217,7 @@ const Header = ({route, navigation, handleClick}) => {
       ) : (
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate('profile', {
+            navigation.navigate('Profile', {
               type: 'Profile',
             })
           }>
@@ -261,7 +274,7 @@ const Header = ({route, navigation, handleClick}) => {
       )}
 
       <Text style={[styles.helloRam]}>
-        Hello, {userdatas[0]?.firstname}
+        Hello, {storageData[0]?.firstname}
         {/* <MaterialCommunityIcons
           name="hand-wave"
           size={17}
@@ -273,7 +286,7 @@ const Header = ({route, navigation, handleClick}) => {
           }}
         /> */}
       </Text>
-      {userdatas[0]?.usertype === 'fellow' ? (
+      {storageData[0]?.usertype === 'fellow' ? (
         <Text style={[styles.completeYourNext, {width: 150}]}>
           This month you have {''}spent{' '}
           {/* {timespent_record?.timespent != 0

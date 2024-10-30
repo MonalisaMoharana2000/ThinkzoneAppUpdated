@@ -227,19 +227,41 @@ const StackNavigator = ({navigation}) => {
       <Stack.Screen
         name="studentlist"
         component={StudentList}
-        options={{
+        options={({navigation}) => ({
           title: 'ଶିକ୍ଷାର୍ଥୀ ସୂଚନା',
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
           },
-        }}
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <AntDesign
+                style={{marginLeft: 15}}
+                name="arrowleft"
+                size={25}
+                color="white"
+              />
+            </TouchableOpacity>
+          ),
+        })}
       />
 
       <Stack.Screen
         name="studentregister"
         component={StudentRegister}
-        options={{
+        options={({navigation}) => ({
           title: 'ଶିକ୍ଷାର୍ଥୀ ପଞ୍ଜୀକରଣ',
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
+          },
           headerLeft: () => (
             <TouchableOpacity
               onPress={() => {
@@ -264,11 +286,14 @@ const StackNavigator = ({navigation}) => {
                 style={{marginLeft: 15}}
                 name="arrowleft"
                 size={25}
-                color={Color.white}
+                color="white"
               />
             </TouchableOpacity>
           ),
-        }}
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+        })}
       />
 
       <Stack.Screen
@@ -285,51 +310,147 @@ const StackNavigator = ({navigation}) => {
       <Stack.Screen
         name="studentAttendance"
         component={StudentAttendance}
-        options={{
+        options={({navigation}) => ({
           title: 'ଶିକ୍ଷାର୍ଥୀ ଉପସ୍ଥାନ',
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
           },
-        }}
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <AntDesign
+                style={{marginLeft: 15}}
+                name="arrowleft"
+                size={25}
+                color="white"
+              />
+            </TouchableOpacity>
+          ),
+        })}
       />
 
       <Stack.Screen
         name="attendancelist"
         component={Attendancelist}
-        options={{
+        options={({navigation}) => ({
           title: ' 7 ଦିନର ଉପସ୍ଥାନ',
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
           },
-        }}
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <AntDesign
+                style={{marginLeft: 15}}
+                name="arrowleft"
+                size={25}
+                color="white"
+              />
+            </TouchableOpacity>
+          ),
+        })}
       />
 
       <Stack.Screen
         name="studentsattendance"
         component={AttendancemodalList}
-        options={{title: 'ଉପସ୍ଥାନ ସୂଚନା'}}
+        options={({navigation}) => ({
+          title: 'ଉପସ୍ଥାନ ସୂଚନା',
+
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <AntDesign
+                style={{marginLeft: 15}}
+                name="arrowleft"
+                size={25}
+                color="white"
+              />
+            </TouchableOpacity>
+          ),
+        })}
       />
 
       <Stack.Screen
         name="studentassessment"
         component={StudentAssessmentPage}
-        options={{
+        options={({navigation}) => ({
           title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
           },
-        }}
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <AntDesign
+                style={{marginLeft: 15}}
+                name="arrowleft"
+                size={25}
+                color="white"
+              />
+            </TouchableOpacity>
+          ),
+        })}
       />
 
       <Stack.Screen
         name="studentlistpage"
         component={StudentListPage}
-        options={{
+        options={({navigation}) => ({
           title: 'ଶିକ୍ଷାର୍ଥୀ ବିକାଶ',
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
           },
-        }}
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <AntDesign
+                style={{marginLeft: 15}}
+                name="arrowleft"
+                size={25}
+                color="white"
+              />
+            </TouchableOpacity>
+          ),
+        })}
       />
       <Stack.Screen
         name="StudentsListActivity"
@@ -657,17 +778,30 @@ const StackNavigator = ({navigation}) => {
       <Stack.Screen
         name="Mopragati"
         component={Mopragati}
-        options={{
+        options={({navigation}) => ({
           title: 'ମୋ ପ୍ରଗତି ',
-          headerTitleStyle: {
-            // fontWeight: '700',
-            fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+          headerStyle: {
+            backgroundColor: '#0060ca',
           },
-          // headerLeft: false,
-          // headerShown: false,
-          // headerTitleAlign: 'center',
-        }}
+
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <AntDesign
+                style={{marginLeft: 15}}
+                name="arrowleft"
+                size={25}
+                color="white"
+              />
+            </TouchableOpacity>
+          ),
+        })}
       />
 
       <Stack.Screen
@@ -675,6 +809,7 @@ const StackNavigator = ({navigation}) => {
         component={Leaderboard}
         options={{
           title: 'LEADERBOARD',
+          headerShown: false,
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
           },

@@ -397,13 +397,13 @@ const Mopragati = ({navigation}) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
-    const backAction = () => {
-      dispatch(FcmSlice.clearfcmMessage());
-    };
-
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
-      backAction,
+      () => {
+        navigation.goBack();
+
+        return true;
+      },
     );
 
     return () => backHandler.remove();

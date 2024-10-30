@@ -11,6 +11,7 @@ import {
   ImageBackground,
 } from 'react-native';
 // import Color from '../utils/Colors';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import DropdownComponent from '../components/DropdownComponent';

@@ -264,6 +264,7 @@ const BottomTabNavigator = ({navigation}) => {
             title: 'Leaderboard',
             headerTitleStyle: {
               fontFamily: FontFamily.poppinsMedium,
+              color: 'white',
             },
             headerLeft: () => (
               <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -271,10 +272,13 @@ const BottomTabNavigator = ({navigation}) => {
                   style={{marginLeft: 15}}
                   name="arrowleft"
                   size={25}
-                  color="black"
+                  color="white"
                 />
               </TouchableOpacity>
             ),
+            headerStyle: {
+              backgroundColor: '#0060ca',
+            },
             // headerShown: false,
             tabBarIcon: ({focused}) => (
               <View style={{alignItems: 'center'}}>
@@ -319,16 +323,23 @@ const BottomTabNavigator = ({navigation}) => {
           component={Myachivement}
           options={{
             title: 'Rewards',
+            headerTitleStyle: {
+              fontFamily: FontFamily.poppinsMedium,
+              color: 'white',
+            },
             headerLeft: () => (
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <AntDesign
                   style={{marginLeft: 15}}
                   name="arrowleft"
                   size={25}
-                  color="black"
+                  color="white"
                 />
               </TouchableOpacity>
             ),
+            headerStyle: {
+              backgroundColor: '#0060ca',
+            },
             // headerShown: false,
             tabBarIcon: ({focused}) => (
               <View style={{alignItems: 'center'}}>

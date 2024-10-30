@@ -427,45 +427,46 @@ const Home = ({navigation}, props) => {
   };
 
   const getToken = async () => {
-    const token = await messaging().getToken();
-    console.log('================token', token);
+    try {
+      // Retrieve the FCM token
+      const token = await messaging().getToken();
+      console.log('================token', token);
 
-    // Alert.alert(token);
-    // const smallIcon =
-    //   Platform.OS === 'android'
-    //     ? '@drawable/ic_notification' // Replace with the actual drawable resource name for Android
-    //     : 'ic_notification';
-    const largeIcon =
-      Platform.OS === 'android'
-        ? '@drawable/ic_notification' // Replace with the actual drawable resource name for Android
-        : 'ic_notification';
-    const fcm_obj = {
-      userid: user[0]?.userid,
-      username: user[0]?.username,
-      token: token,
-      refresh_token: token,
-      // smallIcon: smallIcon,
-      largeIcon: largeIcon, // Add the smallIcon property here
-    };
-    console.log('fcm_obj------->', fcm_obj);
+      // Define the large icon based on platform
+      const largeIcon =
+        Platform.OS === 'android'
+          ? '@drawable/ic_notification' // Replace with the actual drawable resource name for Android
+          : 'ic_notification';
 
-    API.get(`getfcmtokenidbyuserid/${user[0]?.userid}`).then(
-      getRes => {
-        if (getRes.data.length > 0) {
-          const tid = getRes.data[0]._id;
-          API.put(`updatefcmtokenid/${tid}`, fcm_obj).then(upGet => {
-            //
-          });
-        } else {
-          API.post(`createnewfcmtokenid`, fcm_obj).then(res => {
-            //
-          });
-        }
-      },
-      err => {
-        // this.serverDownMsg.presentToast();
-      },
-    );
+      // Create the FCM object
+      const fcm_obj = {
+        userid: user[0]?.userid,
+        username: user[0]?.username,
+        token: token,
+        refresh_token: token, // Consider using a different refresh token if available
+        largeIcon: largeIcon, // Add the largeIcon property here
+      };
+      console.log('fcm_obj------->', fcm_obj);
+
+      // Check if the user has an existing FCM token
+      const getRes = await API.get(`getfcmtokenidbyuserid/${user[0]?.userid}`);
+      console.log('getRes', getRes?.data);
+
+      if (getRes.data.length > 0) {
+        // If a token exists, update it
+        const tid = getRes.data[0]._id;
+        await API.put(`updatefcmtokenid/${tid}`, fcm_obj);
+        console.log('FCM token updated successfully');
+      } else {
+        // If no token exists, create a new one
+        await API.post(`createnewfcmtokenid`, fcm_obj);
+        console.log('New FCM token created successfully');
+      }
+    } catch (error) {
+      console.error('Error retrieving or saving FCM token:', error);
+      // Optionally show a toast or alert here to inform the user of the error
+      // this.serverDownMsg.presentToast();
+    }
   };
 
   useEffect(() => {

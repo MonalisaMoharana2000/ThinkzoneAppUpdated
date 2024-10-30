@@ -1496,7 +1496,7 @@ const Home = ({navigation}, props) => {
 
   // const scrollViewRef = useRef();
   const [sBadges, setSbadges] = useState({});
-  const [modalVisible, setModalVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
 
   const fetchData = async () => {

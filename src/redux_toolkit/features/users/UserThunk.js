@@ -106,3 +106,20 @@ export const fetchPaymentDetails = createAsyncThunk(
     return response.data;
   },
 );
+
+export const savePayment = createAsyncThunk(
+  'user/userphoneverify',
+  async data => {
+    let response = await API.post(`savetchpaymentdetails`, data);
+    return response.data;
+  },
+);
+
+export const getPayment = createAsyncThunk(
+  'user/fetchtotalcoins',
+  async userid => {
+    let response = await API.get(`getstudentswithpaymentdetails/${userid}`);
+
+    return response.data;
+  },
+);

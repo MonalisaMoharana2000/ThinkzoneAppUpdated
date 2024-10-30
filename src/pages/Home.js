@@ -1496,7 +1496,7 @@ const Home = ({navigation}, props) => {
 
   // const scrollViewRef = useRef();
   const [sBadges, setSbadges] = useState({});
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(true);
   const [modalMessage, setModalMessage] = useState('');
 
   const fetchData = async () => {
@@ -1596,7 +1596,7 @@ const Home = ({navigation}, props) => {
         scrollEnabled={scrollEnabled}>
         <SafeAreaView style={styles.safeview}>
           <View style={styles.centeredView}>
-            <Modal
+          <Modal
               animationType="fade"
               transparent={true}
               visible={modalVisible}
@@ -1660,7 +1660,62 @@ const Home = ({navigation}, props) => {
                       {' '}
                       𝐘𝐨𝐮 𝐠𝐨𝐭 𝐚 𝐧𝐞𝐰 𝐛𝐚𝐝𝐠𝐞𝐬
                     </Text>
-
+                    {/* <Image
+                      source={
+                        sBadges.diamondBadges >= 1
+                          ? require('../assets/Image/dimond.png')
+                          : sBadges.platinumBadges >= 1
+                          ? require('../assets/Image/platinum.png')
+                          : sBadges.goldBadges >= 1
+                          ? require('../assets/Image/golden.png')
+                          : sBadges.silverBadges >= 1
+                          ? require('../assets/Image/sliver.png')
+                          : require('../assets/Image/broze.png')
+                      } */}
+                    <Image
+                      source={
+                        sBadges?.diamondBadges >= 1
+                          ? require('../assets/Image/dimond.png')
+                          : sBadges?.platinumBadges >= 1
+                          ? require('../assets/Image/platinum.png')
+                          : sBadges?.goldBadges >= 1
+                          ? require('../assets/Image/golden.png')
+                          : sBadges?.silverBadges >= 1
+                          ? require('../assets/Image/sliver.png')
+                          : require('../assets/Image/broze.png')
+                      }
+                      style={{
+                        width: window.WindowWidth * 0.5,
+                        height: window.WindowWidth * 0.5,
+                        alignSelf: 'center',
+                        backgroundColor: Color.ghostwhite,
+                        borderRadius: window.WindowWidth * 0.25,
+                        borderColor: 'black',
+                        borderWidth: 2,
+                        shadowColor: 'black',
+                        shadowOffset: {width: 0, height: 2},
+                        shadowOpacity: 0.8,
+                        shadowRadius: 2,
+                        elevation: 10, // Use elevation for Android
+                        // transform: [{rotate}],
+                      }}
+                    />
+                    {sBadges?.diamondBadges >= 1 ? (
+                      // <Text>You got a Diamond Badge!</Text>
+                      <Text style={styles.badges}>Dimond</Text>
+                    ) : sBadges?.platinumBadges >= 1 ? (
+                      // <Text>You got a Platinum Badge!</Text>
+                      <Text style={styles.badges}>Platinum</Text>
+                    ) : sBadges?.goldBadges >= 1 ? (
+                      // <Text>You got a Gold Badge!</Text>
+                      <Text style={styles.badges}>Gold</Text>
+                    ) : sBadges?.silverBadges >= 1 ? (
+                      // <Text>You got a Silver Badge!</Text>
+                      <Text style={styles.badges}>Silver</Text>
+                    ) : (
+                      // <Text>You got a Bronze Badge!</Text>
+                      <Text style={styles.badges}>Bronze</Text>
+                    )}
                     <TouchableOpacity
                       onPress={() => {
                         navigation.navigate('Mopragati');

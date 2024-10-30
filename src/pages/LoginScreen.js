@@ -284,7 +284,7 @@ const LoginScreen = ({navigation}) => {
         style={{
           position: 'absolute',
           top: window.WindowHeigth * 0.013, // 1.5% of screen height
-          right: window.WindowWidth * 0.255, // 25.5% of screen width
+          right: window.WindowWidth * 0.222, // 25.5% of screen width
           zIndex: 1,
         }}>
         <TouchableOpacity
@@ -325,7 +325,7 @@ const LoginScreen = ({navigation}) => {
         <TouchableOpacity
           onPress={handleClick}
           style={{
-            top: 15,
+            top: 130,
             margin: 8,
             paddingLeft: 20,
             paddingRight: 20,
@@ -353,7 +353,6 @@ const LoginScreen = ({navigation}) => {
                   width: 24,
                   height: 24,
                   // marginTop: -1,
-
                   // justifyContent: 'center',
                   marginRight: 15,
                 }}
@@ -361,9 +360,7 @@ const LoginScreen = ({navigation}) => {
               <Text
                 style={{
                   width: '100%',
-
                   textAlign: 'left',
-
                   fontSize: 13,
                   width: 250,
                   fontWeight: '500',

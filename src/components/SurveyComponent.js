@@ -634,6 +634,7 @@ const SurveyComponent = ({
                                     keyboardType="numeric"
                                     value={input1}
                                     onChangeText={handleInput1Change}
+                                    placeholderTextColor="black"
                                   />
                                   <Text
                                     style={{
@@ -651,6 +652,7 @@ const SurveyComponent = ({
                                     keyboardType="numeric"
                                     value={input2}
                                     onChangeText={handleInput2Change}
+                                    placeholderTextColor="black"
                                   />
                                   <Picker
                                     selectedValue={selectedAmPm}

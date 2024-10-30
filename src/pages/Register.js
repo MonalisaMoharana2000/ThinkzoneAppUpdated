@@ -17,6 +17,7 @@ import {
   Image,
   TextInput,
 } from 'react-native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {RadioButton} from 'react-native-paper';
 import {ToastAndroid} from 'react-native';
 import moment from 'moment';
@@ -934,7 +935,7 @@ const Register = ({navigation, route}) => {
               style={[
                 styles.userRegisterChild,
                 styles.statusBarBgLayout,
-                {paddingTop: 50},
+                {paddingTop: 53},
               ]}
               resizeMode="cover"
               source={
@@ -948,11 +949,13 @@ const Register = ({navigation, route}) => {
               onError={() => {
                 setError(true);
               }}>
-              <TouchableOpacity
-                style={styles.editImageIconContainer}
-                onPress={() => handleOpenBottomSheet()}>
-                <Cameraicon name="camera" color={Colors.white} size={22} />
-              </TouchableOpacity>
+              <GestureHandlerRootView style={{flex: 1}}>
+                <TouchableOpacity
+                  style={styles.editImageIconContainer}
+                  onPress={() => handleOpenBottomSheet()}>
+                  <Cameraicon name="camera" color={Colors.white} size={22} />
+                </TouchableOpacity>
+              </GestureHandlerRootView>
             </ImageBackground>
 
             <View style={{marginTop: 50}}>
@@ -1496,11 +1499,11 @@ const styles = StyleSheet.create({
 
   editImageIconContainer: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 7,
     right: 0,
     backgroundColor: 'gray',
     width: 36,
-    height: 36,
+    height: 39,
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -1653,13 +1656,13 @@ const styles = StyleSheet.create({
   },
 
   userRegisterChild: {
-    height: 200,
-    width: 130,
-    top: '7.15%',
+    height: 206,
+    width: 159,
+    top: '4.7%',
     // top: 50,
-    right: '33.33%',
+    right: '33.39%',
     // bottom: '50.94%',
-    left: '33.61%',
+    left: '33.69%',
     marginTop: -70,
   },
   iconmessagesmessageEdit: {

@@ -69,6 +69,7 @@ import FillInTheBlank from '../components/FillInTheBlanks';
 import CallResponse from '../Pages/CallResponse';
 import AttendancemodalList from '../Pages/AttendancemodalList';
 import CommonMonthlyQuiz from '../Pages/CommonMonthlyQuiz';
+import NotificationPage from '../Pages/NotificationPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -677,6 +678,20 @@ const StackNavigator = ({navigation}) => {
       <Stack.Screen
         name="notification"
         component={Notification}
+        options={{
+          title: 'NOTIFICATION',
+          headerTitleStyle: {
+            // fontWeight: '700',
+            fontFamily: FontFamily.poppinsMedium,
+            // letterSpacing: 2,
+          },
+          // headerTitleAlign: 'center',
+        }}
+      />
+
+      <Stack.Screen
+        name="notificationPage"
+        component={NotificationPage}
         options={{
           title: 'NOTIFICATION',
           headerTitleStyle: {

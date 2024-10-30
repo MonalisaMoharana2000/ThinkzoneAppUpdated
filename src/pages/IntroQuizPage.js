@@ -51,8 +51,8 @@ const IntroQuizPage = ({navigation, route}) => {
   const dispatch = useDispatch();
   const modalRef = useRef(null);
   const user = useSelector(state => state.UserSlice?.user);
-  const {userid, username, usertype, managerid, managername, passcode} =
-    user[0];
+  // const {userid, username, usertype, managerid, managername, passcode} =
+  //   user[0];
   const [quiz_status, set_Quiz_status] = useState(false);
   const [introDatas, setIntroDatas] = useState([]);
   const [questionModal, setQuestionModal] = useState(false);
@@ -181,12 +181,12 @@ const IntroQuizPage = ({navigation, route}) => {
       checkDataLengthOption.length + checkDataLengthAnswer.length
     ) {
       const body = {
-        userid,
-        username,
-        usertype,
-        managerid,
-        managername,
-        passcode,
+        userid: user[0]?.userid,
+        username: user[0]?.username,
+        usertype: user[0]?.usertype,
+        managerid: user[0]?.managerid,
+        managername: user[0]?.managername,
+        passcode: user[0]?.passcode,
         quizData: introDatas,
         securedMarks: 12,
         totalMarks: 20,
@@ -202,7 +202,7 @@ const IntroQuizPage = ({navigation, route}) => {
           Alert.alert(`ପ୍ରାରମ୍ଭିକ କୁଇଜ୍ ସଫଳତାର ସହ ସେଭ୍ ହୋଇଛି।`, '', [
             {
               text: 'Ok',
-              onPress: () => navigation.navigate('home'),
+              onPress: () => navigation.navigate('Home'),
               style: 'default',
             },
           ]);
@@ -1532,159 +1532,40 @@ const IntroQuizPage = ({navigation, route}) => {
                 )}
               {introDatas[header]?.answerType === '4options' &&
                 introDatas[header]?.optionType === 'multi' && (
-                  <>
-                    <View>
-                      <View key={introDatas[header].questionId}>
-                        <TouchableOpacity
-                          style={{flexDirection: 'row'}}
-                          onPress={() =>
-                            handleOptionSelectMulti(
-                              introDatas[header].questionId,
-                              'A',
-                            )
-                          }>
-                          <View
-                            style={{
-                              alignSelf: 'stretch',
-                              paddingLeft: 20,
-                              top: 10,
-                              left: '100%',
-                            }}>
-                            <CheckBox
-                              value={introDatas[
-                                header
-                              ]?.selectedOption?.includes('A')}
-                              style={{alignSelf: 'center'}}
-                              tintColors={{
-                                true: '#0060ca',
-                                false: '#0060ca',
-                              }}
-                              onChange={() =>
-                                handleOptionSelectMulti(
-                                  introDatas[header]?.questionId,
-                                  'A',
-                                )
-                              }
-                            />
-                          </View>
-                          <View style={{top: '4%', left: '100%'}}>
-                            <Text>{introDatas[header].optionA}</Text>
-                          </View>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                          style={{flexDirection: 'row'}}
-                          onPress={() =>
+                  <View key={introDatas[header].questionId}>
+                    {['A', 'B', 'C', 'D'].map(option => (
+                      <TouchableOpacity
+                        key={option}
+                        style={{
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          marginVertical: 5,
+                          left: 59,
+                        }}
+                        onPress={() =>
+                          handleOptionSelectMulti(
+                            introDatas[header]?.questionId,
+                            option,
+                          )
+                        }>
+                        <CheckBox
+                          value={introDatas[header]?.selectedOption?.includes(
+                            option,
+                          )}
+                          tintColors={{true: '#0060ca', false: '#0060ca'}}
+                          onChange={() =>
                             handleOptionSelectMulti(
                               introDatas[header]?.questionId,
-                              'B',
+                              option,
                             )
-                          }>
-                          <View
-                            style={{
-                              alignSelf: 'stretch',
-                              paddingLeft: 20,
-                              top: 10,
-                              left: '100%',
-                            }}>
-                            <CheckBox
-                              value={introDatas[
-                                header
-                              ]?.selectedOption?.includes('B')}
-                              style={{alignSelf: 'center'}}
-                              tintColors={{
-                                true: '#0060ca',
-                                false: '#0060ca',
-                              }}
-                              onChange={() =>
-                                handleOptionSelectMulti(
-                                  introDatas[header]?.questionId,
-                                  'B',
-                                )
-                              }
-                            />
-                          </View>
-                          <View style={{top: '4%', left: '100%'}}>
-                            <Text>{introDatas[header].optionB}</Text>
-                          </View>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                          style={{flexDirection: 'row'}}
-                          onPress={() =>
-                            handleOptionSelectMulti(
-                              introDatas[header]?.questionId,
-                              'C',
-                            )
-                          }>
-                          <View
-                            style={{
-                              alignSelf: 'stretch',
-                              paddingLeft: 20,
-                              top: 10,
-                              left: '100%',
-                            }}>
-                            <CheckBox
-                              value={introDatas[
-                                header
-                              ]?.selectedOption?.includes('C')}
-                              style={{alignSelf: 'center'}}
-                              tintColors={{
-                                true: '#0060ca',
-                                false: '#0060ca',
-                              }}
-                              onChange={() =>
-                                handleOptionSelectMulti(
-                                  introDatas[header]?.questionId,
-                                  'C',
-                                )
-                              }
-                            />
-                          </View>
-                          <View style={{top: '4%', left: '100%'}}>
-                            <Text>{introDatas[header].optionC}</Text>
-                          </View>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                          style={{flexDirection: 'row'}}
-                          onPress={() =>
-                            handleOptionSelectMulti(
-                              introDatas[header]?.questionId,
-                              'D',
-                            )
-                          }>
-                          <View
-                            style={{
-                              alignSelf: 'stretch',
-                              paddingLeft: 20,
-                              top: 10,
-                              left: '100%',
-                            }}>
-                            <CheckBox
-                              value={introDatas[
-                                header
-                              ]?.selectedOption?.includes('D')}
-                              style={{alignSelf: 'center'}}
-                              tintColors={{
-                                true: '#0060ca',
-                                false: '#0060ca',
-                              }}
-                              onChange={() =>
-                                handleOptionSelectMulti(
-                                  introDatas[header]?.questionId,
-                                  'D',
-                                )
-                              }
-                            />
-                          </View>
-                          <View style={{top: '4%', left: '100%'}}>
-                            <Text>{introDatas[header].optionD}</Text>
-                          </View>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </>
+                          }
+                        />
+                        <Text style={{marginLeft: 10, color: 'black'}}>
+                          {introDatas[header][`option${option}`]}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
                 )}
 
               {/* {introDatas[header]?.answerType === 'imageInput' && (

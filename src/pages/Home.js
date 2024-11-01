@@ -44,6 +44,7 @@ import CarouselImage from '../components/CarouselImage';
 import CarouselVideo from '../components/CarouselVideo';
 import moment from 'moment';
 import {fetchUserDataThunk} from '../redux_toolkit/features/users/UserThunk';
+import YouTube from 'react-native-youtube-iframe';
 const {width} = Dimensions.get('window');
 
 const Home = ({navigation}, props) => {
@@ -1512,19 +1513,26 @@ const Home = ({navigation}, props) => {
   }, [imageSlider.length]); // Dependencies array includes the length of imageSlider
 
   useEffect(() => {
-    API.get(`getDboardSliders/${user[0]?.usertype}/${'video'}`).then(
-      response => {
+    const fetchDboardSliders = async () => {
+      try {
+        const response = await API.get(
+          `getDboardSliders/${user[0]?.usertype}/${'video'}`,
+        );
         setVideos(response.data);
-        // console.log(
-        //   response.data,
-        //   'videos--------------------------------------->',
-        // );
-      },
-      err => {
-        // Handle error
-      },
-    );
-  }, []);
+        // Uncomment the following line for debugging purposes
+        // console.log(response.data, 'videos--------------------------------------->');
+      } catch (err) {
+        console.error('Error fetching dashboard sliders:', err);
+        // Optionally handle the error here, e.g., show a notification or set an error state
+      }
+    };
+
+    if (user[0]?.usertype) {
+      // Ensure usertype is available before calling the API
+      fetchDboardSliders();
+    }
+  }, []); // Added user as a dependency to rerun when it changes
+
   // const mediaUrl = 'A4LduNvkwvo';
   // console.log(mediaUrl, 'mediaUrl--------------------------------------->');
   const lastIndex = videos.length - 1;
@@ -2303,9 +2311,9 @@ const Home = ({navigation}, props) => {
                               style={{
                                 padding: 5,
                                 alignSelf: 'center',
-                                left: '7%',
+                                left: '4%',
                               }}>
-                              {/* <YouTube
+                              <YouTube
                                 videoId={video.mediaUrl}
                                 width={responsiveWidth}
                                 height={responsiveHeight}
@@ -2327,7 +2335,7 @@ const Home = ({navigation}, props) => {
                                   }
                                 }}
                                 onError={error => console.log('Error:', error)}
-                              /> */}
+                              />
                             </TouchableOpacity>
                           </>
                         ))}

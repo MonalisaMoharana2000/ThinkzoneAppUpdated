@@ -1495,21 +1495,21 @@ const Home = ({navigation}, props) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentlyPlayingIndex, setCurrentlyPlayingIndex] = useState(null);
   const flatListRef = useRef(null);
-  // let currentIndex = 0;
+  const currentIndex = useRef(0);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     if (flatListRef.current) {
-  //       currentIndex.current = (currentIndex.current + 1) % imageSlider.length;
-  //       flatListRef.current.scrollToIndex({
-  //         index: currentIndex.current,
-  //         animated: true,
-  //       });
-  //     }
-  //   }, 3000);
+  useEffect(() => {
+    if (imageSlider.length === 0) return; // Don't set up interval if there's no images
 
-  //   return () => clearInterval(interval); // Cleanup on component unmount
-  // }, [imageSlider.length]);
+    const interval = setInterval(() => {
+      currentIndex.current = (currentIndex.current + 1) % imageSlider.length;
+      flatListRef.current?.scrollToIndex({
+        index: currentIndex.current,
+        animated: true,
+      });
+    }, 3000); // Change this duration as needed
+
+    return () => clearInterval(interval); // Cleanup on component unmount
+  }, [imageSlider.length]); // Dependencies array includes the length of imageSlider
 
   useEffect(() => {
     API.get(`getDboardSliders/${user[0]?.usertype}/${'video'}`).then(
@@ -2140,7 +2140,7 @@ const Home = ({navigation}, props) => {
                     ) : null}
                   </View>
 
-                  {/* <FlatList
+                  <FlatList
                     ref={flatListRef}
                     data={imageSlider}
                     horizontal
@@ -2149,22 +2149,30 @@ const Home = ({navigation}, props) => {
                     renderItem={({item}) => (
                       <TouchableOpacity
                         onPress={() => handlePageChange(item?.navigateTo)}>
-                        <CarouselImage data={item.mediaUrl} />
+                        <View
+                          style={{
+                            width: width - 40, // Width adjustment for each image
+                            overflow: 'hidden', // Prevent any overflow issues
+                          }}>
+                          <CarouselImage data={item.mediaUrl} />
+                        </View>
                       </TouchableOpacity>
                     )}
                     keyExtractor={(item, index) => index.toString()}
                     snapToAlignment="center"
-                    snapToInterval={width - 40 + 10}
-                    decelerationRate="normal"
-                    style={styles.carousel}
-                    contentContainerStyle={styles.contentContainer}
-                    ItemSeparatorComponent={() => (
-                      <View style={styles.separator} />
-                    )}
-                    onScrollToIndexFailed={info => {
-                      console.warn('Index failed to scroll: ', info);
+                    snapToInterval={width - 40 + 10} // Snap to the width of the item plus separator
+                    decelerationRate="fast" // Use fast for smoother transitions
+                    style={{width, marginLeft: 20}} // Set width for FlatList
+                    contentContainerStyle={{
+                      paddingHorizontal: 40, // Equal space on sides
                     }}
-                  /> */}
+                    ItemSeparatorComponent={() => (
+                      <View style={{width: 20, marginLeft: 15}} />
+                    )} // Gap between items
+                    onScrollToIndexFailed={info => {
+                      console.warn('Index failed to scroll: ', info); // Handle failed index scroll
+                    }}
+                  />
 
                   <View style={styles.view}>
                     <Text

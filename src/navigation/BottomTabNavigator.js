@@ -95,14 +95,24 @@ const BottomTabNavigator = ({navigation}) => {
   };
 
   useEffect(() => {
-    API.get(`getMaintainanceStatus/${user?.usertype}`)
-      .then(response => {
-        setMaintainanceStatus(response.data);
-        setmaintainanceModal(response.data?.overallApp);
-      })
-      .catch(err => {
-        console.error('Failed to fetch maintenance status:', err);
-      });
+    const fetchMaintenanceStatus = async () => {
+      try {
+        if (user?.length > 0 && user[0]?.usertype) {
+          console.log('useEffect is triggered');
+          const response = await API.get(
+            // `getMaintainanceStatus/${user[0].usertype}`,
+            `getMaintainanceStatus/fellow`,
+          );
+          console.log('getMaintainanceStatus', response.data);
+          setMaintainanceStatus(response.data);
+          setmaintainanceModal(response.data?.overallApp);
+        }
+      } catch (err) {
+        console.error('Error in API call', err);
+      }
+    };
+
+    fetchMaintenanceStatus();
   }, []);
 
   useEffect(() => {

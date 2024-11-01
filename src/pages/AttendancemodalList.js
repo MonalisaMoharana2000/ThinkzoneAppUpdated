@@ -228,7 +228,7 @@ const AttendancemodalList = ({navigation, route}) => {
   // const selectedDate = useContext(DateContext);
 
   const selectedDate = route.params.date;
-  const filteredStudents = newStudentList?.filter(item => {
+  const filteredStudents = attendanceCheck?.filter(item => {
     const createdOnDate = moment(item.createdon);
     const routeDate = moment(route.params.date, 'DD-MM-YYYY');
     return createdOnDate.isSameOrBefore(routeDate, 'day');
@@ -242,15 +242,19 @@ const AttendancemodalList = ({navigation, route}) => {
     return {name: item.studentname, createdOn: item.createdon};
   });
 
-  const saveBut = () => {
+  const saveBut = async () => {
     {
       if (attendanceList.length === filteredStudents.length) {
+        console.log('attendanceList--->', attendanceList);
         setLoader(true);
-        dispatch(studenttypes.postAttendanceStart(attendanceList));
-        AsyncStorage.setItem(
-          'offlineAttendanceList',
-          JSON.stringify(attendanceList),
-        );
+
+        const resp = await API.post(`saveattendance`, attendanceList);
+        console.log('resp-------->', resp.data);
+        // dispatch(studenttypes.postAttendanceStart(attendanceList));
+        // AsyncStorage.setItem(
+        //   'offlineAttendanceList',
+        //   JSON.stringify(attendanceList),
+        // );
         // navigation.navigate('home')
         // navigation.navigate('studentAttendance')
         if (navigation.canGoBack()) {
@@ -678,7 +682,7 @@ const AttendancemodalList = ({navigation, route}) => {
 
                   {/* <ButtonComponent buttonName={'SAVE'} buttonPressed={saveBut} /> */}
                   {!loader &&
-                  newStudentList.length > 0 &&
+                  attendanceCheck?.length > 0 &&
                   filteredStudents.length > 0 ? (
                     <TouchableOpacity style={styles.button} onPress={saveBut}>
                       <Text style={styles.text}>SAVE</Text>

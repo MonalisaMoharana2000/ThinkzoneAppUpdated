@@ -56,36 +56,36 @@ const Payment = ({route, navigation}) => {
   console.log('teacherdata-------------->', teacherdata);
   // const studentData = useSelector(state => state.UserSlice?.payments);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (!teacherdata[0]?.userid) {
-  //       console.warn('User ID is undefined.');
-  //       return;
-  //     }
-  //     console.log(
-  //       'Fetching payment details for user ID:',
-  //       teacherdata[0].userid,
-  //     );
-  //     setIsLoading(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!teacherdata[0]?.userid) {
+        console.warn('User ID is undefined.');
+        return;
+      }
+      console.log(
+        'Fetching payment details for user ID:',
+        teacherdata[0].userid,
+      );
+      setIsLoading(true);
 
-  //     try {
-  //       const response = await API.get(
-  //         `getstudentswithpaymentdetails/${teacherdata[0].userid}`,
-  //       );
-  //       console.log('Fetched payment data:', response.data.data);
-  //       setStudentData(response.data.data);
-  //     } catch (error) {
-  //       console.error('Error fetching payment data:', error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
+      try {
+        const response = await API.get(
+          `getstudentswithpaymentdetails/${teacherdata[0].userid}`,
+        );
+        console.log('Fetched payment data:', response.data.data);
+        setStudentData(response.data.data);
+      } catch (error) {
+        console.error('Error fetching payment data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  //   fetchData();
-  // }, [teacherdata]);
+    fetchData();
+  }, [teacherdata]);
 
   useEffect(() => {
-    dispatch(fetchUserDataThunk());
+    dispatch(fetchUserDataThunk(teacherdata[0]?.userid));
     // dispatch(studentstypes.getStudentStart(teacherdata[0].userid));
     // API.get(`getstudentswithpaymentdetails/${teacherdata[0].userid}`).then(
     //   response => {
@@ -284,7 +284,7 @@ const Payment = ({route, navigation}) => {
 
   return (
     <>
-      {isLoading ? (
+      {isLoading && !teacherdata[0]?.userid ? (
         <Loading />
       ) : (
         <>

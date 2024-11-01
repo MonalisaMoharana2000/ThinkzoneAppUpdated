@@ -189,8 +189,8 @@ const QuestionComponent = ({route}) => {
             style={{
               // marginVertical: 10,
               flexDirection:
-                questions[currentIndex]?.correctAnswer[0].optionMediaType ===
-                'image'
+                questions[currentIndex].correctAnswer[0].optionMediaType
+                  ?.optionMediaType === 'image'
                   ? 'row'
                   : 'column',
               flexWrap: 'wrap',
@@ -574,7 +574,7 @@ const styles = StyleSheet.create({
   },
   questionContainer: {
     // alignItems: 'center',
-    // marginVertical: 16,
+    marginVertical: 16,
   },
   questionText: {
     fontSize: 20,
@@ -645,10 +645,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   optionImage: {
-    width: '100%',
-    height: '100%',
-    alignSelf: 'center',
-    aspectRatio: 1,
+    width: 80,
+    height: 80,
+    resizeMode: 'contain',
   },
   navigationContainer: {
     flexDirection: 'row',

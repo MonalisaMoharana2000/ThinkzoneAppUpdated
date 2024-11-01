@@ -125,7 +125,7 @@ const Header = ({route, navigation, handleClick}) => {
         }
       };
       fetchData();
-    }, [storageData]),
+    }, [storageData, userdatas]),
   );
   const [timespent_record, setTimeSpent_record] = useState({});
   // console.log('timespent_record---->', timespent_record);

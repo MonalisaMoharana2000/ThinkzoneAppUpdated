@@ -247,7 +247,7 @@ const Page1 = ({navigation, route}) => {
                 position: 'absolute',
                 marginTop: -5,
               }}>
-              Next Button
+              Next
             </Text>
           </TouchableOpacity>
         )

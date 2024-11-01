@@ -104,7 +104,7 @@ const Profile = ({navigation}) => {
       setImageNotFound(true);
       Api.get(`getuserbyuserid/${storageData[0]?.userid}`)
         .then(response => {
-          //console.log(response.data, 'profileresponse------>');
+          console.log(response.data, 'profileresponse------>');
           setUserdata(response.data);
           setIsLoading(false);
           setIsloadings(false);
@@ -121,7 +121,7 @@ const Profile = ({navigation}) => {
         });
       // const email = userdatas[0]?.userid;
       // dispatch(types.loadUserStart(email));
-    }, [userdata]),
+    }, [storageData]),
   );
 
   useEffect(() => {

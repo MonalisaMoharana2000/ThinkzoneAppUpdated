@@ -85,7 +85,7 @@ const Payment = ({route, navigation}) => {
   // }, [teacherdata]);
 
   useEffect(() => {
-    dispatch(fetchUserDataThunk());
+    // dispatch(fetchUserDataThunk());
     // dispatch(studentstypes.getStudentStart(teacherdata[0].userid));
     // API.get(`getstudentswithpaymentdetails/${teacherdata[0].userid}`).then(
     //   response => {

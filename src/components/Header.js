@@ -118,7 +118,7 @@ const Header = ({route, navigation, handleClick}) => {
 
         const res2 = await Api.get(`getuserbyuserid/${userdatas[0]?.userid}`);
 
-        console.log('res2------>', res.status);
+        console.log('res2------>', res2.data);
         if (res2.status === 200) {
           setIsloading(false);
           setUserdata(res2.data);

@@ -443,35 +443,37 @@ const Home = ({navigation}, props) => {
         userid: user[0]?.userid,
         username: user[0]?.username,
         token: token,
-        refresh_token: token, // Consider using a different refresh token if available
-        largeIcon: largeIcon, // Add the largeIcon property here
+        refresh_token: token, // Adjust as needed if you have a different refresh token
+        largeIcon: largeIcon,
       };
+
       console.log('fcm_obj------->', fcm_obj);
 
-      // Check if the user has an existing FCM token
-      const getRes = await API.get(`getfcmtokenidbyuserid/${user[0]?.userid}`);
-      console.log('getRes', getRes?.data);
+      // Retrieve existing token data for this user
+      const userId = user[0]?.userid;
+      const getRes = await API.get(`getfcmtokenidbyuserid/${userId}`);
+      console.log('getRes', getRes);
 
-      if (getRes.data.length > 0) {
-        // If a token exists, update it
-        const tid = getRes.data[0]._id;
-        await API.put(`updatefcmtokenid/${tid}`, fcm_obj);
-        console.log('FCM token updated successfully');
-      } else {
-        // If no token exists, create a new one
-        await API.post(`createnewfcmtokenid`, fcm_obj);
+      if (getRes?.data.length === 0 || getRes.data[0]?.status !== 'success') {
+        // No existing token or status is not "success" - create a new token
+        const createRes = await API.post('createnewfcmtokenid', fcm_obj);
+        console.log('createRes', createRes);
         console.log('New FCM token created successfully');
+      } else {
+        console.log('Existing valid token found; no action needed.');
       }
     } catch (error) {
-      console.error('Error retrieving or saving FCM token:', error);
-      // Optionally show a toast or alert here to inform the user of the error
+      // console.error('Error retrieving or saving FCM token:', error);
+      // Optionally, notify the user of the error with a toast or alert
       // this.serverDownMsg.presentToast();
     }
   };
 
   useEffect(() => {
-    getToken();
-  }, []);
+    if (user && user.length > 0) {
+      getToken();
+    }
+  }, [user]);
 
   //Intro QuiZ sTARTS
   const [checkIntro, setCheckIntro] = useState(false);
@@ -717,35 +719,43 @@ const Home = ({navigation}, props) => {
   }, []);
 
   useEffect(() => {
-    if (user?.length > 0 && user[0]?.usertype) {
-      console.log('useEffect is triggered');
-      API.get(`getMaintainanceStatus/${user[0].usertype}`)
-        .then(response => {
+    const fetchMaintenanceStatus = async () => {
+      try {
+        if (user?.length > 0 && user[0]?.usertype) {
+          console.log('useEffect is triggered');
+          const response = await API.get(
+            // `getMaintainanceStatus/${user[0].usertype}`,
+            `getMaintainanceStatus/fellow`,
+          );
           console.log('getMaintainanceStatus', response.data);
           setMaintainanceStatus(response.data);
           setmaintainanceModal(response.data?.overallApp);
-        })
-        .catch(err => {
-          console.error('Error in API call', err);
-        });
-    }
-  }, [user]);
+        }
+      } catch (err) {
+        console.error('Error in API call', err);
+      }
+    };
+
+    fetchMaintenanceStatus();
+  }, []);
 
   useEffect(() => {
-    API.get(`getDboardSliders/${user[0]?.usertype}/${'image'}`).then(
-      response => {
-        // console.log('response------------------>', response.data);
-        setImageSlider(response.data);
-        // setAchieve(response.data);
-        // setMaintainanceStatus(response.data);
-        // setmaintainanceModal(response.data?.overallApp);
-        // setmaintainanceModal(false);
-      },
-      err => {
-        //
-      },
-    );
-  }, []);
+    if (user?.length > 0 && user[0]?.usertype) {
+      API.get(`getDboardSliders/${user[0]?.usertype}/${'image'}`).then(
+        response => {
+          // console.log('response------------------>', response.data);
+          setImageSlider(response.data);
+          // setAchieve(response.data);
+          // setMaintainanceStatus(response.data);
+          // setmaintainanceModal(response.data?.overallApp);
+          // setmaintainanceModal(false);
+        },
+        err => {
+          //
+        },
+      );
+    }
+  }, [user]);
 
   //Check acahievement data
 
@@ -1485,6 +1495,21 @@ const Home = ({navigation}, props) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentlyPlayingIndex, setCurrentlyPlayingIndex] = useState(null);
   const flatListRef = useRef(null);
+  // let currentIndex = 0;
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     if (flatListRef.current) {
+  //       currentIndex.current = (currentIndex.current + 1) % imageSlider.length;
+  //       flatListRef.current.scrollToIndex({
+  //         index: currentIndex.current,
+  //         animated: true,
+  //       });
+  //     }
+  //   }, 3000);
+
+  //   return () => clearInterval(interval); // Cleanup on component unmount
+  // }, [imageSlider.length]);
 
   useEffect(() => {
     API.get(`getDboardSliders/${user[0]?.usertype}/${'video'}`).then(
@@ -2115,7 +2140,8 @@ const Home = ({navigation}, props) => {
                     ) : null}
                   </View>
 
-                  <FlatList
+                  {/* <FlatList
+                    ref={flatListRef}
                     data={imageSlider}
                     horizontal
                     pagingEnabled
@@ -2127,11 +2153,18 @@ const Home = ({navigation}, props) => {
                       </TouchableOpacity>
                     )}
                     keyExtractor={(item, index) => index.toString()}
-                    onScroll={handleScroll}
                     snapToAlignment="center"
-                    decelerationRate="fast"
-                    style={{width: width}} // Set the width dynamically
-                  />
+                    snapToInterval={width - 40 + 10}
+                    decelerationRate="normal"
+                    style={styles.carousel}
+                    contentContainerStyle={styles.contentContainer}
+                    ItemSeparatorComponent={() => (
+                      <View style={styles.separator} />
+                    )}
+                    onScrollToIndexFailed={info => {
+                      console.warn('Index failed to scroll: ', info);
+                    }}
+                  /> */}
 
                   <View style={styles.view}>
                     <Text
@@ -3141,6 +3174,20 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     textAlign: 'center',
     fontFamily: FontFamily.poppinsMedium,
+  },
+  carousel: {
+    width: width,
+  },
+  contentContainer: {
+    paddingHorizontal: 20,
+    // Removed marginLeft from here, we'll control spacing with padding and separators
+  },
+  imageContainer: {
+    width: width - 80, // Ensure each image takes the full width minus spacing
+    overflow: 'hidden', // Prevent any overflow issues
+  },
+  separator: {
+    width: 30, // Gap between items
   },
 });
 

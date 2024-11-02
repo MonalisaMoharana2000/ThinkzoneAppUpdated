@@ -310,7 +310,7 @@ const StudentAttendance = ({navigation}) => {
                       ? navigation.navigate('studentAttendance', {})
                       : navigation.navigate('studentsattendance', {
                           takeAttendance: true,
-                          userid: user[0].userid,
+                          userid: user[0]?.userid,
                           studentcategory: 'app',
                           date: dob,
                           day: '',

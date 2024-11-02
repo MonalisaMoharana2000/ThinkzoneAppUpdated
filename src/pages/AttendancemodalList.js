@@ -51,13 +51,15 @@ const AttendancemodalList = ({navigation, route}) => {
   }, []);
   const dispatch = useDispatch();
   const user = useSelector(state => state.UserSlice.user);
-  const {userid, username} = user[0];
+
   const attendanceLists = useSelector(state => state.StudentSlice.students);
-  console.log();
+
   const [newStudentList, setNewStudentList] = useState([]);
   const [modal, setModal] = useState(false);
 
   const [attendanceCheck, setAttendanceCheck] = useState([]);
+  console.log('===========attendanceCheck', attendanceCheck);
+
   // useEffect(() => {
   //   setAttendanceCheck(attendanceLists);
   // }, [attendanceLists]);
@@ -70,6 +72,7 @@ const AttendancemodalList = ({navigation, route}) => {
         );
         console.log('res------>', res.data);
         setAttendanceCheck(res.data);
+        setNewStudentList(res.data);
       };
       fetchData();
     }, [attendanceLists]),
@@ -165,6 +168,7 @@ const AttendancemodalList = ({navigation, route}) => {
     // );
   }, []);
   const setAttendance = (item, atdStatus) => {
+    console.log('adsttus----->', atdStatus);
     //
     if (atdStatus == 'present') {
       item.presentbutton = true;
@@ -228,7 +232,7 @@ const AttendancemodalList = ({navigation, route}) => {
   // const selectedDate = useContext(DateContext);
 
   const selectedDate = route.params.date;
-  const filteredStudents = attendanceCheck?.filter(item => {
+  const filteredStudents = newStudentList?.filter(item => {
     const createdOnDate = moment(item.createdon);
     const routeDate = moment(route.params.date, 'DD-MM-YYYY');
     return createdOnDate.isSameOrBefore(routeDate, 'day');
@@ -288,6 +292,9 @@ const AttendancemodalList = ({navigation, route}) => {
       }
     }
   };
+
+  console.log('attendanceLists---->', filteredStudents);
+  console.log('newStudentList---->', newStudentList);
   // console.log(
   //   'attendanceLists------------------------------------>',
   //   attendanceLists,
@@ -439,7 +446,7 @@ const AttendancemodalList = ({navigation, route}) => {
             <Loading />
           ) : loader === false &&
             filteredStudents?.length === 0 &&
-            newStudentList.length === 0 ? (
+            attendanceCheck?.length === 0 ? (
             <View style={styles.imagecontainer}>
               <View>
                 <Image
@@ -518,7 +525,7 @@ const AttendancemodalList = ({navigation, route}) => {
                       Absent
                     </Text>
                   </View>
-                  {filteredStudents.map((item, index) => (
+                  {newStudentList?.map((item, index) => (
                     <View
                       style={{
                         width: window.WindowWidth * 0.9,

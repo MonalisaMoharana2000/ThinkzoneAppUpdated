@@ -116,7 +116,7 @@ const Header = ({route, navigation, handleClick}) => {
           setNotificationCount(res.data);
         }
 
-        const res2 = await Api.get(`getuserbyuserid/${userdatas[0]?.userid}`);
+        const res2 = await Api.get(`getuserbyuserid/${storageData[0]?.userid}`);
 
         console.log('res2------>', res2.data);
         if (res2.status === 200) {
@@ -125,7 +125,7 @@ const Header = ({route, navigation, handleClick}) => {
         }
       };
       fetchData();
-    }, [storageData, userdatas]),
+    }, [storageData]),
   );
   const [timespent_record, setTimeSpent_record] = useState({});
   // console.log('timespent_record---->', timespent_record);

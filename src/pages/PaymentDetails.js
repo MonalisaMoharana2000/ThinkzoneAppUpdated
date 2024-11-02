@@ -59,8 +59,6 @@ const PaymentDetails = ({route, navigation}) => {
   const [inputPaidAmount, setInputPaidAmount] = useState(0);
   const [paidAmount, setPayedAmount] = useState(0);
   const [paindingAmount, setPaindingAmount] = useState('');
-  // const isLoading = useSelector(state => state.Payment.isLoading);
-  const paymentStatus = useSelector(state => state.userdata.payments);
   const [isLoading, setIsLoading] = useState(false);
   // console.log('paymentStatus---->', paymentStatus);
 
@@ -68,17 +66,15 @@ const PaymentDetails = ({route, navigation}) => {
   const [inputAmount, setInputAmount] = useState(0);
   const [paymentRecord, setPaymentRecord] = useState([]);
   const Payment = useSelector(state => state.StudentSlice.students);
-  const teacherdata = useSelector(
-    state => state.UserSlice?.user?.data?.resData,
-  );
+  const teacherdata = useSelector(state => state.UserSlice?.user);
   const modalHeight = window.WindowHeigth * 0.9;
   const [modal, setModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [isEditingTotalPay, setIsEditingTotalPay] = useState(false);
 
-  useEffect(() => {
-    dispatch(studentstypes.getStudentStart(teacherdata[0].userid));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(studentstypes.getStudentStart(teacherdata[0].userid));
+  // }, []);
 
   // Get Payments Deatils.
   const getPayDetails = item => {
@@ -149,17 +145,39 @@ const PaymentDetails = ({route, navigation}) => {
     return () => backHandler.remove();
   }, []);
 
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     dispatch(types.getallpaymentsstart(paymentDetails.userid));
+  //   }, [closeModal]),
+  // );
+
+  // const studentDataPayment = useSelector(state => state.userdata.payments);
+  const [studentDataPayment, setStudentDataPayment] = useState([]);
+  const fetchData = async () => {
+    try {
+      const res = await API.get(
+        `getstudentswithpaymentdetails/${teacherdata[0]?.userid}`,
+      );
+      setStudentDataPayment(res?.data || []); // Ensure an array is set
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setStudentDataPayment([]); // Set an empty array on error
+    }
+  };
+
   useFocusEffect(
     React.useCallback(() => {
-      dispatch(types.getallpaymentsstart(paymentDetails.userid));
+      fetchData();
+      // dispatch(types.getallpaymentsstart(paymentDetails.userid));
     }, [closeModal]),
   );
+  // useEffect(() => {
+  //   fetchData();
+  // }, [closeModal]);
 
-  const studentDataPayment = useSelector(state => state.userdata.payments);
-
-  const selectedStudentData = studentDataPayment?.filter(
-    item => item?._id === paymentDetails._id,
-  );
+  const selectedStudentData = Array.isArray(studentDataPayment)
+    ? studentDataPayment.filter(item => item?._id === paymentDetails._id)
+    : [];
 
   console.log('selectedStudentData=================>', selectedStudentData);
 
@@ -303,10 +321,10 @@ const PaymentDetails = ({route, navigation}) => {
     }
   };
 
-  console.log(
-    'selectedStudentData[0].paymenthistory--------------------------------------->',
-    selectedStudentData[0].paymenthistory,
-  );
+  // console.log(
+  //   'selectedStudentData[0].paymenthistory--------------------------------------->',
+  //   selectedStudentData[0].paymenthistory,
+  // );
 
   const closeModal = () => {
     setCustomModal(false);
@@ -559,9 +577,9 @@ const PaymentDetails = ({route, navigation}) => {
                               marginRight: 34,
                               marginLeft: '6%',
                             }}>
-                            {selectedStudentData[0].totalpayment.totalamount}
+                            {selectedStudentData[0]?.totalpayment.totalamount}
                           </Text>
-                          {selectedStudentData[0].totalpayment.totalamount ===
+                          {selectedStudentData[0]?.totalpayment.totalamount ===
                           0 ? (
                             <>
                               <TouchableOpacity
@@ -742,7 +760,7 @@ const PaymentDetails = ({route, navigation}) => {
                           fontSize: 23,
                           textAlign: 'center',
                         }}>
-                        ₹ {selectedStudentData[0].totalpayment.totalamount}
+                        ₹ {selectedStudentData[0]?.totalpayment.totalamount}
                       </Text>
                       <Text
                         style={{
@@ -790,7 +808,7 @@ const PaymentDetails = ({route, navigation}) => {
                           fontWeight: '800',
                           fontSize: 23,
                         }}>
-                        ₹ {selectedStudentData[0].totalpayment.totalpaid}
+                        ₹ {selectedStudentData[0]?.totalpayment.totalpaid}
                       </Text>
                       <Text
                         style={{
@@ -850,8 +868,8 @@ const PaymentDetails = ({route, navigation}) => {
                           textAlign: 'center',
                         }}>
                         ₹{' '}
-                        {selectedStudentData[0].totalpayment.totalamount -
-                          selectedStudentData[0].totalpayment.totalpaid}
+                        {selectedStudentData[0]?.totalpayment.totalamount -
+                          selectedStudentData[0]?.totalpayment.totalpaid}
                       </Text>
                       <Text
                         style={{
@@ -990,7 +1008,7 @@ const PaymentDetails = ({route, navigation}) => {
                       Check all
                     </Text>
                   </View>
-                  {selectedStudentData[0].paymenthistory.map(item => (
+                  {selectedStudentData[0]?.paymenthistory.map(item => (
                     <>
                       {item.amount !== 0 ? (
                         <View

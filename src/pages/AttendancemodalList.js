@@ -10,8 +10,8 @@ import {
   Image,
   Modal,
   Dimensions,
-  BackHandler,
   ScrollView,
+  BackHandler,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState, useEffect, useContext, createContext} from 'react';
@@ -31,9 +31,6 @@ import API from '../environment/Api';
 
 const AttendancemodalList = ({navigation, route}) => {
   const [attendanceList, setAttendanceList] = useState([]);
-
-  const students = route.params;
-  console.log('===students', students);
 
   const [loader, setLoader] = useState(null);
   useEffect(() => {
@@ -56,42 +53,27 @@ const AttendancemodalList = ({navigation, route}) => {
   const user = useSelector(state => state.UserSlice.user);
   const {userid, username} = user[0];
   const attendanceLists = useSelector(state => state.StudentSlice.students);
-
+  console.log();
   const [newStudentList, setNewStudentList] = useState([]);
-
-  console.log('newStudentList-------->', user);
-
   const [modal, setModal] = useState(false);
 
-  const [attendanceCheck, setAttendanceCheck] = useState(
-    route?.params?.attendanceData ? route?.params?.attendanceData : [],
-  );
-  console.log('attendance check-------->', attendanceCheck);
+  const [attendanceCheck, setAttendanceCheck] = useState([]);
+  // useEffect(() => {
+  //   setAttendanceCheck(attendanceLists);
+  // }, [attendanceLists]);
 
   useFocusEffect(
     React.useCallback(() => {
       const fetchData = async () => {
         const res = await API.get(
-          `getattendanceofteacherbydate/${user[0]?.userid}/${
-            route.params.date ? route.params.date : students?.date
-          }`,
+          `getattendanceofteacherbydate/${route.params.userid}/${route.params.date}`,
         );
-        console.log('attendance check2-------->', res.data);
-        const uniqueAttendance = res.data.filter(
-          (entry, index, self) =>
-            index === self.findIndex(e => e.studentid === entry.studentid),
-        );
-
-        setAttendanceCheck(uniqueAttendance);
+        console.log('res------>', res.data);
+        setAttendanceCheck(res.data);
       };
-
       fetchData();
-    }, [route.params.date]),
+    }, [attendanceLists]),
   );
-
-  // useEffect(() => {
-  //   setAttendanceCheck(attendanceLists);
-  // }, [attendanceLists]);
 
   let totalStudent = 0;
   let unattended = 0;
@@ -156,8 +138,25 @@ const AttendancemodalList = ({navigation, route}) => {
     setNewStudentList(attendanceCheck);
   }, [studentforattendance]);
 
+  // useEffect(() => {
+
+  //   // dispatch(
+  //   //   studenttypes.getAttendanceListStart({
+  //   //     userid: route.params.userid,
+  //   //     attendancedate: route.params.date,
+  //   //   }),
+  //   // );
+  // }, []);
+
   useEffect(() => {
     const studentcategory = 'app';
+
+    const fetchData = () => {
+      const res = API.get(
+        `getactivemaasterstudentsbyuseridbycategory/${route.params.userid}/${studentcategory}`,
+      );
+    };
+    fetchData();
     // dispatch(
     //   studenttypes.getStudentListforAttendanceStart({
     //     userid: route.params.userid,
@@ -235,42 +234,37 @@ const AttendancemodalList = ({navigation, route}) => {
     return createdOnDate.isSameOrBefore(routeDate, 'day');
   });
 
-  // const filteredNames = filteredStudents.map(item => {
-  //   return {name: item.studentname, createdOn: item.createdon};
-  // });
+  const filteredNames = filteredStudents.map(item => {
+    return {name: item.studentname, createdOn: item.createdon};
+  });
 
-  // const allStudents = newStudentList.map(item => {
-  //   return {name: item.studentname, createdOn: item.createdon};
-  // });
+  const allStudents = newStudentList.map(item => {
+    return {name: item.studentname, createdOn: item.createdon};
+  });
 
   const saveBut = async () => {
     {
       if (attendanceList.length === filteredStudents.length) {
+        console.log('attendanceList--->', attendanceList);
         setLoader(true);
 
-        const res = await API.post(`saveattendance`, attendanceList);
-        console.log('save res--------->', res);
-        console.log('attendanceList----------->', attendanceList);
-
+        const resp = await API.post(`saveattendance`, attendanceList);
+        console.log('resp-------->', resp.data);
         // dispatch(studenttypes.postAttendanceStart(attendanceList));
-        AsyncStorage.setItem(
-          'offlineAttendanceList',
-          JSON.stringify(attendanceList),
-        );
+        // AsyncStorage.setItem(
+        //   'offlineAttendanceList',
+        //   JSON.stringify(attendanceList),
+        // );
         // navigation.navigate('home')
         // navigation.navigate('studentAttendance')
-        if (res?.data?.status === 'success') {
+        if (navigation.canGoBack()) {
           setModal(true);
-          navigation.navigate('studentAttendance');
+          setTimeout(() => {
+            setLoader(false);
+            // navigation.goBack();
+            navigation.navigate('studentAttendance');
+          }, 3000);
         }
-        // if (navigation.canGoBack()) {
-        //   setModal(true);
-        //   setTimeout(() => {
-        //     setLoader(false);
-        //     // navigation.goBack();
-        //     navigation.navigate('studentAttendance');
-        //   }, 3000);
-        // }
       } else {
         Alert.alert(
           'ଧ୍ୟାନ ଦିଅନ୍ତୁ! ',
@@ -445,7 +439,7 @@ const AttendancemodalList = ({navigation, route}) => {
             <Loading />
           ) : loader === false &&
             filteredStudents?.length === 0 &&
-            attendanceCheck?.length === 0 ? (
+            newStudentList.length === 0 ? (
             <View style={styles.imagecontainer}>
               <View>
                 <Image
@@ -460,7 +454,7 @@ const AttendancemodalList = ({navigation, route}) => {
           ) : (
             <View style={styles.container}>
               {/* <Header /> */}
-              {route.params.takeAttendance && attendanceCheck?.length > 0 ? (
+              {route.params.takeAttendance && filteredStudents.length > 0 ? (
                 <View>
                   <Text
                     style={{
@@ -524,7 +518,7 @@ const AttendancemodalList = ({navigation, route}) => {
                       Absent
                     </Text>
                   </View>
-                  {attendanceCheck?.map((item, index) => (
+                  {filteredStudents.map((item, index) => (
                     <View
                       style={{
                         width: window.WindowWidth * 0.9,
@@ -688,7 +682,7 @@ const AttendancemodalList = ({navigation, route}) => {
 
                   {/* <ButtonComponent buttonName={'SAVE'} buttonPressed={saveBut} /> */}
                   {!loader &&
-                  attendanceCheck.length > 0 &&
+                  attendanceCheck?.length > 0 &&
                   filteredStudents.length > 0 ? (
                     <TouchableOpacity style={styles.button} onPress={saveBut}>
                       <Text style={styles.text}>SAVE</Text>

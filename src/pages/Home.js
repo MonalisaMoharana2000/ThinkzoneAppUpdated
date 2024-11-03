@@ -55,6 +55,7 @@ const Home = ({navigation}, props) => {
   const [deviceId, setDeviceId] = useState('');
   const user = useSelector(state => state.UserSlice?.user);
   const [storageData, setStorageData] = useState([]);
+  const [tokenRetrieved, setTokenRetrieved] = useState(false);
   console.log('storageData----->', storageData);
   console.log('user1----->', user);
   const fetchStoredData = async () => {
@@ -429,6 +430,8 @@ const Home = ({navigation}, props) => {
 
   const getToken = async () => {
     try {
+      if (tokenRetrieved) return; // Exit if token was already retrieved
+
       // Retrieve the FCM token
       const token = await messaging().getToken();
       console.log('================token', token);
@@ -436,7 +439,7 @@ const Home = ({navigation}, props) => {
       // Define the large icon based on platform
       const largeIcon =
         Platform.OS === 'android'
-          ? '@drawable/ic_notification' // Replace with the actual drawable resource name for Android
+          ? '@drawable/ic_notification'
           : 'ic_notification';
 
       // Create the FCM object
@@ -444,37 +447,38 @@ const Home = ({navigation}, props) => {
         userid: user[0]?.userid,
         username: user[0]?.username,
         token: token,
-        refresh_token: token, // Adjust as needed if you have a different refresh token
+        refresh_token: token,
         largeIcon: largeIcon,
       };
-
       console.log('fcm_obj------->', fcm_obj);
 
-      // Retrieve existing token data for this user
-      const userId = user[0]?.userid;
-      const getRes = await API.get(`getfcmtokenidbyuserid/${userId}`);
-      console.log('getRes', getRes);
+      // Check if the user has an existing FCM token
+      const getRes = await API.get(`getfcmtokenidbyuserid/${user[0]?.userid}`);
+      console.log('getRes', getRes.data);
 
-      if (getRes?.data.length === 0 || getRes.data[0]?.status !== 'success') {
-        // No existing token or status is not "success" - create a new token
-        const createRes = await API.post('createnewfcmtokenid', fcm_obj);
-        console.log('createRes', createRes);
-        console.log('New FCM token created successfully');
+      if (getRes?.data?.length > 0 && getRes.data?.status == 'success') {
+        // If a token exists, update it
+        const tid = getRes?.data[0]?._id;
+        console.log('updatefcmtokenid_id', tid);
+        await API.put(`updatefcmtokenid/${tid}`, fcm_obj);
+        console.log('FCM token updated successfully');
       } else {
-        console.log('Existing valid token found; no action needed.');
+        // If no token exists, create a new one
+        await API.post(`createnewfcmtokenid`, fcm_obj);
+        console.log('New FCM token created successfully');
       }
+
+      setTokenRetrieved(true); // Mark as token retrieved to prevent further calls
     } catch (error) {
-      // console.error('Error retrieving or saving FCM token:', error);
-      // Optionally, notify the user of the error with a toast or alert
-      // this.serverDownMsg.presentToast();
+      console.error('Error retrieving or saving FCM token:', error);
     }
   };
 
   useEffect(() => {
-    if (user && user.length > 0) {
+    if (user && user.length > 0 && !tokenRetrieved) {
       getToken();
     }
-  }, [user]);
+  }, [user, tokenRetrieved]);
 
   //Intro QuiZ sTARTS
   const [checkIntro, setCheckIntro] = useState(false);

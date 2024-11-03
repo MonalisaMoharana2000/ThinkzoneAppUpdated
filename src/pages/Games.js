@@ -16,8 +16,8 @@ import Norecord from '../components/Norecord';
 
 const Games = ({navigation, route}) => {
   const data = route.params?.data?.topicData || [];
-  const user = useSelector(state => state.UserSlice.user);
-  const {userid} = user[0];
+  const user = useSelector(state => state.UserSlice?.user);
+  // const {userid} = user[0];
 
   const [gamifiedData, setGamifiedData] = useState([]);
   console.log('====================================gamifiedData', gamifiedData);
@@ -28,9 +28,9 @@ const Games = ({navigation, route}) => {
     React.useCallback(() => {
       const fetchData = async () => {
         try {
-          console.log('userid---------------->', userid, data[0]?.topicId);
+          // console.log('userid---------------->', userid, data[0]?.topicId);
           const responseGamified = await Api.get(
-            `/getTchTrainingGamified/${userid}/gamified/${data[0]?.topicId}`,
+            `/getTchTrainingGamified/${user[0]?.userid}/gamified/${data[0]?.topicId}`,
           );
 
           setGamifiedData(

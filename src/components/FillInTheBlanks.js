@@ -19,7 +19,7 @@ const windowHeight = Dimensions.get('window').height;
 const FillInTheBlank = ({navigation, route}) => {
   const [gamifiedData, setGamifiedData] = useState([]);
   const [questions, setQuestions] = useState([]);
-
+  console.log('questions------->', questions);
   const [selectedBlank, setSelectedBlank] = useState(null);
   const [loading, setLoading] = useState(true); // Loader state
   //   const user = useSelector(state => state.userdata.user?.resData);
@@ -52,6 +52,11 @@ const FillInTheBlank = ({navigation, route}) => {
     }, [userid, data.topicData]),
   );
 
+  const filteredData = gamifiedData?.filter(
+    item => item.gameType === 'fillInBlanks',
+  );
+
+  console.log('Filtered Data:', filteredData);
   useEffect(() => {
     if (gamifiedData.length > 0) {
       const formattedQuestions = gamifiedData
@@ -64,6 +69,7 @@ const FillInTheBlank = ({navigation, route}) => {
               text: fillInBlank.text,
               options: fillInBlank.options,
               selectedOption: null,
+              correctInput: fillInBlank?.correctInput,
               selectedOptions: Array(fillInBlank.correctInput.length).fill(
                 null,
               ),
@@ -75,7 +81,9 @@ const FillInTheBlank = ({navigation, route}) => {
     }
   }, [gamifiedData]);
 
-  const handleOptionClick = (questionId, option) => {
+  const handleOptionClick = (questionId, option, questionData) => {
+    console.log('questionId---->', questionId, questionData);
+
     const question = questions.find(q => q.id === questionId);
 
     // Alert for already selected options in paragraph type
@@ -93,7 +101,20 @@ const FillInTheBlank = ({navigation, route}) => {
     if (selectedBlank === null) {
       setQuestions(prevQuestions =>
         prevQuestions.map(q =>
-          q.id === questionId ? {...q, selectedOption: option} : q,
+          q.id === questionId
+            ? {
+                ...q,
+                selectedOption: option,
+                userInput: {
+                  blank: questionData?.correctInput?.blank || 1,
+                  answer: option,
+                  correct:
+                    questionData?.correctInput[0].answer === option
+                      ? true
+                      : false,
+                },
+              }
+            : q,
         ),
       );
     } else {
@@ -105,6 +126,12 @@ const FillInTheBlank = ({navigation, route}) => {
                 selectedOptions: q.selectedOptions.map((opt, idx) =>
                   idx === selectedBlank ? option : opt,
                 ),
+                userInput: {
+                  // Add userInput property here as well
+                  blank: selectedBlank + 1,
+                  answer: option,
+                  correct: false, // Update as needed
+                },
               }
             : q,
         ),
@@ -226,14 +253,22 @@ const FillInTheBlank = ({navigation, route}) => {
       });
 
     console.log('userInputData--------->', userInputData);
-
-    const updateData = userInputData.map(item => ({
+    console.log('question check--------->', questions);
+    const updateData = userInputData?.map(item => ({
       ...item,
       answered: true,
-      // Ensure we're using the correct inputAnswer array for each item
-      inputAnswer: item.fillInBlanksArr.flatMap(
-        fillInBlank => fillInBlank.inputAnswer,
-      ), // Collecting all answers from the fillInBlanksArr
+      fillInBlanksArr: item.fillInBlanksArr.map(blankItem => ({
+        text: blankItem.text,
+        correctInput: blankItem.correctInput,
+        options: blankItem.options,
+        userInput: blankItem.userInput,
+      })),
+      inputAnswer: item.fillInBlanksArr.map(blankItem => ({
+        text: blankItem.text,
+        correctInput: blankItem.correctInput,
+        options: blankItem.options,
+        userInput: blankItem.userInput,
+      })),
     }));
 
     const submissionPayload = {
@@ -252,6 +287,12 @@ const FillInTheBlank = ({navigation, route}) => {
       appVersion: Version,
     };
 
+    console.log('updateData---->', updateData[0]?.fillInBlanksArr);
+    console.log(
+      'updateData2---->',
+      updateData[0]?.fillInBlanksArr[0]?.correctInput,
+    );
+    console.log('updateData1---->', updateData);
     // Use JSON.stringify to expand and view the full object structure
     console.log(
       'Submission Payload:',
@@ -259,38 +300,38 @@ const FillInTheBlank = ({navigation, route}) => {
     );
 
     // Uncomment the API call to submit data
-    // Api.post(`saveTransTchTrainingGamified`, submissionPayload)
-    //   .then(res => {
-    //     if (res.status === 200 || res.status === 201) {
-    //       console.log('Woo hoo, success');
-    //       Alert.alert(
-    //         '🎉 Success',
-    //         'ଆପଣଙ୍କର ଉତ୍ତର ସଫଳତାର ସହିତ ସଂରକ୍ଷିତ ହୋଇଛି! ✅',
-    //         [
-    //           {
-    //             text: 'ବହୁତ ଭଲ 🚀',
-    //             style: 'default',
-    //           },
-    //         ],
-    //         {cancelable: true},
-    //       );
-    //       navigation.goBack();
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log('oh no...error');
-    //     Alert.alert(
-    //       '❌ ତ୍ରୁଟି',
-    //       `କିଛି ଭୁଲ ହୋଇଗଲା, ଦୟାକରି କିଛି ସମୟ ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।`,
-    //       [
-    //         {
-    //           text: 'ଠିକ ଅଛି 😟',
-    //           style: 'default',
-    //         },
-    //       ],
-    //       {cancelable: true},
-    //     );
-    //   });
+    Api.post(`saveTransTchTrainingGamified`, submissionPayload)
+      .then(res => {
+        if (res.status === 200 || res.status === 201) {
+          console.log('Woo hoo, success');
+          Alert.alert(
+            '🎉 Success',
+            'ଆପଣଙ୍କର ଉତ୍ତର ସଫଳତାର ସହିତ ସଂରକ୍ଷିତ ହୋଇଛି! ✅',
+            [
+              {
+                text: 'ବହୁତ ଭଲ 🚀',
+                style: 'default',
+              },
+            ],
+            {cancelable: true},
+          );
+          navigation.goBack();
+        }
+      })
+      .catch(error => {
+        console.log('oh no...error');
+        Alert.alert(
+          '❌ ତ୍ରୁଟି',
+          `କିଛି ଭୁଲ ହୋଇଗଲା, ଦୟାକରି କିଛି ସମୟ ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।`,
+          [
+            {
+              text: 'ଠିକ ଅଛି 😟',
+              style: 'default',
+            },
+          ],
+          {cancelable: true},
+        );
+      });
   };
 
   return (
@@ -299,8 +340,8 @@ const FillInTheBlank = ({navigation, route}) => {
         <View style={styles.loaderContainer}>
           <Loading />
         </View>
-      ) : (
-        questions.map((question, index) => (
+      ) : filteredData[0]?.answered === true ? (
+        filteredData[0]?.fillInBlanksArr?.map((question, index) => (
           <View key={question.id} style={styles.questionContainer}>
             <Text style={styles.serialNumber}>{index + 1}.</Text>
             {question.type === 'single' ? (
@@ -341,7 +382,10 @@ const FillInTheBlank = ({navigation, route}) => {
                               : '#ffffff',
                         },
                       ]}
-                      onPress={() => handleOptionClick(question.id, option)}>
+                      // onPress={() =>
+                      //   handleOptionClick(question.id, option, question)
+                      // }
+                    >
                       <Text style={styles.optionButtonText}>{option}</Text>
                     </TouchableOpacity>
                   ))}
@@ -400,7 +444,128 @@ const FillInTheBlank = ({navigation, route}) => {
                           onPress={() =>
                             handleOptionClick(question.id, option)
                           }>
-                          <Text style={styles.optionButtonText}>{option}</Text>
+                          {/* <Text style={styles.optionButtonText}>{option}</Text> */}
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                    {/* Place reset button below options */}
+                    <TouchableOpacity
+                      onPress={() => resetParagraphOptions(question.id)}
+                      style={styles.resetButton}>
+                      <Text style={styles.resetButtonText}>
+                        Reset Paragraph
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </>
+            )}
+          </View>
+        ))
+      ) : (
+        questions.map((question, index) => (
+          <View key={question.id} style={styles.questionContainer}>
+            <Text style={styles.serialNumber}>{index + 1}.</Text>
+            {question.type === 'single' ? (
+              <View>
+                <TouchableOpacity style={styles.questionButton}>
+                  <Text style={styles.questionText}>
+                    {question.text
+                      .split('__________')
+                      .map((part, partIndex) => (
+                        <React.Fragment key={partIndex}>
+                          {part}
+                          {partIndex !==
+                            question.text.split('__________').length - 1 && (
+                            <Text
+                              style={[
+                                styles.blank,
+                                {
+                                  textDecorationLine: 'underline',
+                                },
+                              ]}>
+                              {question.selectedOption || '__________'}
+                            </Text>
+                          )}
+                        </React.Fragment>
+                      ))}
+                  </Text>
+                </TouchableOpacity>
+                <View style={styles.optionList}>
+                  {question.options.map((option, optIndex) => (
+                    <TouchableOpacity
+                      key={optIndex}
+                      style={[
+                        styles.optionButton,
+                        {
+                          backgroundColor:
+                            question.selectedOption === option
+                              ? '#d1e7dd'
+                              : '#ffffff',
+                        },
+                      ]}
+                      onPress={() =>
+                        handleOptionClick(question.id, option, question)
+                      }>
+                      <Text style={styles.optionButtonText}>{option}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
+            ) : (
+              <>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    paddingBottom: '10%',
+                  }}>
+                  <View>
+                    <View style={styles.questionButton}>
+                      <Text style={styles.questionText}>
+                        {question.text
+                          .split('__________')
+                          .map((part, partIndex) => (
+                            <React.Fragment key={partIndex}>
+                              {part}
+                              {partIndex !==
+                                question.text.split('__________').length -
+                                  1 && (
+                                <Text
+                                  onPress={() =>
+                                    handleBlankClick(question.id, partIndex)
+                                  }
+                                  style={[
+                                    styles.blank,
+                                    {
+                                      textDecorationLine: 'underline',
+                                    },
+                                  ]}>
+                                  {question.selectedOptions[partIndex] ||
+                                    '__________'}
+                                </Text>
+                              )}
+                            </React.Fragment>
+                          ))}
+                      </Text>
+                    </View>
+                    <View style={styles.optionList}>
+                      {question.options.map((option, optIndex) => (
+                        <TouchableOpacity
+                          key={optIndex}
+                          style={[
+                            styles.optionButton,
+                            {
+                              backgroundColor:
+                                question.selectedOptions.includes(option)
+                                  ? '#d1e7dd'
+                                  : '#ffffff',
+                            },
+                          ]}
+                          onPress={() =>
+                            handleOptionClick(question.id, option)
+                          }>
+                          {/* <Text style={styles.optionButtonText}>{option}</Text> */}
                         </TouchableOpacity>
                       ))}
                     </View>

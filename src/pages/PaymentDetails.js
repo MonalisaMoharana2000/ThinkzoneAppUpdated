@@ -153,6 +153,8 @@ const PaymentDetails = ({route, navigation}) => {
 
   // const studentDataPayment = useSelector(state => state.userdata.payments);
   const [studentDataPayment, setStudentDataPayment] = useState([]);
+  console.log('studentDataPayment', studentDataPayment);
+
   const fetchData = async () => {
     try {
       const res = await API.get(
@@ -176,7 +178,7 @@ const PaymentDetails = ({route, navigation}) => {
   // }, [closeModal]);
 
   const selectedStudentData = Array.isArray(studentDataPayment)
-    ? studentDataPayment.filter(item => item?._id === paymentDetails._id)
+    ? studentDataPayment?.filter(item => item?._id === paymentDetails._id)
     : [];
 
   console.log('selectedStudentData=================>', selectedStudentData);
@@ -336,7 +338,7 @@ const PaymentDetails = ({route, navigation}) => {
 
   const openModal = () => {
     setInputTotalAmount(
-      selectedStudentData[0].totalpayment.totalamount.toString(),
+      selectedStudentData[0]?.totalpayment?.totalamount.toString(),
     );
     setUpdateModal(true);
   };

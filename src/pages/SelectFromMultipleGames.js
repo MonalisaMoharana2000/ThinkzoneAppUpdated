@@ -20,9 +20,10 @@ import {useSelector, useDispatch} from 'react-redux';
 import {ScrollView} from 'react-native-gesture-handler';
 import * as SIZES from '../utils/dimensions';
 import * as window from '../utils/dimensions';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import {FontFamily, Color} from '../GlobalStyle';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+
 import Nocontents from '../components/Nocontents';
 const audioPlayer = new AudioRecorderPlayer();
 import Video from 'react-native-video';
@@ -35,11 +36,16 @@ const Quiz = ({route}) => {
     user[0];
   const [selectedOption, setSelectedOption] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState(
+    Array(options?.length).fill(null),
+  ); // Track selected options
+
   const [showCorrectAnswer, setShowCorrectAnswer] = useState([]);
-  console.log('showCorrectAnswer-------->', showCorrectAnswer);
+  console.log('showCorrectAnswer-------->', selectedOptions);
+  const [isPlaying, setIsPlaying] = useState(null);
   const [updatedAnswer, setUpdatedAnswer] = useState([]);
   const [loadingImage, setLoadingImage] = useState(false);
+  const [isLoader, setIsLoader] = useState(false);
   const logOutZoomState = (event, gestureState, zoomableViewEventObject) => {};
   const data = route?.params?.match;
   const gameData = route?.params?.gamifiedData;
@@ -164,7 +170,7 @@ const Quiz = ({route}) => {
     optionC: options.optionC || '',
     optionD: options.optionD || '',
   };
-  console.log('updatedOptions----->', updatedOptions);
+  console.log('updatedOptions----->', options);
 
   const stopPlayback = async item => {
     console.log('stop----->', item);
@@ -186,6 +192,37 @@ const Quiz = ({route}) => {
       console.log(' playing audio:', path);
     } catch (error) {
       console.log('Error playing audio:', error);
+    }
+  };
+
+  const startOptionPlayback = async key => {
+    console.log('key--->', key);
+    try {
+      // Stop any currently playing audio
+      if (isPlaying) {
+        await stopPlayback(isPlaying);
+      }
+      // Start new audio
+      const path = updatedOptions[key];
+      console.log('path--->', path);
+
+      await audioPlayer.startPlayer(path);
+      setIsPlaying(key);
+      console.log('Playing audio:', path);
+    } catch (error) {
+      console.log('Error playing audio:', error);
+    }
+  };
+
+  const stopOptionPlayback = async key => {
+    console.log('Stopping audio for:', key);
+    try {
+      setIsLoader(true);
+      await audioPlayer.stopPlayer();
+      setIsPlaying(null);
+      setIsLoader(false);
+    } catch (error) {
+      console.log('Error stopping audio:', error);
     }
   };
 
@@ -443,11 +480,10 @@ const Quiz = ({route}) => {
             )
             .map((key, index) => (
               <TouchableOpacity
-              disabled={
-                options.optionMediaType !== 'image' ||
-                Boolean(selectedOptions[currentQuestionIndex])
-              }
-              
+                disabled={
+                  options.optionMediaType !== 'image' ||
+                  Boolean(selectedOptions[currentQuestionIndex])
+                }
                 key={index}
                 onPress={() => handleOptionPress(key)}
                 style={{
@@ -480,6 +516,71 @@ const Quiz = ({route}) => {
                       alignSelf: 'center',
                     }}
                   />
+                ) : options.optionMediaType === 'audio' ? (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => {
+                      if (isPlaying === key) {
+                        // If the same option is clicked while playing, stop the audio
+                        stopOptionPlayback(key);
+                      } else {
+                        // Start playback for the selected option and stop any currently playing audio
+                        // if (isPlaying) stopOptionPlayback();
+                        startOptionPlayback(key);
+                      }
+                      setSelectedOptions(prevState => {
+                        const newState = [...prevState];
+                        newState[currentQuestionIndex] = key; // Set the selected option for the current question index
+                        return newState;
+                      });
+                    }}
+                    style={{
+                      backgroundColor:
+                        selectedOptions[currentQuestionIndex] === key
+                          ? '#32cd32'
+                          : 'white', // Set background color based on selection
+                      paddingVertical: 20,
+                      paddingHorizontal: 15,
+                      borderRadius: 12,
+                      borderWidth:
+                        selectedOptions[currentQuestionIndex] === key ? 0 : 1,
+                      borderColor: '#ccc',
+                      shadowColor: 'black',
+                      shadowOffset: {width: 2, height: 2},
+                      shadowOpacity: 0.2,
+                      shadowRadius: 4,
+                      width: '100%',
+                      elevation: 5,
+                    }}>
+                    {/* Display audio status image */}
+                    <TouchableOpacity
+                      onPress={() => {
+                        if (isPlaying === key) {
+                          stopOptionPlayback(key); // Stop audio if image is clicked while playing
+                        }
+                      }}>
+                      <Image
+                        source={
+                          isPlaying === key
+                            ? require('../assets/Image/waves.gif') // Image for playing audio
+                            : require('../assets/Image/Player.png') // Default image
+                        }
+                        style={{width: 30, height: 30, marginRight: 10}}
+                      />
+                    </TouchableOpacity>
+                    <Text
+                      style={{
+                        fontSize: 16,
+                        fontWeight: '600',
+                        color:
+                          selectedOptions[currentQuestionIndex] === key
+                            ? 'white'
+                            : '#333',
+                        textAlign: 'left',
+                      }}>
+                      {updatedOptions[key]}
+                    </Text>
+                  </TouchableOpacity>
                 ) : (
                   <TouchableOpacity
                     key={index}

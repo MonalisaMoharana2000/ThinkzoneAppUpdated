@@ -9,6 +9,8 @@ import {
   Button,
   StyleSheet,
   Alert,
+  Modal,
+  StatusBar,
 } from 'react-native';
 import RadioForm, {
   RadioButton,
@@ -59,6 +61,7 @@ const Quiz = ({route}) => {
 
   const [questions, setQuestions] = useState(updated);
   const [modalVisible, setModalVisible] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(false);
   console.log('====================================questions', questions);
 
   const topicData = route?.params?.topicData;
@@ -246,9 +249,12 @@ const Quiz = ({route}) => {
       console.log('Error stopping audio:', error);
     }
   };
-
+  const [nowPlayingUrl, setNowPlayingUrl] = useState('');
+  console.log('nowPlayingUrl---->', nowPlayingUrl);
+  const [playbackRate, setPlaybackRate] = useState(1.0);
   const openVideoModal = item => {
-    setNowPlayingUrl(item.questionMedia);
+    console.log('item---->', item);
+    setNowPlayingUrl(item.gameQuestionMedia);
     Orientation.lockToLandscape();
     setModalVisible(true);
   };
@@ -471,7 +477,7 @@ const Quiz = ({route}) => {
               )}
               <Video
                 source={{
-                  uri: updatedOptions[key],
+                  uri: nowPlayingUrl,
                 }}
                 style={{
                   width: '100%',

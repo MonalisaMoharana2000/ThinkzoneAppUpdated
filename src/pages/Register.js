@@ -142,11 +142,20 @@ const Register = ({navigation, route}) => {
   const [error, setError] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
   const onDateChange = (event, selectedDate) => {
-    setShowPicker(false); // Close the picker when a date is selected
-    if (selectedDate) {
-      setDob(moment(selectedDate).format('DD-MM-YYYY')); // Format and set the date
+    const currentDate = selectedDate || dob;
+    setShowPicker(false);
+
+    // Only update the date if it is valid
+    if (currentDate) {
+      const selectedYear = currentDate.getFullYear();
+      if (selectedYear <= 2016) {
+        setDob(currentDate); // Update the state with the new date if valid
+      } else {
+        alert("Please select a date no later than 2016."); // Alert for invalid date selection
+      }
     }
   };
+
 
   // Show DatePicker
   const showDatepicker = () => {
@@ -803,6 +812,30 @@ const Register = ({navigation, route}) => {
       }
     }
   };
+  const signOut = async () => {
+    navigation.navigate("Login")
+    // try {
+    //   await GoogleSignin.signOut();
+    //   // dispatch(types.logOutUser());
+    //   dispatch(clearUser());
+   
+    // } catch (error) {
+    //   if (error.response.status === 413) {
+    //     console.log('error is---------------->', error);
+    //     Alert.alert('The entity is too large !');
+    //   } else if (error.response.status === 504) {
+    //     console.log('Error is--------------------->', error);
+    //     Alert.alert('Gateway Timeout: The server is not responding!');
+    //   } else if (error.response.status === 500) {
+    //     console.error('Error is------------------->:', error);
+    //     Alert.alert(
+    //       'Internal Server Error: Something went wrong on the server.',
+    //     );
+    //   } else {
+    //     console.error('Error is------------------->:', error);
+    //   }
+    // }
+  };
 
   useEffect(() => {
     const backAction = () => {
@@ -829,28 +862,7 @@ const Register = ({navigation, route}) => {
     return () => backHandler.remove();
   }, []);
 
-  const signOut = async () => {
-    try {
-      await GoogleSignin.signOut();
-      // dispatch(types.logOutUser());
-      dispatch(types.clearUser());
-    } catch (error) {
-      if (error.response.status === 413) {
-        console.log('error is---------------->', error);
-        Alert.alert('The entity is too large !');
-      } else if (error.response.status === 504) {
-        console.log('Error is--------------------->', error);
-        Alert.alert('Gateway Timeout: The server is not responding!');
-      } else if (error.response.status === 500) {
-        console.error('Error is------------------->:', error);
-        Alert.alert(
-          'Internal Server Error: Something went wrong on the server.',
-        );
-      } else {
-        console.error('Error is------------------->:', error);
-      }
-    }
-  };
+ 
 
   return (
     <>
@@ -1100,48 +1112,47 @@ const Register = ({navigation, route}) => {
                 />
                 <ErrorMessage visible={phoneError} error={t('phone_error')} />
                 <View
-                  style={{
-                    marginVertical: 5,
-                    flexDirection: 'row',
-                    paddingBottom: 15,
-                    marginBottom: 17,
-                    marginHorizontal: -1,
-                    paddingHorizontal: 11,
-                    marginLeft: -22,
-                    borderRadius: 15,
-                    backgroundColor: '#f3f2ff',
-                  }}>
-                  <TouchableOpacity onPress={showDatepicker}>
-                    <View>
-                      <MaterialCommunityIcons
-                        name="calendar"
-                        size={26}
-                        color={'#808080'}
-                        style={{marginRight: 12, top: 13}}
-                      />
-                    </View>
+      style={{
+        marginVertical: 5,
+        flexDirection: 'row',
+        paddingBottom: 15,
+        marginBottom: 17,
+        marginHorizontal: -1,
+        paddingHorizontal: 11,
+        marginLeft: -22,
+        borderRadius: 15,
+        backgroundColor: '#f3f2ff',
+      }}
+    >
+      <TouchableOpacity onPress={showDatepicker}>
+        <View>
+          <MaterialCommunityIcons
+            name="calendar"
+            size={26}
+            color={'#808080'}
+            style={{ marginRight: 12, top: 13 }}
+          />
+        </View>
 
-                    <View style={{marginLeft: 39, top: -9}}>
-                      {/* Display the selected date or placeholder */}
-                      <Text style={{color: dob ? 'black' : 'gray'}}>
-                        {dob ? moment(dob).format('DD/MM/YYYY') : 'DD/MM/YYYY'}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                  {showPicker && (
-                    <DateTimePicker
-                      value={
-                        dob ? moment(dob, 'DD-MM-YYYY').toDate() : new Date()
-                      }
-                      mode="date"
-                      display="default"
-                      // minimumDate={minDate}
-                      // maximumDate={maxDate}
-                      onChange={onDateChange}
-                    />
-                  )}
-                  {/* DateTimePicker component - separate from TouchableOpacity */}
-                </View>
+        <View style={{ marginLeft: 39, top: -9 }}>
+          {/* Display the selected date or placeholder */}
+          <Text style={{ color: dob ? 'black' : 'gray' }}>
+            {dob ? moment(dob).format('DD/MM/YYYY') : 'DD/MM/YYYY'}
+          </Text>
+        </View>
+      </TouchableOpacity>
+      {showPicker && (
+        <DateTimePicker
+          value={dob ? moment(dob).toDate() : new Date()} // Ensure correct parsing
+          mode="date"
+          display="default"
+          onChange={onDateChange}
+          maximumDate={new Date(2016, 11, 31)} // Set maximum date to December 31, 2016
+        />
+      )}
+    </View>
+
+
 
                 <ErrorMessage visible={dobError} error={t('dob_error')} />
                 {/*Picker for Qualification */}

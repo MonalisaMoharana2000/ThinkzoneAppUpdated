@@ -13,6 +13,12 @@ import {
   Linking,
 } from 'react-native';
 import {
+  request,
+  PERMISSIONS,
+  RESULTS,
+  requestNotifications,
+} from 'react-native-permissions';
+import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
@@ -277,7 +283,78 @@ const LoginScreen = ({navigation}) => {
         'ଯିଏ ପ୍ରଥମ ଥର ଥିଙ୍କଜୋନ୍ ଆପ୍ପ ରେ ନିଜ ଫୋନ୍‌ ନମ୍ବର ମାଧ୍ୟମରେ ଲଗ୍ ଇନ କରିବେ...',
     },
   ];
+  const requestPermissions = async () => {
+    try {
+      const permissions = [
+        PERMISSIONS.ANDROID.RECORD_AUDIO,
+        PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        PERMISSIONS.ANDROID.CAMERA,
+        PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+      ];
 
+      // Request notification permissions separately for Android
+      if (Platform.OS === 'android') {
+        const notificationStatus = await requestNotifications([
+          'alert',
+          'badge',
+          'sound',
+        ]);
+
+        console.log('Notification Status:', notificationStatus);
+
+        if (notificationStatus.status !== RESULTS.GRANTED) {
+          console.log('Notification permission denied or never_ask_again');
+          openAppSettings();
+          return;
+        }
+      }
+
+      const results = await requestMultiplePermissions(permissions);
+
+      console.log('results:', results);
+
+      let allPermissionsGranted = true;
+
+      for (const permission in results) {
+        if (results[permission] !== RESULTS.GRANTED) {
+          console.log(`Permission ${permission} denied or never_ask_again`);
+          allPermissionsGranted = false;
+
+          if (results[permission] === RESULTS.NEVER_ASK_AGAIN) {
+            openAppSettings();
+            break;
+          }
+        }
+      }
+
+      if (allPermissionsGranted) {
+        console.log('All permissions granted.');
+
+        // Initialize PushNotification here if needed
+        initializePushNotification();
+      } else {
+        console.log('Some permissions denied.');
+      }
+    } catch (error) {
+      if (error.response.status === 413) {
+        console.log('error is---------------->', error);
+        Alert.alert('The entity is too large !');
+      } else if (error.response.status === 504) {
+        console.log('Error is--------------------->', error);
+        Alert.alert('Gateway Timeout: The server is not responding!');
+      } else if (error.response.status === 500) {
+        console.error('Error is------------------->:', error);
+        Alert.alert(
+          'Internal Server Error: Something went wrong on the server.',
+        );
+      } else {
+        console.error('Error is------------------->:', error);
+      }
+    }
+  };
+  useEffect(() => {
+    requestPermissions();
+  }, []);
   return (
     <View style={styles.login}>
       <View

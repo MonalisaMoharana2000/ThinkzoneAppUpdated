@@ -152,17 +152,15 @@ const App = () => {
     });
   };
 
-  const handleRequestError = error => {
-    if (error.response?.status === 413) {
-      Alert.alert('The entity is too large!');
-    } else if (error.response?.status === 504) {
-      Alert.alert('Gateway Timeout: The server is not responding!');
-    } else if (error.response?.status === 500) {
-      Alert.alert('Internal Server Error: Something went wrong on the server.');
-    } else {
-      Alert.alert('An error occurred:', error.message);
-    }
-  };
+  // const handleRequestError = error => {
+  //   if (error.response?.status === 413) {
+  //     Alert.alert('The entity is too large!');
+  //   } else if (error.response?.status === 504) {
+  //     Alert.alert('Gateway Timeout: The server is not responding!');
+  //   } else if (error.response?.status === 500) {
+  //     Alert.alert('Internal Server Error: Something went wrong on the server.');
+  //   } 
+  // };
 
   useEffect(() => {
     requestUserPermissions();

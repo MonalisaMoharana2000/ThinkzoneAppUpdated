@@ -248,12 +248,13 @@ const TechAssignment = ({navigation, route}) => {
                   {
                     fontSize: 18,
                     color: 'black',
-                    fontWeight: '600',
+                    fontWeight: '800',
                     fontFamily: FontFamily.poppinsMedium,
                     justifyContent: 'center',
                     textTransform: 'capitalize',
-                    width: 200,
+                    // width: 200,
                     alignSelf: 'center',
+                    
                   },
                 ]}>
                Congratulations 🎊

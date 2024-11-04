@@ -76,6 +76,8 @@ const Register = ({navigation, route}) => {
   const loginType = route.params?.loginType;
   console.log(' route.params--------->', route.params);
   const districtlist = useSelector(state => state.UserSlice.district);
+  console.log();
+  
   const blocklist = useSelector(state => state.UserSlice.block);
   const users = useSelector(state => state.UserSlice.user);
   const {t} = useTranslation();
@@ -1255,7 +1257,7 @@ const Register = ({navigation, route}) => {
                     selectedValue={state}
                     onValueChange={itemValue => setState(itemValue)}
                     style={styles.picker}
-                    name="district">
+                    name="state">
                     <Picker.Item
                       label="Select state*"
                       value="0"

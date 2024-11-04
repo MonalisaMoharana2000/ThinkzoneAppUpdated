@@ -23,6 +23,8 @@ import {useTranslation} from 'react-i18next';
 import ErrorMessage from '../components/ErrorMessage';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import ButtomSheet from '../components/BottomSheet';
 import Feather from 'react-native-vector-icons/Feather';
@@ -44,6 +46,7 @@ const EditProfile = ({navigation, route}) => {
   const [userdata, setUserdata] = useState(route.params[0]);
   console.log('edituserdata----->', userdata);
   const districtlist = useSelector(state => state.UserSlice.district);
+
   console.log('districtlist-------->', districtlist);
   const blocklist = useSelector(state => state.UserSlice.block);
   console.log('blocklist-------->', blocklist);
@@ -124,7 +127,27 @@ const EditProfile = ({navigation, route}) => {
     //
     setQualification(itemValue);
   };
+  const [showPicker, setShowPicker] = useState(false);
+  const onDateChange = (event, selectedDate) => {
+    const currentDate = selectedDate || dob;
+    setShowPicker(false);
 
+    // Only update the date if it is valid
+    if (currentDate) {
+      const selectedYear = currentDate.getFullYear();
+      if (selectedYear <= 2016) {
+        setDob(currentDate); 
+      } else {
+        alert("Please select a date no later than 2016."); 
+      }
+    }
+  };
+
+
+  // Show DatePicker
+  const showDatepicker = () => {
+    setShowPicker(true);
+  };
   //Handle the opening of message
   const handleOpenBottomSheet = useCallback(() => {
     modalRef.current?.open();
@@ -856,155 +879,47 @@ const EditProfile = ({navigation, route}) => {
               style={styles.icon}
             /> */}
 
-              <View>
-                <Text
-                  style={[
-                    styles.placeholder,
-                    {marginTop: -30, marginLeft: -10, paddingBottom: 7},
-                  ]}>
-                  Date Of Birth
-                </Text>
-                {userdata[0].usertype === 'fellow' && (
-                  <DatePicker
-                    style={{
-                      width: 363,
-                      marginLeft: -130,
-                      color: 'black',
-                    }}
-                    date={dob}
-                    mode="date"
-                    placeholder={dobSet}
-                    placeholderTextColor={'black'}
-                    format="YYYY-MM-DD"
-                    minDate="1960-01-01"
-                    maxDate="2005-01-01"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                      dateIcon: {
-                        display: 'none',
-                      },
-                      placeHolder: {
-                        placeholderTextColor: 'black',
-                      },
-                      dateInput: {
-                        borderWidth: -1,
-                        color: 'black',
-                        height: 50,
-                        borderRadius: 12,
-                      },
-                      placeholderText: {
-                        color: 'red', // Change the color here
-                      },
-                    }}
-                    onDateChange={date => {
-                      console.log('--> Date: ', date);
-                      let str1 =
-                        new Date(date).getFullYear() +
-                        '-' +
-                        (new Date(date).getMonth() + 1) +
-                        '-' +
-                        new Date(date).getDate();
-                      console.log('--> Str: ', str1);
-                      setDob(date);
-                    }}
-                  />
-                )}
+<View
+      style={{
+        marginVertical: 5,
+        flexDirection: 'row',
+        paddingBottom: 15,
+        marginBottom: 17,
+        marginHorizontal: -1,
+        paddingHorizontal: 11,
+        marginLeft: -22,
+        borderRadius: 15,
+        backgroundColor: '#f3f2ff',
+      }}
+    >
+      <TouchableOpacity onPress={showDatepicker}>
+        <View>
+          <MaterialCommunityIcons
+            name="calendar"
+            size={26}
+            color={'#808080'}
+            style={{ marginRight: 12, top: 13 }}
+          />
+        </View>
 
-                {userdata[0].usertype === 'school' && (
-                  <DatePicker
-                    style={{
-                      width: 363,
-                      marginLeft: -50,
-                      color: 'black',
-                    }}
-                    date={dob}
-                    mode="date"
-                    placeholder={dobSet}
-                    placeholderTextColor={'black'}
-                    format="YYYY-MM-DD"
-                    minDate="1964-01-01"
-                    maxDate="2005-01-01"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                      dateIcon: {
-                        display: 'none',
-                      },
-                      placeHolder: {
-                        placeholderTextColor: 'black',
-                      },
-                      dateInput: {
-                        borderWidth: -1,
-                        color: 'black',
-                        height: 50,
-                        borderRadius: 12,
-                      },
-                      placeholderText: {
-                        color: 'red', // Change the color here
-                      },
-                    }}
-                    onDateChange={date => {
-                      console.log('--> Date: ', date);
-                      let str1 =
-                        new Date(date).getFullYear() +
-                        '-' +
-                        (new Date(date).getMonth() + 1) +
-                        '-' +
-                        new Date(date).getDate();
-                      console.log('--> Str: ', str1);
-                      setDob(date);
-                    }}
-                  />
-                )}
+        <View style={{ marginLeft: 39, top: -9 }}>
+          {/* Display the selected date or placeholder */}
+          <Text style={{ color: dob ? 'black' : 'gray' }}>
+            {dob ? moment(dob).format('DD/MM/YYYY') : 'DD/MM/YYYY'}
+          </Text>
+        </View>
+      </TouchableOpacity>
+      {showPicker && (
+        <DateTimePicker
+          value={dob ? moment(dob).toDate() : new Date()} // Ensure correct parsing
+          mode="date"
+          display="default"
+          onChange={onDateChange}
+          maximumDate={new Date(2016, 11, 31)} // Set maximum date to December 31, 2016
+        />
+      )}
+    </View>
 
-                {userdata[0].usertype === 'anganwadi' && (
-                  <DatePicker
-                    style={{
-                      width: 363,
-                      marginLeft: -50,
-                      color: 'black',
-                    }}
-                    date={dob}
-                    mode="date"
-                    placeholder={dobSet}
-                    placeholderTextColor={'black'}
-                    format="YYYY-MM-DD"
-                    minDate="1964-01-01"
-                    maxDate="2005-01-01"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                      dateIcon: {
-                        display: 'none',
-                      },
-                      placeHolder: {
-                        placeholderTextColor: 'black',
-                      },
-                      dateInput: {
-                        borderWidth: -1,
-                        color: 'black',
-                        height: 50,
-                        borderRadius: 12,
-                      },
-                      placeholderText: {
-                        color: 'red', // Change the color here
-                      },
-                    }}
-                    onDateChange={date => {
-                      console.log('--> Date: ', date);
-                      let str1 =
-                        new Date(date).getFullYear() +
-                        '-' +
-                        (new Date(date).getMonth() + 1) +
-                        '-' +
-                        new Date(date).getDate();
-                      console.log('--> Str: ', str1);
-                      setDob(date);
-                    }}
-                  />
-                )}
-              </View>
               <ErrorMessage visible={dobError} error={t('dob_error')} />
             </View>
 

@@ -261,7 +261,7 @@ const Page1 = ({navigation, route}) => {
     </ScrollView>
   );
 };
-
+ 
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({

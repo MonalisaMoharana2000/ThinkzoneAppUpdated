@@ -9,6 +9,8 @@ import React, {
 import {useFocusEffect, useNavigationState} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AppTourProvider} from '@nghinv/react-native-app-tour';
+
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -2391,8 +2393,9 @@ const Home = ({navigation}, props) => {
                               style={{
                                 padding: 5,
                                 alignSelf: 'center',
-                                left: '4%',
+                                left: '7%',
                               }}>
+                                <Text>{video.mediaUrl}</Text>
                               <YouTube
                                 videoId={video.mediaUrl}
                                 width={responsiveWidth}

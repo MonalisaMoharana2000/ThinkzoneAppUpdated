@@ -1741,7 +1741,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     paddingBottom: '10%',
     marginHorizontal: 15,
-    right: '3%',
+    // right: '3%',
   },
   imageContainer: {
     position: 'relative',

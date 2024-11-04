@@ -61,7 +61,7 @@ const FillInTheBlank = ({navigation, route}) => {
     if (gamifiedData.length > 0) {
       const formattedQuestions = gamifiedData
         .map((item, index) => {
-          return item.fillInBlanksArr.map((fillInBlank, fillIndex) => {
+          return item?.fillInBlanksArr.map((fillInBlank, fillIndex) => {
             return {
               id: index * 10 + fillIndex, // Generate unique ID based on index
               type:

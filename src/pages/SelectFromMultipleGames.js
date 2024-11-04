@@ -49,6 +49,7 @@ const Quiz = ({route}) => {
   const [isLoader, setIsLoader] = useState(false);
   const logOutZoomState = (event, gestureState, zoomableViewEventObject) => {};
   const data = route?.params?.match;
+  console.log('match0000000000>', data);
   const gameData = route?.params?.gamifiedData;
   const navigation = useNavigation();
   const updated = gameData?.filter(
@@ -119,9 +120,11 @@ const Quiz = ({route}) => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     }
+    stopOptionPlayback();
   };
 
   const handlePrev = () => {
+    stopOptionPlayback();
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
@@ -141,6 +144,8 @@ const Quiz = ({route}) => {
       ...item,
       answered: true,
     }));
+
+    console.log('updatedData--->', updatedData);
 
     const body = {
       gamifiedSecuredMarks: 1,
@@ -173,6 +178,7 @@ const Quiz = ({route}) => {
   };
 
   const currentQuestion = questions[currentQuestionIndex];
+
   const options = currentQuestion.correctAnswer[0];
 
   console.log('currentQuestion---->', currentQuestion);
@@ -739,7 +745,7 @@ const Quiz = ({route}) => {
           {/* Next or Save Button */}
           {currentQuestionIndex < questions.length - 1 ? (
             <Button title="Next" onPress={handleNext} />
-          ) : currentQuestion.answered ? null : (
+          ) : data?.otherData?.answered === true ? null : (
             <Button title="Submit" onPress={handleSave} />
           )}
         </View>

@@ -489,21 +489,15 @@ const Quiz = ({route}) => {
                 style={{
                   width: options.optionMediaType === 'image' ? '48%' : '100%',
                   marginVertical: 5,
-                  backgroundColor:
-                    options.optionMediaType === 'image'
-                      ? selectedOptions[currentQuestionIndex]
-                        ? selectedOptions[currentQuestionIndex] ===
-                          options.correctOption
-                          ? options.correctOption === key
-                            ? '#32cd32' // Correct option selected
-                            : 'white' // Incorrect option, unselected
-                          : selectedOptions[currentQuestionIndex] === key
-                          ? 'red' // Incorrect option selected
-                          : options.correctOption === key
-                          ? '#32cd32' // Correct option, not selected
-                          : 'white'
-                        : 'white' // No option selected yet
-                      : 'transparent', // Disable background for non-image option
+                  backgroundColor: selectedOptions[currentQuestionIndex]
+                    ? selectedOptions[currentQuestionIndex] === key
+                      ? options.correctOption.includes(key)
+                        ? '#32cd32' // Correct option selected
+                        : 'red' // Incorrect option selected
+                      : options.correctOption.includes(key)
+                      ? '#32cd32' // Correct option, not selected
+                      : 'white' // Incorrect option, not selected
+                    : 'white', // Disable background for non-image option
                   padding: 10,
                   borderRadius: 6,
                 }}>

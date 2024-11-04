@@ -20,7 +20,7 @@ const Games = ({navigation, route}) => {
   // const {userid} = user[0];
 
   const [gamifiedData, setGamifiedData] = useState([]);
-  console.log('====================================gamifiedData', gamifiedData);
+  console.log('====================================gamifiedData', user);
 
   const [loading, setLoading] = useState(true); // Loading state
 

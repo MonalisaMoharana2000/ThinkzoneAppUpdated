@@ -110,66 +110,67 @@ const Payment = ({route, navigation}) => {
     }, []),
   );
 
-  // Get Payments Deatils.
-  const getPayDetails = item => {
-    setSlectedStudent(item);
-    setPayedAmount(0);
-    setTotalAmount(0);
-    setPaymentRecord([]);
-    setModalStatus(false);
-    handleOpenBottomSheet();
-    //thinkzone.in.net/thinkzone/getalltchpaymentdetailsbystudentid/1667819009430
-    //
-    setIsLoading(true);
-    API.get(`getalltchpaymentdetailsbystudentid/${item.studentid}`).then(
-      response => {
-        //
-        setPaymentRecord(response.data);
-        setIsLoading(false);
-        const paidAmount = response.data.reduce(
-          (preValue, curValue) => preValue + curValue.amount,
-          0,
-        );
-        const totalAmount = response.data ? response.data[0].total_amount : 0;
-        setPayedAmount(paidAmount);
-        setTotalAmount(totalAmount);
-        //
-      },
-      err => {
-        //
-      },
-    );
-  };
+  // // Get Payments Deatils.
+  // const getPayDetails = item => {
+  //   setSlectedStudent(item);
+  //   setPayedAmount(0);
+  //   setTotalAmount(0);
+  //   setPaymentRecord([]);
+  //   setModalStatus(false);
+  //   handleOpenBottomSheet();
+  //   //thinkzone.in.net/thinkzone/getalltchpaymentdetailsbystudentid/1667819009430
+  //   //
+  //   setIsLoading(true);
+  //   API.get(`getalltchpaymentdetailsbystudentid/${item.studentid}`).then(
+  //     response => {
+  //       //
+  //       setPaymentRecord(response.data);
+  //       setIsLoading(false);
+  //       const paidAmount = response.data.reduce(
+  //         (preValue, curValue) => preValue + curValue.amount,
+  //         0,
+  //       );
+  //       const totalAmount = response.data ? response.data[0].total_amount : 0;
+  //       setPayedAmount(paidAmount);
+  //       setTotalAmount(totalAmount);
+  //       //
+  //     },
+  //     err => {
+  //       //
+  //     },
+  //   );
+  // };
 
-  // Post payment details.
-  const postPaymentDetails = item => {
-    setSlectedStudent(item);
-    setPayedAmount(0);
-    setTotalAmount(0);
-    setPaindingAmount(0);
-    setPaymentRecord([]);
-    setModalStatus(true);
-    API.get(`getalltchpaymentdetailsbystudentid/${item.studentid}`).then(
-      response => {
-        //
-        setPaymentRecord(response.data);
-        const paidAmount = response.data.reduce(
-          (preValue, curValue) => preValue + curValue.amount,
-          0,
-        );
-        const totalAmount = response.data ? response.data[0].total_amount : 0;
-        setPayedAmount(paidAmount);
-        setTotalAmount(totalAmount);
-        setPaindingAmount(totalAmount - paidAmount);
-        //
-      },
-      err => {
-        //
-      },
-    );
-    //
-    handleOpenBottomSheet();
-  };
+  // // Post payment details.
+  // const postPaymentDetails = item => {
+  //   setSlectedStudent(item);
+  //   setPayedAmount(0);
+  //   setTotalAmount(0);
+  //   setPaindingAmount(0);
+  //   setPaymentRecord([]);
+  //   setModalStatus(true);
+  //   API.get(`getalltchpaymentdetailsbystudentid/${item.studentid}`).then(
+  //     response => {
+  //       //
+  //       setPaymentRecord(response.data);
+  //       const paidAmount = response.data.reduce(
+  //         (preValue, curValue) => preValue + curValue.amount,
+  //         0,
+  //       );
+  //       const totalAmount = response.data ? response.data[0].total_amount : 0;
+  //       setPayedAmount(paidAmount);
+  //       setTotalAmount(totalAmount);
+  //       setPaindingAmount(totalAmount - paidAmount);
+  //       //
+  //     },
+  //     err => {
+  //       //
+  //     },
+  //   );
+  //   //
+  //   handleOpenBottomSheet();
+  // };
+
   const handleOpenBottomSheet = useCallback(() => {
     modalRef.current?.open();
   }, []);

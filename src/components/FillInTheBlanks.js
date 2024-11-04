@@ -105,14 +105,13 @@ const FillInTheBlank = ({navigation, route}) => {
             ? {
                 ...q,
                 selectedOption: option,
-                userInput: {
-                  blank: questionData?.correctInput?.blank || 1,
-                  answer: option,
-                  correct:
-                    questionData?.correctInput[0].answer === option
-                      ? true
-                      : false,
-                },
+                userInput: [
+                  {
+                    blank: questionData?.correctInput[0]?.blank || 1,
+                    answer: option,
+                    correct: questionData?.correctInput[0].answer === option,
+                  },
+                ],
               }
             : q,
         ),
@@ -126,14 +125,16 @@ const FillInTheBlank = ({navigation, route}) => {
                 selectedOptions: q.selectedOptions.map((opt, idx) =>
                   idx === selectedBlank ? option : opt,
                 ),
-                userInput: {
-                  blank: selectedBlank + 1,
-                  answer: option,
-                  correct:
-                    questionData?.correctInput[0].answer === option
-                      ? true
-                      : false,
-                },
+                userInput: [
+                  ...(q.userInput || []),
+                  {
+                    blank: selectedBlank + 1,
+                    answer: option,
+                    correct:
+                      questionData?.correctInput[selectedBlank]?.answer ===
+                      option,
+                  },
+                ],
               }
             : q,
         ),
@@ -209,6 +210,15 @@ const FillInTheBlank = ({navigation, route}) => {
       return;
     }
 
+    const userInputData1 = questions.map(q => ({
+      id: q.id,
+      text: q.text,
+      correctInput: q.correctInput,
+      userInput: q.userInput,
+      options: q.options,
+    }));
+    console.log('User Input Data:', JSON.stringify(userInputData1, null, 2));
+
     // Prepare user input data
     const userInputData = gamifiedData
       .filter(gameItem => gameItem.gameType === 'fillInBlanks')
@@ -216,7 +226,7 @@ const FillInTheBlank = ({navigation, route}) => {
         const fillInBlanksArr = gameItem.fillInBlanksArr.map(
           (fillInBlank, index) => {
             const question = questions[index]; // Use index to get the matching question
-            // console.log('questoin--------<', question);
+            console.log('questoin--------<', question);
             if (!question) {
               return fillInBlank; // If no matching question found, return as is
             }
@@ -311,44 +321,44 @@ const FillInTheBlank = ({navigation, route}) => {
     );
     console.log('updateData1---->', updateData);
     // Use JSON.stringify to expand and view the full object structure
-    console.log(
-      'Submission Payload:',
-      JSON.stringify(submissionPayload, null, 2),
-    );
+    // console.log(
+    //   'Submission Payload:',
+    //   JSON.stringify(submissionPayload, null, 2),
+    // );
 
     // Uncomment the API call to submit data
-    Api.post(`saveTransTchTrainingGamified`, submissionPayload)
-      .then(res => {
-        if (res.status === 200 || res.status === 201) {
-          console.log('Woo hoo, success');
-          Alert.alert(
-            '🎉 Success',
-            'ଆପଣଙ୍କର ଉତ୍ତର ସଫଳତାର ସହିତ ସଂରକ୍ଷିତ ହୋଇଛି! ✅',
-            [
-              {
-                text: 'ବହୁତ ଭଲ 🚀',
-                style: 'default',
-              },
-            ],
-            {cancelable: true},
-          );
-          navigation.goBack();
-        }
-      })
-      .catch(error => {
-        console.log('oh no...error');
-        Alert.alert(
-          '❌ ତ୍ରୁଟି',
-          `କିଛି ଭୁଲ ହୋଇଗଲା, ଦୟାକରି କିଛି ସମୟ ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।`,
-          [
-            {
-              text: 'ଠିକ ଅଛି 😟',
-              style: 'default',
-            },
-          ],
-          {cancelable: true},
-        );
-      });
+    // Api.post(`saveTransTchTrainingGamified`, submissionPayload)
+    //   .then(res => {
+    //     if (res.status === 200 || res.status === 201) {
+    //       console.log('Woo hoo, success');
+    //       Alert.alert(
+    //         '🎉 Success',
+    //         'ଆପଣଙ୍କର ଉତ୍ତର ସଫଳତାର ସହିତ ସଂରକ୍ଷିତ ହୋଇଛି! ✅',
+    //         [
+    //           {
+    //             text: 'ବହୁତ ଭଲ 🚀',
+    //             style: 'default',
+    //           },
+    //         ],
+    //         {cancelable: true},
+    //       );
+    //       navigation.goBack();
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log('oh no...error');
+    //     Alert.alert(
+    //       '❌ ତ୍ରୁଟି',
+    //       `କିଛି ଭୁଲ ହୋଇଗଲା, ଦୟାକରି କିଛି ସମୟ ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।`,
+    //       [
+    //         {
+    //           text: 'ଠିକ ଅଛି 😟',
+    //           style: 'default',
+    //         },
+    //       ],
+    //       {cancelable: true},
+    //     );
+    //   });
   };
 
   return (
@@ -509,7 +519,7 @@ const FillInTheBlank = ({navigation, route}) => {
                           onPress={() =>
                             handleOptionClick(question.id, option)
                           }>
-                          {/* <Text style={styles.optionButtonText}>{option}</Text> */}
+                          <Text style={styles.optionButtonText}>{option}</Text>
                         </TouchableOpacity>
                       ))}
                     </View>

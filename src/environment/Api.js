@@ -7,8 +7,8 @@ export const Version = {
 
 // Create axios instance
 const API = axios.create({
-  // baseURL: 'https://thinkzone.in.net/thinkzone/', //New Tests
-  baseURL: 'https://thinkzone.co/thinkzone/', // Production New
+  baseURL: 'https://thinkzone.in.net/thinkzone/', //New Tests
+  // baseURL: 'https://thinkzone.co/thinkzone/', // Production New
   headers: {
     'Content-Type': 'application/json',
   },

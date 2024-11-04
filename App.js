@@ -1,128 +1,198 @@
 // App.js
-import React, {useEffect} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import React, { useEffect } from 'react';
+import { Platform, Alert } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import StackNavigator from './src/navigation/StackNavigator';
-import {useSelector, useDispatch} from 'react-redux';
-import {fetchUserDataThunk} from './src/redux_toolkit/features/users/UserThunk';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUserDataThunk } from './src/redux_toolkit/features/users/UserThunk';
 import messaging from '@react-native-firebase/messaging';
+import {
+  PERMISSIONS,
+  RESULTS,
+  requestNotifications,
+  openSettings,
+  requestMultiple,
+} from 'react-native-permissions';
+
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.UserSlice.data);
-  console.log('====================================user', user);
+  // console.log('User Data:', user);
 
   useEffect(() => {
     dispatch(fetchUserDataThunk());
-  }, []);
+  }, [dispatch]);
 
-  const getToken = async () => {
-    const token = await messaging().getToken();
-    console.log('token--->', token);
-    // Alert.alert(token);
-    const smallIcon =
-      Platform.OS === 'android'
-        ? 'ic_notification' // Replace with the actual drawable resource name for Android
-        : 'ic_notification';
-    const largeIcon =
-      Platform.OS === 'android'
-        ? 'ic_notification' // Replace with the actual drawable resource name for Android
-        : 'ic_notification';
-    // storeage.storeValue('fcm_token', token, smallIcon, largeIcon);
+  // useEffect(() => {
+  //   requestUserPermission();
 
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  //   // Handle foreground notifications
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     console.log('Foreground notification:', remoteMessage);
+  //     // Check if `data` is available and includes `navigateto`
+  //     const navigateto = remoteMessage.data?.navigateto;
+  //     if (navigateto) {
+  //       Alert.alert(
+  //         remoteMessage.notification?.title || 'Notification',
+  //         remoteMessage.notification?.body || 'You have received a new message',
+  //         [
+  //           {
+  //             text: 'Go to Page',
+  //             onPress: () => navigation.navigate(navigateto), // Navigate based on `navigateto`
+  //           },
+  //           {text: 'Dismiss', style: 'cancel'},
+  //         ],
+  //       );
+  //     }
+  //   });
 
-    if (enabled) {
-      messaging().sendMessage({
-        to: token,
-        notification: {
-          android: {
-            // smallIcon: smallIcon,
-            largeIcon: largeIcon,
-          },
-        },
-      });
-      // console.log('Authorization status:', authStatus);
+  //   // Handle background state notifications
+  //   messaging().onNotificationOpenedApp(remoteMessage => {
+  //     console.log(
+  //       'Notification caused app to open from background state:',
+  //       remoteMessage,
+  //     );
+  //     const navigateto = remoteMessage.data?.navigateto;
+  //     if (navigateto) {
+  //       navigation.navigate(navigateto);
+  //     }
+  //   });
+
+  //   // Handle quit state notifications
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(remoteMessage => {
+  //       if (remoteMessage) {
+  //         console.log(
+  //           'Notification caused app to open from quit state:',
+  //           remoteMessage,
+  //         );
+  //         const navigateto = remoteMessage.data?.navigateto;
+  //         if (navigateto) {
+  //           navigation.navigate(navigateto);
+  //         }
+  //       }
+  //     });
+
+  //   // Set a background message handler
+  //   messaging().setBackgroundMessageHandler(async remoteMessage => {
+  //     console.log('Message handled in the background!', remoteMessage);
+  //     const navigateto = remoteMessage.data?.navigateto;
+  //     if (navigateto) {
+  //       navigation.navigate(navigateto);
+  //     }
+  //   });
+
+  //   return unsubscribe;
+  // }, []);
+
+  const requestUserPermissions = async () => {
+    try {
+      const permissionsToRequest = [
+        PERMISSIONS.ANDROID.CAMERA,
+        PERMISSIONS.ANDROID.RECORD_AUDIO,
+        PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
+        PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
+      ];
+
+      if (Platform.OS === 'android') {
+        const { status } = await requestNotifications(['alert', 'badge', 'sound']);
+        console.log('Notification permission status:', status);
+
+        if (status !== RESULTS.GRANTED) {
+          console.warn('Notification permission denied or set to never ask again');
+          openSettings();
+        }
+      }
+
+      const results = await requestMultiple(permissionsToRequest);
+      console.log('Permission results:', results);
+
+      let allPermissionsGranted = true;
+
+      for (const permission in results) {
+        if (results[permission] !== RESULTS.GRANTED) {
+          console.warn(`Permission ${permission} denied`);
+          allPermissionsGranted = false;
+
+          if (results[permission] === RESULTS.NEVER_ASK_AGAIN) {
+            openSettings();
+            break;
+          }
+        }
+      }
+
+      if (allPermissionsGranted) {
+        console.log('All permissions granted.');
+        initializePushNotification();
+      } else {
+        console.warn('Some permissions were denied.');
+      }
+    } catch (error) {
+      console.error('Error requesting permissions:', error);
+      handleRequestError(error);
     }
   };
 
-  useEffect(() => {
-    getToken();
-  }, []);
-
-  const requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    if (enabled) {
-      messaging().sendMessage({
-        to: token,
-        notification: {
-          android: {
-            // smallIcon: smallIcon,
-            // largeIcon: largeIcon,
-          },
-        },
-      });
-      console.log('Authorization Status', authStatus);
-    }
-    showNotification();
+  const initializePushNotification = () => {
+    messaging().onMessage(async remoteMessage => {
+      console.log('Foreground notification received:', remoteMessage);
+      Alert.alert('New Notification', remoteMessage.notification?.title, [
+        { text: 'OK' },
+      ]);
+    });
   };
 
-  useEffect(() => {
-    if (requestUserPermission()) {
-      messaging()
-        .getToken()
-        .then(token => {
-          // console.log('token------------------->', token);
-        });
+  const handleRequestError = (error) => {
+    if (error.response?.status === 413) {
+      Alert.alert('The entity is too large!');
+    } else if (error.response?.status === 504) {
+      Alert.alert('Gateway Timeout: The server is not responding!');
+    } else if (error.response?.status === 500) {
+      Alert.alert('Internal Server Error: Something went wrong on the server.');
     } else {
-      console.log('Failed token status : ', authStatus);
+      Alert.alert('An error occurred:', error.message);
     }
+  };
 
-    // Check whether an initial notification is available
+  useEffect(() => {
+    requestUserPermissions();
+  }, []);
+
+  useEffect(() => {
     messaging()
       .getInitialNotification()
-      .then(async remoteMessage => {
+      .then(remoteMessage => {
         if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage.notification,
-          );
+          console.log('App opened from quit state due to notification:', remoteMessage.notification);
         }
       });
 
-    // Assume a message-notification contains a "type" property in the data payload of the screen to open
-
-    messaging().onNotificationOpenedApp(async remoteMessage => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage.notification,
-      );
-      // navigation.navigate(remoteMessage.data.navigateto);
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log('App opened from background state due to notification:', remoteMessage.notification);
     });
 
-    // Register background handler
     messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('Message handled in the background!', remoteMessage);
+      console.log('Background message received:', remoteMessage);
     });
 
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      // Alert.alert('notification', JSON.stringify(remoteMessage));
+      console.log('Foreground message received:', remoteMessage);
+      Alert.alert('Notification', remoteMessage.notification?.body, [
+        { text: 'OK' },
+      ]);
     });
 
     return unsubscribe;
   }, []);
 
   return (
-    <>
-      <NavigationContainer>
-        <StackNavigator />
-      </NavigationContainer>
-    </>
+    <NavigationContainer>
+      <StackNavigator />
+    </NavigationContainer>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   ScrollView,
   Linking,
+  BackHandler
 } from 'react-native';
-import {Color, Border, FontSize, FontFamily} from '../GlobalStyle';
+import { Color, Border, FontSize, FontFamily } from '../GlobalStyle';
 
-const About = () => {
+const About = ({ navigation }) => { // Destructure navigation from props
   const openGoogleMaps = () => {
-    // Replace with your actual coordinates
     const latitude = 20.480857900811053;
     const longitude = 85.82002402558189;
     const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
@@ -28,6 +28,7 @@ const About = () => {
     const email = 'info@thinkzone.in';
     Linking.openURL(`mailto:${email}`);
   };
+
   const openFacebook = () => {
     Linking.openURL('https://www.facebook.com/ThinkZoneIndia/');
   };
@@ -37,9 +38,7 @@ const About = () => {
   };
 
   const openLinkedIn = () => {
-    Linking.openURL(
-      'https://www.linkedin.com/company/thinkzoneindia/mycompany/',
-    );
+    Linking.openURL('https://www.linkedin.com/company/thinkzoneindia/mycompany/');
   };
 
   const openTwitter = () => {
@@ -49,6 +48,19 @@ const About = () => {
   const openYouTube = () => {
     Linking.openURL('https://www.youtube.com/c/ThinkZoneIndia');
   };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.goBack();
+        return true;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, [navigation]); 
+
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <Image

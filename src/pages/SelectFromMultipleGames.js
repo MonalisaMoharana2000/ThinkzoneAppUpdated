@@ -58,6 +58,7 @@ const Quiz = ({route}) => {
   console.log('updated--->', updated);
 
   const [questions, setQuestions] = useState(updated);
+  const [modalVisible, setModalVisible] = useState(false);
   console.log('====================================questions', questions);
 
   const topicData = route?.params?.topicData;
@@ -254,7 +255,7 @@ const Quiz = ({route}) => {
 
   const closeModal = () => {
     setModalVisible(false);
-    setIsVideoPlaying(false); // Pause the main video when modal closes
+    // setIsVideoPlaying(false); // Pause the main video when modal closes
     Orientation.lockToPortrait();
   };
   const handleVideoLoad = () => {
@@ -449,6 +450,54 @@ const Quiz = ({route}) => {
             </View>
           </View>
         ) : null}
+        <Modal
+          animationType="slide"
+          transparent={false}
+          onRequestClose={closeModal}
+          visible={modalVisible}>
+          <StatusBar hidden />
+          <ScrollView>
+            <View style={{flex: 1}}>
+              {videoLoading && (
+                <ActivityIndicator
+                  size="large"
+                  color={Colors.primary}
+                  style={{
+                    position: 'absolute',
+                    top: '45%', // Adjust the position as needed
+                    left: '45%', // Adjust the position as needed
+                  }}
+                />
+              )}
+              <Video
+                source={{
+                  uri: updatedOptions[key],
+                }}
+                style={{
+                  width: '100%',
+                  height: 300,
+                }}
+                autoplay
+                showDuration
+                onLoad={handleVideoLoad}
+                rate={playbackRate} // Apply the playback rate here
+              />
+              <TouchableOpacity onPress={closeModal}>
+                <Image
+                  style={{
+                    width: 40,
+                    top: 2,
+                    height: 40,
+                    backgroundColor: 'white',
+                    paddingBottom: 10,
+                    alignSelf: 'flex-end',
+                  }}
+                  source={require('../assets/Image/minimize.png')}
+                />
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </Modal>
 
         {currentQuestion?.questionMediaType === 'image'
           ? (console.log(

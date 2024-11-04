@@ -1,55 +1,85 @@
 // App.js
 import React, {useEffect} from 'react';
+import {Platform, Alert} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigator from './src/navigation/StackNavigator';
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchUserDataThunk} from './src/redux_toolkit/features/users/UserThunk';
 import messaging from '@react-native-firebase/messaging';
+import {useNavigation} from '@react-navigation/native';
+
 const App = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const user = useSelector(state => state.UserSlice.data);
-  console.log('====================================user', user);
+  console.log('User Data:', user);
 
   useEffect(() => {
     dispatch(fetchUserDataThunk());
   }, []);
 
-  const getToken = async () => {
-    const token = await messaging().getToken();
-    console.log('token--->', token);
-    // Alert.alert(token);
-    const smallIcon =
-      Platform.OS === 'android'
-        ? 'ic_notification' // Replace with the actual drawable resource name for Android
-        : 'ic_notification';
-    const largeIcon =
-      Platform.OS === 'android'
-        ? 'ic_notification' // Replace with the actual drawable resource name for Android
-        : 'ic_notification';
-    // storeage.storeValue('fcm_token', token, smallIcon, largeIcon);
+  // useEffect(() => {
+  //   requestUserPermission();
 
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+  //   // Handle foreground notifications
+  //   const unsubscribe = messaging().onMessage(async remoteMessage => {
+  //     console.log('Foreground notification:', remoteMessage);
+  //     // Check if `data` is available and includes `navigateto`
+  //     const navigateto = remoteMessage.data?.navigateto;
+  //     if (navigateto) {
+  //       Alert.alert(
+  //         remoteMessage.notification?.title || 'Notification',
+  //         remoteMessage.notification?.body || 'You have received a new message',
+  //         [
+  //           {
+  //             text: 'Go to Page',
+  //             onPress: () => navigation.navigate(navigateto), // Navigate based on `navigateto`
+  //           },
+  //           {text: 'Dismiss', style: 'cancel'},
+  //         ],
+  //       );
+  //     }
+  //   });
 
-    if (enabled) {
-      messaging().sendMessage({
-        to: token,
-        notification: {
-          android: {
-            // smallIcon: smallIcon,
-            largeIcon: largeIcon,
-          },
-        },
-      });
-      // console.log('Authorization status:', authStatus);
-    }
-  };
+  //   // Handle background state notifications
+  //   messaging().onNotificationOpenedApp(remoteMessage => {
+  //     console.log(
+  //       'Notification caused app to open from background state:',
+  //       remoteMessage,
+  //     );
+  //     const navigateto = remoteMessage.data?.navigateto;
+  //     if (navigateto) {
+  //       navigation.navigate(navigateto);
+  //     }
+  //   });
 
-  useEffect(() => {
-    getToken();
-  }, []);
+  //   // Handle quit state notifications
+  //   messaging()
+  //     .getInitialNotification()
+  //     .then(remoteMessage => {
+  //       if (remoteMessage) {
+  //         console.log(
+  //           'Notification caused app to open from quit state:',
+  //           remoteMessage,
+  //         );
+  //         const navigateto = remoteMessage.data?.navigateto;
+  //         if (navigateto) {
+  //           navigation.navigate(navigateto);
+  //         }
+  //       }
+  //     });
+
+  //   // Set a background message handler
+  //   messaging().setBackgroundMessageHandler(async remoteMessage => {
+  //     console.log('Message handled in the background!', remoteMessage);
+  //     const navigateto = remoteMessage.data?.navigateto;
+  //     if (navigateto) {
+  //       navigation.navigate(navigateto);
+  //     }
+  //   });
+
+  //   return unsubscribe;
+  // }, []);
 
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
@@ -58,71 +88,22 @@ const App = () => {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
-      messaging().sendMessage({
-        to: token,
-        notification: {
-          android: {
-            // smallIcon: smallIcon,
-            // largeIcon: largeIcon,
-          },
-        },
-      });
-      console.log('Authorization Status', authStatus);
+      console.log('Notification permission granted:', authStatus);
+    } else {
+      console.log('Notification permission denied');
     }
-    showNotification();
   };
 
-  useEffect(() => {
-    if (requestUserPermission()) {
-      messaging()
-        .getToken()
-        .then(token => {
-          // console.log('token------------------->', token);
-        });
-    } else {
-      console.log('Failed token status : ', authStatus);
-    }
-
-    // Check whether an initial notification is available
-    messaging()
-      .getInitialNotification()
-      .then(async remoteMessage => {
-        if (remoteMessage) {
-          console.log(
-            'Notification caused app to open from quit state:',
-            remoteMessage.notification,
-          );
-        }
-      });
-
-    // Assume a message-notification contains a "type" property in the data payload of the screen to open
-
-    messaging().onNotificationOpenedApp(async remoteMessage => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage.notification,
-      );
-      // navigation.navigate(remoteMessage.data.navigateto);
-    });
-
-    // Register background handler
-    messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('Message handled in the background!', remoteMessage);
-    });
-
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-      // Alert.alert('notification', JSON.stringify(remoteMessage));
-    });
-
-    return unsubscribe;
-  }, []);
+  const getToken = async () => {
+    const token = await messaging().getToken();
+    console.log('FCM Token:', token);
+    // Optionally, you could save this token to your backend
+  };
 
   return (
-    <>
-      <NavigationContainer>
-        <StackNavigator />
-      </NavigationContainer>
-    </>
+    <NavigationContainer>
+      <StackNavigator />
+    </NavigationContainer>
   );
 };
 

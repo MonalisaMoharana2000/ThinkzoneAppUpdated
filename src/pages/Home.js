@@ -1594,24 +1594,19 @@ const Home = ({navigation}, props) => {
 
     return () => clearInterval(interval); // Cleanup on component unmount
   }, [imageSlider.length]); // Dependencies array includes the length of imageSlider
+
   const fetchDboardSliders = async () => {
     try {
-      const response = await API.get(
-        `getDboardSliders/${user[0]?.usertype}/${'video'}`,
-      );
+      const response = await API.get(`getDboardSliders/fellow/${'video'}`);
       setVideos(response.data);
-      
     } catch (err) {
       console.error('Error fetching dashboard sliders:', err);
-    
     }
   };
   useEffect(() => {
-  
-
     // if (user[0]?.usertype) {
     //   // Ensure usertype is available before calling the API
-      fetchDboardSliders();
+    fetchDboardSliders();
     // }
   }, []); // Added user as a dependency to rerun when it changes
 

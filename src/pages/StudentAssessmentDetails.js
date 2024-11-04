@@ -873,7 +873,7 @@ const StudentAssessmentDetails = ({navigation, route}) => {
                   // marginTop: 20,
                   marginLeft: 20,
                   paddingBottom: 20,
-                  top: '-0.2%',
+                  top: '-0.3%',
                   display: 'flex',
                   flexDirection: 'row',
                 }}>

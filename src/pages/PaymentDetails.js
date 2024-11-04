@@ -332,7 +332,7 @@ const PaymentDetails = ({route, navigation}) => {
     if (paymentDetails?.userid) {
       dispatch(getPayments(paymentDetails?.userid));
     }
-  }, [paymentDetails.userid, dispatch]);
+  }, [paymentDetails?.userid, dispatch]);
 
   // console.log(
   //   'selectedStudentData[0].paymenthistory--------------------------------------->',

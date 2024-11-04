@@ -29,6 +29,9 @@ import Tooltip from 'react-native-walkthrough-tooltip';
 import DropdownComponent from '../components/DropdownComponent';
 import * as Progress from 'react-native-progress';
 
+
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import API from '../environment/Api';
 
@@ -1155,39 +1158,66 @@ const Mopragati = ({navigation}) => {
                         key={index}>
                         <View
                           style={{
-                            padding: '7%',
+                            padding: '5%',
                             width: window.WindowWidth * 0.9,
                             backgroundColor: 'white',
                             borderColor: 'black',
                             marginTop: '2%',
                             borderRadius: 16,
                             alignSelf: 'center',
+
+                            shadowColor: 'black',
+                            shadowOffset: {width: 5, height: 4},
+                            shadowOpacity: 1,
+                            shadowRadius: 5,
+                            // Shadow for Android
+                            elevation: 8,
                           }}>
                           <View
                             style={{
                               flex: 1,
                               flexDirection: 'row',
-                              width: '100%',
+                              // width: '106%',
+                              borderRadius: 15,
                               justifyContent: 'flex-start',
+                              backgroundColor: '#FCDC94',
+                              padding: 10,
+                              // borderWidth: 1,
+                              // borderColor: 'grey',
                             }}>
+                            {/* <View style={{backgroundColor: 'lightblue'}}> */}
                             <View>
-                              <Progress.Circle
+                              {/* <Progress.Circle
                                 size={65}
                                 color={Color.royalblue}
                                 borderColor={Color.gray_100}
                                 borderWidth={1}
                                 thickness={4}
-                              />
+                              /> */}
                               <Image
-                                source={require('../assets/Image/modulee.png')}
+                                source={require('../assets/Image/write.png')}
                                 style={{
                                   width: 38,
                                   height: 38,
                                   alignSelf: 'center',
-                                  top: '-50%',
+                                  // top: '-40%',
                                 }}
                               />
+                              {/* <Ionicons
+                                name="documents-sharp"
+                                size={40}
+                                style={
+                                  {
+                                    // right: -20,
+                                    // position: 'absolute',
+                                    // // top: '15%',
+                                    // marginTop: '2%',
+                                  }
+                                }
+                                color={'blue'}
+                              /> */}
                             </View>
+
                             <View
                               style={{
                                 flexDirection: 'column',
@@ -1197,21 +1227,38 @@ const Mopragati = ({navigation}) => {
                               <Text
                                 style={{
                                   fontFamily: FontFamily.poppinsMedium,
-                                  fontSize: 14,
-                                  width: 150,
+                                  fontSize: 17,
+                                  width: 170,
+                                  fontWeight: '900',
+                                  color: '#179BAE',
                                 }}>
                                 {item.moduleName}
                               </Text>
-                              <Text
-                                style={{
-                                  color: '#9B9BA1',
-                                  fontSize: 10,
-                                  marginTop: 2,
-                                }}>
-                                Click Here
-                              </Text>
+                              <View style={{flexDirection: 'row'}}>
+                                <Text
+                                  style={{
+                                    color: '#EB5B00',
+                                    fontSize: 12,
+                                    fontWeight: '800',
+                                    marginTop: 2,
+                                  }}>
+                                  Click here to know your status{' '}
+                                </Text>
+                                <AntDesign
+                                  name="arrowdown"
+                                  size={20}
+                                  style={{
+                                    right: -20,
+                                    position: 'absolute',
+                                    // top: '15%',
+                                    marginTop: '2%',
+                                  }}
+                                  color={'#EB5B00'}
+                                />
+                              </View>
                             </View>
                           </View>
+                          {/* </View> */}
                           {openAccordion === index && (
                             <>
                               {item.submoduleData.length === 0 ? null : (

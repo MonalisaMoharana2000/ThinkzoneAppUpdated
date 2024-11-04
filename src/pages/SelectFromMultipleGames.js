@@ -579,14 +579,26 @@ const Quiz = ({route}) => {
                         //   return newState;
                         // });
                       }}>
-                      <Image
-                        source={
-                          isPlaying === key
-                            ? require('../assets/Image/waves.gif') // Image for playing audio
-                            : require('../assets/Image/Player.png') // Default image
-                        }
-                        style={{width: 30, height: 30, marginRight: 10}}
-                      />
+                      {isPlaying === key ? (
+                        <View
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
+                          {/* Display both waves.gif and stops.png while playing */}
+                          <Image
+                            source={require('../assets/Image/waves.gif')}
+                            style={{width: 30, height: 30, marginRight: 5}}
+                          />
+                          <Image
+                            source={require('../assets/Image/stops.png')}
+                            style={{width: 30, height: 30}}
+                          />
+                        </View>
+                      ) : (
+                        // Display Player.png when audio is not playing
+                        <Image
+                          source={require('../assets/Image/Player.png')}
+                          style={{width: 30, height: 30, marginRight: 10}}
+                        />
+                      )}
                     </TouchableOpacity>
                     <Text
                       style={{

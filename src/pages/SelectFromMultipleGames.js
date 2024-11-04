@@ -63,7 +63,7 @@ const Quiz = ({route}) => {
   const wholeData = route.params?.match;
 
   const handleOptionPress = optionLabel => {
-    if (selectedOptions[currentQuestionIndex]) return; // Prevent multiple selections
+    if (selectedOptions[currentQuestionIndex]) return;
 
     const newSelectedOptions = [...selectedOptions];
     newSelectedOptions[currentQuestionIndex] = optionLabel;
@@ -74,7 +74,7 @@ const Quiz = ({route}) => {
       ...updatedQuestions[currentQuestionIndex],
       selectedOption: optionLabel,
       answered: 'yes',
-      inputAnswer: newSelectedOptions,
+      inputAnswer: optionLabel,
     };
 
     setUpdatedAnswer(updatedQuestions);
@@ -84,6 +84,7 @@ const Quiz = ({route}) => {
     newShowCorrectAnswer[currentQuestionIndex] = true;
     setShowCorrectAnswer(newShowCorrectAnswer);
   };
+
   const handleOptionPressSingle = value => {
     const newSelectedOptions = [...selectedOptions];
     newSelectedOptions[currentQuestionIndex] = value;
@@ -95,6 +96,7 @@ const Quiz = ({route}) => {
       ...updatedQuestions[currentQuestionIndex],
       selectedOption: value,
       answered: 'yes',
+      inputAnswer: value, // Save only the current answer for this question
     };
 
     setUpdatedAnswer(updatedQuestions);
@@ -149,6 +151,8 @@ const Quiz = ({route}) => {
       // inputAnswer: shuffle,
     };
 
+    console.log('updatedData--->', updatedData);
+
     try {
       const res = await Api.post('saveTransTchTrainingGamified', body);
       if (res.status === 200) {
@@ -163,6 +167,8 @@ const Quiz = ({route}) => {
 
   const currentQuestion = questions[currentQuestionIndex];
   const options = currentQuestion.correctAnswer[0];
+
+  console.log('currentQuestion---->', currentQuestion);
 
   const updatedOptions = {
     // ...options,

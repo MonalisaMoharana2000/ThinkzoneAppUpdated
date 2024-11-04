@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+// import RadioButton from 'react-native-simple-radio-button';
 import {
   View,
   Text,
@@ -240,6 +241,14 @@ const Quiz = ({route}) => {
   const handleVideoLoad = () => {
     return true;
   };
+
+  const optionLabels = [
+    'Option A',
+    'Option B',
+    'Option C',
+    'Option D',
+    'Option E',
+  ];
 
   return (
     <ScrollView>
@@ -513,26 +522,12 @@ const Quiz = ({route}) => {
                 ) : options.optionMediaType === 'audio' ? (
                   <TouchableOpacity
                     key={index}
-                    onPress={() => {
-                      if (isPlaying === key) {
-                        // If the same option is clicked while playing, stop the audio
-                        stopOptionPlayback(key);
-                      } else {
-                        // Start playback for the selected option and stop any currently playing audio
-                        // if (isPlaying) stopOptionPlayback();
-                        startOptionPlayback(key);
-                      }
-                      setSelectedOptions(prevState => {
-                        const newState = [...prevState];
-                        newState[currentQuestionIndex] = key; // Set the selected option for the current question index
-                        return newState;
-                      });
-                    }}
                     style={{
                       backgroundColor:
-                        selectedOptions[currentQuestionIndex] === key
-                          ? '#32cd32'
-                          : 'white', // Set background color based on selection
+                        // selectedOptions[currentQuestionIndex] === key
+                        //   ? '#32cd32'
+                        //   :
+                        'white',
                       paddingVertical: 20,
                       paddingHorizontal: 15,
                       borderRadius: 12,
@@ -545,13 +540,44 @@ const Quiz = ({route}) => {
                       shadowRadius: 4,
                       width: '100%',
                       elevation: 5,
+                      flexDirection: 'row',
+                      justifyContent: 'space-evenly',
                     }}>
-                    {/* Display audio status image */}
+                    <RadioForm animation={true}>
+                      <RadioButton>
+                        <RadioButtonInput
+                          obj={{label: updatedOptions[key], value: key}}
+                          index={index}
+                          isSelected={
+                            selectedOptions[currentQuestionIndex] === key
+                          }
+                          onPress={() => handleOptionPress(key)}
+                          borderWidth={1}
+                          buttonInnerColor={'#0060ca'}
+                          buttonOuterColor={
+                            selectedOptions[currentQuestionIndex] === key
+                              ? '#0060ca'
+                              : '#000'
+                          }
+                          buttonSize={15}
+                        />
+                      </RadioButton>
+                    </RadioForm>
                     <TouchableOpacity
                       onPress={() => {
                         if (isPlaying === key) {
-                          stopOptionPlayback(key); // Stop audio if image is clicked while playing
+                          // If the same option is clicked while playing, stop the audio
+                          stopOptionPlayback(key);
+                        } else {
+                          // Start playback for the selected option and stop any currently playing audio
+                          // if (isPlaying) stopOptionPlayback();
+                          startOptionPlayback(key);
                         }
+                        // setSelectedOptions(prevState => {
+                        //   const newState = [...prevState];
+                        //   newState[currentQuestionIndex] = key; // Set the selected option for the current question index
+                        //   return newState;
+                        // });
                       }}>
                       <Image
                         source={
@@ -567,12 +593,13 @@ const Quiz = ({route}) => {
                         fontSize: 16,
                         fontWeight: '600',
                         color:
-                          selectedOptions[currentQuestionIndex] === key
-                            ? 'white'
-                            : '#333',
+                          // selectedOptions[currentQuestionIndex] === key
+                          //   ? 'white'
+                          //   :
+                          '#333',
                         textAlign: 'left',
                       }}>
-                      {updatedOptions[key]}
+                      {optionLabels[index]}
                     </Text>
                   </TouchableOpacity>
                 ) : (

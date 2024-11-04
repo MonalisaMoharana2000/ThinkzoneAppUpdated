@@ -45,7 +45,7 @@ import {app_versions} from './Home';
 import {
   getPayments,
   savePayments,
-} from '../redux_toolkit/features/payments/paymentsThunk';
+} from '../redux_toolkit/features/payments/PaymentsThunk';
 
 const PaymentDetails = ({route, navigation}) => {
   const paymentDetails = route?.params?.paymentDetails;

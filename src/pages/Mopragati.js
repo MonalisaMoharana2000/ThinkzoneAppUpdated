@@ -498,7 +498,9 @@ const Mopragati = ({navigation}) => {
 
   totalModules = dummyData1?.filter(x => x.moduleIsComplete === true);
   console.log('totalModules--->', totalModules);
-  const modulePercentage = (totalModules?.length / dummyData1?.length) * 100;
+  const modulePercentage = (Array.isArray(totalModules) && Array.isArray(dummyData1) && dummyData1.length > 0)
+  ? (totalModules.length / dummyData1.length) * 100
+  : 0; // Default value if data is missing or invalid
   console.log('modulePercentage--->', modulePercentage);
 
   const handleTrainingClick = async item => {
@@ -1111,6 +1113,7 @@ const Mopragati = ({navigation}) => {
                 <Progress.Circle
                   size={55}
                   color={'white'}
+                  
                   progress={modulePercentage / 100 || 0}
                   textStyle={{color: 'white'}}
                   thickness={3}
@@ -1123,7 +1126,7 @@ const Mopragati = ({navigation}) => {
                     color: 'white',
                     fontSize: 14,
                     alignSelf: 'center',
-                    right: '75%',
+                    right: '15%',
                   }}>
                   {modulePercentage
                     ? `${modulePercentage.toFixed(1) || 0}%`

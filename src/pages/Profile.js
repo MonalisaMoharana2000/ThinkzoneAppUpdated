@@ -156,7 +156,7 @@ const Profile = ({navigation}) => {
       console.log('response--->', logout?.status);
       if (logout?.status === 200) {
         dispatch(clearUser());
-        navigation.navigate('Login');
+        navigation.navigate('firstScreen');
       }
       // dispatch(types.logOutUser());
       // navigation.navigate('login');

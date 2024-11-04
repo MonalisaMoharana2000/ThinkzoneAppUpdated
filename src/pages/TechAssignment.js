@@ -232,14 +232,14 @@ const TechAssignment = ({navigation, route}) => {
                 style={[
                   styles.tinyLogos,
                   {
-                    width: 250,
-                    height: 220,
+                    width: 100,
+                    height: 100,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginTop: -40,
+                    marginTop: -20,
                   },
                 ]}
-                source={require('../assets/Image/success.gif')}
+                source={require('../assets/Image/sucess.png')}
               />
 
               <Text
@@ -256,7 +256,7 @@ const TechAssignment = ({navigation, route}) => {
                     alignSelf: 'center',
                   },
                 ]}>
-                Congratulations! {''}
+               Congratulations 🎊
               </Text>
 
               <Text
@@ -312,7 +312,11 @@ const TechAssignment = ({navigation, route}) => {
           ))}
 
         {assignment_status === true && (
-          <View style={styles.container}>
+          // <View style={styles.container}>
+          <ImageBackground
+          style={styles.root}
+          source={require('../assets/Photos/assignmentbg.jpg')}
+          resizeMode="cover">
             {loading ? (
               <Loading />
             ) : assignment_question.length > 0 ? (
@@ -329,7 +333,7 @@ const TechAssignment = ({navigation, route}) => {
             ) : (
               <Nocontents />
             )}
-          </View>
+          </ImageBackground>
         )}
 
         {/* )} */}
@@ -408,6 +412,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  root: {
+    width: window.WindowWidth,
+    height: window.WindowHeigth * 1.1,
+    // display: 'flex',
+    // flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingBottom: 30,
   },
   centeredView: {
     flex: 1,

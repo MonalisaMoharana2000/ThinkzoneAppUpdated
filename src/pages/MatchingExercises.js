@@ -88,8 +88,8 @@ const MatchingExercises = ({route}) => {
           style: 'default',
         },
       ]);
-    } else if (data.allAnswer) {
-      Alert.alert('', `${data.allAnswer}`, [
+    } else if (data.answerLength === false) {
+      Alert.alert('', `Answer All the question!`, [
         // {
         //   text: 'Cancel',
         //   onPress: () => null,
@@ -97,7 +97,7 @@ const MatchingExercises = ({route}) => {
         // },
         {
           text: 'Ok',
-          onPress: () => null,
+          onPress: () => navigation.goBack(),
           style: 'default',
         },
       ]);

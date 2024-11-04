@@ -42,9 +42,13 @@ import moment from 'moment';
 import Api from '../environment/Api';
 import {useFocusEffect} from '@react-navigation/core';
 import {app_versions} from './Home';
+import {
+  getPayments,
+  savePayments,
+} from '../redux_toolkit/features/payments/PaymentsThunk';
 
 const PaymentDetails = ({route, navigation}) => {
-  const paymentDetails = route.params.paymentDetails;
+  const paymentDetails = route?.params?.paymentDetails;
 
   console.log('paymentDetails------------------------------->', paymentDetails);
 
@@ -177,8 +181,10 @@ const PaymentDetails = ({route, navigation}) => {
   //   fetchData();
   // }, [closeModal]);
 
-  const selectedStudentData = Array.isArray(studentDataPayment)
-    ? studentDataPayment?.filter(item => item?._id === paymentDetails._id)
+  const selectedStudentData = Array.isArray(studentDataPayment?.data)
+    ? studentDataPayment.data.filter(
+        item => item.studentid === paymentDetails.studentid,
+      )
     : [];
 
   console.log('selectedStudentData=================>', selectedStudentData);
@@ -191,17 +197,17 @@ const PaymentDetails = ({route, navigation}) => {
       } else if (inputTotalAmount == 0 && inputPaidAmount > inputTotalAmount) {
         Alert.alert(
           'info',
-          'You have to add a fixed total amount first before proceeding !',
+          'You have to add a fixed total amount first before proceeding!',
         );
       } else {
         if (selectedStudentData[0].totalpayment.totalamount == 0) {
           if (inputPaidAmount > inputTotalAmount) {
             Alert.alert(
               'info',
-              'Paid amount can not be greater than the pending amount.',
+              'Paid amount cannot be greater than the pending amount.',
             );
           } else {
-            let data = {
+            let paymentData = {
               userid: paymentDetails.userid,
               username: paymentDetails.username,
               studentid: paymentDetails.studentid,
@@ -214,11 +220,11 @@ const PaymentDetails = ({route, navigation}) => {
               status: '',
             };
 
-            console.log('body sent in saving---------------->', data);
-            console.log('data userid----------------------->', data.userid);
+            console.log('Data sent in saving:', paymentData);
 
-            await dispatch(types.paymentsUserstart(data));
-            await dispatch(types.getallpaymentsstart(data.userid));
+            await dispatch(savePayments(paymentData));
+            await dispatch(getPayments(paymentData.userid));
+
             setInputPaidAmount(0);
             setInputTotalAmount(0);
             closeModal();
@@ -231,7 +237,7 @@ const PaymentDetails = ({route, navigation}) => {
           ) {
             Alert.alert(
               'info',
-              'Paid amount cannot be greater than the amount to be paid !',
+              'Paid amount cannot be greater than the amount to be paid!',
             );
           } else if (isEditingTotalPay) {
             if (
@@ -239,13 +245,13 @@ const PaymentDetails = ({route, navigation}) => {
             ) {
               Alert.alert(
                 'info',
-                'The amount you are setting is smaller than the amount already paid !',
+                'The amount you are setting is smaller than the amount already paid!',
               );
             } else if (
               inputTotalAmount ===
               selectedStudentData[0].totalpayment.totalamount
             ) {
-              Alert.alert('info', 'No changes have been made !');
+              Alert.alert('info', 'No changes have been made!');
             } else {
               let data = {
                 userid: paymentDetails.userid,
@@ -262,9 +268,9 @@ const PaymentDetails = ({route, navigation}) => {
               };
 
               try {
-                const res = await Api.put('updatetchpaymentdata', data);
+                const res = await API.put('updatetchpaymentdata', data);
                 if (res.status === 200) {
-                  dispatch(types.getallpaymentsstart(data.userid));
+                  await dispatch(getPayments(data.userid));
                   setInputPaidAmount(0);
                   setInputTotalAmount(0);
                   closeModal();
@@ -284,7 +290,7 @@ const PaymentDetails = ({route, navigation}) => {
               }
             }
           } else if (!isEditingTotalPay && inputPaidAmount === 0) {
-            Alert.alert('info', 'You have not added any amount !');
+            Alert.alert('info', 'You have not added any amount!');
           } else {
             let data1 = {
               userid: paymentDetails.userid,
@@ -300,8 +306,8 @@ const PaymentDetails = ({route, navigation}) => {
             };
 
             try {
-              await dispatch(types.paymentsUserstart(data1));
-              await dispatch(types.getallpaymentsstart(data1.userid));
+              await dispatch(savePayments(data1));
+              await dispatch(getPayments(data1.userid));
               setInputPaidAmount(0);
               setInputTotalAmount(0);
               closeModal();
@@ -316,12 +322,17 @@ const PaymentDetails = ({route, navigation}) => {
         }
       }
     } catch (error) {
-      // Alert.alert('Error', 'An unexpected error occurred.');
       console.error('Unexpected Error:', error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (paymentDetails?.userid) {
+      dispatch(getPayments(paymentDetails?.userid));
+    }
+  }, [paymentDetails.userid, dispatch]);
 
   // console.log(
   //   'selectedStudentData[0].paymenthistory--------------------------------------->',
@@ -359,7 +370,7 @@ const PaymentDetails = ({route, navigation}) => {
   //   'selectedStudentData[0].totalpayment.totalamount------------>',
   //   selectedStudentData[0].totalpayment.totalamount,
   // );
-  // console.log('inputTotalAmount---------------->', inputTotalAmount);
+  console.log('inputTotalAmount---------------->', inputTotalAmount);
 
   return (
     <>
@@ -563,7 +574,7 @@ const PaymentDetails = ({route, navigation}) => {
                           autoCorrect={false}
                           keyboardType="numeric"
                           name="aadhaar"
-                          value={inputTotalAmount.toString()}
+                          value={inputTotalAmount?.toString()}
                           onChangeText={value => {
                             const numericValue = value.replace(/[^0-9]/g, '');
                             setInputTotalAmount(numericValue);
@@ -579,9 +590,9 @@ const PaymentDetails = ({route, navigation}) => {
                               marginRight: 34,
                               marginLeft: '6%',
                             }}>
-                            {selectedStudentData[0]?.totalpayment.totalamount}
+                            {selectedStudentData[0]?.totalpayment?.totalamount}
                           </Text>
-                          {selectedStudentData[0]?.totalpayment.totalamount ===
+                          {selectedStudentData[0]?.totalpayment?.totalamount ===
                           0 ? (
                             <>
                               <TouchableOpacity
@@ -870,8 +881,8 @@ const PaymentDetails = ({route, navigation}) => {
                           textAlign: 'center',
                         }}>
                         ₹{' '}
-                        {selectedStudentData[0]?.totalpayment.totalamount -
-                          selectedStudentData[0]?.totalpayment.totalpaid}
+                        {selectedStudentData[0]?.totalpayment?.totalamount -
+                          selectedStudentData[0]?.totalpayment?.totalpaid}
                       </Text>
                       <Text
                         style={{

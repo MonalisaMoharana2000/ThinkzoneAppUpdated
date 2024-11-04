@@ -11,7 +11,7 @@ export default {
   whiteShade: '#f7f1ff',
   light: '#f8f4f4',
   lightGrey: '#c7c7c7',
-  darkGreey: '#A9A9A9',
+  darkGray: '#A9A9A9',
   golden: '#FFD700',
   red: '#FF0000',
   info: '#11cdef',

@@ -6,11 +6,9 @@ import StackNavigator from './src/navigation/StackNavigator';
 import {useSelector, useDispatch} from 'react-redux';
 import {fetchUserDataThunk} from './src/redux_toolkit/features/users/UserThunk';
 import messaging from '@react-native-firebase/messaging';
-import {useNavigation} from '@react-navigation/native';
 
 const App = () => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
   const user = useSelector(state => state.UserSlice.data);
   console.log('User Data:', user);
 

@@ -329,6 +329,7 @@ const TechContent = ({route, navigation}) => {
 
   const handleToNextTopic = () => {
     setFeedbackModal(false);
+    navigation.goBack();
     // if (dataType === 'quiz2') {
     //   const nextIncompleteTopic = topicData?.topicData?.find(
     //     topics => topics.quiz1Status === 'incomplete',
@@ -3760,31 +3761,20 @@ const TechContent = ({route, navigation}) => {
                       borderRadius: 20,
                     },
                   ]}>
-                  {/* <Image
-                    style={[
-                      styles.tinyLogos,
-                      {
-                        width: 250,
-                        height: 220,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginTop: -40,
-                      },
-                    ]}
-                    source={require('../assets/Image/success.gif')}
-                  /> */}
-                  <Image
-                    style={[
-                      styles.tinyLogos,
-                      {
-                        width: 250,
-                        height: 220,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      },
-                    ]}
-                    source={require('../assets/Image/success.gif')}
-                  />
+                   
+                   <Image
+                style={[
+                  styles.tinyLogos,
+                  {
+                    width: 100,
+                    height: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    marginTop: -20,
+                  },
+                ]}
+                source={require('../assets/Image/sucess.png')}
+              />
 
                   <Text
                     style={[
@@ -3802,7 +3792,7 @@ const TechContent = ({route, navigation}) => {
                     ]}>
                     Congratulations! {''}
                   </Text>
-                  <Text
+                  {/* <Text
                     style={{
                       color: '#666666',
 
@@ -3811,7 +3801,7 @@ const TechContent = ({route, navigation}) => {
                       textTransform: 'capitalize',
                     }}>
                     {username}
-                  </Text>
+                  </Text> */}
                   <Text
                     style={[
                       styles.username,
@@ -3825,7 +3815,7 @@ const TechContent = ({route, navigation}) => {
                         alignSelf: 'center',
                       },
                     ]}>
-                    ଆପଣଙ୍କ କୁଇଜ୍ ସଫଳତାର ସହ ସେଭ୍ ହୋଇଛି ଆପଣ {modalMark}% ସ୍କୋର
+                  {username}   ଆପଣଙ୍କ କୁଇଜ୍ ସଫଳତାର ସହ ସେଭ୍ ହୋଇଛି ଆପଣ {modalMark}% ସ୍କୋର
                     କରିଛନ୍ତି ଏବଂ
                     <Text style={{fontSize: 20, fontWeight: 'bold'}}>
                       {' '}
@@ -3889,19 +3879,7 @@ const TechContent = ({route, navigation}) => {
                       borderRadius: 20,
                     },
                   ]}>
-                  {/* <Image
-                    style={[
-                      styles.tinyLogos,
-                      {
-                        width: 250,
-                        height: 220,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        marginTop: -40,
-                      },
-                    ]}
-                    source={require('../assets/Image/success.gif')}
-                  /> */}
+                 
                   <Image
                     style={[
                       styles.tinyLogos,

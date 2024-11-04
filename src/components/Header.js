@@ -368,13 +368,13 @@ const Header = ({route, navigation, handleClick}) => {
             )}
           </TouchableOpacity>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={handleClick}
             style={[styles.logoContainer, {top: 75, left: -68, width: 150}]}>
             <Animated.Text style={[textStyle, {color: textColor}]}>
               Take a Tour{' '}
             </Animated.Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </View>

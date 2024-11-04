@@ -149,9 +149,9 @@ const Register = ({navigation, route}) => {
     if (currentDate) {
       const selectedYear = currentDate.getFullYear();
       if (selectedYear <= 2016) {
-        setDob(currentDate); // Update the state with the new date if valid
+        setDob(currentDate); 
       } else {
-        alert("Please select a date no later than 2016."); // Alert for invalid date selection
+        alert("Please select a date no later than 2016."); 
       }
     }
   };
@@ -492,7 +492,19 @@ const Register = ({navigation, route}) => {
       }
     }
   };
-
+  const formatDateOfBirth = (dob) => {
+    if (typeof dob === 'string' && dob.includes('-')) {
+      // Check if the date format is valid (basic check)
+      const parts = dob.split('-');
+      if (parts.length === 3) {
+        return parts.reverse().join('-'); // Reverses from YYYY-MM-DD to DD-MM-YYYY
+      }
+    }
+    return dob; // Return the original or a fallback value if invalid
+  };
+  
+  
+  
   const handleNext = async e => {
     e.preventDefault();
 
@@ -725,7 +737,7 @@ const Register = ({navigation, route}) => {
           phoneNumberVerified: true,
           qualification: qualification,
           gender: gender,
-          dob: dob.split('-').reverse().join('-'),
+          dob:  formatDateOfBirth(dob),
           aadhaar: '',
           aadhaarUpdated: true,
           loginType: data?.loginType,

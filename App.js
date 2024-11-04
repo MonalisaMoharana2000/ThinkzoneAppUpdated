@@ -17,7 +17,7 @@ import {
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.UserSlice.data);
-  console.log('User Data:', user);
+  // console.log('User Data:', user);
 
   useEffect(() => {
     dispatch(fetchUserDataThunk());

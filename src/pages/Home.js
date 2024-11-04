@@ -1559,6 +1559,9 @@ const Home = ({navigation}, props) => {
   };
 
   const [videos, setVideos] = useState([]);
+  console.log('====================================',videos);
+  console.log();
+  console.log('====================================');
   // const videos = [
   //   {uri: 'QgpRC29T-L8'},
   //   {uri: 'rU1FX9nvJ7A'},
@@ -2395,7 +2398,7 @@ const Home = ({navigation}, props) => {
                                 alignSelf: 'center',
                                 left: '7%',
                               }}>
-                                <Text>{video.mediaUrl}</Text>
+                                {/* <Text>{video.mediaUrl}</Text> */}
                               <YouTube
                                 videoId={video.mediaUrl}
                                 width={responsiveWidth}

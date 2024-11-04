@@ -10,7 +10,6 @@ import {useFocusEffect, useNavigationState} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AppTourProvider} from '@nghinv/react-native-app-tour';
 
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -775,6 +774,7 @@ const Home = ({navigation}, props) => {
   const [maintainanceStatus, setMaintainanceStatus] = useState({});
   const [imageSlider, setImageSlider] = useState([]);
   console.log('Imageslide', imageSlider);
+  console.log('maintainanceStatus', maintainanceStatus);
 
   const [modalVisibleIntro, setModalVisibleIntro] = useState(false);
 
@@ -804,16 +804,14 @@ const Home = ({navigation}, props) => {
   useEffect(() => {
     const fetchMaintenanceStatus = async () => {
       try {
-        if (user?.length > 0 && user[0]?.usertype) {
-          console.log('useEffect is triggered');
-          const response = await API.get(
-            // `getMaintainanceStatus/${user[0].usertype}`,
-            `getMaintainanceStatus/fellow`,
-          );
-          console.log('getMaintainanceStatus', response.data);
-          setMaintainanceStatus(response.data);
-          setmaintainanceModal(response.data?.overallApp);
-        }
+        console.log('useEffect is triggered');
+        const response = await API.get(
+          // `getMaintainanceStatus/${user[0].usertype}`,
+          `getMaintainanceStatus/fellow`,
+        );
+        console.log('getMaintainanceStatus', response.data);
+        setMaintainanceStatus(response.data);
+        setmaintainanceModal(response.data?.overallApp);
       } catch (err) {
         console.error('Error in API call', err);
       }
@@ -1559,6 +1557,9 @@ const Home = ({navigation}, props) => {
   };
 
   const [videos, setVideos] = useState([]);
+  console.log('====================================', videos);
+  console.log();
+  console.log('====================================');
   // const videos = [
   //   {uri: 'QgpRC29T-L8'},
   //   {uri: 'rU1FX9nvJ7A'},
@@ -1594,25 +1595,19 @@ const Home = ({navigation}, props) => {
     return () => clearInterval(interval); // Cleanup on component unmount
   }, [imageSlider.length]); // Dependencies array includes the length of imageSlider
 
-  useEffect(() => {
-    const fetchDboardSliders = async () => {
-      try {
-        const response = await API.get(
-          `getDboardSliders/${user[0]?.usertype}/${'video'}`,
-        );
-        setVideos(response.data);
-        // Uncomment the following line for debugging purposes
-        // console.log(response.data, 'videos--------------------------------------->');
-      } catch (err) {
-        console.error('Error fetching dashboard sliders:', err);
-        // Optionally handle the error here, e.g., show a notification or set an error state
-      }
-    };
-
-    if (user[0]?.usertype) {
-      // Ensure usertype is available before calling the API
-      fetchDboardSliders();
+  const fetchDboardSliders = async () => {
+    try {
+      const response = await API.get(`getDboardSliders/fellow/${'video'}`);
+      setVideos(response.data);
+    } catch (err) {
+      console.error('Error fetching dashboard sliders:', err);
     }
+  };
+  useEffect(() => {
+    // if (user[0]?.usertype) {
+    //   // Ensure usertype is available before calling the API
+    fetchDboardSliders();
+    // }
   }, []); // Added user as a dependency to rerun when it changes
 
   // const mediaUrl = 'A4LduNvkwvo';
@@ -2393,9 +2388,9 @@ const Home = ({navigation}, props) => {
                               style={{
                                 padding: 5,
                                 alignSelf: 'center',
-                                left: '7%',
+                                left: '4%',
                               }}>
-                                <Text>{video.mediaUrl}</Text>
+                              {/* <Text>{video.mediaUrl}</Text> */}
                               <YouTube
                                 videoId={video.mediaUrl}
                                 width={responsiveWidth}

@@ -1,10 +1,10 @@
 // App.js
-import React, { useEffect } from 'react';
-import { Platform, Alert } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import React, {useEffect} from 'react';
+import {Platform, Alert} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
 import StackNavigator from './src/navigation/StackNavigator';
-import { useSelector, useDispatch } from 'react-redux';
-import { fetchUserDataThunk } from './src/redux_toolkit/features/users/UserThunk';
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchUserDataThunk} from './src/redux_toolkit/features/users/UserThunk';
 import messaging from '@react-native-firebase/messaging';
 import {
   PERMISSIONS,
@@ -99,11 +99,17 @@ const App = () => {
       ];
 
       if (Platform.OS === 'android') {
-        const { status } = await requestNotifications(['alert', 'badge', 'sound']);
+        const {status} = await requestNotifications([
+          'alert',
+          'badge',
+          'sound',
+        ]);
         console.log('Notification permission status:', status);
 
         if (status !== RESULTS.GRANTED) {
-          console.warn('Notification permission denied or set to never ask again');
+          console.warn(
+            'Notification permission denied or set to never ask again',
+          );
           openSettings();
         }
       }
@@ -140,23 +146,21 @@ const App = () => {
   const initializePushNotification = () => {
     messaging().onMessage(async remoteMessage => {
       console.log('Foreground notification received:', remoteMessage);
-      Alert.alert('New Notification', remoteMessage.notification?.title, [
-        { text: 'OK' },
-      ]);
+      // Alert.alert('New Notification', remoteMessage.notification?.title, [
+      //   { text: 'OK' },
+      // ]);
     });
   };
 
-  const handleRequestError = (error) => {
-    if (error.response?.status === 413) {
-      Alert.alert('The entity is too large!');
-    } else if (error.response?.status === 504) {
-      Alert.alert('Gateway Timeout: The server is not responding!');
-    } else if (error.response?.status === 500) {
-      Alert.alert('Internal Server Error: Something went wrong on the server.');
-    } else {
-      Alert.alert('An error occurred:', error.message);
-    }
-  };
+  // const handleRequestError = error => {
+  //   if (error.response?.status === 413) {
+  //     Alert.alert('The entity is too large!');
+  //   } else if (error.response?.status === 504) {
+  //     Alert.alert('Gateway Timeout: The server is not responding!');
+  //   } else if (error.response?.status === 500) {
+  //     Alert.alert('Internal Server Error: Something went wrong on the server.');
+  //   } 
+  // };
 
   useEffect(() => {
     requestUserPermissions();
@@ -167,12 +171,18 @@ const App = () => {
       .getInitialNotification()
       .then(remoteMessage => {
         if (remoteMessage) {
-          console.log('App opened from quit state due to notification:', remoteMessage.notification);
+          console.log(
+            'App opened from quit state due to notification:',
+            remoteMessage.notification,
+          );
         }
       });
 
     messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log('App opened from background state due to notification:', remoteMessage.notification);
+      console.log(
+        'App opened from background state due to notification:',
+        remoteMessage.notification,
+      );
     });
 
     messaging().setBackgroundMessageHandler(async remoteMessage => {
@@ -181,9 +191,9 @@ const App = () => {
 
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('Foreground message received:', remoteMessage);
-      Alert.alert('Notification', remoteMessage.notification?.body, [
-        { text: 'OK' },
-      ]);
+      // Alert.alert('Notification', remoteMessage.notification?.body, [
+      //   { text: 'OK' },
+      // ]);
     });
 
     return unsubscribe;

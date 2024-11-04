@@ -159,9 +159,7 @@ const App = () => {
       Alert.alert('Gateway Timeout: The server is not responding!');
     } else if (error.response?.status === 500) {
       Alert.alert('Internal Server Error: Something went wrong on the server.');
-    } else {
-      Alert.alert('An error occurred:', error.message);
-    }
+    } 
   };
 
   useEffect(() => {

@@ -75,6 +75,7 @@ const Stack = createNativeStackNavigator();
 
 const StackNavigator = ({navigation}) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  console.log('isLoggedIn---->', isLoggedIn);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

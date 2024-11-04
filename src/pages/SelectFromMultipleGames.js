@@ -63,6 +63,7 @@ const Quiz = ({route}) => {
   const wholeData = route.params?.match;
 
   const handleOptionPress = optionLabel => {
+    if (currentQuestion.answered) return;
     if (selectedOptions[currentQuestionIndex]) return;
 
     const newSelectedOptions = [...selectedOptions];
@@ -86,6 +87,7 @@ const Quiz = ({route}) => {
   };
 
   const handleOptionPressSingle = value => {
+    if (currentQuestion.answered) return;
     const newSelectedOptions = [...selectedOptions];
     newSelectedOptions[currentQuestionIndex] = value;
     setSelectedOptions(newSelectedOptions);
@@ -105,9 +107,14 @@ const Quiz = ({route}) => {
     console.log(`Selected option for question ${currentQuestionIndex}:`, value);
   };
 
-  const isOptionSelectedSingle = optionLabel => {
-    return selectedOptions[currentQuestionIndex] === optionLabel;
+  const isOptionSelectedSingle = optionValue => {
+    const currentQuestion = questions[currentQuestionIndex];
+    return (
+      currentQuestion.answered &&
+      currentQuestion.inputAnswer.includes(optionValue)
+    );
   };
+
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
@@ -493,179 +500,192 @@ const Quiz = ({route}) => {
             .filter(
               key => key.startsWith('option') && updatedOptions[key] !== '',
             )
-            .map((key, index) => (
-              <TouchableOpacity
-                disabled={
-                  options.optionMediaType !== 'image' ||
-                  Boolean(selectedOptions[currentQuestionIndex])
-                }
-                key={index}
-                onPress={() => handleOptionPress(key)}
-                style={{
-                  width: options.optionMediaType === 'image' ? '48%' : '100%',
-                  marginVertical: 5,
-                  backgroundColor: selectedOptions[currentQuestionIndex]
-                    ? selectedOptions[currentQuestionIndex] === key
+            .map((key, index) => {
+              const isAnswered = currentQuestion?.answered;
+              const isSelected =
+                isAnswered && currentQuestion?.inputAnswer?.includes(key);
+
+              return (
+                <TouchableOpacity
+                  disabled={
+                    options.optionMediaType !== 'image' ||
+                    Boolean(selectedOptions[currentQuestionIndex])
+                  }
+                  key={index}
+                  onPress={() => handleOptionPress(key)}
+                  style={{
+                    width: options.optionMediaType === 'image' ? '48%' : '100%',
+                    marginVertical: 5,
+                    backgroundColor: isSelected
                       ? options.correctOption.includes(key)
                         ? '#32cd32' // Correct option selected
                         : 'red' // Incorrect option selected
-                      : options.correctOption.includes(key)
-                      ? '#32cd32' // Correct option, not selected
-                      : 'white' // Incorrect option, not selected
-                    : 'white', // Disable background for non-image option
-                  padding: 10,
-                  borderRadius: 6,
-                }}>
-                {options.optionMediaType === 'image' ? (
-                  <Image
-                    source={{uri: updatedOptions[key]}}
-                    style={{
-                      width: '100%',
-                      aspectRatio: 1,
-                      alignSelf: 'center',
-                    }}
-                  />
-                ) : options.optionMediaType === 'audio' ? (
-                  <TouchableOpacity
-                    key={index}
-                    style={{
-                      backgroundColor:
-                        // selectedOptions[currentQuestionIndex] === key
-                        //   ? '#32cd32'
-                        //   :
-                        'white',
-                      paddingVertical: 20,
-                      paddingHorizontal: 15,
-                      borderRadius: 12,
-                      borderWidth:
-                        selectedOptions[currentQuestionIndex] === key ? 0 : 1,
-                      borderColor: '#ccc',
-                      shadowColor: 'black',
-                      shadowOffset: {width: 2, height: 2},
-                      shadowOpacity: 0.2,
-                      shadowRadius: 4,
-                      width: '100%',
-                      elevation: 5,
-                      flexDirection: 'row',
-                      justifyContent: 'space-evenly',
-                    }}>
-                    <RadioForm animation={true}>
-                      <RadioButton>
-                        <RadioButtonInput
-                          obj={{label: updatedOptions[key], value: key}}
-                          index={index}
-                          isSelected={
-                            selectedOptions[currentQuestionIndex] === key
-                          }
-                          onPress={() => handleOptionPress(key)}
-                          borderWidth={1}
-                          buttonInnerColor={'#0060ca'}
-                          buttonOuterColor={
-                            selectedOptions[currentQuestionIndex] === key
-                              ? '#0060ca'
-                              : '#000'
-                          }
-                          buttonSize={15}
-                        />
-                      </RadioButton>
-                    </RadioForm>
-                    <TouchableOpacity
-                      onPress={() => {
-                        if (isPlaying === key) {
-                          // If the same option is clicked while playing, stop the audio
-                          stopOptionPlayback(key);
-                        } else {
-                          // Start playback for the selected option and stop any currently playing audio
-                          // if (isPlaying) stopOptionPlayback();
-                          startOptionPlayback(key);
-                        }
-                        // setSelectedOptions(prevState => {
-                        //   const newState = [...prevState];
-                        //   newState[currentQuestionIndex] = key; // Set the selected option for the current question index
-                        //   return newState;
-                        // });
-                      }}>
-                      {isPlaying === key ? (
-                        <View
-                          style={{flexDirection: 'row', alignItems: 'center'}}>
-                          {/* Display both waves.gif and stops.png while playing */}
-                          <Image
-                            source={require('../assets/Image/waves.gif')}
-                            style={{width: 30, height: 30, marginRight: 5}}
-                          />
-                          <Image
-                            source={require('../assets/Image/stops.png')}
-                            style={{width: 30, height: 30}}
-                          />
-                        </View>
-                      ) : (
-                        // Display Player.png when audio is not playing
-                        <Image
-                          source={require('../assets/Image/Player.png')}
-                          style={{width: 30, height: 30, marginRight: 10}}
-                        />
-                      )}
-                    </TouchableOpacity>
-                    <Text
+                      : selectedOptions[currentQuestionIndex]
+                      ? selectedOptions[currentQuestionIndex] === key
+                        ? options.correctOption.includes(key)
+                          ? '#32cd32' // Correct option selected
+                          : 'red' // Incorrect option selected
+                        : options.correctOption.includes(key)
+                        ? '#32cd32' // Correct option, not selected
+                        : 'white' // Incorrect option, not selected
+                      : 'white', // Disable background for non-image option
+                    padding: 10,
+                    borderRadius: 6,
+                  }}>
+                  {options.optionMediaType === 'image' ? (
+                    <Image
+                      source={{uri: updatedOptions[key]}}
                       style={{
-                        fontSize: 16,
-                        fontWeight: '600',
-                        color:
+                        width: '100%',
+                        aspectRatio: 1,
+                        alignSelf: 'center',
+                      }}
+                    />
+                  ) : options.optionMediaType === 'audio' ? (
+                    <TouchableOpacity
+                      key={index}
+                      style={{
+                        backgroundColor:
                           // selectedOptions[currentQuestionIndex] === key
-                          //   ? 'white'
+                          //   ? '#32cd32'
                           //   :
-                          '#333',
-                        textAlign: 'left',
+                          'white',
+                        paddingVertical: 20,
+                        paddingHorizontal: 15,
+                        borderRadius: 12,
+                        borderWidth:
+                          selectedOptions[currentQuestionIndex] === key ? 0 : 1,
+                        borderColor: '#ccc',
+                        shadowColor: 'black',
+                        shadowOffset: {width: 2, height: 2},
+                        shadowOpacity: 0.2,
+                        shadowRadius: 4,
+                        width: '100%',
+                        elevation: 5,
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
                       }}>
-                      {optionLabels[index]}
-                    </Text>
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => handleOptionPress(key)}
-                    style={{
-                      backgroundColor: selectedOptions[currentQuestionIndex]
-                        ? selectedOptions[currentQuestionIndex] ===
-                          options.correctOption
-                          ? options.correctOption === key
-                            ? '#32cd32'
-                            : 'white'
+                      <RadioForm animation={true}>
+                        <RadioButton>
+                          <RadioButtonInput
+                            obj={{label: updatedOptions[key], value: key}}
+                            index={index}
+                            isSelected={
+                              isAnswered &&
+                              currentQuestion.inputAnswer.includes(key)
+                            }
+                            onPress={() => handleOptionPress(key)}
+                            borderWidth={1}
+                            buttonInnerColor={'#0060ca'}
+                            buttonOuterColor={
+                              isAnswered &&
+                              currentQuestion.inputAnswer.includes(key)
+                                ? '#0060ca'
+                                : '#000'
+                            }
+                            buttonSize={15}
+                          />
+                        </RadioButton>
+                      </RadioForm>
+                      <TouchableOpacity
+                        onPress={() => {
+                          if (isPlaying === key) {
+                            // If the same option is clicked while playing, stop the audio
+                            stopOptionPlayback(key);
+                          } else {
+                            // Start playback for the selected option and stop any currently playing audio
+                            // if (isPlaying) stopOptionPlayback();
+                            startOptionPlayback(key);
+                          }
+                          // setSelectedOptions(prevState => {
+                          //   const newState = [...prevState];
+                          //   newState[currentQuestionIndex] = key; // Set the selected option for the current question index
+                          //   return newState;
+                          // });
+                        }}>
+                        {isPlaying === key ? (
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}>
+                            {/* Display both waves.gif and stops.png while playing */}
+                            <Image
+                              source={require('../assets/Image/waves.gif')}
+                              style={{width: 30, height: 30, marginRight: 5}}
+                            />
+                            <Image
+                              source={require('../assets/Image/stops.png')}
+                              style={{width: 30, height: 30}}
+                            />
+                          </View>
+                        ) : (
+                          // Display Player.png when audio is not playing
+                          <Image
+                            source={require('../assets/Image/Player.png')}
+                            style={{width: 30, height: 30, marginRight: 10}}
+                          />
+                        )}
+                      </TouchableOpacity>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: '600',
+                          color:
+                            // selectedOptions[currentQuestionIndex] === key
+                            //   ? 'white'
+                            //   :
+                            '#333',
+                          textAlign: 'left',
+                        }}>
+                        {optionLabels[index]}
+                      </Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => handleOptionPress(key)}
+                      style={{
+                        backgroundColor: isSelected
+                          ? options.correctOption.includes(key)
+                            ? '#32cd32' // Correct option selected
+                            : 'red' // Incorrect option selected
                           : selectedOptions[currentQuestionIndex] === key
                           ? 'red'
-                          : options.correctOption === key
+                          : options.correctOption.includes(key)
                           ? '#32cd32'
-                          : '#f0f0f0'
-                        : '#f0f0f0',
-                      paddingVertical: 20,
-                      paddingHorizontal: 15,
-                      borderRadius: 12,
-                      borderWidth:
-                        selectedOptions[currentQuestionIndex] === key ? 0 : 1,
-                      borderColor: '#ccc',
-                      shadowColor: 'black',
-                      shadowOffset: {width: 2, height: 2},
-                      shadowOpacity: 0.2,
-                      shadowRadius: 4,
-                      width: '100%',
-                      elevation: 5, // For Android shadow
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: 16, // Larger text for readability
-                        fontWeight: '600', // Medium bold font
-                        color:
-                          selectedOptions[currentQuestionIndex] === key
-                            ? 'white'
-                            : '#333', // White text for selected, dark text for unselected
-                        textAlign: 'left',
+                          : '#f0f0f0',
+                        paddingVertical: 20,
+                        paddingHorizontal: 15,
+                        borderRadius: 12,
+                        borderWidth:
+                          selectedOptions[currentQuestionIndex] === key ? 0 : 1,
+                        borderColor: '#ccc',
+                        shadowColor: 'black',
+                        shadowOffset: {width: 2, height: 2},
+                        shadowOpacity: 0.2,
+                        shadowRadius: 4,
+                        width: '100%',
+                        elevation: 5, // For Android shadow
                       }}>
-                      {updatedOptions[key]}
-                    </Text>
-                  </TouchableOpacity>
-                )}
-              </TouchableOpacity>
-            ))}
+                      <Text
+                        style={{
+                          fontSize: 16, // Larger text for readability
+                          fontWeight: '600', // Medium bold font
+                          color:
+                            isSelected ||
+                            selectedOptions[currentQuestionIndex] === key
+                              ? 'white'
+                              : '#333', // White text for selected, dark text for unselected
+                          textAlign: 'left',
+                        }}>
+                        {updatedOptions[key]}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </TouchableOpacity>
+              );
+            })}
 
           {options?.answerType === 'yesNoOptions' && (
             <View style={styles.radioContainer}>
@@ -719,7 +739,7 @@ const Quiz = ({route}) => {
           {/* Next or Save Button */}
           {currentQuestionIndex < questions.length - 1 ? (
             <Button title="Next" onPress={handleNext} />
-          ) : (
+          ) : currentQuestion.answered ? null : (
             <Button title="Submit" onPress={handleSave} />
           )}
         </View>

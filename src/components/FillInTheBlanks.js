@@ -127,10 +127,12 @@ const FillInTheBlank = ({navigation, route}) => {
                   idx === selectedBlank ? option : opt,
                 ),
                 userInput: {
-                  // Add userInput property here as well
                   blank: selectedBlank + 1,
                   answer: option,
-                  correct: false, // Update as needed
+                  correct:
+                    questionData?.correctInput[0].answer === option
+                      ? true
+                      : false,
                 },
               }
             : q,
@@ -211,48 +213,63 @@ const FillInTheBlank = ({navigation, route}) => {
     const userInputData = gamifiedData
       .filter(gameItem => gameItem.gameType === 'fillInBlanks')
       .map(gameItem => {
-        const fillInBlanksArr = gameItem.fillInBlanksArr.map(fillInBlank => {
-          const question = questions.find(q => q.id === fillInBlank.id);
-
-          if (!question) {
-            return fillInBlank; // If no matching question found, return as is
-          }
-
-          // Get user input based on question type
-          let userInput = [];
-          if (question.type === 'single') {
-            const selectedOption = question.selectedOption; // This should hold the user's selection
-            if (selectedOption) {
-              userInput = [{blank: 1, answer: selectedOption}]; // Only one option for single type
+        const fillInBlanksArr = gameItem.fillInBlanksArr.map(
+          (fillInBlank, index) => {
+            const question = questions[index]; // Use index to get the matching question
+            // console.log('questoin--------<', question);
+            if (!question) {
+              return fillInBlank; // If no matching question found, return as is
             }
-          } else if (question.type === 'paragraph') {
-            userInput = question.selectedOptions.map((answer, idx) => ({
-              blank: idx + 1,
-              answer: answer || '', // Ensure there's a default value to avoid undefined
-            }));
-          }
 
-          // Return updated fillInBlank object with user input in inputAnswer
-          return {
-            ...fillInBlank,
-            inputAnswer: userInput.map(input => input.answer), // Collect user's answers for this fillInBlank
-          };
-        });
+            // Get user input based on question type
+            let userInput = [];
+            if (question.type === 'single') {
+              const selectedOption = question.selectedOption;
+              if (selectedOption) {
+                userInput = [
+                  {
+                    blank: 1,
+                    answer: selectedOption,
+                    correct:
+                      question?.correctInput[0].answer === selectedOption
+                        ? true
+                        : false,
+                  },
+                ];
+              }
+            } else if (question.type === 'paragraph') {
+              userInput = question.selectedOptions.map((answer, idx) => ({
+                blank: idx + 1,
+                answer: answer || '',
+                correct:
+                  question?.correctInput[0].answer === selectedOption
+                    ? true
+                    : false,
+              }));
+            }
+
+            // Return updated fillInBlank object with user input in inputAnswer
+            return {
+              ...fillInBlank,
+              userInput,
+              inputAnswer: userInput.map(input => input.answer),
+            };
+          },
+        );
 
         // Collect all user answers into inputAnswer for the game item
         const allUserAnswers = fillInBlanksArr
           .flatMap(fillInBlank => fillInBlank.inputAnswer)
           .filter(answer => answer !== undefined);
 
-        // Return updated game item with the modified fillInBlanksArr
         return {
           ...gameItem,
           fillInBlanksArr,
-          inputAnswer: allUserAnswers, // Collect all user answers
+          inputAnswer: allUserAnswers,
         };
       });
 
-    console.log('userInputData--------->', userInputData);
+    console.log('userInputData--------->', userInputData[0]?.fillInBlanksArr);
     console.log('question check--------->', questions);
     const updateData = userInputData?.map(item => ({
       ...item,
@@ -342,124 +359,51 @@ const FillInTheBlank = ({navigation, route}) => {
         </View>
       ) : filteredData[0]?.answered === true ? (
         filteredData[0]?.fillInBlanksArr?.map((question, index) => (
-          <View key={question.id} style={styles.questionContainer}>
+          <View key={index} style={styles.questionContainer}>
             <Text style={styles.serialNumber}>{index + 1}.</Text>
-            {question.type === 'single' ? (
-              <View>
-                <TouchableOpacity style={styles.questionButton}>
-                  <Text style={styles.questionText}>
-                    {question.text
-                      .split('__________')
-                      .map((part, partIndex) => (
-                        <React.Fragment key={partIndex}>
-                          {part}
-                          {partIndex !==
-                            question.text.split('__________').length - 1 && (
-                            <Text
-                              style={[
-                                styles.blank,
-                                {
-                                  textDecorationLine: 'underline',
-                                },
-                              ]}>
-                              {question.selectedOption || '__________'}
-                            </Text>
-                          )}
-                        </React.Fragment>
-                      ))}
-                  </Text>
-                </TouchableOpacity>
-                <View style={styles.optionList}>
-                  {question.options.map((option, optIndex) => (
-                    <TouchableOpacity
-                      key={optIndex}
-                      style={[
-                        styles.optionButton,
-                        {
-                          backgroundColor:
-                            question.selectedOption === option
-                              ? '#d1e7dd'
-                              : '#ffffff',
-                        },
-                      ]}
-                      // onPress={() =>
-                      //   handleOptionClick(question.id, option, question)
-                      // }
-                    >
-                      <Text style={styles.optionButtonText}>{option}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </View>
-            ) : (
-              <>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                    paddingBottom: '10%',
-                  }}>
-                  <View>
-                    <View style={styles.questionButton}>
-                      <Text style={styles.questionText}>
-                        {question.text
-                          .split('__________')
-                          .map((part, partIndex) => (
-                            <React.Fragment key={partIndex}>
-                              {part}
-                              {partIndex !==
-                                question.text.split('__________').length -
-                                  1 && (
-                                <Text
-                                  onPress={() =>
-                                    handleBlankClick(question.id, partIndex)
-                                  }
-                                  style={[
-                                    styles.blank,
-                                    {
-                                      textDecorationLine: 'underline',
-                                    },
-                                  ]}>
-                                  {question.selectedOptions[partIndex] ||
-                                    '__________'}
-                                </Text>
-                              )}
-                            </React.Fragment>
-                          ))}
-                      </Text>
-                    </View>
-                    <View style={styles.optionList}>
-                      {question.options.map((option, optIndex) => (
-                        <TouchableOpacity
-                          key={optIndex}
+            <View>
+              <TouchableOpacity style={styles.questionButton}>
+                <Text style={styles.questionText}>
+                  {question.text.split('__________').map((part, partIndex) => (
+                    <React.Fragment key={partIndex}>
+                      {part}
+                      {partIndex !==
+                        question.text.split('__________').length - 1 && (
+                        <Text
                           style={[
-                            styles.optionButton,
-                            {
-                              backgroundColor:
-                                question.selectedOptions.includes(option)
-                                  ? '#d1e7dd'
-                                  : '#ffffff',
-                            },
-                          ]}
-                          onPress={() =>
-                            handleOptionClick(question.id, option)
-                          }>
-                          {/* <Text style={styles.optionButtonText}>{option}</Text> */}
-                        </TouchableOpacity>
-                      ))}
-                    </View>
-                    {/* Place reset button below options */}
-                    <TouchableOpacity
-                      onPress={() => resetParagraphOptions(question.id)}
-                      style={styles.resetButton}>
-                      <Text style={styles.resetButtonText}>
-                        Reset Paragraph
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </>
-            )}
+                            styles.blank,
+                            {textDecorationLine: 'underline'},
+                          ]}>
+                          {
+                            // Display the user's answer if provided, otherwise show '__________'
+                            question.userInput[partIndex]?.answer ||
+                              '__________'
+                          }
+                        </Text>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </Text>
+              </TouchableOpacity>
+              <View style={styles.optionList}>
+                {question.options.map((option, optIndex) => (
+                  <TouchableOpacity
+                    key={optIndex}
+                    style={[
+                      styles.optionButton,
+                      {
+                        backgroundColor: question.userInput.some(
+                          input => input.answer === option,
+                        )
+                          ? '#d1e7dd'
+                          : '#ffffff',
+                      },
+                    ]}>
+                    <Text style={styles.optionButtonText}>{option}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
           </View>
         ))
       ) : (
@@ -584,11 +528,15 @@ const FillInTheBlank = ({navigation, route}) => {
           </View>
         ))
       )}
-      {loading ? null : (
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Submit</Text>
-        </TouchableOpacity>
-      )}
+      {loading
+        ? null
+        : !filteredData[0]?.answered && (
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={handleSubmit}>
+              <Text style={styles.submitButtonText}>Submit</Text>
+            </TouchableOpacity>
+          )}
     </ScrollView>
   );
 };

@@ -607,7 +607,7 @@ const Home = ({navigation}, props) => {
   };
   useEffect(() => {
     fetchIntroData();
-  }, [introStatus, storageData]);
+  }, [introStatus]);
 
   // useFocusEffect(
   //   React.useCallback(() => {

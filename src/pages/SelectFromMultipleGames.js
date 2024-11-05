@@ -122,7 +122,10 @@ const Quiz = ({route}) => {
   };
 
   const handleNext = () => {
-    if (!selectedOptions[currentQuestionIndex]) {
+    if (
+      !selectedOptions[currentQuestionIndex] &&
+      data?.otherData?.answered === true
+    ) {
       Alert.alert(
         'Selection Required',
         'Please choose an option before proceeding.',

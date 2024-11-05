@@ -40,7 +40,6 @@ import * as SIZES from '../utils/dimensions';
 import * as window from '../utils/dimensions';
 import Colors from '../utils/Colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Norecord from '../components/Norecord';
 import NewQuizTemplate from '../components/NewQuizTemplate';
 import Loading from '../components/Loading';
 import AudioAssessment from '../components/AudioAssessment';

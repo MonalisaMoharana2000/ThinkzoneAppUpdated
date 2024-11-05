@@ -35,7 +35,6 @@ import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import * as SIZES from '../utils/dimensions';
 import * as window from '../utils/dimensions';
 import Colors from '../utils/Colors';
-import Norecord from '../components/Norecord';
 const audioRecorderPlayer = new AudioRecorderPlayer();
 import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
 

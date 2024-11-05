@@ -50,7 +50,6 @@ import * as SIZES from '../utils/dimensions';
 import ImagePicker from 'react-native-image-crop-picker';
 import * as window from '../utils/dimensions';
 import Colors from '../utils/Colors';
-import Norecord from '../components/Norecord';
 
 const HEIGHT = Dimensions.get('window').height;
 

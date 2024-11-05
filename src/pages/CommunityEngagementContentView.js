@@ -31,7 +31,6 @@ import Quiz from '../components/Quiz';
 import HtmlContentCoponent from '../components/HtmlContentCoponent';
 import Colors from '../utils/Colors';
 import {useSelector, useDispatch} from 'react-redux';
-import Norecord from '../components/Norecord';
 import Popup from '../components/Popup';
 import {useEffect} from 'react';
 import Modals from '../components/Modals';

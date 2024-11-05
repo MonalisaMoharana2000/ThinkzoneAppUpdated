@@ -815,10 +815,30 @@ const StackNavigator = ({navigation}) => {
       <Stack.Screen
         name="moduleunderdevlopment"
         component={ModuleUnderDevlopment}
-        options={{
-          // headerTitleAlign: 'center',
-          headerShown: false,
-        }}
+        options={({navigation}) => ({
+          title: 'Module Under Devlopment',
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <AntDesign
+                style={{marginLeft: 15}}
+                name="arrowleft"
+                size={25}
+                color="white"
+              />
+            </TouchableOpacity>
+          ),
+        })}
       />
 
       <Stack.Screen
@@ -863,7 +883,6 @@ const StackNavigator = ({navigation}) => {
             backgroundColor: '#0060ca',
           },
           headerTintColor: 'white',
-
         }}
       />
 

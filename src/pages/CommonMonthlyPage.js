@@ -25,7 +25,6 @@ import API from '../environment/Api';
 import {useFocusEffect} from '@react-navigation/native';
 import moment from 'moment';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Norecord from '../components/Norecord';
 import Loading from '../components/Loading';
 import Nocontents from '../components/Nocontents';
 import {app_versions} from './Home';

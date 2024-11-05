@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import * as window from '../utils/dimensions';
 
 import {View, StyleSheet, Text, ScrollView, Image} from 'react-native';
-import DraggableFlatList, {
-  ScaleDecorator,
-} from 'react-native-draggable-flatlist';
+// import DraggableFlatList, {
+//   ScaleDecorator,
+// } from 'react-native-draggable-flatlist';
 
 const DragWordComponent = ({
   data,

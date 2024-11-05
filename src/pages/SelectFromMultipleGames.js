@@ -151,6 +151,14 @@ const Quiz = ({route}) => {
     console.log('Quiz saved with answers:', selectedOptions);
 
     console.log('updatedQuestion--------->', updatedAnswer);
+    if (!selectedOptions[currentQuestionIndex]) {
+      Alert.alert(
+        'Selection Required',
+        'Please choose an option before proceeding.',
+        [{text: 'OK'}],
+      );
+      return;
+    }
 
     const updatedData = questions.map(item => ({
       ...item,

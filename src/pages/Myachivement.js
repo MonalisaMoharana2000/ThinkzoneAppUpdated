@@ -306,6 +306,7 @@ const Myachivement = ({navigation}) => {
 
   useEffect(() => {
     API.get(`checkUserInLboard/${user[0]?.userid}/${user[0]?.usertype}`)
+      // API.get(`checkUserInLboard/alinabarik.8455075110@tz.in/fellow}`)
       .then(response => {
         // console.log('leaderboardAPI', response?.data[0]?.useridExists);
         setInLeaderBoard(response?.data[0]?.useridExists);
@@ -331,6 +332,7 @@ const Myachivement = ({navigation}) => {
     try {
       const response = await API.get(
         `getAllRedeemedCoupons/${user[0]?.userid}`,
+        // `getAllRedeemedCoupons/alinabarik.8455075110@tz.in`,
       );
       setRedeemCount(response?.data?.redeemCount);
       setCouponsData(response?.data?.couponsData);
@@ -457,6 +459,9 @@ const Myachivement = ({navigation}) => {
     try {
       // console.log('isloader', isloader);
       const response = await API.get(`getRewardCoupon/${user[0]?.userid}`);
+      // const response = await API.get(
+      //   `getRewardCoupon/alinabarik.8455075110@tz.in`,
+      // );
       console.log('Amazone Code Response', response);
       if (response?.status === 200) {
         setAmazonCode(response.data);
@@ -509,14 +514,16 @@ const Myachivement = ({navigation}) => {
   //   );
   // };
 
-  const closeModel = () => {
+  const closeModel = async () => {
     setVersionModal(false);
-    dispatch(types.rewardsUserstart(user[0]?.userid));
+    // dispatch(types.rewardsUserstart(user[0]?.userid));
+    await dispatch(fetchUserTotalCoinsThunk(user[0]?.userid));
     fetchData();
   };
-  const closeCouponModal = () => {
+  const closeCouponModal = async () => {
     setCouponModal(false);
-    dispatch(types.rewardsUserstart(user[0]?.userid));
+    await dispatch(fetchUserTotalCoinsThunk(user[0]?.userid));
+    // dispatch(types.rewardsUserstart(user[0]?.userid));
   };
 
   const closeTooltip = () => {

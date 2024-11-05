@@ -119,6 +119,32 @@ const Header = ({route, navigation, handleClick}) => {
         const res2 = await Api.get(`getuserbyuserid/${storageData[0]?.userid}`);
 
         console.log('res2------>', res2.data);
+
+        const response = await Api.get(
+          `getTransIntroQuiz/${storageData[0]?.userid}/${storageData[0]?.usertype}`,
+        );
+        console.log('===================intro', response.data);
+
+        if (response.data.completionStatus === 'complete') {
+          // setIntroStatus(response.data.completionStatus);
+          // navigation.navigate('Home');
+          // setCheckIntro(true);
+          // setLoading(false);
+          // setModalVisibleIntro(false);
+        } else {
+          // setIntroStatus(null);
+          {
+            storageData[0]?.usertype === 'fellow'
+              ? navigation.navigate('IntroQuiz')
+              : null;
+          }
+          // setLoading(false);
+
+          // setModalVisibleIntro(true);
+          // setIsloading(false);
+          setIntroDatas(response.data.quizData);
+        }
+
         if (res2.status === 200) {
           setIsloading(false);
           setUserdata(res2.data);
@@ -203,6 +229,52 @@ const Header = ({route, navigation, handleClick}) => {
   useEffect(() => {
     // If you want the color to change every time the component mounts, you can use the useEffect hook.
     setTextColor(getRandomColor());
+  }, []);
+
+  const [introDatas, setIntroDatas] = useState([]);
+  const fetchIntroData = async () => {
+    // Use async/await for API calls
+    try {
+      // setLoading(true);
+      // setCheckIntro(false);
+      const response = await API.get(
+        `getTransIntroQuiz/${storageData[0]?.userid}/${storageData[0]?.usertype}`,
+      );
+      console.log(
+        '===================intro',
+        response.data,
+        user[0]?.userid,
+        // user[0]?.usertype,
+      );
+
+      if (response.data.completionStatus === 'complete') {
+        setIntroStatus(response.data.completionStatus);
+        // navigation.navigate('Home');
+        // setCheckIntro(true);
+
+        // setLoading(false);
+        // setModalVisibleIntro(false);
+      } else {
+        setIntroStatus(null);
+        {
+          storageData[0]?.usertype === 'fellow'
+            ? navigation.navigate('IntroQuiz')
+            : null;
+        }
+        // setLoading(false);
+
+        // setModalVisibleIntro(true);
+        // setIsloading(false);
+        setIntroDatas(response.data.quizData);
+      }
+    } catch (error) {
+      console.error('Error fetching intro quiz data:', error);
+    } finally {
+      setIsLoadings(false);
+    }
+  };
+  useEffect(() => {
+    fetchIntroData();
   }, []);
 
   return (

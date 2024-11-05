@@ -44,8 +44,25 @@ const LoginScreen = ({navigation}) => {
   function onReady() {
     setIsReadyForRender(true);
   }
+  const [storageData, setStorageData] = useState([]);
+  console.log('storageData34--------->', storageData);
+  const fetchStoredData = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('userData');
+      console.log('storedData1--------->', storedData);
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        console.log('Parsed storedData1--------->', parsedData);
+        return parsedData;
+      }
+    } catch (error) {
+      console.error('Error fetching stored data:', error);
+    }
+    return null; // Return null if no data or error occurs
+  };
 
   useEffect(() => {
+    fetchStoredData();
     GoogleSignin.configure();
     return () => {
       GoogleSignin.signOut();

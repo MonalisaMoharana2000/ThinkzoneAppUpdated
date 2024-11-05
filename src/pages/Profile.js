@@ -156,13 +156,11 @@ const Profile = ({navigation}) => {
       console.log('response--->', logout?.status);
       if (logout?.status === 200) {
         dispatch(clearUser());
-        const validRoutes = ['firstScreen', 'Login'];
 
-        if (validRoutes.includes('firstScreen')) {
-          navigation.navigate('firstScreen');
-        } else {
-          navigation.navigate('Login');
-        }
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Login'}],
+        });
       }
       // dispatch(types.logOutUser());
       // navigation.navigate('login');

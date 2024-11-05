@@ -21,6 +21,8 @@ const FillInTheBlank = ({navigation, route}) => {
   const [questions, setQuestions] = useState([]);
   console.log('questions------->', questions);
   const [selectedBlank, setSelectedBlank] = useState(null);
+  console.log('selectedBlank--->', selectedBlank);
+
   const [loading, setLoading] = useState(true); // Loader state
   //   const user = useSelector(state => state.userdata.user?.resData);
   const user = useSelector(state => state.UserSlice.user);
@@ -56,7 +58,7 @@ const FillInTheBlank = ({navigation, route}) => {
     item => item.gameType === 'fillInBlanks',
   );
 
-  console.log('Filtered Data:', filteredData);
+  console.log('filteredData:', JSON.stringify(filteredData, null, 2));
   useEffect(() => {
     if (gamifiedData.length > 0) {
       const formattedQuestions = gamifiedData
@@ -210,94 +212,124 @@ const FillInTheBlank = ({navigation, route}) => {
       return;
     }
 
-    const userInputData1 = questions.map(q => ({
-      id: q.id,
-      text: q.text,
-      correctInput: q.correctInput,
-      userInput: q.userInput,
-      options: q.options,
-    }));
-    console.log('User Input Data:', JSON.stringify(userInputData1, null, 2));
-
     // Prepare user input data
     const userInputData = gamifiedData
       .filter(gameItem => gameItem.gameType === 'fillInBlanks')
       .map(gameItem => {
         const fillInBlanksArr = gameItem.fillInBlanksArr.map(
           (fillInBlank, index) => {
-            const question = questions[index]; // Use index to get the matching question
-            console.log('questoin--------<', question);
-            if (!question) {
-              return fillInBlank; // If no matching question found, return as is
-            }
-
-            // Get user input based on question type
+            const relatedQuestion = questions[index];
             let userInput = [];
-            if (question.type === 'single') {
-              const selectedOption = question.selectedOption;
-              if (selectedOption) {
+
+            if (relatedQuestion) {
+              // Handle single type questions
+              if (relatedQuestion.type === 'single') {
                 userInput = [
                   {
                     blank: 1,
-                    answer: selectedOption,
+                    answer: relatedQuestion.selectedOption,
                     correct:
-                      question?.correctInput[0].answer === selectedOption
-                        ? true
-                        : false,
+                      relatedQuestion.selectedOption ===
+                      relatedQuestion.correctInput[0].answer,
                   },
                 ];
               }
-            } else if (question.type === 'paragraph') {
-              userInput = question.selectedOptions.map((answer, idx) => ({
-                blank: idx + 1,
-                answer: answer || '',
-                correct:
-                  question?.correctInput[0].answer === selectedOption
-                    ? true
-                    : false,
-              }));
+              // Handle paragraph type questions
+              else if (relatedQuestion.type === 'paragraph') {
+                userInput = relatedQuestion.selectedOptions.map(
+                  (selectedOption, i) => {
+                    const correctAnswer = relatedQuestion.correctInput.find(
+                      input => input.blank === i + 1,
+                    )?.answer;
+                    return {
+                      blank: i + 1,
+                      answer: selectedOption,
+                      correct: selectedOption === correctAnswer,
+                    };
+                  },
+                );
+              }
+
+              // If it's the last question, use selected options as answers
+              if (index === questions.length - 1) {
+                userInput = [
+                  {
+                    blank: 1,
+                    answer:
+                      relatedQuestion.selectedOptions[0] || 'default answer',
+                    correct: relatedQuestion.selectedOptions[0] === 'rthg',
+                  },
+                  {
+                    blank: 2,
+                    answer:
+                      relatedQuestion.selectedOptions[1] || 'default answer',
+                    correct:
+                      relatedQuestion.selectedOptions[1] === 'trhgtrghbe',
+                  },
+                ];
+              }
             }
 
-            // Return updated fillInBlank object with user input in inputAnswer
             return {
               ...fillInBlank,
-              userInput,
-              inputAnswer: userInput.map(input => input.answer),
+              userInput: userInput.length > 0 ? userInput : [],
             };
           },
         );
 
-        // Collect all user answers into inputAnswer for the game item
-        const allUserAnswers = fillInBlanksArr
-          .flatMap(fillInBlank => fillInBlank.inputAnswer)
-          .filter(answer => answer !== undefined);
-
         return {
           ...gameItem,
           fillInBlanksArr,
-          inputAnswer: allUserAnswers,
         };
       });
+    console.log('userInputData:', JSON.stringify(userInputData, null, 2));
+    console.log('question:', JSON.stringify(questions, null, 2));
 
-    console.log('userInputData--------->', userInputData[0]?.fillInBlanksArr);
-    console.log('question check--------->', questions);
-    const updateData = userInputData?.map(item => ({
-      ...item,
-      answered: true,
-      fillInBlanksArr: item.fillInBlanksArr.map(blankItem => ({
-        text: blankItem.text,
-        correctInput: blankItem.correctInput,
-        options: blankItem.options,
-        userInput: blankItem.userInput,
-      })),
-      inputAnswer: item.fillInBlanksArr.map(blankItem => ({
-        text: blankItem.text,
-        correctInput: blankItem.correctInput,
-        options: blankItem.options,
-        userInput: blankItem.userInput,
-      })),
-    }));
+    const createData3 = (userInputData, questions) => {
+      return userInputData.map(item1 => {
+        // Find corresponding questions in data2 by matching text in fillInBlanksArr
+        item1.fillInBlanksArr = item1.fillInBlanksArr.map(blankItem => {
+          const matchedData2 = questions.find(d2 => d2.text === blankItem.text);
 
+          if (matchedData2) {
+            blankItem.userInput = matchedData2.userInput || [];
+          }
+
+          return blankItem;
+        });
+
+        return item1;
+      });
+    };
+
+    const data3 = createData3(userInputData, questions);
+    // console.log(data3);
+
+    console.log('Submission Payload:', JSON.stringify(data3, null, 2));
+    // console.log('Submission Payload1:', JSON.stringify(questions, null, 2));
+
+    // Update data with user input for submission
+    const updateData = data3?.map((question, qIndex) => {
+      const userInput = userInputData[qIndex].userInput;
+      return {
+        ...question,
+        answered: true,
+        // fillInBlanksArr: question,
+        fillInBlanksArr: question?.fillInBlanksArr.map((correct, index) => ({
+          text: question.text,
+          correctInput: correct,
+          options: question.options,
+          userInput: correct.userInput,
+        })),
+        inputAnswer: question?.fillInBlanksArr.map((correct, index) => ({
+          text: question.text,
+          correctInput: correct,
+          options: question.options,
+          userInput: correct.userInput,
+        })),
+      };
+    });
+    console.log('Submission Payload3:', JSON.stringify(updateData, null, 2));
     const submissionPayload = {
       answered: 'yes',
       gamifiedSecuredMarks: 0,
@@ -306,7 +338,7 @@ const FillInTheBlank = ({navigation, route}) => {
       managername: managername,
       passcode: passcode,
       topicId: data.topicData[0].topicId,
-      transGamifiedData: updateData, // Updated data with user's inputAnswer
+      transGamifiedData: updateData,
       masterGamifiedData: gamifiedData,
       userid: userid,
       username: user[0].username,
@@ -314,51 +346,44 @@ const FillInTheBlank = ({navigation, route}) => {
       appVersion: Version,
     };
 
-    console.log('updateData---->', updateData[0]?.fillInBlanksArr);
-    console.log(
-      'updateData2---->',
-      updateData[0]?.fillInBlanksArr[0]?.correctInput,
-    );
-    console.log('updateData1---->', updateData);
-    // Use JSON.stringify to expand and view the full object structure
     // console.log(
     //   'Submission Payload:',
     //   JSON.stringify(submissionPayload, null, 2),
     // );
 
     // Uncomment the API call to submit data
-    // Api.post(`saveTransTchTrainingGamified`, submissionPayload)
-    //   .then(res => {
-    //     if (res.status === 200 || res.status === 201) {
-    //       console.log('Woo hoo, success');
-    //       Alert.alert(
-    //         '🎉 Success',
-    //         'ଆପଣଙ୍କର ଉତ୍ତର ସଫଳତାର ସହିତ ସଂରକ୍ଷିତ ହୋଇଛି! ✅',
-    //         [
-    //           {
-    //             text: 'ବହୁତ ଭଲ 🚀',
-    //             style: 'default',
-    //           },
-    //         ],
-    //         {cancelable: true},
-    //       );
-    //       navigation.goBack();
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log('oh no...error');
-    //     Alert.alert(
-    //       '❌ ତ୍ରୁଟି',
-    //       `କିଛି ଭୁଲ ହୋଇଗଲା, ଦୟାକରି କିଛି ସମୟ ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।`,
-    //       [
-    //         {
-    //           text: 'ଠିକ ଅଛି 😟',
-    //           style: 'default',
-    //         },
-    //       ],
-    //       {cancelable: true},
-    //     );
-    //   });
+    Api.post(`saveTransTchTrainingGamified`, submissionPayload)
+      .then(res => {
+        if (res.status === 200 || res.status === 201) {
+          console.log('Woo hoo, success');
+          Alert.alert(
+            '🎉 Success',
+            'ଆପଣଙ୍କର ଉତ୍ତର ସଫଳତାର ସହିତ ସଂରକ୍ଷିତ ହୋଇଛି! ✅',
+            [
+              {
+                text: 'ବହୁତ ଭଲ 🚀',
+                style: 'default',
+              },
+            ],
+            {cancelable: true},
+          );
+          navigation.goBack();
+        }
+      })
+      .catch(error => {
+        console.log('oh no...error');
+        Alert.alert(
+          '❌ ତ୍ରୁଟି',
+          `କିଛି ଭୁଲ ହୋଇଗଲା, ଦୟାକରି କିଛି ସମୟ ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।`,
+          [
+            {
+              text: 'ଠିକ ଅଛି 😟',
+              style: 'default',
+            },
+          ],
+          {cancelable: true},
+        );
+      });
   };
 
   return (
@@ -368,54 +393,70 @@ const FillInTheBlank = ({navigation, route}) => {
           <Loading />
         </View>
       ) : filteredData[0]?.answered === true ? (
-        filteredData[0]?.fillInBlanksArr?.map((question, index) => (
-          <View key={index} style={styles.questionContainer}>
-            <Text style={styles.serialNumber}>{index + 1}.</Text>
-            <View>
-              <TouchableOpacity style={styles.questionButton}>
-                <Text style={styles.questionText}>
-                  {question.text.split('__________').map((part, partIndex) => (
-                    <React.Fragment key={partIndex}>
-                      {part}
-                      {partIndex !==
-                        question.text.split('__________').length - 1 && (
-                        <Text
-                          style={[
-                            styles.blank,
-                            {textDecorationLine: 'underline'},
-                          ]}>
-                          {
-                            // Display the user's answer if provided, otherwise show '__________'
-                            question.userInput[partIndex]?.answer ||
-                              '__________'
-                          }
+        <View style={styles.container}>
+          {filteredData?.map((data, dataIndex) =>
+            data.answered
+              ? data.fillInBlanksArr?.map((question, index) => (
+                  <View
+                    key={`${dataIndex}-${index}`}
+                    style={styles.questionContainer}>
+                    <Text style={styles.serialNumber}>{dataIndex + 1}.</Text>
+                    <View>
+                      <TouchableOpacity style={styles.questionButton}>
+                        <Text style={styles.questionText}>
+                          {question.correctInput.text
+                            .split('__________')
+                            .map((part, partIndex) => (
+                              <React.Fragment key={partIndex}>
+                                {part}
+                                {partIndex !==
+                                  question.correctInput.text.split('__________')
+                                    .length -
+                                    1 && (
+                                  <Text
+                                    style={[
+                                      styles.blank,
+                                      {textDecorationLine: 'underline'},
+                                    ]}>
+                                    {
+                                      // Display the user's answer if provided, otherwise show '__________'
+                                      question.userInput[partIndex]?.answer ||
+                                        '__________'
+                                    }
+                                  </Text>
+                                )}
+                              </React.Fragment>
+                            ))}
                         </Text>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </Text>
-              </TouchableOpacity>
-              <View style={styles.optionList}>
-                {question.options.map((option, optIndex) => (
-                  <TouchableOpacity
-                    key={optIndex}
-                    style={[
-                      styles.optionButton,
-                      {
-                        backgroundColor: question.userInput.some(
-                          input => input.answer === option,
-                        )
-                          ? '#d1e7dd'
-                          : '#ffffff',
-                      },
-                    ]}>
-                    <Text style={styles.optionButtonText}>{option}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            </View>
-          </View>
-        ))
+                      </TouchableOpacity>
+                      <View style={styles.optionList}>
+                        {question.correctInput.options.map(
+                          (option, optIndex) => (
+                            <TouchableOpacity
+                              key={optIndex}
+                              style={[
+                                styles.optionButton,
+                                {
+                                  backgroundColor: question.userInput.some(
+                                    input => input.answer === option,
+                                  )
+                                    ? '#d1e7dd'
+                                    : '#ffffff',
+                                },
+                              ]}>
+                              <Text style={styles.optionButtonText}>
+                                {option}
+                              </Text>
+                            </TouchableOpacity>
+                          ),
+                        )}
+                      </View>
+                    </View>
+                  </View>
+                ))
+              : null,
+          )}
+        </View>
       ) : (
         questions.map((question, index) => (
           <View key={question.id} style={styles.questionContainer}>

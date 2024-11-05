@@ -564,50 +564,6 @@ const Home = ({navigation}, props) => {
   const [isLoadings, setIsLoadings] = useState(true);
   const [tourStatus, setTourStatus] = useState(false);
   const x = true;
-  const fetchIntroData = async () => {
-    // Use async/await for API calls
-    try {
-      // setLoading(true);
-      // setCheckIntro(false);
-      const response = await API.get(
-        `getTransIntroQuiz/${user[0]?.userid}/${user[0]?.usertype}`,
-      );
-      console.log(
-        '===================intro',
-        response.data,
-        user[0]?.userid,
-        // user[0]?.usertype,
-      );
-
-      if (response.data.completionStatus === 'complete') {
-        setIntroStatus(response.data.completionStatus);
-        navigation.navigate('Home');
-        // setCheckIntro(true);
-
-        // setLoading(false);
-        // setModalVisibleIntro(false);
-      } else {
-        setIntroStatus(null);
-        {
-          storageData[0]?.usertype === 'fellow'
-            ? navigation.navigate('IntroQuiz')
-            : null;
-        }
-        // setLoading(false);
-
-        // setModalVisibleIntro(true);
-        // setIsloading(false);
-        setIntroDatas(response.data.quizData);
-      }
-    } catch (error) {
-      console.error('Error fetching intro quiz data:', error);
-    } finally {
-      setIsLoadings(false);
-    }
-  };
-  useEffect(() => {
-    fetchIntroData();
-  }, [introStatus, storageData]);
 
   // useFocusEffect(
   //   React.useCallback(() => {

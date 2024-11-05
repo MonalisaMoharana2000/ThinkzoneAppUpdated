@@ -217,7 +217,7 @@ const TechContent = ({route, navigation}) => {
     setLoadDiscuss(true); // Start loading
     try {
       const response = await API.get(
-        `getTransTchTrainingContentDiscussion/${
+        `getTchTrainingDiscussion/${
           route?.params?.whole_data?.topicId
             ? route?.params?.whole_data?.topicId
             : route?.params?.class
@@ -2173,7 +2173,7 @@ console.log(responseReference?.data,"responseReference?.data?-------------------
       console.log('body---->', body);
 
       const response = await API.post(
-        `saveTransTchTrainingContentDiscussion`,
+        `saveTchTrainingDiscussion`,
         body,
       );
 

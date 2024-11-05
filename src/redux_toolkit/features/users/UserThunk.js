@@ -88,6 +88,7 @@ export const fetchUserTotalCoinsThunk = createAsyncThunk(
   'user/fetchtotalcoins',
   async userid => {
     let response = await API.get(`getTotalCoins/${userid}`);
+    // let response = await API.get(`getTotalCoins/alinabarik.8455075110@tz.in`);
 
     return response.data;
   },

@@ -234,7 +234,7 @@ const Quiz = ({route}) => {
   console.log('userInputData:', JSON.stringify(options, null, 2));
 
 
-  console.log('currentQuestion---->', currentQuestion);
+  console.log('Submission Payload:', JSON.stringify(options, null, 2));
 
   const updatedOptions = {
     // ...options,

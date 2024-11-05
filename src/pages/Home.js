@@ -477,7 +477,7 @@ const Home = ({navigation}, props) => {
 
   useEffect(() => {
     if (user && user.length > 0 && !tokenRetrieved) {
-      // getToken();
+      getToken();
     }
   }, [user, tokenRetrieved]);
 

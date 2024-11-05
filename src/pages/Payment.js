@@ -85,14 +85,14 @@ const Payment = ({route, navigation}) => {
     };
 
     fetchData();
-  }, [teacherdata]);
+  }, [teacherdata, studentData]);
 
   useEffect(() => {
     if (!teacherdata[0]?.userid) {
     } else {
       dispatch(fetchPaymentDetails(teacherdata[0]?.userid));
     }
-  }, []);
+  }, [teacherdata, studentData]);
 
   useFocusEffect(
     useCallback(() => {
@@ -104,7 +104,7 @@ const Payment = ({route, navigation}) => {
       } finally {
         setIsLoading(false);
       }
-    }, []),
+    }, [teacherdata, studentData]),
   );
 
   // // Get Payments Deatils.

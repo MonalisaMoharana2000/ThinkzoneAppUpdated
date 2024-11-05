@@ -175,7 +175,7 @@ const PaymentDetails = ({route, navigation}) => {
     React.useCallback(() => {
       fetchData();
       // dispatch(types.getallpaymentsstart(paymentDetails.userid));
-    }, [closeModal]),
+    }, [closeModal, inputTotalAmount, inputPaidAmount]),
   );
   // useEffect(() => {
   //   fetchData();

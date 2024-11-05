@@ -232,7 +232,7 @@ const Quiz = ({route}) => {
 
   const options = currentQuestion.correctAnswer[0];
 
-  console.log('currentQuestion---->', currentQuestion);
+  console.log('Submission Payload:', JSON.stringify(options, null, 2));
 
   const updatedOptions = {
     // ...options,

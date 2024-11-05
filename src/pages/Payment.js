@@ -92,7 +92,7 @@ const Payment = ({route, navigation}) => {
     } else {
       dispatch(fetchPaymentDetails(teacherdata[0]?.userid));
     }
-  }, []);
+  }, [teacherdata]);
 
   useFocusEffect(
     useCallback(() => {
@@ -104,7 +104,7 @@ const Payment = ({route, navigation}) => {
       } finally {
         setIsLoading(false);
       }
-    }, []),
+    }, [teacherdata, studentData]),
   );
 
   // // Get Payments Deatils.
@@ -260,53 +260,45 @@ const Payment = ({route, navigation}) => {
   }, []);
 
   return (
-    <>
-      {isLoading && !teacherdata[0]?.userid ? (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: '#ffffff',
+      }}>
+      {isLoading && !teacherdata[0]?.userid && !studentData ? (
         <Loading />
       ) : studentData && studentData.length > 0 ? (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: '#ffffff',
-          }}>
-          {studentData && studentData.length > 0 ? (
-            <View>
-              <FlatList
-                removeClippedSubviews={true}
-                maxToRenderPerBatch={10}
-                initialNumToRender={10}
-                updateCellsBatchingPeriod={40}
-                data={studentData}
-                renderItem={({item, index}) => (
-                  <PaymentAccordion
-                    studentName={item.studentname}
-                    className={item.class}
-                    program={item.program}
-                    navigation={navigation}
-                    totalAmount={item.totalpayment.totalamount}
-                    paidAmount={item.totalpayment.totalpaid}
-                    paymentDetails={item}
-                  />
-                )}
+        <View>
+          <FlatList
+            removeClippedSubviews={true}
+            maxToRenderPerBatch={10}
+            initialNumToRender={10}
+            updateCellsBatchingPeriod={40}
+            data={studentData}
+            renderItem={({item, index}) => (
+              <PaymentAccordion
+                studentName={item.studentname}
+                className={item.class}
+                program={item.program}
+                navigation={navigation}
+                totalAmount={item.totalpayment.totalamount}
+                paidAmount={item.totalpayment.totalpaid}
+                paymentDetails={item}
               />
-            </View>
-          ) : (
-            !isLoading && (
-              <View style={styles.noStudentContainer}>
-                <Image
-                  source={require('../assets/Image/StudentPayments.jpg')} // replace with your image path
-                  style={styles.noStudentImage}
-                  resizeMode="contain"
-                />
-                <Text style={styles.Fln}>No Students</Text>
-              </View>
-            )
-          )}
+            )}
+          />
         </View>
       ) : (
-        <Loading />
+        <View style={styles.noStudentContainer}>
+          <Image
+            source={require('../assets/Image/StudentPayments.jpg')} // replace with your image path
+            style={styles.noStudentImage}
+            resizeMode="contain"
+          />
+          <Text style={styles.Fln}>No Students</Text>
+        </View>
       )}
-    </>
+    </View>
   );
 };
 

@@ -52,6 +52,7 @@ const PaymentAccordian = ({
   navigation,
   paymentDetails,
   program,
+  content,
 }) => {
   const [showContent, setShowContent] = useState(false);
   const [showPpt, setShowPpt] = useState(false);
@@ -66,6 +67,8 @@ const PaymentAccordian = ({
   const [isLoading, setIsLoading] = useState(false);
   const [paymentRecord, setPaymentRecord] = useState([]);
   const [selectedStudent, setSlectedStudent] = useState({});
+  console.log('Payment page--------------->263');
+  content = showContent;
 
   const studentData = useSelector(state => state.StudentSlice.students);
   console.log(studentData, 'studentData---------------------------------->');
@@ -313,7 +316,7 @@ const styles = StyleSheet.create({
   container: {
     padding: '4%',
     borderRadius: 12,
-    backgroundColor: 'white',
+    backgroundColor: Color.ghostwhite,
     marginBottom: 12,
     width: window.WindowWidth * 0.92,
     marginLeft: 17,

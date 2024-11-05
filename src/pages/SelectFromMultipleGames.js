@@ -231,6 +231,8 @@ const Quiz = ({route}) => {
   const currentQuestion = questions[currentQuestionIndex];
 
   const options = currentQuestion.correctAnswer[0];
+  console.log('userInputData:', JSON.stringify(options, null, 2));
+
 
   console.log('Submission Payload:', JSON.stringify(options, null, 2));
 
@@ -754,27 +756,27 @@ const Quiz = ({route}) => {
                       key={index}
                       onPress={() => handleOptionPress(key)}
                       style={{
-                        backgroundColor: isSelected
-                          ? options.correctOption.includes(key)
-                            ? '#32cd32' // Correct option selected
-                            : 'red' // Incorrect option selected
-                          : selectedOptions[currentQuestionIndex] === key
-                          ? 'red'
-                          : options.correctOption.includes(key)
-                          ? '#32cd32'
-                          : '#f0f0f0',
+                        // backgroundColor: isSelected
+                        //   ? options.correctOption.includes(key)
+                        //     ? '#32cd32' // Correct option selected
+                        //     : 'red' // Incorrect option selected
+                        //   : selectedOptions[currentQuestionIndex] === key
+                        //   ? 'red'
+                        //   : options.correctOption.includes(key)
+                        //   ? '#32cd32'
+                        //   : '#f0f0f0',
                         paddingVertical: 20,
                         paddingHorizontal: 15,
                         borderRadius: 12,
                         borderWidth:
                           selectedOptions[currentQuestionIndex] === key ? 0 : 1,
                         borderColor: '#ccc',
-                        shadowColor: 'black',
-                        shadowOffset: {width: 2, height: 2},
-                        shadowOpacity: 0.2,
-                        shadowRadius: 4,
+                        // shadowColor: 'black',
+                        // shadowOffset: {width: 2, height: 2},
+                        // shadowOpacity: 0.2,
+                        // shadowRadius: 4,
                         width: '100%',
-                        elevation: 5, // For Android shadow
+                        // elevation: 5, // For Android shadow
                       }}>
                       <Text
                         style={{

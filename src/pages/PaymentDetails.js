@@ -375,24 +375,18 @@ const PaymentDetails = ({route, navigation}) => {
   return (
     <>
       {isLoading ? (
-        // <ActivityIndicator
-        //   size="large"
-        //   color={Color.primary}
-        //   style={{justifyContent: 'center', alignSelf: 'center'}}
-        // />
         <Loading />
       ) : (
         <>
           {Payment.length === 0 ? (
-            <Modals
-              visible={customModal}
-              heading={'No Student Available'}
-              backgroundColor={Colors.white}
-              // onpressyes={closeModal}
-              // onpressno={closeModal}
-              onpressok={closeModal}
-              okstatus={true}
-            />
+            <View style={styles.noStudentContainer}>
+              <Image
+                source={require('../assets/Image/StudentPayments.jpg')} // replace with your image path
+                style={styles.noStudentImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.Fln}>No Students</Text>
+            </View>
           ) : (
             <>
               <Modal animationType="slide" transparent={true} visible={modal}>

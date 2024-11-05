@@ -121,6 +121,14 @@ const Quiz = ({route}) => {
   };
 
   const handleNext = () => {
+    if (!selectedOptions[currentQuestionIndex]) {
+      Alert.alert(
+        'Selection Required',
+        'Please choose an option before proceeding.',
+        [{text: 'OK'}],
+      );
+      return;
+    }
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(prevIndex => prevIndex + 1);
     }

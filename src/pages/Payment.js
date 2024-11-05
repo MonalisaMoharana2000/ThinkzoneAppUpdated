@@ -8,6 +8,8 @@ import {
   ActivityIndicator,
   Pressable,
   BackHandler,
+  Image,
+  Dimensions,
 } from 'react-native';
 import Color from '../utils/Colors';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -33,6 +35,7 @@ import {
 } from '../redux_toolkit/features/users/UserThunk';
 import {fetchStudentsDataThunk} from '../redux_toolkit/features/students/StudentThunk';
 import {useFocusEffect} from '@react-navigation/native';
+const windowWidth = Dimensions.get('window').width;
 
 const Payment = ({route, navigation}) => {
   const dispatch = useDispatch();
@@ -53,7 +56,7 @@ const Payment = ({route, navigation}) => {
   const studentList = useSelector(state => state.StudentSlice.students);
   // console.log('student_List_payment---->', studentList);
   const teacherdata = useSelector(state => state.UserSlice.user);
-  console.log('teacherdata-------------->', teacherdata);
+  console.log('teacherdata-------------->', teacherdata?.data?.resData);
   // const studentData = useSelector(state => state.UserSlice?.payments);
 
   useEffect(() => {
@@ -85,12 +88,6 @@ const Payment = ({route, navigation}) => {
   }, [teacherdata]);
 
   useEffect(() => {
-    // dispatch(fetchUserDataThunk());
-    // dispatch(studentstypes.getStudentStart(teacherdata[0].userid));
-    // API.get(`getstudentswithpaymentdetails/${teacherdata[0].userid}`).then(
-    //   response => {
-    //     setStudentData(response.data.data);
-    setIsLoading(false);
     if (!teacherdata[0]?.userid) {
     } else {
       dispatch(fetchPaymentDetails(teacherdata[0]?.userid));
@@ -176,68 +173,47 @@ const Payment = ({route, navigation}) => {
   }, []);
   //
   const savePayment = () => {
-    if (inputTotalAmount == 0 && inputPaidAmount == 0) {
-      Alert.alert('info', 'Please add your amount!!!');
-    } else {
-      if (totalAmount !== 0 && totalAmount == paidAmount) {
-        Alert.alert('info', 'All dues are cleared !!!');
-      } else {
-        //
-        let newPaidAmount = parseInt(paidAmount) + parseInt(inputPaidAmount);
-        let newTotalPayment = inputTotalAmount ? inputTotalAmount : totalAmount;
-        let payMentStatus = false;
-        Alert.alert('Info', 'Payment Success!!', [
-          {
-            text: 'Cancel',
-            style: 'cancel',
-          },
-          {text: 'OK', onPress: () => navigation.goBack()},
-        ]);
-        //
-        //
-        if (newTotalPayment == newPaidAmount) {
-          payMentStatus = true;
-          // Alert.alert('Payment Success!!');
-        } else {
-          payMentStatus = false;
-        }
-        if (newTotalPayment < newPaidAmount) {
-          Alert.alert('Please Enter a Valid Input');
-        } else {
-          //
-
-          let data = {
-            userid: selectedStudent.userid,
-            username: selectedStudent.username,
-            studentid: selectedStudent.studentid,
-            studentname: selectedStudent.studentname,
-            program: selectedStudent.program,
-            class: selectedStudent.class,
-            registration_date: selectedStudent.registration_date,
-            total_amount: inputTotalAmount ? inputTotalAmount : totalAmount,
-            amount: inputPaidAmount,
-            status: payMentStatus,
-          };
-
-          API.post(`savetchpaymentdetails/`, data).then(res => {
-            if (res.status === 200) {
-              console.log('response got-------------------->', res.data);
-            } else {
-              console
-                .log('response status got-------------------->', res.status)
-                .catch(error => {
-                  console.error(
-                    'The error in saving payment---------->',
-                    error,
-                  );
-                });
-            }
-          });
-          setInputTotalAmount(0);
-        }
-      }
+    if (inputTotalAmount <= 0 || inputPaidAmount <= 0) {
+      Alert.alert('Info', 'Please enter valid amounts for payment!');
+      return;
     }
+
+    const newPaidAmount = parseInt(paidAmount) + parseInt(inputPaidAmount);
+    const newTotalPayment = inputTotalAmount || totalAmount;
+
+    if (newTotalPayment < newPaidAmount) {
+      Alert.alert('Info', 'Paid amount cannot exceed total amount.');
+      return;
+    }
+
+    const data = {
+      userid: selectedStudent.userid,
+      username: selectedStudent.username,
+      studentid: selectedStudent.studentid,
+      studentname: selectedStudent.studentname,
+      program: selectedStudent.program,
+      class: selectedStudent.class,
+      registration_date: selectedStudent.registration_date,
+      total_amount: newTotalPayment,
+      amount: inputPaidAmount,
+      status: newTotalPayment === newPaidAmount,
+    };
+
+    API.post(`savetchpaymentdetails/`, data)
+      .then(res => {
+        if (res.status === 200) {
+          Alert.alert('Info', 'Payment saved successfully!');
+          // Optionally reset state or update UI after successful save
+        } else {
+          Alert.alert('Error', 'Failed to save payment. Please try again.');
+        }
+      })
+      .catch(error => {
+        console.error('Error saving payment:', error);
+        Alert.alert('Error', 'An unexpected error occurred.');
+      });
   };
+
   const closeModal = () => {
     setCustomModal(false);
     navigation.goBack();
@@ -287,115 +263,48 @@ const Payment = ({route, navigation}) => {
     <>
       {isLoading && !teacherdata[0]?.userid ? (
         <Loading />
-      ) : (
-        <>
-          {studentData?.length > 0 ? (
-            <>
-              {modalStatus ? (
-                <ButtomSheet modalRef={modalRef} modalHeight={modalHeight}>
-                  <LinearGradient
-                    colors={['#4286f4', '#373b44']}
-                    style={styles.viewdatas}>
-                    <View style={styles.modalContainer}>
-                      <Text style={styles.Text}>
-                        Total Amount :{totalAmount}
-                      </Text>
-                      <Text style={styles.Text}>Paid Amount :{paidAmount}</Text>
-                      <Text style={styles.Text}>
-                        Pending Amount :{paindingAmount}
-                      </Text>
-
-                      {totalAmount == 0 && (
-                        <AppTextInput
-                          style={styles.Textinput}
-                          autoCapitalize="none"
-                          autoCorrect={false}
-                          keyboardType="number-pad"
-                          name="name"
-                          placeholder="Total Amount"
-                          value={inputTotalAmount}
-                          onChangeText={value => setInputTotalAmount(value)}
-                        />
-                      )}
-                    </View>
-
-                    <View style={styles.modalContainer}>
-                      <AppTextInput
-                        style={styles.Textinput}
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        keyboardType="number-pad"
-                        name="name"
-                        placeholder="Pay Amount"
-                        value={inputPaidAmount}
-                        onChangeText={value => setInputPaidAmount(value)}
-                      />
-                      <TouchableOpacity
-                        onPress={savePayment}
-                        style={styles.submit}>
-                        <Text style={styles.submitText}>SAVE</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </LinearGradient>
-                </ButtomSheet>
-              ) : (
-                <ButtomSheet modalRef={modalRef} modalHeight={modalHeight}>
-                  {paymentRecord ? (
-                    <LinearGradient
-                      colors={['#4286f4', '#373b44']}
-                      style={styles.viewdata}>
-                      <Text style={styles.Text}>
-                        Total Amount: {totalAmount}
-                      </Text>
-                      <Text style={styles.Text}>Paid Amount: {paidAmount}</Text>
-
-                      <FlatList
-                        data={paymentRecord}
-                        renderItem={({item, index}) => (
-                          <View>
-                            <Text style={styles.Text}> {item.amount}</Text>
-                          </View>
-                        )}
-                      />
-                    </LinearGradient>
-                  ) : (
-                    <Text style={[styles.Text, {color: 'red'}]}>
-                      No Data Available
-                    </Text>
-                  )}
-                </ButtomSheet>
-              )}
-              <View>
-                <FlatList
-                  removeClippedSubviews={true}
-                  maxToRenderPerBatch={10}
-                  initialNumToRender={10}
-                  updateCellsBatchingPeriod={40}
-                  data={studentData}
-                  renderItem={({item, index}) => (
-                    <PaymentAccordion
-                      studentName={item.studentname}
-                      className={item.class}
-                      program={item.program}
-                      navigation={navigation}
-                      totalAmount={item.totalpayment.totalamount}
-                      paidAmount={item.totalpayment.totalpaid}
-                      paymentDetails={item}
-                    />
-                  )}
-                />
-              </View>
-            </>
+      ) : studentData && studentData.length > 0 ? (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: '#ffffff',
+          }}>
+          {studentData && studentData.length > 0 ? (
+            <View>
+              <FlatList
+                removeClippedSubviews={true}
+                maxToRenderPerBatch={10}
+                initialNumToRender={10}
+                updateCellsBatchingPeriod={40}
+                data={studentData}
+                renderItem={({item, index}) => (
+                  <PaymentAccordion
+                    studentName={item.studentname}
+                    className={item.class}
+                    program={item.program}
+                    navigation={navigation}
+                    totalAmount={item.totalpayment.totalamount}
+                    paidAmount={item.totalpayment.totalpaid}
+                    paymentDetails={item}
+                  />
+                )}
+              />
+            </View>
           ) : (
-            <Modals
-              visible={customModal}
-              heading={'No Student Available'}
-              backgroundColor={Colors.white}
-              onpressok={closeModal}
-              okstatus={true}
-            />
+            !isLoading && (
+              <View style={styles.noStudentContainer}>
+                <Image
+                  source={require('../assets/Image/StudentPayments.jpg')} // replace with your image path
+                  style={styles.noStudentImage}
+                  resizeMode="contain"
+                />
+                <Text style={styles.Fln}>No Students</Text>
+              </View>
+            )
           )}
-        </>
+        </View>
+      ) : (
+        <Loading />
       )}
     </>
   );
@@ -550,5 +459,32 @@ const styles = StyleSheet.create({
     padding: 10,
     marginLeft: 30,
     borderRadius: 10,
+  },
+  noStudentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 50,
+  },
+  noStudentImage: {
+    width: windowWidth * 0.8, // 60% of the screen width
+    height: windowWidth * 0.8, // 60% of the screen width (keeps it square)
+  },
+  Fln: {
+    color: '#595F65',
+    fontSize: 18,
+    // top: 50,
+    // marginTop: 160,
+    fontFamily: FontFamily.poppinsMedium,
+    // paddingBottom: 40,
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    width: 370,
+    // paddingLeft: 20,
+    // paddingRight: 40,
+    textAlign: 'center',
+    alignSelf: 'center',
+    bottom: 0,
   },
 });

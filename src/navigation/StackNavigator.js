@@ -854,11 +854,16 @@ const StackNavigator = ({navigation}) => {
         name="leaderboard"
         component={Leaderboard}
         options={{
-          title: 'LEADERBOARD',
-          headerShown: false,
+          title: 'Leaderboard',
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
           },
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
+
         }}
       />
 

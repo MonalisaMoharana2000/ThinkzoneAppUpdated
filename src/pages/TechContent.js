@@ -131,7 +131,7 @@ const TechContent = ({route, navigation}) => {
   // console.log('rearrangeWord----->', rearrangeWord);
   const [rearrangeSequence, setRearrangeSequence] = useState([]);
   const [refData, setRefData] = useState([]);
-  console.log('====================================refData',refData);
+  // console.log('====================================refData',refData);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isLoader, setIsLoader] = useState(false);
@@ -165,6 +165,8 @@ const TechContent = ({route, navigation}) => {
   );
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [discussion, setDiscussion] = useState([]);
+  console.log('====================================discussion',discussion);
+  
   const [loadDiscuss, setLoadDiscuss] = useState(false);
   //^--------------------------Hotspot states and related modal functions-------------------
   const [rectModalVisible, setRectModalVisible] = useState(false);
@@ -224,7 +226,7 @@ const TechContent = ({route, navigation}) => {
         }`,
       );
       console.log('responsediscussion----->', response.data);
-      setDiscussion(response?.data?.discussions);
+      setDiscussion(response?.data);
     } catch (error) {
       console.error('Error fetching discussion:', error);
     } finally {
@@ -2148,16 +2150,19 @@ console.log(responseReference?.data,"responseReference?.data?-------------------
   //   // setMoreModal('');
   // };
   const [inputText, setInputText] = useState('');
+  console.log(inputText,"inputText-----------------------");
+  
 
   const [answers, setAnswers] = useState([]);
 
   const handleSend = async () => {
-    if (inputText.trim()) {
+    // if (inputText.trim()) {
       const body = {
+        discussionId:new Date().getTime(),
         topicId: route?.params?.whole_data?.topicId,
         userid: userdata[0].userid,
         appVersion: '2.3.0',
-        msg: inputText,
+        discussionMsg: inputText,
         msgType: 'sent',
         username: userdata[0].username,
         usertype: userdata[0].usertype,
@@ -2199,7 +2204,7 @@ console.log(responseReference?.data,"responseReference?.data?-------------------
       // ]);
       setInputText('');
     }
-  };
+  // };
 
   const toggleLike = index => {
     const newAnswers = [...answers];
@@ -3259,58 +3264,58 @@ console.log(responseReference?.data,"responseReference?.data?-------------------
 
                                       <View style={styles.messageContainer}>
                                         <Text style={styles.answerText}>
-                                          {item.msg}
+                                          {item.discussionMsg}
                                         </Text>
                                       </View>
                                       <View style={styles.iconContainer}>
                                         <TouchableOpacity
                                           style={{flexDirection: 'row'}}
                                           onPress={() => toggleLike(index)}>
-                                          <FontAwesome
+                                          {/* <FontAwesome
                                             name="thumbs-up"
                                             size={20}
                                             color={
-                                              item.liked ? '#0060ca' : 'gray'
+                                              item.like ? '#0060ca' : 'gray'
                                             }
-                                          />
-                                          {item.likes > 0 && (
+                                          /> */}
+                                          {/* {item.likes > 0 && (
                                             <Text style={styles.countText}>
                                               +{item.likes}
                                             </Text>
-                                          )}
+                                          )} */}
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                           style={{flexDirection: 'row'}}
                                           onPress={() => toggleHeart(index)}>
-                                          <FontAwesome
+                                          {/* <FontAwesome
                                             name="heart"
                                             size={20}
                                             color={
                                               item.hearted ? 'red' : 'gray'
                                             }
-                                          />
-                                          {item.hearts > 0 && (
+                                          /> */}
+                                          {/* {item.hearts > 0 && (
                                             <Text style={styles.countText}>
                                               +{item.hearts}
                                             </Text>
-                                          )}
+                                          )} */}
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                           style={{flexDirection: 'row'}}
                                           onPress={() => toggleReaction(index)}>
-                                          <AntDesign
+                                          {/* <AntDesign
                                             name="dislike1"
                                             solid
                                             size={20}
                                             color={
                                               item.reacted ? 'orange' : 'gray'
                                             }
-                                          />
-                                          {item.reactions > 0 && (
+                                          /> */}
+                                          {/* {item.reactions > 0 && (
                                             <Text style={styles.countText}>
                                               +{item.reactions}
                                             </Text>
-                                          )}
+                                          )} */}
                                         </TouchableOpacity>
                                       </View>
                                     </View>

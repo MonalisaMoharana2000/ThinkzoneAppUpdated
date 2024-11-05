@@ -126,11 +126,13 @@ const TechContent = ({route, navigation}) => {
       ? contentData?.filter(x => x.type === 'puzzle')
       : null;
 
-  console.log('check2---->', check?.length > 0 ? check[0]?.inputAnswer : null);
+  // console.log('check2---->', check?.length > 0 ? check[0]?.inputAnswer : null);
   const [rearrangeWord, setRearrangeWord] = useState([]);
-  console.log('rearrangeWord----->', rearrangeWord);
+  // console.log('rearrangeWord----->', rearrangeWord);
   const [rearrangeSequence, setRearrangeSequence] = useState([]);
   const [refData, setRefData] = useState([]);
+  console.log('====================================refData',refData);
+
   const [isLoading, setIsLoading] = useState(true);
   const [isLoader, setIsLoader] = useState(false);
   const [isPlaying, setIsPlaying] = useState(null);
@@ -145,13 +147,13 @@ const TechContent = ({route, navigation}) => {
   const [checkUrl, setCheckUrl] = useState([]);
   const [feedbackModal, setFeedbackModal] = useState(false);
   const [topicQuizData2, setTopicQuizData2] = useState([]);
-  console.log('topicQuizData------->', topicQuizData);
+  // console.log('topicQuizData------->', topicQuizData);
   const [gamifiedData, setGamifiedData] = useState([]);
   // console.log('gamifiedData----->', gamifiedData);
   const [quiz_status, setQuiz_status] = useState(
     route.params.data_type == 'quiz1' ? true : false,
   );
-  console.log('quiz_status----------------->', quiz_status);
+  // console.log('quiz_status----------------->', quiz_status);
 
   const [text, onChangeText] = useState('');
   const [activeSlide, setActiveSlide] = useState(0);
@@ -682,6 +684,7 @@ const TechContent = ({route, navigation}) => {
               : route?.params?.class
           }`,
         );
+console.log(responseReference?.data,"responseReference?.data?------------------------->");
 
         setRefData(responseReference?.data?.referenceData);
         setRefLoad(false);
@@ -730,7 +733,31 @@ const TechContent = ({route, navigation}) => {
       stopTextAudio();
     };
   }, []);
-
+  useEffect(() => {
+    const fetchReferenceData = async () => {
+      try {
+        setRefLoad(true);
+        const responseReference = await API.get(
+          `getTchTrainingReference/${user[0].userid}/${
+            route?.params?.whole_data?.topicId
+              ? route?.params?.whole_data?.topicId
+              : route?.params?.class
+          }`
+        );
+  
+        console.log("responseReference?.data?------------------------->", responseReference?.data);
+        setRefData(responseReference?.data?.referenceData);
+        setRefLoad(false);
+      } catch (error) {
+        handleAPIError(error);
+      }
+    };
+  
+    // Call the fetch function
+    fetchReferenceData();
+  }, []); // Run only once when the component mounts
+  
+    
   const fetchDataAgain = async () => {
     try {
       const responseQuiz2 = await API.get(

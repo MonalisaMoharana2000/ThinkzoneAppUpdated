@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 // import RadioButton from 'react-native-simple-radio-button';
 import {
@@ -11,6 +11,7 @@ import {
   Alert,
   Modal,
   StatusBar,
+  BackHandler,
 } from 'react-native';
 import RadioForm, {
   RadioButton,
@@ -141,6 +142,33 @@ const Quiz = ({route}) => {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
   };
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert(
+        'ଧ୍ୟାନ ଦିଅନ୍ତୁ! ',
+        'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
+        [
+          {text: 'Cancel', onPress: () => stopOptionPlayback()},
+          {
+            text: 'Ok',
+            onPress: () => {
+              navigation.goBack();
+              stopOptionPlayback();
+            },
+            style: 'cancel',
+          },
+        ],
+      );
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
   const getBackgroundColor = optionLabel => {
     if (!showCorrectAnswer[currentQuestionIndex]) return 'white';
     if (optionLabel === currentQuestion.correctOption[0]) return '#0BDA51';

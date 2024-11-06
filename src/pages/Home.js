@@ -2303,7 +2303,7 @@ const Home = ({navigation}, props) => {
                           </View>
                         </TouchableOpacity>
 
-                        <TouchableOpacity
+                        {/* <TouchableOpacity
                           onPress={() => {
                             maintainanceStatus?.payment
                               ? navigation.navigate('moduleunderdevlopment')
@@ -2324,7 +2324,7 @@ const Home = ({navigation}, props) => {
                               ଦେୟ
                             </Text>
                           </View>
-                        </TouchableOpacity>
+                        </TouchableOpacity> */}
 
                         <TouchableOpacity
                           onPress={() => {
@@ -2717,7 +2717,7 @@ const Home = ({navigation}, props) => {
                       <ScrollView
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}>
-                        {/* <TouchableOpacity
+                        <TouchableOpacity
                           onPress={() => {
                             maintainanceStatus?.payment
                               ? navigation.navigate('moduleunderdevlopment')
@@ -2738,7 +2738,7 @@ const Home = ({navigation}, props) => {
                               ଦେୟ
                             </Text>
                           </View>
-                        </TouchableOpacity> */}
+                        </TouchableOpacity>
 
                         <TouchableOpacity
                           onPress={() =>

@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   Alert,
+  BackHandler,
 } from 'react-native';
 import * as window from '../utils/dimensions';
 import {useDispatch} from 'react-redux';
@@ -24,6 +25,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 
 const App = ({navigation}) => {
   const [userId, setUserId] = useState('');
+  console.log('userId--->', userId);
   const [password, setPassword] = useState('');
   const [userIdError, setUserIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -70,11 +72,18 @@ const App = ({navigation}) => {
   };
 
   const handleUserIdChange = text => {
-    setUserId(text);
+    const filteredText = text.replace(/[^\d@a-zA-Z.]/g, '');
+
+    setUserId(filteredText);
+
     setUserIdError('');
+
+    // Clear any previous debounce timers
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
+
+    // Set a debounce timer for validation
     debounceTimer.current = setTimeout(() => {
-      validateUserId(text);
+      validateUserId(filteredText);
     }, 1000);
   };
 
@@ -83,7 +92,7 @@ const App = ({navigation}) => {
       setUserIdError('');
     } else if (
       !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(text) &&
-      !/^\d{10,}$/.test(text)
+      (!/^\d{10}$/.test(text) || text.length !== 10)
     ) {
       setUserIdError('Enter a valid User ID');
       setLoader(false);
@@ -132,6 +141,8 @@ const App = ({navigation}) => {
     setLoader(true);
     setUserIdError('');
     setPasswordError('');
+    setUserId('');
+    setPassword('');
     if (!userId && !password) {
       setUserIdError('User ID is required');
       setPasswordError('Password is required');
@@ -141,10 +152,12 @@ const App = ({navigation}) => {
     } else if (!userId) {
       setUserIdError('User ID is required');
       startShakeAnimation();
+      setPasswordError('');
       setLoader(false);
       return;
     } else if (!password) {
       setLoader(false);
+      setUserIdError('');
       setPasswordError('Password is required');
       startShakeAnimation();
       return;
@@ -183,14 +196,42 @@ const App = ({navigation}) => {
       setLoader(false);
       Alert.alert('Error', 'An unexpected error occurred. Please try again.');
     }
-    setUserId('');
-    setPassword('');
   };
 
   const borderColor = borderColorAnimation.interpolate({
     inputRange: [0, 1],
     outputRange: ['#F0F0F0', '#007BFF'],
   });
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          'Exit App',
+          'Do you want to exit the app?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {
+              text: 'OK',
+              onPress: () => {
+                BackHandler.exitApp();
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+
+        return true;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <KeyboardAvoidingView

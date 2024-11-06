@@ -24,6 +24,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 
 const App = ({navigation}) => {
   const [userId, setUserId] = useState('');
+  console.log('userId--->', userId);
   const [password, setPassword] = useState('');
   const [userIdError, setUserIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -70,7 +71,10 @@ const App = ({navigation}) => {
   };
 
   const handleUserIdChange = text => {
-    setUserId(text);
+    const filteredText = text.replace(/[^\d]/g, '');
+    if (filteredText.length <= 10) {
+      setUserId(filteredText);
+    }
     setUserIdError('');
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(() => {
@@ -83,7 +87,7 @@ const App = ({navigation}) => {
       setUserIdError('');
     } else if (
       !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(text) &&
-      !/^\d{10,}$/.test(text)
+      (!/^\d{10}$/.test(text) || text.length !== 10)
     ) {
       setUserIdError('Enter a valid User ID');
       setLoader(false);
@@ -132,6 +136,8 @@ const App = ({navigation}) => {
     setLoader(true);
     setUserIdError('');
     setPasswordError('');
+    setUserId('');
+    setPassword('');
     if (!userId && !password) {
       setUserIdError('User ID is required');
       setPasswordError('Password is required');
@@ -141,10 +147,12 @@ const App = ({navigation}) => {
     } else if (!userId) {
       setUserIdError('User ID is required');
       startShakeAnimation();
+      setPasswordError('');
       setLoader(false);
       return;
     } else if (!password) {
       setLoader(false);
+      setUserIdError('');
       setPasswordError('Password is required');
       startShakeAnimation();
       return;
@@ -183,8 +191,6 @@ const App = ({navigation}) => {
       setLoader(false);
       Alert.alert('Error', 'An unexpected error occurred. Please try again.');
     }
-    setUserId('');
-    setPassword('');
   };
 
   const borderColor = borderColorAnimation.interpolate({

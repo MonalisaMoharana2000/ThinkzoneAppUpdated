@@ -34,6 +34,7 @@ const App = ({navigation}) => {
   const [shakeAnimation] = useState(new Animated.Value(0));
   const [borderColorAnimation] = useState(new Animated.Value(0));
   const loginChildPosition = useRef(new Animated.Value(370)).current;
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const debounceTimer = useRef(null);
   const dispatch = useDispatch();
   const handleInputFocus = () => {
@@ -220,19 +221,31 @@ const App = ({navigation}) => {
             ) : null}
 
             <Animated.View style={[styles.inputContainer, {borderColor}]}>
-              <TextInput
-                placeholder="Password"
-                placeholderTextColor="black"
-                value={password}
-                onFocus={handleInputFocus}
-                onChangeText={text => {
-                  setPassword(text);
-                  setPasswordError('');
-                }}
-                secureTextEntry
-                onBlur={handleBlur}
-                style={styles.input}
-              />
+              <View style={styles.passwordInputWrapper}>
+                <TextInput
+                  placeholder="Password"
+                  placeholderTextColor="black"
+                  value={password}
+                  onFocus={handleInputFocus}
+                  onChangeText={text => {
+                    setPassword(text);
+                    setPasswordError('');
+                  }}
+                  secureTextEntry={!isPasswordVisible}
+                  onBlur={handleBlur}
+                  style={styles.input}
+                />
+                <TouchableOpacity
+                  style={styles.eyeIcon}
+                  onPress={() => setIsPasswordVisible(!isPasswordVisible)} // Toggle the password visibility
+                >
+                  <AntDesign
+                    name={isPasswordVisible ? 'eye' : 'eyeo'}
+                    size={20}
+                    color="black"
+                  />
+                </TouchableOpacity>
+              </View>
             </Animated.View>
             {passwordError ? (
               <Text style={styles.errorText}>{passwordError}</Text>
@@ -321,8 +334,12 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+    // backgroundColor: Color.ghostwhite,
+    borderRadius: 25,
     fontSize: 12,
     marginBottom: 10,
+    // width: '50%',
+    // textAlign: 'center',
   },
   buttonContainer: {
     marginTop: 20,
@@ -360,6 +377,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 15,
+  },
+  passwordInputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  eyeIcon: {
+    position: 'absolute',
+    right: 10,
+    top: '50%',
+    transform: [{translateY: -10}],
   },
 });
 

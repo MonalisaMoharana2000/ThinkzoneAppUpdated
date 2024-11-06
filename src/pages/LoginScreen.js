@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   Alert,
+  BackHandler,
 } from 'react-native';
 import * as window from '../utils/dimensions';
 import {useDispatch} from 'react-redux';
@@ -71,14 +72,18 @@ const App = ({navigation}) => {
   };
 
   const handleUserIdChange = text => {
-    const filteredText = text.replace(/[^\d]/g, '');
-    if (filteredText.length <= 10) {
-      setUserId(filteredText);
-    }
+    const filteredText = text.replace(/[^\d@a-zA-Z.]/g, '');
+
+    setUserId(filteredText);
+
     setUserIdError('');
+
+    // Clear any previous debounce timers
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
+
+    // Set a debounce timer for validation
     debounceTimer.current = setTimeout(() => {
-      validateUserId(text);
+      validateUserId(filteredText);
     }, 1000);
   };
 
@@ -197,6 +202,36 @@ const App = ({navigation}) => {
     inputRange: [0, 1],
     outputRange: ['#F0F0F0', '#007BFF'],
   });
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          'Exit App',
+          'Do you want to exit the app?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {
+              text: 'OK',
+              onPress: () => {
+                BackHandler.exitApp();
+              },
+            },
+          ],
+          {cancelable: false},
+        );
+
+        return true;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <KeyboardAvoidingView

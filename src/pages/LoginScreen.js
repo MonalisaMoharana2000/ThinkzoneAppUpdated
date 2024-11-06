@@ -9,6 +9,7 @@ import {
   Image,
   ToastAndroid,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from 'react-native';
 import * as window from '../utils/dimensions';
 import LinearGradient from 'react-native-linear-gradient';
@@ -22,6 +23,7 @@ const App = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [userIdError, setUserIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [loader, setLoader] = useState(false);
 
   const loginScale = new Animated.Value(1);
   const registerScale = new Animated.Value(1);
@@ -119,18 +121,22 @@ const App = ({navigation}) => {
   };
 
   const handleLogin = async () => {
+    setLoader(true);
     setUserIdError('');
     setPasswordError('');
     if (!userId && !password) {
       setUserIdError('User ID is required');
       setPasswordError('Password is required');
       startShakeAnimation();
+      setLoader(false);
       return;
     } else if (!userId) {
       setUserIdError('User ID is required');
       startShakeAnimation();
+      setLoader(false);
       return;
     } else if (!password) {
+      setLoader(false);
       setPasswordError('Password is required');
       startShakeAnimation();
       return;
@@ -148,9 +154,11 @@ const App = ({navigation}) => {
         const res = await dispatch(authNewUserThunk(data));
         console.log('req------->', res.payload);
         if (res?.payload?.error?.status === 401) {
+          setLoader(false);
           console.log('req1------->', res?.payload?.data?.msg);
           setPasswordError(res?.payload?.error?.data?.msg);
         } else if (res.payload?.status === 200) {
+          setLoader(false);
           ToastAndroid.show('Logged In', ToastAndroid.SHORT);
           navigation.navigate('Home');
           await AsyncStorage.setItem(
@@ -160,6 +168,7 @@ const App = ({navigation}) => {
         }
       }
     } catch (error) {
+      setLoader(false);
       console.log('Error occurred:', error);
 
       // Ensure the loading state is reset in case of an error
@@ -254,7 +263,11 @@ const App = ({navigation}) => {
               onPressOut={() => handlePressOut(loginScale)}
               onPress={handleLogin}
               style={[styles.button, styles.loginButton]}>
-              <Text style={styles.buttonText}>Login</Text>
+              {loader ? (
+                <ActivityIndicator size="small" color="#ffffff" />
+              ) : (
+                <Text style={styles.buttonText}>Login</Text>
+              )}
             </TouchableOpacity>
           </Animated.View>
         </View>

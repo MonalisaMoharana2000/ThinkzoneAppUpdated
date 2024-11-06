@@ -263,7 +263,7 @@ const App = ({navigation}) => {
                   onPress={handleLogin}
                   style={[styles.button, styles.loginButton]}>
                   {loader ? (
-                    <ActivityIndicator size="small" color="#ffffff" />
+                    <ActivityIndicator size="small" color="black" />
                   ) : (
                     <Text style={styles.buttonText}>
                       Login{' '}

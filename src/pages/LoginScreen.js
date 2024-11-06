@@ -10,13 +10,17 @@ import {
   ToastAndroid,
   KeyboardAvoidingView,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import * as window from '../utils/dimensions';
-import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch} from 'react-redux';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
+
 import {authNewUserThunk} from '../redux_toolkit/features/users/UserThunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Color} from '../GlobalStyle';
+// import {Color} from '../GlobalStyle';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const App = ({navigation}) => {
   const [userId, setUserId] = useState('');
@@ -29,8 +33,17 @@ const App = ({navigation}) => {
   const registerScale = new Animated.Value(1);
   const [shakeAnimation] = useState(new Animated.Value(0));
   const [borderColorAnimation] = useState(new Animated.Value(0));
+  const loginChildPosition = useRef(new Animated.Value(370)).current;
   const debounceTimer = useRef(null);
   const dispatch = useDispatch();
+  const handleInputFocus = () => {
+    // Move loginChildPosition to 400 when an input is focused
+    Animated.timing(loginChildPosition, {
+      toValue: 320,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  };
   const handlePressIn = scale => {
     Animated.spring(scale, {
       toValue: 0.9,
@@ -57,18 +70,11 @@ const App = ({navigation}) => {
 
   const handleUserIdChange = text => {
     setUserId(text);
-    setUserIdError(''); // Clear error while typing
-
+    setUserIdError('');
     if (debounceTimer.current) clearTimeout(debounceTimer.current);
-
     debounceTimer.current = setTimeout(() => {
       validateUserId(text);
     }, 1000);
-  };
-
-  const handlePasswordChange = text => {
-    setPassword(text);
-    setPasswordError(''); // Clear error while typing
   };
 
   const validateUserId = text => {
@@ -141,21 +147,16 @@ const App = ({navigation}) => {
       startShakeAnimation();
       return;
     }
+
     validateUserId(userId);
     validatePassword();
-    try {
-      const data = {
-        id: userId,
-        password: password,
-      };
 
+    try {
+      const data = {id: userId, password: password};
       if (!userIdError && !passwordError && userId && password) {
-        console.log('Logged in');
         const res = await dispatch(authNewUserThunk(data));
-        console.log('req------->', res.payload);
         if (res?.payload?.error?.status === 401) {
           setLoader(false);
-          console.log('req1------->', res?.payload?.data?.msg);
           setPasswordError(res?.payload?.error?.data?.msg);
         } else if (res.payload?.status === 200) {
           setLoader(false);
@@ -165,42 +166,18 @@ const App = ({navigation}) => {
             'userData',
             JSON.stringify(res.payload.data),
           );
+
+          // Animate loginChild to move to the top
+          Animated.timing(loginChildPosition, {
+            toValue: -100,
+            duration: 700,
+            useNativeDriver: false,
+          }).start();
         }
       }
     } catch (error) {
       setLoader(false);
-      console.log('Error occurred:', error);
-
-      // Ensure the loading state is reset in case of an error
-      setIsloading(false);
-
-      if (error.response) {
-        const {status} = error.response;
-
-        if (status === 413) {
-          console.error('Error 413: Entity too large.');
-          Alert.alert('Error', 'The entity is too large!');
-        } else if (status === 504) {
-          console.error('Error 504: Gateway Timeout.');
-          Alert.alert(
-            'Error',
-            'Gateway Timeout: The server is not responding!',
-          );
-        } else if (status === 500) {
-          console.error('Error 500: Internal Server Error.');
-          Alert.alert(
-            'Error',
-            'Internal Server Error: Something went wrong on the server.',
-          );
-        } else {
-          console.error('Unknown error:', error);
-          Alert.alert('Error', 'An unexpected error occurred.');
-        }
-      } else {
-        // Handle cases where `error.response` is undefined (like network errors)
-        console.error('Network or other error:', error.message);
-        Alert.alert('Error', 'An unexpected error occurred. Please try again.');
-      }
+      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
     }
   };
 
@@ -210,132 +187,121 @@ const App = ({navigation}) => {
   });
 
   return (
-    <View style={styles.container}>
-      <View style={styles.loginChild} />
-
-      <View
-        style={{
-          top: '55%',
-          width: '70%',
-          alignSelf: 'center',
-        }}>
-        <Animated.View
-          style={[
-            styles.inputContainer,
-            {transform: [{translateX: shakeAnimation}], borderColor},
-          ]}>
-          <TextInput
-            placeholder="User ID"
-            placeholderTextColor="#888"
-            value={userId}
-            onChangeText={handleUserIdChange}
-            onBlur={handleBlur}
-            style={styles.input}
-          />
-        </Animated.View>
-        {userIdError ? (
-          <Text style={styles.errorText}>{userIdError}</Text>
-        ) : null}
-
-        <Animated.View style={[styles.inputContainer, {borderColor}]}>
-          <TextInput
-            placeholder="Password"
-            placeholderTextColor="#888"
-            value={password}
-            onChangeText={handlePasswordChange}
-            secureTextEntry
-            onBlur={handleBlur}
-            style={styles.input}
-          />
-        </Animated.View>
-        {passwordError ? (
-          <Text style={styles.errorText}>{passwordError}</Text>
-        ) : null}
-
-        <View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -100}>
+      <ScrollView contentContainerStyle={{flexGrow: 1}}>
+        <View style={styles.container}>
           <Animated.View
             style={[
-              styles.buttonContainer,
-              {transform: [{scale: loginScale}]},
-            ]}>
-            <TouchableOpacity
-              onPressIn={() => handlePressIn(loginScale)}
-              onPressOut={() => handlePressOut(loginScale)}
-              onPress={handleLogin}
-              style={[styles.button, styles.loginButton]}>
-              {loader ? (
-                <ActivityIndicator size="small" color="#ffffff" />
-              ) : (
-                <Text style={styles.buttonText}>Login</Text>
-              )}
-            </TouchableOpacity>
-          </Animated.View>
-        </View>
-      </View>
-      <Image
-        style={[styles.kindergartenStudentPana1, styles.groupChildPosition]}
-        resizeMode="cover"
-        source={require('../assets/Image/kindergarten-studentpana-1.png')}
-      />
-    </View>
+              styles.loginChild,
+              {top: loginChildPosition}, // Bind position to animation
+            ]}
+          />
+          <View style={styles.inputWrapper}>
+            <Animated.View
+              style={[
+                styles.inputContainer,
+                {transform: [{translateX: shakeAnimation}], borderColor},
+              ]}>
+              <TextInput
+                placeholder="User ID"
+                placeholderTextColor="black"
+                value={userId}
+                onChangeText={handleUserIdChange}
+                onBlur={handleBlur}
+                onFocus={handleInputFocus}
+                style={styles.input}
+              />
+            </Animated.View>
+            {userIdError ? (
+              <Text style={styles.errorText}>{userIdError}</Text>
+            ) : null}
 
-    // <Animated.View
-    // style={[styles.buttonContainer, {transform: [{scale: registerScale}]}]}>
-    // <TouchableOpacity
-    //   onPressIn={() => handlePressIn(registerScale)}
-    //   onPressOut={() => handlePressOut(registerScale)}
-    //   onPress={handleRegister}
-    //   style={[styles.button, styles.registerButton]}>
-    //   <Text style={[styles.buttonText, {color: '#007BFF'}]}>Register</Text>
-    // </TouchableOpacity>
-    // </Animated.View>
+            <Animated.View style={[styles.inputContainer, {borderColor}]}>
+              <TextInput
+                placeholder="Password"
+                placeholderTextColor="black"
+                value={password}
+                onFocus={handleInputFocus}
+                onChangeText={text => {
+                  setPassword(text);
+                  setPasswordError('');
+                }}
+                secureTextEntry
+                onBlur={handleBlur}
+                style={styles.input}
+              />
+            </Animated.View>
+            {passwordError ? (
+              <Text style={styles.errorText}>{passwordError}</Text>
+            ) : null}
+
+            <View>
+              <Animated.View
+                style={[
+                  styles.buttonContainer,
+                  {transform: [{scale: loginScale}]},
+                ]}>
+                <TouchableOpacity
+                  onPressIn={() => handlePressIn(loginScale)}
+                  onPressOut={() => handlePressOut(loginScale)}
+                  onPress={handleLogin}
+                  style={[styles.button, styles.loginButton]}>
+                  {loader ? (
+                    <ActivityIndicator size="small" color="#ffffff" />
+                  ) : (
+                    <Text style={styles.buttonText}>
+                      Login{' '}
+                      <AntDesign
+                        name="login"
+                        size={20}
+                        color={Color.royalblue}
+                      />{' '}
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
+          </View>
+          <Image
+            style={[styles.kindergartenStudentPana1, styles.groupChildPosition]}
+            resizeMode="cover"
+            source={require('../assets/Image/kindergarten-studentpana-1.png')}
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: 800,
-    overflow: 'hidden',
-    width: '100%',
     backgroundColor: Color.primaryContrast,
-    position: 'absolute',
   },
   loginChild: {
-    top: 370,
-    // marginTop: 420,
+    position: 'absolute',
     left: -25,
     borderRadius: 72,
     backgroundColor: Color.royalblue,
     width: window.WindowWidth * 1.2,
-    // height: 470,
-    // alignSelf: 'center',
     height: window.WindowHeigth * 0.8,
-    transform: [
-      {
-        rotate: '-10deg',
-      },
-    ],
-    position: 'absolute',
+    transform: [{rotate: '-10deg'}],
   },
   kindergartenStudentPana1: {
-    top: 5,
-    // width: 490,
     width: window.WindowWidth * 1.21,
-
-    marginLeft: -25,
     height: window.WindowWidth * 0.9,
   },
   groupChildPosition: {
     left: 0,
     position: 'absolute',
   },
-
-  title: {
-    fontSize: 24,
-    color: '#007BFF',
-    marginBottom: 20,
-    fontWeight: 'bold',
+  inputWrapper: {
+    width: '70%',
+    alignSelf: 'center',
+    top: '55%',
   },
   inputContainer: {
     width: '100%',
@@ -344,46 +310,56 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 2,
     marginBottom: 10,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 2},
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 5,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: 'black',
   },
   input: {
     flex: 1,
     paddingHorizontal: 15,
-    fontSize: 16,
-    color: '#333',
+    color: 'black',
   },
   errorText: {
     color: 'red',
-    fontSize: 14,
-    alignSelf: 'flex-start',
+    fontSize: 12,
     marginBottom: 10,
   },
   buttonContainer: {
-    width: '100%',
-    marginVertical: 10,
+    marginTop: 20,
+    alignItems: 'center',
+    borderRadius: 8,
   },
   button: {
-    height: 50,
-    borderRadius: 8,
-    justifyContent: 'center',
+    backgroundColor: 'white',
+    paddingVertical: 12,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    width: '100%',
+
     alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: 'black',
+    shadowOffset: {width: 10, height: 14},
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 15,
   },
   loginButton: {
-    backgroundColor: '#007BFF',
-  },
-  registerButton: {
-    backgroundColor: '#ffffff',
-    borderColor: '#007BFF',
+    // backgroundColor: Color.primaryMain,
+    borderRadius: 28,
     borderWidth: 2,
+    borderColor: 'black',
   },
   buttonText: {
-    fontSize: 18,
-    color: '#ffffff',
+    color: '#0060ca',
     fontWeight: 'bold',
+    fontSize: 20,
+    shadowColor: 'black',
+    textTransform: 'capitalize',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 15,
   },
 });
 

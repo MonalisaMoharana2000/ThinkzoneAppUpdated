@@ -13,26 +13,21 @@ export const fetchUserDataThunk = createAsyncThunk(
 
 export const authNewUserThunk = createAsyncThunk(
   'user/createuser',
-  async (data, {rejectWithValue}) => {
+  async data => {
     try {
-      let response = await API.post(`authenticateuser`, data);
+      // let response = await API.post(`authenticateuser`, data);
+      // console.log('=========================auth', response.data);
+      let response = await API.get(`authUser/${data.id}/${data.password}`);
       console.log('=========================auth', response.data);
-
       return {
         data: response.data,
         status: response.status,
       };
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue({
-          error: error.response.data,
-          status: error.response.status,
-        });
-      } else {
-        return rejectWithValue({
-          error: error.message,
-        });
-      }
+      console.log('error------->', error.response);
+      return {
+        error: error.response,
+      };
     }
   },
 );

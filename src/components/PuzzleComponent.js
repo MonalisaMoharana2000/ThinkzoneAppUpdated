@@ -11,9 +11,9 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-// import DraggableFlatList, {
-//   ScaleDecorator,
-// } from 'react-native-draggable-flatlist';
+import DraggableFlatList, {
+  ScaleDecorator,
+} from 'react-native-draggable-flatlist';
 const {width} = Dimensions.get('window');
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 

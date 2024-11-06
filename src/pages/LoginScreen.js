@@ -85,7 +85,8 @@ const App = ({navigation}) => {
       !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(text) &&
       !/^\d{10,}$/.test(text)
     ) {
-      setUserIdError('Enter a valid email or phone number');
+      setUserIdError('Enter a valid User ID');
+      setLoader(false);
       startShakeAnimation();
     } else {
       setUserIdError('');
@@ -174,12 +175,16 @@ const App = ({navigation}) => {
             duration: 700,
             useNativeDriver: false,
           }).start();
+        } else {
+          setLoader(false);
         }
       }
     } catch (error) {
       setLoader(false);
       Alert.alert('Error', 'An unexpected error occurred. Please try again.');
     }
+    setUserId('');
+    setPassword('');
   };
 
   const borderColor = borderColorAnimation.interpolate({

@@ -43,7 +43,6 @@ import * as SIZES from '../utils/dimensions';
 import ImagePicker from 'react-native-image-crop-picker';
 import * as window from '../utils/dimensions';
 import Colors from '../utils/Colors';
-import Norecord from '../components/Norecord';
 const audioRecorderPlayer = new AudioRecorderPlayer();
 const audioPlayer = new AudioRecorderPlayer();
 
@@ -2656,7 +2655,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     textAlignVertical: 'top', // Aligns text to the top
     paddingLeft: 10,
-    color:"black"
+    color: 'black',
   },
   bu: {
     backgroundColor: Color.royalblue,

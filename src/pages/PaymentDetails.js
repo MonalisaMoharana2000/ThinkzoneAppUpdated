@@ -32,7 +32,6 @@ import ButtomSheet from '../components/BottomSheet';
 import AppTextInput from '../components/TextInput';
 import * as window from '../utils/dimensions';
 import LinearGradient from 'react-native-linear-gradient';
-import Norecord from '../components/Norecord';
 import Modals from '../components/Modals';
 import PaymentAccordion from '../components/PaymentAccordian';
 import {FontFamily, Color, FontSize, Border} from '../GlobalStyle';

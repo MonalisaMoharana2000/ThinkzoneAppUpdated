@@ -34,7 +34,6 @@ import React, {useState, useRef} from 'react';
 import HtmlContentCoponent from '../components/HtmlContentCoponent';
 import Colors from '../utils/Colors';
 import {useSelector, useDispatch} from 'react-redux';
-import Norecord from '../components/Norecord';
 // import * as TrainingSliceNew from '../redux/slices/TrainingSliceNew';
 // import * as types from '../redux/slices/UserSlice';
 // import Popup from '../components/Popup';

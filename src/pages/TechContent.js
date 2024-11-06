@@ -41,7 +41,6 @@ import HtmlContentCoponent from '../components/HtmlContentCoponent';
 import Colors from '../utils/Colors';
 // import * as FcmSlice from '../redux/slices/FcmSlice';
 import {useSelector, useDispatch} from 'react-redux';
-import Norecord from '../components/Norecord';
 import Popup from '../components/Popup';
 import {useEffect} from 'react';
 import moment from 'moment';
@@ -165,8 +164,8 @@ const TechContent = ({route, navigation}) => {
   );
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [discussion, setDiscussion] = useState([]);
-  console.log('====================================discussion',discussion);
-  
+  console.log('====================================discussion', discussion);
+
   const [loadDiscuss, setLoadDiscuss] = useState(false);
   //^--------------------------Hotspot states and related modal functions-------------------
   const [rectModalVisible, setRectModalVisible] = useState(false);
@@ -686,7 +685,10 @@ const TechContent = ({route, navigation}) => {
               : route?.params?.class
           }`,
         );
-console.log(responseReference?.data,"responseReference?.data?------------------------->");
+        console.log(
+          responseReference?.data,
+          'responseReference?.data?------------------------->',
+        );
 
         setRefData(responseReference?.data?.referenceData);
         setRefLoad(false);
@@ -744,22 +746,24 @@ console.log(responseReference?.data,"responseReference?.data?-------------------
             route?.params?.whole_data?.topicId
               ? route?.params?.whole_data?.topicId
               : route?.params?.class
-          }`
+          }`,
         );
-  
-        console.log("responseReference?.data?------------------------->", responseReference?.data);
+
+        console.log(
+          'responseReference?.data?------------------------->',
+          responseReference?.data,
+        );
         setRefData(responseReference?.data?.referenceData);
         setRefLoad(false);
       } catch (error) {
         handleAPIError(error);
       }
     };
-  
+
     // Call the fetch function
     fetchReferenceData();
   }, []); // Run only once when the component mounts
-  
-    
+
   const fetchDataAgain = async () => {
     try {
       const responseQuiz2 = await API.get(
@@ -2150,60 +2154,56 @@ console.log(responseReference?.data,"responseReference?.data?-------------------
   //   // setMoreModal('');
   // };
   const [inputText, setInputText] = useState('');
-  console.log(inputText,"inputText-----------------------");
-  
+  console.log(inputText, 'inputText-----------------------');
 
   const [answers, setAnswers] = useState([]);
 
   const handleSend = async () => {
     // if (inputText.trim()) {
-      const body = {
-        discussionId:new Date().getTime(),
-        topicId: route?.params?.whole_data?.topicId,
-        userid: userdata[0].userid,
-        appVersion: '2.3.0',
-        discussionMsg: inputText,
-        msgType: 'sent',
-        username: userdata[0].username,
-        usertype: userdata[0].usertype,
-        managerid: userdata[0].managerid,
-        managername: userdata[0].managername,
-        passcode: userdata[0].passcode,
-        topicName: route?.params?.whole_data?.topicName,
-        moduleId: route?.params?.data?.moduleId,
-        moduleName: route?.params?.data?.moduleName,
-        submoduleId: route?.params?.data?.submoduleId,
-        submoduleName: route?.params?.data?.submoduleName,
-      };
-      console.log('body---->', body);
+    const body = {
+      discussionId: new Date().getTime(),
+      topicId: route?.params?.whole_data?.topicId,
+      userid: userdata[0].userid,
+      appVersion: '2.3.0',
+      discussionMsg: inputText,
+      msgType: 'sent',
+      username: userdata[0].username,
+      usertype: userdata[0].usertype,
+      managerid: userdata[0].managerid,
+      managername: userdata[0].managername,
+      passcode: userdata[0].passcode,
+      topicName: route?.params?.whole_data?.topicName,
+      moduleId: route?.params?.data?.moduleId,
+      moduleName: route?.params?.data?.moduleName,
+      submoduleId: route?.params?.data?.submoduleId,
+      submoduleName: route?.params?.data?.submoduleName,
+    };
+    console.log('body---->', body);
 
-      const response = await API.post(
-        `saveTchTrainingDiscussion`,
-        body,
-      );
+    const response = await API.post(`saveTchTrainingDiscussion`, body);
 
-      console.log('discussion data--->', response.data, response.status);
-      if (response.status === 200) {
-        getContentDiscussion();
-        setInputText('');
-      }
-
-      // setAnswers([
-      //   ...answers,
-      //   {
-      //     text: inputText,
-      //     likes: 0,
-      //     hearts: 0,
-      //     reactions: 0,
-      //     liked: false,
-      //     hearted: false,
-      //     reacted: false,
-      //     username: 'User2',
-      //     profilePicture: 'https://via.placeholder.com/50', // Placeholder image URL
-      //   },
-      // ]);
+    console.log('discussion data--->', response.data, response.status);
+    if (response.status === 200) {
+      getContentDiscussion();
       setInputText('');
     }
+
+    // setAnswers([
+    //   ...answers,
+    //   {
+    //     text: inputText,
+    //     likes: 0,
+    //     hearts: 0,
+    //     reactions: 0,
+    //     liked: false,
+    //     hearted: false,
+    //     reacted: false,
+    //     username: 'User2',
+    //     profilePicture: 'https://via.placeholder.com/50', // Placeholder image URL
+    //   },
+    // ]);
+    setInputText('');
+  };
   // };
 
   const toggleLike = index => {
@@ -3793,20 +3793,19 @@ console.log(responseReference?.data,"responseReference?.data?-------------------
                       borderRadius: 20,
                     },
                   ]}>
-                   
-                   <Image
-                style={[
-                  styles.tinyLogos,
-                  {
-                    width: 100,
-                    height: 100,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: -20,
-                  },
-                ]}
-                source={require('../assets/Image/sucess.png')}
-              />
+                  <Image
+                    style={[
+                      styles.tinyLogos,
+                      {
+                        width: 100,
+                        height: 100,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: -20,
+                      },
+                    ]}
+                    source={require('../assets/Image/sucess.png')}
+                  />
 
                   <Text
                     style={[
@@ -3847,8 +3846,8 @@ console.log(responseReference?.data,"responseReference?.data?-------------------
                         alignSelf: 'center',
                       },
                     ]}>
-                  {username}   ଆପଣଙ୍କ କୁଇଜ୍ ସଫଳତାର ସହ ସେଭ୍ ହୋଇଛି ଆପଣ {modalMark}% ସ୍କୋର
-                    କରିଛନ୍ତି ଏବଂ
+                    {username} ଆପଣଙ୍କ କୁଇଜ୍ ସଫଳତାର ସହ ସେଭ୍ ହୋଇଛି ଆପଣ {modalMark}
+                    % ସ୍କୋର କରିଛନ୍ତି ଏବଂ
                     <Text style={{fontSize: 20, fontWeight: 'bold'}}>
                       {' '}
                       ୧୦
@@ -3911,7 +3910,6 @@ console.log(responseReference?.data,"responseReference?.data?-------------------
                       borderRadius: 20,
                     },
                   ]}>
-                 
                   <Image
                     style={[
                       styles.tinyLogos,

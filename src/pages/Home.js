@@ -2303,6 +2303,29 @@ const Home = ({navigation}, props) => {
                           </View>
                         </TouchableOpacity>
 
+                        {/* <TouchableOpacity
+                          onPress={() => {
+                            maintainanceStatus?.payment
+                              ? navigation.navigate('moduleunderdevlopment')
+                              : navigation.navigate('payment', {
+                                  type: 'payment',
+                                });
+                          }}>
+                          <Image
+                            // ref={exampleThirteenViewRef}
+                            style={[styles.tinyLogo, {marginLeft: 17}]}
+                            // source={require('../assets/img/hbl/bill.png')}
+
+                            source={require('../assets/Image/iconmoneyemptywallettime.png')}
+                          />
+                          <View style={styles.text_sign}>
+                            <Text
+                              style={[styles.FlngatiTexts, {marginRight: 18}]}>
+                              ଦେୟ
+                            </Text>
+                          </View>
+                        </TouchableOpacity> */}
+
                         <TouchableOpacity
                           onPress={() => {
                             maintainanceStatus?.studAssess

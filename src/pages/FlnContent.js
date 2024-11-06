@@ -23,7 +23,6 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import * as window from '../utils/dimensions';
 import Modals from '../components/Modals';
-import Norecord from '../components/Norecord';
 import Loading from '../components/Loading';
 import Nocontents from '../components/Nocontents';
 

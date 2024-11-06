@@ -15,7 +15,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import DropdownComponent from '../components/DropdownComponent';
-import Norecord from '../components/Norecord';
 import React from 'react';
 import {useEffect, useRef, useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';

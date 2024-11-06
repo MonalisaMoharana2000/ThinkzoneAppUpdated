@@ -35,7 +35,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import API from '../environment/Api';
 import {showMessage} from 'react-native-flash-message';
 import Colors from '../utils/Colors';
-import Norecord from '../components/Norecord';
 import {useTranslation} from 'react-i18next';
 import {Color, FontSize, FontFamily, Border} from '../GlobalStyle';
 // import VideoPlayer from 'react-native-video-player';

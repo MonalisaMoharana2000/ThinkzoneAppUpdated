@@ -12,7 +12,7 @@ import Colors from '../utils/Colors';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import Api from '../environment/Api';
-import Norecord from '../components/Norecord';
+import Nocontents from '../components/Nocontents';
 
 const Games = ({navigation, route}) => {
   const data = route.params?.data?.topicData || [];
@@ -213,7 +213,7 @@ const Games = ({navigation, route}) => {
           </View>
         </ScrollView>
       ) : (
-        <Norecord />
+        <Nocontents />
       )}
     </>
   );

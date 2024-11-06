@@ -34,7 +34,6 @@ import API from '../environment/Api';
 import {useFocusEffect} from '@react-navigation/native';
 import HtmlContentCoponent from '../components/HtmlContentCoponent';
 import {Buffer} from 'buffer';
-import Norecord from '../components/Norecord';
 import Colors from '../utils/Colors';
 import {FontFamily, Color} from '../GlobalStyle';
 import Orientation from 'react-native-orientation-locker';

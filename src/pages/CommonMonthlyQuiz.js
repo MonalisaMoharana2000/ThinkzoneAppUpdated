@@ -21,7 +21,6 @@ import Quiz from '../components/Quiz';
 import * as window from '../utils/dimensions';
 import Colors from '../utils/Colors';
 import NewQuiz from '../components/NewQuiz';
-import Norecord from '../components/Norecord';
 import {useFocusEffect} from '@react-navigation/native';
 import Loading from '../components/Loading';
 import Nocontents from '../components/Nocontents';

@@ -31,7 +31,6 @@ import {
   PanGestureHandler,
 } from 'react-native-gesture-handler';
 import Api from '../environment/Api';
-import Norecord from '../components/Norecord';
 import moment from 'moment';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Loading from '../components/Loading';

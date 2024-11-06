@@ -72,8 +72,11 @@ const App = ({navigation}) => {
   const validateUserId = text => {
     if (text.length === 0) {
       setUserIdError('');
-    } else if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(text)) {
-      setUserIdError('Format is wrong');
+    } else if (
+      !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(text) &&
+      !/^\d{10,}$/.test(text)
+    ) {
+      setUserIdError('Enter a valid email or phone number');
       startShakeAnimation();
     } else {
       setUserIdError('');

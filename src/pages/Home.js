@@ -35,6 +35,7 @@ import {
   Animated,
   Easing,
 } from 'react-native';
+import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 import API from '../environment/Api';
 import * as window from '../utils/dimensions';
@@ -208,7 +209,6 @@ const Home = ({navigation}, props) => {
   const exampleOneViewRef = useRef(null);
   const exampleTwoViewRef = useRef(null);
   const exampleThreeViewRef = useRef(null);
-
   const exampleFourViewRef = useRef(null);
   const exampleFiveViewRef = useRef(null);
   const exampleSixViewRef = useRef(null);
@@ -219,13 +219,9 @@ const Home = ({navigation}, props) => {
   const exampleElevenViewRef = useRef(null);
   const exampleTweleveViewRef = useRef(null);
   const exampleThirteenViewRef = useRef(null);
-
   const exampleFourteenViewRef = useRef(null);
-
   const exampleFifteenViewRef = useRef(null);
-
   const exampleSixteenViewRef = useRef(null);
-
   const [appTourTargets, dispatchAppTour, state] = useReducer(inputReducer, {
     appTour: [],
   });
@@ -434,19 +430,13 @@ const Home = ({navigation}, props) => {
 
   const getToken = async () => {
     try {
-      if (tokenRetrieved) return; // Exit if token was already retrieved
-
-      // Retrieve the FCM token
+      if (tokenRetrieved) return;
       const token = await messaging().getToken();
       console.log('================token', token);
-
-      // Define the large icon based on platform
       const largeIcon =
         Platform.OS === 'android'
           ? '@drawable/ic_notification'
           : 'ic_notification';
-
-      // Create the FCM object
       const fcm_obj = {
         userid: user[0]?.userid,
         username: user[0]?.username,
@@ -455,24 +445,28 @@ const Home = ({navigation}, props) => {
         largeIcon: largeIcon,
       };
       console.log('fcm_obj------->', fcm_obj);
-
-      // Check if the user has an existing FCM token
       const getRes = await API.get(`getfcmtokenidbyuserid/${user[0]?.userid}`);
+      // const getRes = await axios.get(
+      //   `https://thinkzone.in.net/thinkzone/getfcmtokenidbyuserid/${user[0]?.userid}`,
+      // );
       console.log('getRes', getRes.data);
-
-      if (getRes?.data?.length > 0 && getRes.data?.status == 'success') {
-        // If a token exists, update it
-        const tid = getRes?.data[0]?._id;
-        console.log('updatefcmtokenid_id', tid);
+      if (getRes.data?.status == 'success') {
+        const tid = getRes?.data?.data[0]._id;
         await API.put(`updatefcmtokenid/${tid}`, fcm_obj);
+        // await axios.put(
+        //   `https://thinkzone.in.net/thinkzone/updatefcmtokenid/${tid}`,
+        //   fcm_obj,
+        // );
         console.log('FCM token updated successfully');
       } else {
-        // If no token exists, create a new one
         await API.post(`createnewfcmtokenid`, fcm_obj);
+        // await axios.post(
+        //   `https://thinkzone.in.net/thinkzone/createnewfcmtokenid`,
+        //   fcm_obj,
+        // );
         console.log('New FCM token created successfully');
       }
-
-      setTokenRetrieved(true); // Mark as token retrieved to prevent further calls
+      setTokenRetrieved(true);
     } catch (error) {
       console.error('Error retrieving or saving FCM token:', error);
     }
@@ -2707,7 +2701,10 @@ const Home = ({navigation}, props) => {
                             source={require('../assets/Image/icondesign-toolscolorswatch.png')}
                           />
                           <View style={styles.text_sign}>
-                            <Text style={[styles.FlngatiTexts]}>ଅଭିଧାନ</Text>
+                            <Text
+                              style={[styles.FlngatiTexts, {marginRight: 10}]}>
+                              ଅଭିଧାନ
+                            </Text>
                           </View>
                         </TouchableOpacity>
 
@@ -2720,7 +2717,7 @@ const Home = ({navigation}, props) => {
                                 })
                           }>
                           <Image
-                            style={[styles.tinyLogo]}
+                            style={[styles.tinyLogo, {marginRight: -10}]}
                             source={require('../assets/Image/iconcontent-editarchivebook.png')}
                           />
                           <View style={styles.text_sign}>
@@ -2740,7 +2737,10 @@ const Home = ({navigation}, props) => {
                             source={require('../assets/Image/messages.png')}
                           />
                           <View style={styles.text_sign}>
-                            <Text style={[styles.FlngatiTexts]}>ମତାମତ</Text>
+                            <Text
+                              style={[styles.FlngatiTexts, {marginRight: 3}]}>
+                              ମତାମତ
+                            </Text>
                           </View>
                         </TouchableOpacity>
 

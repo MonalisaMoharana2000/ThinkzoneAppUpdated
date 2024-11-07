@@ -678,9 +678,6 @@ const TechContent = ({route, navigation}) => {
             }
           }
         }
-
-        // console.log();
-        // console.log('====================================');
         setRefLoad(true);
         const responseReference = await API.get(
           `getTchTrainingReference/${user[0].userid}/${

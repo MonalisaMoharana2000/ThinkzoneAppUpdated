@@ -1,20 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import {
   FlatList,
-  TouchableOpacity,
   StyleSheet,
   Text,
   View,
   Image,
   Dimensions,
-  ScrollView,
   BackHandler,
 } from 'react-native';
 import ListItem from '../components/ListItem';
 import SearchBar from '../components/SearchBar';
 import Colors from '../utils/Colors';
 import API from '../environment/Api';
-import SearchIcon from 'react-native-vector-icons/EvilIcons';
 import {Color, FontFamily} from '../GlobalStyle';
 import * as window from '../utils/dimensions';
 
@@ -26,6 +23,18 @@ const Dictionary = ({navigation}) => {
   const [wordDetail, setWordDetail] = useState([]);
   const [modal, setModal] = useState(false);
 
+  // Debounce effect for API call
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (word.length > 1) {
+        // Minimum 2 characters before API call
+        searchWord();
+      }
+    }, 500); // Debounce time in milliseconds
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [word]);
+
   const searchWord = () => {
     API.get(`/getdictionarysearchresult/${word}`)
       .then(response => {
@@ -33,7 +42,8 @@ const Dictionary = ({navigation}) => {
         setModal(true);
       })
       .catch(error => {
-        console.error(error);
+        console.error('Error fetching word details:', error);
+        setWordDetail([]); // Clear the word details on error
       });
   };
 
@@ -56,12 +66,11 @@ const Dictionary = ({navigation}) => {
           placeholder="Search for a word..."
           width={294}
         />
-        <TouchableOpacity style={styles.searchButton} onPress={searchWord}>
-          <SearchIcon name="search" size={28} color="gray" />
-        </TouchableOpacity>
       </View>
       {wordDetail?.length > 0 ? (
         <FlatList
+          showsVerticalScrollIndicator={false} // Hides the vertical scrollbar
+          showsHorizontalScrollIndicator={false} // Hides the horizontal scrollbar if needed
           data={wordDetail}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => (
@@ -131,14 +140,6 @@ const styles = StyleSheet.create({
     elevation: 3,
     borderRadius: 10,
     margin: 10,
-  },
-  searchButton: {
-    backgroundColor: Colors.lightGray,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 5,
-    padding: 6,
-    marginLeft: 8,
   },
   resultsContainer: {
     flex: 1,
@@ -212,8 +213,8 @@ const styles = StyleSheet.create({
     backgroundColor: Color.whiteSmoke,
   },
   dictionaryImage: {
-    width: windowWidth * 0.8, // 60% of the screen width
-    height: windowWidth * 0.8, // 60% of the screen width (keeps it square)
+    width: windowWidth * 0.8,
+    height: windowWidth * 0.8,
     marginBottom: 20,
     opacity: 0.8,
   },

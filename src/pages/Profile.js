@@ -341,6 +341,7 @@ const Profile = ({navigation}) => {
       },
     );
   }, []);
+
   const openModal = index => {
     setSelectedIndex(index);
     setModalVisible(true);
@@ -483,7 +484,7 @@ const Profile = ({navigation}) => {
                   );
                 }}>
                 <Image
-                  style={{width: '90%', height: '80%'}}
+                  style={{width: '100%', height: '100%'}}
                   resizeMode="cover"
                   source={require('../assets/Image/whatsapp.png')}
                 />
@@ -498,7 +499,7 @@ const Profile = ({navigation}) => {
                   // height: 19,
                   textAlign: 'right',
                   // textTransform: 'capitalize',
-                  left: '-10%',
+                  left: '-12%',
                   // marginLeft: -140,
                   color: 'white',
                   marginTop: -30,
@@ -2210,7 +2211,7 @@ const styles = StyleSheet.create({
   iconnotificationnotification: {
     height: '4.38%',
     width: '8.25%',
-    top: '6.38%',
+    top: '5.38%',
     // bottom: '75.25%',
     left: '81.11%',
     right: '9.17%',

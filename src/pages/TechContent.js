@@ -2576,7 +2576,6 @@ const TechContent = ({route, navigation}) => {
                                                     left: 20,
                                                     top: -25,
                                                   }}>
-                                                  {' '}
                                                   Play Audio
                                                 </Text>
                                               </TouchableOpacity>
@@ -2677,7 +2676,7 @@ const TechContent = ({route, navigation}) => {
                                               left: 20,
                                               top: -23,
                                             }}>
-                                            {' '}
+                                           
                                             Play Audio
                                           </Text>
                                         </TouchableOpacity>
@@ -2795,7 +2794,7 @@ const TechContent = ({route, navigation}) => {
                                       </View>
                                     )}
                                   </View>
-                                )} */}{' '}
+                                )} */}
                                 {/**Commented for now */}
                                 {item.type === 'slider' && (
                                   <View style={styles.carouselContainer}>
@@ -3142,8 +3141,7 @@ const TechContent = ({route, navigation}) => {
                                 textAlign: 'center',
                                 color: 'black',
                               }}>
-                              {' '}
-                              ଅଧିକ ଜାଣିବା{' '}
+                              ଅଧିକ ଜାଣିବା
                             </Text>
 
                             {refLoad ? (
@@ -3738,7 +3736,7 @@ const TechContent = ({route, navigation}) => {
                   ]}>
                   <View style={{alignSelf: 'center'}}>
                     <Text style={styles.modalText}>
-                      {' '}
+                     
                       ଆପଣ ପଢିଥିବା ବିଷୟଟିକୁ ରେଟିଂ ଦିଅନ୍ତୁ ।
                     </Text>
 
@@ -3821,7 +3819,7 @@ const TechContent = ({route, navigation}) => {
                         alignSelf: 'center',
                       },
                     ]}>
-                    Congratulations! {''}
+                    Congratulations!
                   </Text>
                   {/* <Text
                     style={{
@@ -3849,9 +3847,9 @@ const TechContent = ({route, navigation}) => {
                     {username} ଆପଣଙ୍କ କୁଇଜ୍ ସଫଳତାର ସହ ସେଭ୍ ହୋଇଛି ଆପଣ {modalMark}
                     % ସ୍କୋର କରିଛନ୍ତି ଏବଂ
                     <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-                      {' '}
+                     
                       ୧୦
-                    </Text>{' '}
+                    </Text>
                     ଟି କଏନ ହାସଲ କରିଛନ୍ତି ।
                   </Text>
 
@@ -3937,7 +3935,7 @@ const TechContent = ({route, navigation}) => {
                         alignSelf: 'center',
                       },
                     ]}>
-                    Congratulations! {''}
+                    Congratulations!
                   </Text>
                   <Text
                     style={{
@@ -3963,9 +3961,9 @@ const TechContent = ({route, navigation}) => {
                     ]}>
                     ଆପଣ ସଫଳତାର ସହ ନିଜର ମତାମତ ଦେଇଛନ୍ତି ଏବଂ ଆପଣ
                     <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-                      {' '}
-                      ୧୧{' '}
-                    </Text>{' '}
+                     
+                      ୧୧
+                    </Text>
                     ଟି କଏନ ହାସଲ କରିଛନ୍ତି । ଏବେ ଆପଣ ପରବର୍ତୀ ବିଷୟ କୁ ଯାଇପାରିବେ ।
                   </Text>
 

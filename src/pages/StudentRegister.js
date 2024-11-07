@@ -867,10 +867,10 @@ const StudentRegister = ({route, navigation}) => {
               name="name"
               editable={false}
               placeholderTextColor="#000000"
-              maxLength={10}
+              maxLength={13}
               placeholder="Phone Number"
-              value={phone}
-              onChangeText={value => setPhone(value)}
+              value={phone ? `+91${phone}` : '+91'}
+              onChangeText={value => setPhone(value.replace('+91', ''))}
             />
           ) : (
             <AppTextInput
@@ -880,10 +880,16 @@ const StudentRegister = ({route, navigation}) => {
               keyboardType="number-pad"
               name="name"
               placeholderTextColor="#000000"
-              maxLength={10}
+              maxLength={13}
               placeholder="Phone Number"
-              value={phone}
-              onChangeText={value => setPhone(value)}
+              value={phone ? `+91${phone}` : '+91'}
+              onChangeText={value => {
+                if (value.startsWith('+91')) {
+                  setPhone(value.slice(3));
+                } else if (value === '') {
+                  setPhone('');
+                }
+              }}
             />
           )}
 

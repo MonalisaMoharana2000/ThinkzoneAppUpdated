@@ -528,21 +528,21 @@ const StudentRegister = ({route, navigation}) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (phone.length < 10) {
-      Alert.alert(
-        'Warning',
-        'ଦୟାକରି ମୋବାଇଲ୍ ନମ୍ୱର ଲମ୍ବାଇ ୧୦ ଡିଜିଟ୍ ହେବା ଆବଶ୍ୟକ।',
-      );
-      return;
-    }
+    // if (phone.length < 10) {
+    //   Alert.alert(
+    //     'Warning',
+    //     'ଦୟାକରି ମୋବାଇଲ୍ ନମ୍ୱର ଲମ୍ବାଇ ୧୦ ଡିଜିଟ୍ ହେବା ଆବଶ୍ୟକ।',
+    //   );
+    //   return;
+    // }
 
-    if (count >= 3) {
-      Alert.alert(
-        'Warning',
-        'ଆପଣ ପୂର୍ବରୁ ଏହି ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିସାରିଛନ୍ତି । ଧ୍ୟାନ ଦେବେ ଆପଣ ଗୋଟିଏ ମୋବାଇଲ୍ ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିପାରିବେ।',
-      );
-      return;
-    }
+    // if (count >= 3) {
+    //   Alert.alert(
+    //     'Warning',
+    //     'ଆପଣ ପୂର୍ବରୁ ଏହି ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିସାରିଛନ୍ତି । ଧ୍ୟାନ ଦେବେ ଆପଣ ଗୋଟିଏ ମୋବାଇଲ୍ ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିପାରିବେ।',
+    //   );
+    //   return;
+    // }
     const phoneRegExp = /^[6-9]\d{9}$/;
     if (name === undefined || name === null || name.trim() === '') {
       setNameError(true);
@@ -893,9 +893,9 @@ const StudentRegister = ({route, navigation}) => {
             />
           )}
 
-          {phone === undefined || phone === null || phone === '' ? (
+          {/* {phone === undefined || phone === null || phone === '' ? (
             <ErrorMessage visible={phoneError} error={t('phone_error')} />
-          ) : null}
+          ) : null} */}
 
           {/* Student Dob */}
 

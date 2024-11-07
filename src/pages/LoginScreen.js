@@ -141,8 +141,8 @@ const App = ({navigation}) => {
     setLoader(true);
     setUserIdError('');
     setPasswordError('');
-    setUserId('');
-    setPassword('');
+    // setUserId('');
+    // setPassword('');
     if (!userId && !password) {
       setUserIdError('User ID is required');
       setPasswordError('Password is required');

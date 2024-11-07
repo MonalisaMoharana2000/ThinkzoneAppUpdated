@@ -883,35 +883,35 @@ const Home = ({navigation}, props) => {
 
   //-----------To be replaced with the single navigation--------
 
-  // useEffect(() => {
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     () => {
-  //       Alert.alert(
-  //         'Exit App',
-  //         'Do you want to exit the app?',
-  //         [
-  //           {
-  //             text: 'Cancel',
-  //             onPress: () => null,
-  //             style: 'cancel',
-  //           },
-  //           {
-  //             text: 'OK',
-  //             onPress: () => {
-  //               BackHandler.exitApp();
-  //             },
-  //           },
-  //         ],
-  //         {cancelable: false},
-  //       );
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          'Exit App',
+          'Do you want to exit the app?',
+          [
+            {
+              text: 'Cancel',
+              onPress: () => null,
+              style: 'cancel',
+            },
+            {
+              text: 'OK',
+              onPress: () => {
+                BackHandler.exitApp();
+              },
+            },
+          ],
+          {cancelable: false},
+        );
 
-  //       return true;
-  //     },
-  //   );
+        return true;
+      },
+    );
 
-  //   return () => backHandler.remove();
-  // }, []);
+    return () => backHandler.remove();
+  }, []);
 
   const handleDynamiclink = async ({url}) => {
     let decodeUrl = url.split('=');

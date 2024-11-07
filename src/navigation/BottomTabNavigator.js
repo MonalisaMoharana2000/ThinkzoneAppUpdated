@@ -118,7 +118,6 @@ const BottomTabNavigator = ({navigation}) => {
   useEffect(() => {
     const backAction = () => {
       if (selectedTab === 'Home') {
-        // Exit the app if on the Home screen
         Alert.alert(
           'Exit App',
           'Do you want to exit the app?',
@@ -143,7 +142,6 @@ const BottomTabNavigator = ({navigation}) => {
         selectedTab === 'Leaderboard' ||
         selectedTab === 'Myachivement'
       ) {
-        // Navigate back to Home if on the Profile screen
         setSelectedTab('Home');
         navigation.navigate('HomeTab');
         return true;
@@ -158,7 +156,16 @@ const BottomTabNavigator = ({navigation}) => {
 
     return () => backHandler.remove();
   }, [selectedTab]);
-
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.goBack();
+        return true;
+      },
+    );
+    return () => backHandler.remove();
+  }, [navigation]);
   return (
     <>
       <Tab.Navigator

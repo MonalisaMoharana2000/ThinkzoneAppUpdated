@@ -2224,11 +2224,13 @@ const Home = ({navigation}, props) => {
                           fontSize: FontSize.size_mid_9,
                           textTransform: 'uppercase',
                           textAlign: 'center',
+
                           left: '2%',
                           fontFamily: FontFamily.balooBhaina2Medium,
                           // paddingTop: 10,
-                          paddingBottom: 12,
-
+                          // paddingBottom: 12,
+                          paddingTop: 10,
+                          paddingLeft: 11,
                           // fontWeight:"bold"
                         },
                       ]}>
@@ -2243,8 +2245,10 @@ const Home = ({navigation}, props) => {
                         // marginLeft: 30,
                         // justifyContent: 'space-between',
                         // paddingRight: 40,
-                        padding: '4.5%',
-                        justifyContent: 'flex-end',
+                        // padding: '4.5%',
+                        // justifyContent: 'flex-end',
+                        paddingTop: 8,
+                        paddingBottom: 20,
                         // marginLeft: '6%',
                       }}>
                       <ScrollView
@@ -2264,7 +2268,7 @@ const Home = ({navigation}, props) => {
                           />
                           <View style={styles.text_sign}>
                             <Text style={styles.FlngatiText}>
-                              ଶିକ୍ଷାର୍ଥୀ ସୂଚନା
+                              ଶିକ୍ଷାର୍ଥୀ {'\n'}ସୂଚନା
                             </Text>
                           </View>
                         </TouchableOpacity>
@@ -2697,14 +2701,13 @@ const Home = ({navigation}, props) => {
                           }>
                           <Image
                             // ref={exampleFourteenViewRef}
-                            style={[styles.tinyLogo, {marginLeft: 17}]}
+                            ref={exampleSixViewRef}
+                            resizeMode="cover"
+                            style={[styles.tinyLogo]}
                             source={require('../assets/Image/icondesign-toolscolorswatch.png')}
                           />
                           <View style={styles.text_sign}>
-                            <Text
-                              style={[styles.FlngatiTexts, {marginRight: 18}]}>
-                              ଅଭିଧାନ
-                            </Text>
+                            <Text style={[styles.FlngatiTexts]}>ଅଭିଧାନ</Text>
                           </View>
                         </TouchableOpacity>
 
@@ -2717,14 +2720,11 @@ const Home = ({navigation}, props) => {
                                 })
                           }>
                           <Image
-                            style={[styles.tinyLogo, {marginLeft: 17}]}
+                            style={[styles.tinyLogo]}
                             source={require('../assets/Image/iconcontent-editarchivebook.png')}
                           />
                           <View style={styles.text_sign}>
-                            <Text
-                              style={[styles.FlngatiTexts, {marginRight: 18}]}>
-                              ଦସ୍ତାବିଜ
-                            </Text>
+                            <Text style={[styles.FlngatiTexts]}>ଦସ୍ତାବିଜ</Text>
                           </View>
                         </TouchableOpacity>
 
@@ -2736,14 +2736,11 @@ const Home = ({navigation}, props) => {
                           }}>
                           <Image
                             // ref={exampleSixteenViewRef}
-                            style={[styles.tinyLogo, {marginLeft: 17}]}
+                            style={[styles.tinyLogo]}
                             source={require('../assets/Image/messages.png')}
                           />
                           <View style={styles.text_sign}>
-                            <Text
-                              style={[styles.FlngatiTexts, {marginRight: 17}]}>
-                              ମତାମତ
-                            </Text>
+                            <Text style={[styles.FlngatiTexts]}>ମତାମତ</Text>
                           </View>
                         </TouchableOpacity>
 

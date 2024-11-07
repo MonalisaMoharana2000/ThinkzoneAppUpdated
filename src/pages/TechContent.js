@@ -2688,7 +2688,7 @@ const TechContent = ({route, navigation}) => {
                                     </View>
                                   </View>
                                 )}
-                                {item.type === 'hotspot' && (
+                                {/* {item.type === 'hotspot' && (
                                   <View
                                     style={{
                                       alignSelf: 'center',
@@ -2798,7 +2798,8 @@ const TechContent = ({route, navigation}) => {
                                       </View>
                                     )}
                                   </View>
-                                )}
+                                )} */}{' '}
+                                {/**Commented for now */}
                                 {item.type === 'slider' && (
                                   <View style={styles.carouselContainer}>
                                     <Carousel
@@ -2927,7 +2928,6 @@ const TechContent = ({route, navigation}) => {
                                     </View>
                                   </View>
                                 )}
-
                                 {item.type === 'puzzle' && (
                                   <>
                                     <View
@@ -2956,7 +2956,6 @@ const TechContent = ({route, navigation}) => {
                                     </View>
                                   </>
                                 )}
-
                                 {item.type === 'sentenceRearrangement' && (
                                   <>
                                     <View

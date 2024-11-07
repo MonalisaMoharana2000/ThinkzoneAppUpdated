@@ -1,3 +1,4 @@
+import {useEffect, useState, useCallback, useRef} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,49 +13,29 @@ import {
   ScrollView,
   BackHandler,
 } from 'react-native';
-
-// import AppTextInput from '../components/TextInput';
-// import DatePicker from 'react-native-datepicker';
 import Entypo from 'react-native-vector-icons/Entypo';
-
-// import Color from '../utils/Colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import React from 'react';
-import {useEffect, useState, useCallback, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-// import * as studentstypes from '../redux/slices/StudentSlice';
-import * as studentstypes from '../redux_toolkit/features/students/StudentSlice';
-// import * as types from '../redux/slices/UserSlice';
-import * as types from '../redux_toolkit/features/users/UserSlice';
 import Colors from '../utils/Colors';
 import API from '../environment/Api';
-import ButtomSheet from '../components/BottomSheet';
 import AppTextInput from '../components/TextInput';
 import * as window from '../utils/dimensions';
-import LinearGradient from 'react-native-linear-gradient';
-import Modals from '../components/Modals';
-import PaymentAccordion from '../components/PaymentAccordian';
 import {FontFamily, Color, FontSize, Border} from '../GlobalStyle';
-import {log} from 'console';
 import Loading from '../components/Loading';
 import moment from 'moment';
-import Api from '../environment/Api';
 import {useFocusEffect} from '@react-navigation/core';
 import {app_versions} from './Home';
 import {
   getPayments,
   savePayments,
 } from '../redux_toolkit/features/payments/PaymentsThunk';
+import FastImage from 'react-native-fast-image';
 
 const PaymentDetails = ({route, navigation}) => {
-  const paymentDetails = route?.params?.paymentDetails;
-
-  console.log('paymentDetails------------------------------->', paymentDetails);
-
-  const [data, setData] = useState(paymentDetails.totalpayment);
-
   const dispatch = useDispatch();
   const modalRef = useRef(null);
+  const paymentDetails = route?.params?.paymentDetails;
+  const [data, setData] = useState(paymentDetails.totalpayment);
   const [selectedStudent, setSlectedStudent] = useState({});
   const [modalStatus, setModalStatus] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
@@ -63,21 +44,19 @@ const PaymentDetails = ({route, navigation}) => {
   const [paidAmount, setPayedAmount] = useState(0);
   const [paindingAmount, setPaindingAmount] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  // console.log('paymentStatus---->', paymentStatus);
-
   const [customModal, setCustomModal] = useState(true);
   const [inputAmount, setInputAmount] = useState(0);
   const [paymentRecord, setPaymentRecord] = useState([]);
-  const Payment = useSelector(state => state.StudentSlice.students);
-  const teacherdata = useSelector(state => state.UserSlice?.user);
-  const modalHeight = window.WindowHeigth * 0.9;
   const [modal, setModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [isEditingTotalPay, setIsEditingTotalPay] = useState(false);
+  const [studentDataPayment, setStudentDataPayment] = useState([]);
 
-  // useEffect(() => {
-  //   dispatch(studentstypes.getStudentStart(teacherdata[0].userid));
-  // }, []);
+  const Payment = useSelector(state => state.StudentSlice.students);
+  const teacherdata = useSelector(state => state.UserSlice?.user);
+
+  // console.log('paymentDetails---------->', paymentDetails);
+  // console.log('studentDataPayment', studentDataPayment);
 
   // Get Payments Deatils.
   const getPayDetails = item => {
@@ -131,6 +110,7 @@ const PaymentDetails = ({route, navigation}) => {
 
     handleOpenBottomSheet();
   };
+
   const handleOpenBottomSheet = useCallback(() => {
     modalRef.current?.open();
   }, []);
@@ -154,10 +134,6 @@ const PaymentDetails = ({route, navigation}) => {
   //   }, [closeModal]),
   // );
 
-  // const studentDataPayment = useSelector(state => state.userdata.payments);
-  const [studentDataPayment, setStudentDataPayment] = useState([]);
-  console.log('studentDataPayment', studentDataPayment);
-
   const fetchData = async () => {
     try {
       const res = await API.get(
@@ -176,17 +152,12 @@ const PaymentDetails = ({route, navigation}) => {
       // dispatch(types.getallpaymentsstart(paymentDetails.userid));
     }, [closeModal, inputTotalAmount, inputPaidAmount]),
   );
-  // useEffect(() => {
-  //   fetchData();
-  // }, [closeModal]);
 
   const selectedStudentData = Array.isArray(studentDataPayment?.data)
     ? studentDataPayment.data.filter(
         item => item.studentid === paymentDetails.studentid,
       )
     : [];
-
-  console.log('selectedStudentData=================>', selectedStudentData);
 
   const savePayment = async () => {
     setIsLoading(true);
@@ -333,11 +304,6 @@ const PaymentDetails = ({route, navigation}) => {
     }
   }, [paymentDetails?.userid, dispatch]);
 
-  // console.log(
-  //   'selectedStudentData[0].paymenthistory--------------------------------------->',
-  //   selectedStudentData[0].paymenthistory,
-  // );
-
   const closeModal = () => {
     setCustomModal(false);
     setUpdateModal(false);
@@ -359,17 +325,8 @@ const PaymentDetails = ({route, navigation}) => {
     setInputPaidAmount(0);
   };
 
-  // console.log(
-  //   '-----------------------------------------------------------------------------------',
-  // );
-  // console.log('studentDataPayment---------------------->', studentDataPayment);
-  // console.log('selectedStudentData--------------------->', selectedStudentData);
-  // console.log('isEditingTotalPay-----------------', isEditingTotalPay);
-  // console.log(
-  //   'selectedStudentData[0].totalpayment.totalamount------------>',
-  //   selectedStudentData[0].totalpayment.totalamount,
-  // );
-  console.log('inputTotalAmount---------------->', inputTotalAmount);
+  // console.log('selectedStudentData=================>', selectedStudentData);
+  // console.log('inputTotalAmount---------------->', inputTotalAmount);
 
   return (
     <>
@@ -653,7 +610,7 @@ const PaymentDetails = ({route, navigation}) => {
                           width: 111,
                           height: 48,
                           borderRadius: 50,
-                          //   marginLeft: 20,
+                          // marginLeft: 20,
                           backgroundColor: Color.royalblue,
                           marginRight: 50,
                           marginTop: 20,
@@ -968,16 +925,18 @@ const PaymentDetails = ({route, navigation}) => {
                           </Text>
                         </TouchableOpacity>
                       </View>
+
                       <View>
-                        <Image
+                        <FastImage
                           style={{
                             width: 100,
-                            height: 95,
-                            marginTop: -70,
+                            height: 100,
+                            marginTop: -40,
                             left: '80%',
                             marginLeft: 20,
                           }}
                           source={require('../assets/Image/https___lottiefiles.com_42404-add-document.gif')}
+                          resizeMode={FastImage.resizeMode.contain}
                         />
                       </View>
                     </View>
@@ -1006,9 +965,9 @@ const PaymentDetails = ({route, navigation}) => {
                     <Text
                       style={{
                         color: '#13538A',
-                        fontSize: 14,
-                        marginTop: 8,
-                        marginLeft: 165,
+                        fontSize: 15,
+                        marginTop: 5,
+                        marginLeft: '60%',
                         fontWeight: '800',
                       }}>
                       Check all

@@ -9,7 +9,6 @@ import React, {
 import {useFocusEffect, useNavigationState} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AppTourProvider} from '@nghinv/react-native-app-tour';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -32,8 +31,9 @@ import {
   BackHandler,
   DeviceEventEmitter,
   PermissionsAndroid,
-  Easing,
   FlatList,
+  Animated,
+  Easing,
 } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import API from '../environment/Api';
@@ -46,6 +46,9 @@ import CarouselVideo from '../components/CarouselVideo';
 import moment from 'moment';
 import {fetchUserDataThunk} from '../redux_toolkit/features/users/UserThunk';
 import YouTube from 'react-native-youtube-iframe';
+import FastImage from 'react-native-fast-image';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 const {width} = Dimensions.get('window');
 
 const Home = ({navigation}, props) => {
@@ -1564,17 +1567,9 @@ const Home = ({navigation}, props) => {
     }
   };
   useEffect(() => {
-    // if (user[0]?.usertype) {
-    //   // Ensure usertype is available before calling the API
     fetchDboardSliders();
-    // }
-  }, []); // Added user as a dependency to rerun when it changes
-
-  // const mediaUrl = 'A4LduNvkwvo';
-  // console.log(mediaUrl, 'mediaUrl--------------------------------------->');
+  }, []);
   const lastIndex = videos.length - 1;
-
-  // const scrollViewRef = useRef();
   const [sBadges, setSbadges] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
@@ -1635,27 +1630,6 @@ const Home = ({navigation}, props) => {
     }
   }, [sBadges]);
 
-  // useEffect(() => {
-  //   const animation = Animated.loop(
-  //     Animated.timing(rotateValue, {
-  //       toValue: 1,
-  //       duration: 3000, // 3 seconds for one complete rotation
-  //       easing: Easing.linear,
-  //       useNativeDriver: true,
-  //     }),
-  //   );
-
-  //   animation.start();
-
-  //   return () => {
-  //     animation.stop(); // Cleanup function to stop the animation
-  //   };
-  // }, [rotateValue]);
-
-  // const rotate = rotateValue.interpolate({
-  //   inputRange: [0, 1],
-  //   outputRange: ['0deg', '360deg'],
-  // });
   const openCmq = () => {
     navigation.navigate('commonmonthlypage');
   };
@@ -1668,6 +1642,28 @@ const Home = ({navigation}, props) => {
     const index = Math.round(event.nativeEvent.contentOffset.x / width);
     setActiveSlide(index % imageSlider.length); // Adjust the activeSlide index
   };
+
+  const pulseAnimation = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnimation, {
+          toValue: 1.1,
+          duration: 800,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnimation, {
+          toValue: 1,
+          duration: 800,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start();
+  }, [pulseAnimation]);
+
   return (
     <>
       <ScrollView
@@ -2618,59 +2614,59 @@ const Home = ({navigation}, props) => {
                         : openMopragati();
                     }}
                     style={{marginTop: 8}}>
+                    {/* Main Image */}
                     <Image
                       source={require('../assets/Image/mopragati.png')}
                       resizeMode="contain"
                       style={{
-                        height: window.WindowHeigth * 0.2,
-                        width: window.WindowWidth * 0.9,
+                        height: windowHeight * 0.2,
+                        width: windowWidth * 0.9,
                         borderRadius: 5,
                         marginLeft: 18,
                         borderColor: 'black',
                       }}
                     />
-                    {/* <Image
-                      source={require('../assets/Image/touch1.gif')}
+                    {/* Animated "Click Me" Indicator */}
+                    <Animated.View
                       style={{
-                        width: 40,
-                        height: 40,
                         position: 'absolute',
                         zIndex: 1,
-                        backgroundColor: 'white',
-
                         alignSelf: 'center',
-                        borderRadius: 50,
-                        width: 35.72,
-                        height: 35.66,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        position: 'absolute',
-                        top: 20,
-
-                        // bottom: '-13%', // Ensure the GIF is on top
-                      }}
-                    /> */}
+                        top: windowHeight * 0.1,
+                        transform: [{scale: pulseAnimation}],
+                      }}>
+                      <View
+                        style={{
+                          width: 35.72,
+                          height: 35.66,
+                          backgroundColor: Color.ghostwhite, // golden color
+                          borderRadius: 20,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          shadowColor: 'black',
+                          shadowOffset: {width: 0, height: 2},
+                          shadowOpacity: 0.3,
+                          shadowRadius: 3,
+                          elevation: 5,
+                          marginTop: -60,
+                          marginRight: 20,
+                        }}>
+                        <Image
+                          source={require('../assets/Image/touch.gif')}
+                          style={{
+                            borderRadius: 50,
+                            width: 35.72,
+                            height: 35.66,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            // position: 'absolute',
+                            // top: 20,
+                            // bottom: '-13%', // Ensure the GIF is on top
+                          }}
+                        />
+                      </View>
+                    </Animated.View>
                   </TouchableOpacity>
-                  {/* <TouchableOpacity
-                    onPress={() => {
-                      maintainanceStatus?.tchReward
-                        ? navigation.navigate('moduleunderdevlopment')
-                        : openRewardModal();
-                    }}
-                    style={{marginTop: 15}}>
-                    <Image
-                      source={require('../assets/Image/GroupRewards.png')}
-                      resizeMode="contain"
-                      style={{
-                        height: window.WindowHeigth * 0.2,
-                        width: window.WindowWidth * 0.9,
-                        borderRadius: 5,
-                        marginLeft: 18,
-                        borderColor: 'black',
-                      }}
-                    />
-                  </TouchableOpacity> */}
-
                   <View style={[styles.view, {marginBottom: 15}]}>
                     <Text
                       style={[

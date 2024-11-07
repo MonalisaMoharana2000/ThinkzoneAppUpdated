@@ -2254,18 +2254,6 @@ const Home = ({navigation}, props) => {
                       <ScrollView
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}>
-                        {/* <TouchableOpacity
-              onPress={() => navigation.navigate('studentregister')}>
-              <Image
-                ref={exampleFiveViewRef}
-                style={styles.tinyLogo}
-                source={require('../assets/Image/iconusersprofileadd.png')}
-              />
-              <View style={styles.text_sign}>
-                <Text style={styles.FlngatiText}>ପଞ୍ଜୀକରଣ</Text>
-              </View>
-            </TouchableOpacity> */}
-
                         <TouchableOpacity
                           onPress={() => {
                             maintainanceStatus?.studDetails
@@ -2303,7 +2291,25 @@ const Home = ({navigation}, props) => {
                           </View>
                         </TouchableOpacity>
 
-                        {/* <TouchableOpacity
+                        <TouchableOpacity
+                          onPress={() => {
+                            maintainanceStatus?.studAssess
+                              ? navigation.navigate('moduleunderdevlopment')
+                              : navigation.navigate('studentlistpage');
+                          }}>
+                          <Image
+                            ref={exampleEightViewRef}
+                            style={styles.tinyLogo}
+                            source={require('../assets/Image/task-square.png')}
+                          />
+                          <View style={styles.text_sign}>
+                            <Text style={styles.FlngatiText}>
+                              ଶିକ୍ଷାର୍ଥୀ ବିକାଶ
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
                           onPress={() => {
                             maintainanceStatus?.payment
                               ? navigation.navigate('moduleunderdevlopment')
@@ -2324,37 +2330,7 @@ const Home = ({navigation}, props) => {
                               ଦେୟ
                             </Text>
                           </View>
-                        </TouchableOpacity> */}
-
-                        <TouchableOpacity
-                          onPress={() => {
-                            maintainanceStatus?.studAssess
-                              ? navigation.navigate('moduleunderdevlopment')
-                              : navigation.navigate('studentlistpage');
-                          }}>
-                          <Image
-                            ref={exampleEightViewRef}
-                            style={styles.tinyLogo}
-                            source={require('../assets/Image/task-square.png')}
-                          />
-                          <View style={styles.text_sign}>
-                            <Text style={styles.FlngatiText}>
-                              ଶିକ୍ଷାର୍ଥୀ ବିକାଶ
-                            </Text>
-                          </View>
                         </TouchableOpacity>
-                        {/* <TouchableOpacity
-                          onPress={() =>
-                            navigation.navigate('Games', {
-                              type: 'Games',
-                            })
-                          }>
-                          <Image
-                            style={styles.tinyLogo}
-                            source={require('../assets/Image/iconschoolbook1.png')}
-                          />
-                          <Text style={styles.FlngatiText}>ଖେଳ</Text>
-                        </TouchableOpacity> */}
                       </ScrollView>
                     </View>
                   </View>
@@ -2717,29 +2693,6 @@ const Home = ({navigation}, props) => {
                       <ScrollView
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}>
-                        <TouchableOpacity
-                          onPress={() => {
-                            maintainanceStatus?.payment
-                              ? navigation.navigate('moduleunderdevlopment')
-                              : navigation.navigate('payment', {
-                                  type: 'payment',
-                                });
-                          }}>
-                          <Image
-                            // ref={exampleThirteenViewRef}
-                            style={[styles.tinyLogo, {marginLeft: 17}]}
-                            // source={require('../assets/img/hbl/bill.png')}
-
-                            source={require('../assets/Image/iconmoneyemptywallettime.png')}
-                          />
-                          <View style={styles.text_sign}>
-                            <Text
-                              style={[styles.FlngatiTexts, {marginRight: 18}]}>
-                              ଦେୟ
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-
                         <TouchableOpacity
                           onPress={() =>
                             navigation.navigate('dictionary', {

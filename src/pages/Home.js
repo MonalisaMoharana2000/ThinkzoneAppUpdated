@@ -121,7 +121,7 @@ const Home = ({navigation}, props) => {
           appVersion: app_versions,
         };
         console.log('data---->', data);
-        const response = await Api.put(`syncAppSession`, data);
+        const response = await API.put(`syncAppSession`, data);
         console.log('sessionresponse--->', response.data, response.status);
         if (response.status === 200) {
           console.log('sessionresponse2--->', response.data, response.status);
@@ -134,7 +134,7 @@ const Home = ({navigation}, props) => {
 
   const handleSessionOut = async () => {
     dispatch(types.logOutUser());
-    const response = await Api.patch(
+    const response = await API.patch(
       `updateLogoutSession/${user[0].userid}/tz/${app_versions}`,
     );
     console.log('response--->', response.data, app_versions);
@@ -143,7 +143,7 @@ const Home = ({navigation}, props) => {
   const fetchSessionData = async () => {
     const storedDeviceId = await AsyncStorage.getItem('deviceId');
     try {
-      const response = await Api.get(
+      const response = await API.get(
         `getUserAppSession/${'tz'}/${user[0].usertype}/${
           user[0].userid
         }/${storedDeviceId}`,
@@ -428,15 +428,65 @@ const Home = ({navigation}, props) => {
     descriptionTextColor: '#ffffff',
   };
 
+  // const getToken = async () => {
+  //   try {
+  //     if (tokenRetrieved) return;
+  //     const token = await messaging().getToken();
+  //     console.log('================token', token);
+  //     const largeIcon =
+  //       Platform.OS === 'android'
+  //         ? '@drawable/ic_notification'
+  //         : 'ic_notification';
+  //     const fcm_obj = {
+  //       userid: user[0]?.userid,
+  //       username: user[0]?.username,
+  //       token: token,
+  //       refresh_token: token,
+  //       largeIcon: largeIcon,
+  //     };
+  //     console.log('fcm_obj------->', fcm_obj);
+  //     const getRes = await API.get(`getfcmtokenidbyuserid/${user[0]?.userid}`);
+  //     // const getRes = await axios.get(
+  //     //   `https://thinkzone.in.net/thinkzone/getfcmtokenidbyuserid/${user[0]?.userid}`,
+  //     // );
+  //     console.log('getRes', getRes.data);
+  //     if (getRes.data?.status == 'success') {
+  //       const tid = getRes?.data?.data[0]._id;
+  //       await API.put(`updatefcmtokenid/${tid}`, fcm_obj);
+  //       // await axios.put(
+  //       //   `https://thinkzone.in.net/thinkzone/updatefcmtokenid/${tid}`,
+  //       //   fcm_obj,
+  //       // );
+  //       console.log('FCM token updated successfully');
+  //     } else {
+  //       await API.post(`createnewfcmtokenid`, fcm_obj);
+  //       // await axios.post(
+  //       //   `https://thinkzone.in.net/thinkzone/createnewfcmtokenid`,
+  //       //   fcm_obj,
+  //       // );
+  //       console.log('New FCM token created successfully');
+  //     }
+  //     setTokenRetrieved(true);
+  //   } catch (error) {
+  //     console.error('Error retrieving or saving FCM token:', error);
+  //   }
+  // };
+
   const getToken = async () => {
     try {
       if (tokenRetrieved) return;
+
+      // Retrieve the FCM token
       const token = await messaging().getToken();
       console.log('================token', token);
+
+      // Set the notification icon based on platform
       const largeIcon =
         Platform.OS === 'android'
           ? '@drawable/ic_notification'
           : 'ic_notification';
+
+      // Prepare the object to send to the backend
       const fcm_obj = {
         userid: user[0]?.userid,
         username: user[0]?.username,
@@ -445,27 +495,25 @@ const Home = ({navigation}, props) => {
         largeIcon: largeIcon,
       };
       console.log('fcm_obj------->', fcm_obj);
-      const getRes = await API.get(`getfcmtokenidbyuserid/${user[0]?.userid}`);
-      // const getRes = await axios.get(
-      //   `https://thinkzone.in.net/thinkzone/getfcmtokenidbyuserid/${user[0]?.userid}`,
+
+      // Use the new API to get or update the token by user ID
+      const response = await API.post(
+        `createOrUpdateTokenByUserId/${user[0]?.userid}`,
+        {token},
+      );
+      // const response = await axios.post(
+      //   `https://thinkzone.in.net/thinkzone/createOrUpdateTokenByUserId/${user[0]?.userid}`,
+      //   fcm_obj,
       // );
-      console.log('getRes', getRes.data);
-      if (getRes.data?.status == 'success') {
-        const tid = getRes?.data?.data[0]._id;
-        await API.put(`updatefcmtokenid/${tid}`, fcm_obj);
-        // await axios.put(
-        //   `https://thinkzone.in.net/thinkzone/updatefcmtokenid/${tid}`,
-        //   fcm_obj,
-        // );
-        console.log('FCM token updated successfully');
+
+      console.log('Response from API:', response.data);
+
+      if (response.data?.status === 'success') {
+        console.log('FCM token handled successfully');
       } else {
-        await API.post(`createnewfcmtokenid`, fcm_obj);
-        // await axios.post(
-        //   `https://thinkzone.in.net/thinkzone/createnewfcmtokenid`,
-        //   fcm_obj,
-        // );
-        console.log('New FCM token created successfully');
+        console.error('Error handling FCM token:', response.data?.error);
       }
+
       setTokenRetrieved(true);
     } catch (error) {
       console.error('Error retrieving or saving FCM token:', error);

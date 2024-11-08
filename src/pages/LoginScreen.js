@@ -10,6 +10,7 @@ import {
   ToastAndroid,
   KeyboardAvoidingView,
   ActivityIndicator,
+  Linking,
   Alert,
   BackHandler,
 } from 'react-native';
@@ -265,7 +266,6 @@ const App = ({navigation}) => {
             {userIdError ? (
               <Text style={styles.errorText}>{userIdError}</Text>
             ) : null}
-
             <Animated.View style={[styles.inputContainer, {borderColor}]}>
               <View style={styles.passwordInputWrapper}>
                 <TextInput
@@ -296,7 +296,6 @@ const App = ({navigation}) => {
             {passwordError ? (
               <Text style={styles.errorText}>{passwordError}</Text>
             ) : null}
-
             <View>
               <Animated.View
                 style={[
@@ -322,6 +321,58 @@ const App = ({navigation}) => {
                   )}
                 </TouchableOpacity>
               </Animated.View>
+            </View>
+
+            <View
+              style={{
+                padding: 20,
+                // backgroundColor: 'white',
+                borderRadius: 10,
+                width: '130%',
+                alignSelf: 'center',
+                marginTop: 20,
+                shadowColor: '#000',
+                shadowOffset: {width: 0, height: 1},
+                shadowOpacity: 0.2,
+                shadowRadius: 1.5,
+                elevation: 3,
+              }}>
+              <TouchableOpacity
+                onPress={() =>
+                  Linking.openURL(
+                    'https://sites.google.com/view/thinkzoneapp/home',
+                  )
+                }>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: Color.primaryContrast,
+                    textAlign: 'center',
+                    fontFamily: FontFamily.poppinsMedium,
+                    fontWeight: '500',
+                    marginBottom: 15,
+                  }}>
+                  By continuing, you agree to our{' '}
+                  <Text style={{textDecorationLine: 'underline'}}>
+                    Terms and Conditions
+                  </Text>{' '}
+                  and{' '}
+                  <Text style={{textDecorationLine: 'underline'}}>
+                    Privacy Policy
+                  </Text>
+                  .
+                </Text>
+              </TouchableOpacity>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: Color.primaryContrast,
+                  textAlign: 'center',
+                  fontFamily: FontFamily.poppinsMedium,
+                  fontWeight: '500',
+                }}>
+                This app is currently available for use in India 🇮🇳
+              </Text>
             </View>
           </View>
           <Image

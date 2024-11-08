@@ -140,7 +140,7 @@ const Profile = ({navigation}) => {
   const displayAlert = () => {
     navigation.navigate('editprofile', [userdata]);
   };
-  const app_versions = '2.1.1';
+  const app_versions = '2.2.0';
   const logout2 = async () => {
     try {
       await GoogleSignin.hasPlayServices();

@@ -966,7 +966,32 @@ const Profile = ({navigation}) => {
                 </Text>
               </TouchableOpacity>
             </View>
-
+            <TouchableOpacity
+              style={{
+                marginTop: 10,
+                flexDirection: 'row',
+                width: window.WindowWidth * 0.96,
+                height: window.WindowHeigth * 0.08,
+                backgroundColor: 'white',
+                borderRadius: 10,
+                alignSelf: 'center',
+              }}
+              onPress={() => Linking.openURL('mailto:mis.thinkzone@gmail.com')}>
+              <Text
+                style={{
+                  marginLeft: 26,
+                  marginTop: 10,
+                  color: Color.gray_100,
+                  fontWeight: '700',
+                  fontFamily: FontFamily.poppinsMedium,
+                  fontSize: 15,
+                }}>
+                For any queries related to the app, please contact -{' '}
+                <Text style={{color: 'blue', textDecorationLine: 'underline'}}>
+                  mis.thinkzone@gmail.com
+                </Text>
+              </Text>
+            </TouchableOpacity>
             <View>
               <Text
                 style={{
@@ -984,10 +1009,10 @@ const Profile = ({navigation}) => {
                   fontSize: FontSize.size_smi,
                   textAlign: 'center',
                   paddingHorizontal: 30,
-                  paddingBottom: 20,
+                  paddingBottom: 70,
                   // position: 'absolute',
                 }}>
-                App Version : 2.1.1
+                App Version : 2.1.9
               </Text>
             </View>
           </View>

@@ -408,20 +408,22 @@ const StudentRegister = ({route, navigation}) => {
   }, []);
   const upadteSubmit = async e => {
     e.preventDefault();
-    if (count >= 3) {
-      Alert.alert(
-        'Warning',
-        'ଆପଣ ପୂର୍ବରୁ ଏହି ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିସାରିଛନ୍ତି । ଧ୍ୟାନ ଦେବେ ଆପଣ ଗୋଟିଏ ମୋବାଇଲ୍ ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିପାରିବେ।',
-      );
-      return;
-    }
+    // if (count >= 3) {
+    //   Alert.alert(
+    //     'Warning',
+    //     'ଆପଣ ପୂର୍ବରୁ ଏହି ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିସାରିଛନ୍ତି । ଧ୍ୟାନ ଦେବେ ଆପଣ ଗୋଟିଏ ମୋବାଇଲ୍ ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିପାରିବେ।',
+    //   );
+    //   return;
+    // }
     const phoneRegExp = /^[6-9]\d{9}$/;
     if (name === undefined || name === null || name.trim() === '') {
       setNameError(true);
-    } else if (!phoneRegExp.test('' + phone)) {
-      setNameError(false);
-      setPhoneError(true);
-    } else if (gender === undefined || gender === null || gender === '') {
+    }
+    // else if (!phoneRegExp.test('' + phone)) {
+    //   setNameError(false);
+    //   setPhoneError(true);
+    // }
+    else if (gender === undefined || gender === null || gender === '') {
       setNameError(false);
       setPhoneError(false);
       setClassError(false);
@@ -482,7 +484,7 @@ const StudentRegister = ({route, navigation}) => {
         studentid: route.params ? route.params.updateData.studentid : '',
         studentname: name,
         studentcategory: studentcategory,
-        phone: phone,
+        phone: phone?.length === 10 ? phone : '',
         gender: gender,
         parentsname: parentname.trim().toLowerCase(),
         dob: dob.split('-').reverse().join('-'),
@@ -547,11 +549,13 @@ const StudentRegister = ({route, navigation}) => {
     if (name === undefined || name === null || name.trim() === '') {
       setNameError(true);
       setBackStatus(true);
-    } else if (!phoneRegExp.test('' + phone)) {
-      setNameError(false);
-      setPhoneError(true);
-      setBackStatus(true);
-    } else if (gender === undefined || gender === null || gender === '') {
+    }
+    // else if (!phoneRegExp.test('' + phone)) {
+    //   setNameError(false);
+    //   setPhoneError(true);
+    //   setBackStatus(true);
+    // }
+    else if (gender === undefined || gender === null || gender === '') {
       setNameError(false);
       setPhoneError(false);
       setClassError(false);
@@ -628,7 +632,7 @@ const StudentRegister = ({route, navigation}) => {
         studentcategory: studentcategory,
         program: studentclass,
         class: classlabal,
-        phone: phone,
+        phone: phone?.length === 10 ? phone : '',
         gender: gender,
         // dob: dob.toString(),
         dob: dob.split('-').reverse().join('-'),
@@ -644,7 +648,7 @@ const StudentRegister = ({route, navigation}) => {
         otp_status_message: 'success',
         otp_response_code: 200,
         otp_campain_id: 170197,
-        otp_mobile_number: phone,
+        otp_mobile_number: phone?.length === 10 ? phone : '',
         otp_message_id: 170197_3_7683939162_2,
         otp: rollno,
         sentToServer: true,

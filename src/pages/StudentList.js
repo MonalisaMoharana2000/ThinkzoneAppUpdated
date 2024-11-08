@@ -378,16 +378,7 @@ const StudentList = ({navigation, route}) => {
                   </View>
                 </TouchableOpacity>
 
-                {studentList.length === 0 ? (
-                  <View style={styles.noStudentContainer}>
-                    <Image
-                      source={require('../assets/Image/StudentPayments-removebg.png')}
-                      style={styles.noStudentImage}
-                      resizeMode="contain"
-                    />
-                    <Text style={styles.Fln}>No Students</Text>
-                  </View>
-                ) : (
+                {studentList?.length > 0 ? (
                   <>
                     {verifiedModalStatus && (
                       <InputModal
@@ -549,6 +540,15 @@ const StudentList = ({navigation, route}) => {
                       </View>
                     ))}
                   </>
+                ) : (
+                  <View style={styles.noStudentContainer}>
+                    <Image
+                      source={require('../assets/Image/StudentPayments-removebg.png')}
+                      style={styles.noStudentImage}
+                      resizeMode="contain"
+                    />
+                    <Text style={styles.Fln}>No Students</Text>
+                  </View>
                 )}
               </View>
             </View>

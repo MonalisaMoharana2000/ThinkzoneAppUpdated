@@ -750,12 +750,14 @@ const StackNavigator = ({navigation}) => {
         component={Faq}
         options={{
           title: 'FAQ',
-          // headerShown: false,
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+            color: 'white',
           },
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen
@@ -763,15 +765,14 @@ const StackNavigator = ({navigation}) => {
         component={Feedback}
         options={{
           title: 'ମତାମତ',
-
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+            color: 'white',
           },
-          // headerLeft: false,
-          // headerShown: false,
-          // headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen
@@ -780,10 +781,13 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ଅଭିଧାନ',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+            color: 'white',
           },
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen
@@ -792,10 +796,13 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ଦସ୍ତାବିଜ',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+            color: 'white',
           },
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen
@@ -924,11 +931,13 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'NOTIFICATION',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+            color: 'white',
           },
-          // headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
 
@@ -950,14 +959,16 @@ const StackNavigator = ({navigation}) => {
         name="assignmentpreview"
         component={AssignmentPreview}
         options={{
-          headerShown: false,
-          title: 'Assignment Review',
+          // headerShown: false,
+          title: 'Assignment Preview',
           headerTitleStyle: {
-            // fontWeight: '700',
-            textTransform: 'uppercase',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+            color: 'white',
           },
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
 
@@ -978,10 +989,13 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ପ୍ରାକ୍ ଗତିବିଧି',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+            color: 'white',
           },
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen
@@ -999,10 +1013,13 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ପ୍ରାଥମିକ ଗତିବିଧି',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+            color: 'white',
           },
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
 
@@ -1018,7 +1035,12 @@ const StackNavigator = ({navigation}) => {
           title: 'FLN ଗତିବିଧି',
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
           },
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen
@@ -1036,12 +1058,13 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ଗୋଷ୍ଠୀ ସମ୍ପୃକ୍ତିକରଣ',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+            color: 'white',
           },
-          // headerLeft: false,
-          // headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen
@@ -1065,10 +1088,13 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'ଦେୟ',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+            color: 'white',
           },
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
       <Stack.Screen

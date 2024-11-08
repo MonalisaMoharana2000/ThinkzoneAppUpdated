@@ -826,21 +826,24 @@ const Home = ({navigation}, props) => {
   }, []);
 
   useEffect(() => {
-    if (user?.length > 0 && user[0]?.usertype) {
-      API.get(`getDboardSliders/${user[0]?.usertype}/${'image'}`).then(
-        response => {
-          // console.log('response------------------>', response.data);
+    const fetchData = async () => {
+      if (user?.length > 0 && user[0]?.usertype) {
+        try {
+          const response = await API.get(
+            `getDboardSliders/${user[0].usertype}/image`,
+          );
           setImageSlider(response.data);
+          // Optionally set other states if needed:
           // setAchieve(response.data);
           // setMaintainanceStatus(response.data);
-          // setmaintainanceModal(response.data?.overallApp);
-          // setmaintainanceModal(false);
-        },
-        err => {
-          //
-        },
-      );
-    }
+          // setmaintainanceModal(response.data?.overallApp || false);
+        } catch (error) {
+          console.error('Failed to fetch data:', error);
+        }
+      }
+    };
+
+    fetchData();
   }, [user]);
 
   //Check acahievement data
@@ -2786,7 +2789,7 @@ const Home = ({navigation}, props) => {
                           />
                           <View style={styles.text_sign}>
                             <Text
-                              style={[styles.FlngatiTexts, {marginRight: 3}]}>
+                              style={[styles.FlngatiTexts, {marginRight: 8}]}>
                               ମତାମତ
                             </Text>
                           </View>

@@ -230,14 +230,15 @@ const Header = ({route, navigation, handleClick}) => {
     // If you want the color to change every time the component mounts, you can use the useEffect hook.
     setTextColor(getRandomColor());
   }, []);
-
+  const [introStatus, setIntroStatus] = useState([]);
   const [introDatas, setIntroDatas] = useState([]);
+
   const fetchIntroData = async () => {
     // Use async/await for API calls
     try {
       // setLoading(true);
       // setCheckIntro(false);
-      const response = await API.get(
+      const response = await Api.get(
         `getTransIntroQuiz/${storageData[0]?.userid}/${storageData[0]?.usertype}`,
       );
       console.log(
@@ -415,7 +416,7 @@ const Header = ({route, navigation, handleClick}) => {
               style={{width: 38, height: 38, resizeMode: 'contain'}}
             />
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() =>
               navigation.navigate('notification', {
                 type: 'notification',
@@ -438,7 +439,7 @@ const Header = ({route, navigation, handleClick}) => {
                 {notficationCount?.unreadCount}
               </Badge>
             )}
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           {/* <TouchableOpacity
             onPress={handleClick}

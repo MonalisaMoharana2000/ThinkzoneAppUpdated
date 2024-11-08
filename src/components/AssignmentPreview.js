@@ -35,14 +35,14 @@ import Loading from './Loading';
 import {FontFamily} from '../GlobalStyle';
 import {log} from 'console';
 import {PinchGestureHandler, State} from 'react-native-gesture-handler';
-// import Animated, {
-//   useSharedValue,
-//   useAnimatedGestureHandler,
-//   useAnimatedStyle,
-//   withSpring,
-//   withTiming,
-//   Easing,
-// } from 'react-native-reanimated';
+import Animated, {
+  useSharedValue,
+  useAnimatedGestureHandler,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+  Easing,
+} from 'react-native-reanimated';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 // import VideoPlayer from 'react-native-video-player';
 import Video from 'react-native-video';
@@ -207,7 +207,7 @@ const AssignmentPreview = ({navigation, route}) => {
 
   return (
     <ScrollView style={{height: '100%', paddingBottom: 50}}>
-      <View
+      {/* <View
         style={{
           backgroundColor: '#0060ca',
           height: 68,
@@ -225,7 +225,7 @@ const AssignmentPreview = ({navigation, route}) => {
           }}>
           Assignment Preview
         </Text>
-      </View>
+      </View> */}
       <ImageBackground
         style={styles.root}
         source={require('../assets/Photos/assignmentbg.jpg')}

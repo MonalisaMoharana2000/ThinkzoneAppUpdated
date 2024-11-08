@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //Version to update in the profile page for user
 export const Version = {
-  version: '2.0.6',
+  version: '2.1.9',
 };
 
 // Create axios instance

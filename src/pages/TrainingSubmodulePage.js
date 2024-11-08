@@ -18,11 +18,9 @@ import React, {useState} from 'react';
 import Colors from '../utils/Colors';
 import API from '../environment/Api';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-
 import {useSelector, useDispatch} from 'react-redux';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import {app_versions} from './Home';
 import {useEffect} from 'react';
 import {Color, FontFamily} from '../GlobalStyle';
 import Modals from '../components/Modals';
@@ -421,7 +419,7 @@ const TrainingSubmodulePage = ({navigation, route}) => {
           duration: duration,
           month: month,
           year: year,
-          appVersion: '2.1.1',
+          appVersion: app_versions,
           start: new Date(parseInt(value)),
           end: new Date(parseInt(y)),
         };

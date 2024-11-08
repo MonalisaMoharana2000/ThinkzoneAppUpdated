@@ -913,7 +913,7 @@ const Home = ({navigation}, props) => {
       }
     }
   };
-  const app_versions = '2.1.1';
+  const app_versions = '2.1.9';
 
   const dispatch = useDispatch();
 

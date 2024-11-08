@@ -656,7 +656,7 @@ const StudentRegister = ({route, navigation}) => {
         otp_expire_on: new Date(
           new Date().setFullYear(new Date().getFullYear() + 1),
         ),
-        appVersion: '2.1.2',
+        appVersion: app_versions,
         // image: profileDetails.image,
       };
 

@@ -30,7 +30,7 @@ const App = ({navigation}) => {
   const [userIdError, setUserIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loader, setLoader] = useState(false);
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const loginScale = new Animated.Value(1);
   const registerScale = new Animated.Value(1);
   const [shakeAnimation] = useState(new Animated.Value(0));

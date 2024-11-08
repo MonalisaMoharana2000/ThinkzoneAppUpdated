@@ -928,37 +928,45 @@ const Home = ({navigation}, props) => {
   const [statusData, setStatusData] = useState([]);
   const [statusMsg, setStatusMsg] = useState([]);
   const [statusModal, setStatusModal] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   //-----------To be replaced with the single navigation--------
 
+  // Function to check if the user is logged in
+  const checkLoginStatus = useCallback(async () => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+      setIsLoggedIn(!!userToken); // If token exists, user is logged in
+    } catch (e) {
+      console.error('Failed to fetch user token:', e);
+    }
+  }, []);
+
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
-        Alert.alert(
-          'Exit App',
-          'Do you want to exit the app?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => null,
-              style: 'cancel',
-            },
-            {
-              text: 'OK',
-              onPress: () => {
-                BackHandler.exitApp();
-              },
-            },
-          ],
-          {cancelable: false},
-        );
+    checkLoginStatus();
+  }, [checkLoginStatus]);
 
-        return true;
-      },
-    );
+  // Handle back button press with confirmation
+  useEffect(() => {
+    const handleBackPress = () => {
+      Alert.alert(
+        'Exit App',
+        'Do you want to exit the app?',
+        [
+          {text: 'Cancel', onPress: () => null, style: 'cancel'},
+          {text: 'Yes', onPress: () => BackHandler.exitApp()},
+        ],
+        {cancelable: true},
+      );
+      return true; // prevent default behavior
+    };
 
-    return () => backHandler.remove();
+    // Add event listener for back button
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+    // Remove listener on component unmount
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
   }, []);
 
   const handleDynamiclink = async ({url}) => {

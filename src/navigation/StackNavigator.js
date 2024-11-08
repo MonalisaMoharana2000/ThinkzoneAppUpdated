@@ -899,10 +899,13 @@ const StackNavigator = ({navigation}) => {
         options={{
           title: 'REWARDS',
           headerTitleStyle: {
-            // fontWeight: '700',
             fontFamily: FontFamily.poppinsMedium,
-            // letterSpacing: 2,
+            color: 'white',
           },
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
 

@@ -13,6 +13,7 @@ import {
   Pressable,
   Animated,
   Dimensions,
+  BackHandler,
 } from 'react-native';
 import Api from '../environment/Api';
 import React, {useEffect, useState, useCallback} from 'react';
@@ -271,12 +272,37 @@ const Header = ({route, navigation, handleClick}) => {
     } catch (error) {
       console.error('Error fetching intro quiz data:', error);
     } finally {
-      setIsLoadings(false);
+      // setIsLoadings(false);
     }
   };
   useEffect(() => {
     fetchIntroData();
   }, []);
+
+  useEffect(() => {
+    const handleBackPress = () => {
+      console.log(
+        '1-----------------------------------------------------------------------------------------',
+      );
+      Alert.alert(
+        'Exit App',
+        'Do you want to exit the app?',
+        [
+          {text: 'Cancel', onPress: () => null, style: 'cancel'},
+          {text: 'Yes', onPress: () => BackHandler.exitApp()},
+        ],
+        {cancelable: true},
+      );
+      return true;
+    };
+
+    // Add event listener for back button
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+    // Clean up listener on component unmount
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+  }, [userdatas]);
 
   return (
     <View style={styles.studentRegister}>

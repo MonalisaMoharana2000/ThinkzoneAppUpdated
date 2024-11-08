@@ -2161,6 +2161,7 @@ const TechContent = ({route, navigation}) => {
 
   const handleSend = async () => {
     // if (inputText.trim()) {
+
     const body = {
       discussionId: new Date().getTime(),
       topicId: route?.params?.whole_data?.topicId,
@@ -2586,7 +2587,7 @@ const TechContent = ({route, navigation}) => {
                                     </View>
                                   </>
                                 )}
-                                {item.type === 'text-audio' && (
+                                {/* {item.type === 'text-audio' && (
                                   <View
                                     style={{
                                       paddingBottom: 20,
@@ -2676,14 +2677,13 @@ const TechContent = ({route, navigation}) => {
                                               left: 20,
                                               top: -23,
                                             }}>
-                                           
                                             Play Audio
                                           </Text>
                                         </TouchableOpacity>
                                       )}
                                     </View>
                                   </View>
-                                )}
+                                )} */}
                                 {/* {item.type === 'hotspot' && (
                                   <View
                                     style={{
@@ -2796,7 +2796,8 @@ const TechContent = ({route, navigation}) => {
                                   </View>
                                 )} */}
                                 {/**Commented for now */}
-                                {item.type === 'slider' && (
+
+                                {/* {item.type === 'slider' && (
                                   <View style={styles.carouselContainer}>
                                     <Carousel
                                       data={item.value}
@@ -2811,13 +2812,11 @@ const TechContent = ({route, navigation}) => {
                                         setActiveSlide(index)
                                       }
                                       loop={true}
-                                      // autoplay={false}
                                       autoplayDirection={'ltr'}
                                       sliderWidth={window.WindowWidth}
                                       itemWidth={window.WindowWidth * 0.9}
                                     />
 
-                                    {/* Pagination component */}
                                     <Pagination
                                       dotsLength={item?.value.length}
                                       activeDotIndex={activeSlide}
@@ -2837,7 +2836,7 @@ const TechContent = ({route, navigation}) => {
                                       }}
                                     />
                                   </View>
-                                )}
+                                )} */}
                                 {item.type === 'video' && (
                                   <View
                                     style={{
@@ -2924,7 +2923,7 @@ const TechContent = ({route, navigation}) => {
                                     </View>
                                   </View>
                                 )}
-                                {item.type === 'puzzle' && (
+                                {/**{item.type === 'puzzle' && (
                                   <>
                                     <View
                                       style={{
@@ -2981,6 +2980,7 @@ const TechContent = ({route, navigation}) => {
                                     </View>
                                   </>
                                 )}
+                                  **/}
                               </View>
                             </>
                           );
@@ -3381,7 +3381,7 @@ const TechContent = ({route, navigation}) => {
                                 </Text>
                               </TouchableOpacity>
                             )}
-                            <TouchableOpacity
+                            {/* <TouchableOpacity
                               style={styles.button}
                               onPress={() => saveOffline(contentData)}>
                               <Text
@@ -3400,7 +3400,7 @@ const TechContent = ({route, navigation}) => {
                                   style={{left: '85%'}}
                                 />
                               </Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                           </View>
                         </View>
                         <FabButton
@@ -3736,7 +3736,6 @@ const TechContent = ({route, navigation}) => {
                   ]}>
                   <View style={{alignSelf: 'center'}}>
                     <Text style={styles.modalText}>
-                     
                       ଆପଣ ପଢିଥିବା ବିଷୟଟିକୁ ରେଟିଂ ଦିଅନ୍ତୁ ।
                     </Text>
 
@@ -3846,10 +3845,7 @@ const TechContent = ({route, navigation}) => {
                     ]}>
                     {username} ଆପଣଙ୍କ କୁଇଜ୍ ସଫଳତାର ସହ ସେଭ୍ ହୋଇଛି ଆପଣ {modalMark}
                     % ସ୍କୋର କରିଛନ୍ତି ଏବଂ
-                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-                     
-                      ୧୦
-                    </Text>
+                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>୧୦</Text>
                     ଟି କଏନ ହାସଲ କରିଛନ୍ତି ।
                   </Text>
 
@@ -3960,10 +3956,7 @@ const TechContent = ({route, navigation}) => {
                       },
                     ]}>
                     ଆପଣ ସଫଳତାର ସହ ନିଜର ମତାମତ ଦେଇଛନ୍ତି ଏବଂ ଆପଣ
-                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-                     
-                      ୧୧
-                    </Text>
+                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>୧୧</Text>
                     ଟି କଏନ ହାସଲ କରିଛନ୍ତି । ଏବେ ଆପଣ ପରବର୍ତୀ ବିଷୟ କୁ ଯାଇପାରିବେ ।
                   </Text>
 

@@ -48,6 +48,7 @@ import moment from 'moment';
 import {fetchUserDataThunk} from '../redux_toolkit/features/users/UserThunk';
 import YouTube from 'react-native-youtube-iframe';
 import FastImage from 'react-native-fast-image';
+import ImageSlider from '../components/ImageSlider';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 const {width} = Dimensions.get('window');
@@ -197,6 +198,9 @@ const Home = ({navigation}, props) => {
     setTimeout(() => {
       setScrollEnabled(true);
     }, 6000);
+  };
+  const handleSliderChange = pageUrl => {
+    navigation.navigate('Page', {pageUrl}); // Navigate to the 'Page' screen and pass the pageUrl
   };
 
   const inputReducer = (state, action) => {
@@ -1594,23 +1598,7 @@ const Home = ({navigation}, props) => {
   const [isFlatListFocused, setIsFlatListFocused] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentlyPlayingIndex, setCurrentlyPlayingIndex] = useState(null);
-  const flatListRef = useRef(null);
   const currentIndex = useRef(0);
-
-  useEffect(() => {
-    if (imageSlider.length === 0) return; // Don't set up interval if there's no images
-
-    const interval = setInterval(() => {
-      currentIndex.current = (currentIndex.current + 1) % imageSlider.length;
-      flatListRef.current?.scrollToIndex({
-        index: currentIndex.current,
-        animated: true,
-      });
-    }, 3000); // Change this duration as needed
-
-    return () => clearInterval(interval); // Cleanup on component unmount
-  }, [imageSlider.length]); // Dependencies array includes the length of imageSlider
-
   const fetchDboardSliders = async () => {
     try {
       const response = await API.get(`getDboardSliders/fellow/${'video'}`);
@@ -2234,38 +2222,9 @@ const Home = ({navigation}, props) => {
                     ) : null}
                   </View>
 
-                  <FlatList
-                    ref={flatListRef}
-                    data={imageSlider}
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={({item}) => (
-                      <TouchableOpacity
-                        onPress={() => handlePageChange(item?.navigateTo)}>
-                        <View
-                          style={{
-                            width: width - 40, // Width adjustment for each image
-                            overflow: 'hidden', // Prevent any overflow issues
-                          }}>
-                          <CarouselImage data={item.mediaUrl} />
-                        </View>
-                      </TouchableOpacity>
-                    )}
-                    keyExtractor={(item, index) => index.toString()}
-                    snapToAlignment="center"
-                    snapToInterval={width - 40 + 10} // Snap to the width of the item plus separator
-                    decelerationRate="fast" // Use fast for smoother transitions
-                    style={{width, marginLeft: 20}} // Set width for FlatList
-                    contentContainerStyle={{
-                      paddingHorizontal: 40, // Equal space on sides
-                    }}
-                    ItemSeparatorComponent={() => (
-                      <View style={{width: 20, marginLeft: 15}} />
-                    )} // Gap between items
-                    onScrollToIndexFailed={info => {
-                      console.warn('Index failed to scroll: ', info); // Handle failed index scroll
-                    }}
+                  <ImageSlider
+                    imageSlider={imageSlider}
+                    handlePageChange={handleSliderChange}
                   />
 
                   <View style={styles.view}>

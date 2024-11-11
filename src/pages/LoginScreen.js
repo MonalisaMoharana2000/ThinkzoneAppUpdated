@@ -247,6 +247,11 @@ const App = ({navigation}) => {
               {top: loginChildPosition}, // Bind position to animation
             ]}
           />
+          <Image
+            style={[styles.kindergartenStudentPana1, styles.groupChildPosition]}
+            resizeMode="cover"
+            source={require('../assets/Image/kindergarten-studentpana-1.png')}
+          />
           <View style={styles.inputWrapper}>
             <Animated.View
               style={[
@@ -256,6 +261,7 @@ const App = ({navigation}) => {
               <TextInput
                 placeholder="User ID"
                 placeholderTextColor="black"
+                autoCapitalize="none"
                 value={userId}
                 onChangeText={handleUserIdChange}
                 onBlur={handleBlur}
@@ -271,6 +277,7 @@ const App = ({navigation}) => {
                 <TextInput
                   placeholder="Password"
                   placeholderTextColor="black"
+                  autoCapitalize="none"
                   value={password}
                   onFocus={handleInputFocus}
                   onChangeText={text => {
@@ -322,64 +329,24 @@ const App = ({navigation}) => {
                 </TouchableOpacity>
               </Animated.View>
             </View>
-
-            <View
-              style={{
-                padding: 20,
-                // backgroundColor: 'white',
-                borderRadius: 10,
-                width: '130%',
-                alignSelf: 'center',
-                marginTop: 20,
-                shadowColor: '#000',
-                shadowOffset: {width: 0, height: 1},
-                shadowOpacity: 0.2,
-                shadowRadius: 1.5,
-                elevation: 3,
-              }}>
+            <View style={styles.termsContainer}>
               <TouchableOpacity
                 onPress={() =>
                   Linking.openURL(
                     'https://sites.google.com/view/thinkzoneapp/home',
                   )
                 }>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: Color.primaryContrast,
-                    textAlign: 'center',
-                    fontFamily: FontFamily.poppinsMedium,
-                    fontWeight: '500',
-                    marginBottom: 15,
-                  }}>
+                <Text style={[styles.termsText]}>
                   By continuing, you agree to our{' '}
-                  <Text style={{textDecorationLine: 'underline'}}>
-                    Terms and Conditions
-                  </Text>{' '}
-                  and{' '}
-                  <Text style={{textDecorationLine: 'underline'}}>
-                    Privacy Policy
-                  </Text>
-                  .
+                  <Text style={styles.underlineText}>Terms and Conditions</Text>{' '}
+                  and <Text style={styles.underlineText}>Privacy Policy</Text>.
                 </Text>
               </TouchableOpacity>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: Color.primaryContrast,
-                  textAlign: 'center',
-                  fontFamily: FontFamily.poppinsMedium,
-                  fontWeight: '500',
-                }}>
+              <Text style={styles.termsText}>
                 This app is currently available for use in India 🇮🇳
               </Text>
             </View>
           </View>
-          <Image
-            style={[styles.kindergartenStudentPana1, styles.groupChildPosition]}
-            resizeMode="cover"
-            source={require('../assets/Image/kindergarten-studentpana-1.png')}
-          />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -389,7 +356,9 @@ const App = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.primaryContrast,
+    backgroundColor: '#f5f7fb', // Light grayish-blue background for a clean look
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   loginChild: {
     position: 'absolute',
@@ -401,79 +370,49 @@ const styles = StyleSheet.create({
     transform: [{rotate: '-10deg'}],
   },
   kindergartenStudentPana1: {
-    width: window.WindowWidth * 1.21,
+    width: window.WindowWidth * 1.18,
     height: window.WindowWidth * 0.9,
   },
   groupChildPosition: {
-    left: 0,
+    left: -25,
     position: 'absolute',
   },
   inputWrapper: {
-    width: '70%',
+    width: '85%',
     alignSelf: 'center',
-    top: '55%',
+    top: '42%', // Adjust positioning to allow more space for the logo above
+    backgroundColor: '#ffffff', // White background for the input area
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 4},
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 10,
   },
   inputContainer: {
     width: '100%',
-    height: 50,
-    backgroundColor: '#F0F0F0',
-    borderRadius: 8,
-    borderWidth: 2,
-    marginBottom: 10,
-    borderRadius: 25,
-    borderWidth: 2,
-    borderColor: 'black',
+    marginTop: 10,
+    height: 55,
+    backgroundColor: '#f0f0f5', // Subtle white shade for input background
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#d0d5dd', // Light border color for a subtle outline
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    justifyContent: 'center',
   },
   input: {
-    flex: 1,
-    paddingHorizontal: 15,
-    color: 'black',
+    color: '#333', // Darker text color for readability
+    fontSize: 16,
+    fontFamily: FontFamily.poppinsRegular,
   },
   errorText: {
     color: 'red',
-    // backgroundColor: Color.ghostwhite,
-    borderRadius: 25,
     fontSize: 12,
-    marginBottom: 10,
-    // width: '50%',
-    // textAlign: 'center',
-  },
-  buttonContainer: {
-    marginTop: 20,
-    alignItems: 'center',
-    borderRadius: 8,
-  },
-  button: {
-    backgroundColor: 'white',
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    borderRadius: 5,
-    width: '100%',
-
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: 'black',
-    shadowOffset: {width: 10, height: 14},
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 15,
-  },
-  loginButton: {
-    // backgroundColor: Color.primaryMain,
-    borderRadius: 28,
-    borderWidth: 2,
-    borderColor: 'black',
-  },
-  buttonText: {
-    color: '#0060ca',
-    fontWeight: 'bold',
-    fontSize: 20,
-    shadowColor: 'black',
-    textTransform: 'capitalize',
-    shadowOffset: {width: 0, height: 4},
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 15,
+    marginBottom: 8,
+    textAlign: 'left',
   },
   passwordInputWrapper: {
     flexDirection: 'row',
@@ -482,8 +421,47 @@ const styles = StyleSheet.create({
   eyeIcon: {
     position: 'absolute',
     right: 10,
-    top: '50%',
-    transform: [{translateY: -10}],
+  },
+  buttonContainer: {
+    marginTop: 20,
+    borderRadius: 12,
+  },
+  button: {
+    backgroundColor: '#007BFF', // Blue background for the button
+    paddingVertical: 14,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 6},
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 15,
+  },
+  loginButton: {
+    borderWidth: 0,
+  },
+  buttonText: {
+    color: '#fff', // White text on the blue button
+    fontSize: 18,
+    fontWeight: '600',
+    fontFamily: FontFamily.poppinsSemiBold,
+  },
+  termsContainer: {
+    padding: 20,
+    alignItems: 'center',
+    marginTop: 15,
+  },
+  termsText: {
+    fontSize: 13,
+    color: '#000000', // Muted text color for terms text
+    textAlign: 'center',
+    fontFamily: FontFamily.poppinsMedium,
+    marginBottom: 5,
+  },
+  underlineText: {
+    textDecorationLine: 'underline',
+    color: '#007BFF', // Blue color for emphasized text
   },
 });
 

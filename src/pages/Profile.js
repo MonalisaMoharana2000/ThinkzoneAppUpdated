@@ -845,7 +845,7 @@ const Profile = ({navigation}) => {
                 <Text
                   style={{
                     marginLeft: 50,
-                    marginTop: 10,
+                    marginTop: 14,
                     color: Color.gray_100,
                     fontWeight: '700',
                     fontFamily: FontFamily.poppinsMedium,
@@ -884,7 +884,7 @@ const Profile = ({navigation}) => {
                 <Text
                   style={{
                     marginLeft: 50,
-                    marginTop: 10,
+                    marginTop: 14,
                     color: Color.gray_100,
                     fontWeight: '700',
 
@@ -921,7 +921,7 @@ const Profile = ({navigation}) => {
                 <Text
                   style={{
                     marginLeft: 50,
-                    marginTop: 10,
+                    marginTop: 14,
                     color: Color.gray_100,
                     fontWeight: '700',
                     fontFamily: FontFamily.poppinsMedium,
@@ -945,18 +945,18 @@ const Profile = ({navigation}) => {
                 }}>
                 <Image
                   style={[
-                    {marginTop: 10},
+                    {marginTop: 10, width: 30, height: 30},
                     // styles.iconusersuserTag,
                     styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
+                    // styles.iconusersuserLayout,
                   ]}
                   resizeMode="cover"
-                  source={require('../assets/Image/refresh-right-square.png')}
+                  source={require('../assets/Image/exit.png')}
                 />
                 <Text
                   style={{
-                    marginLeft: 50,
-                    marginTop: 10,
+                    marginLeft: 53,
+                    marginTop: 15,
                     color: Color.gray_100,
                     fontWeight: '700',
                     fontFamily: FontFamily.poppinsMedium,
@@ -1012,7 +1012,7 @@ const Profile = ({navigation}) => {
                   paddingBottom: 70,
                   // position: 'absolute',
                 }}>
-                App Version : 2.1.9
+                {app_versions}
               </Text>
             </View>
           </View>
@@ -1321,8 +1321,8 @@ const styles = StyleSheet.create({
     // textAlign: 'left',
   },
   iconusersuserLayout: {
-    height: 24,
-    width: 24,
+    height: 25,
+    width: 25,
   },
   privacyPolicyPosition: {
     top: 14,

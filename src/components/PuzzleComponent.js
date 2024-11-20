@@ -137,10 +137,8 @@ const PuzzleComponent = ({
               <PuzzleItem
                 levels={
                   answered
-                    ? item?.otherData?.inputAnswer
-                    : item.value
-                    ? item.value
-                    : item.correctAnswer
+                    ? item?.value || []
+                    : item?.value || item?.correctAnswer || []
                 }
                 onDragEnd={newLevels => handleDragEnd(index, newLevels)}
                 handleSave={handleSave}

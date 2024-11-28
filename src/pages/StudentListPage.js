@@ -21,23 +21,21 @@ import Colors from '../utils/Colors';
 import * as SIZES from '../utils/dimensions';
 import {useFocusEffect} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
-
 import * as window from '../utils/dimensions';
-
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Loading from '../components/Loading';
 import Nocontents from '../components/Nocontents';
 import {showMessage, hideMessage} from 'react-native-flash-message';
 import {fetchStudentsDataThunk} from '../redux_toolkit/features/students/StudentThunk';
+const windowWidth = Dimensions.get('window').width;
 
 const StudentListPage = ({navigation}) => {
+  const animation = useRef(new Animated.Value(0)).current;
   const user = useSelector(state => state.UserSlice.user);
-  //   console.log('user--->', user);
   const coin = useSelector(state => state.UserSlice.rewards);
   const userCoins = coin[0]?.coins; // Replace with the actual number of user coins
   const studentData = useSelector(state => state.StudentSlice.students);
-
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [studentList, setStudentList] = useState([]);
@@ -58,36 +56,6 @@ const StudentListPage = ({navigation}) => {
 
     return () => backHandler.remove();
   }, []);
-
-  // useEffect(() => {
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     () => {
-  //       Alert.alert(
-  //         '',
-  //         'Do you want to Leave this page?',
-  //         [
-  //           {
-  //             text: 'Cancel',
-  //             onPress: () => null,
-  //             style: 'cancel',
-  //           },
-  //           {
-  //             text: 'OK',
-  //             onPress: () => {
-  //               navigation.goBack();
-  //             },
-  //           },
-  //         ],
-  //         {cancelable: false},
-  //       );
-
-  //       return true;
-  //     },
-  //   );
-
-  //   return () => backHandler.remove();
-  // }, []);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -121,16 +89,6 @@ const StudentListPage = ({navigation}) => {
       }
     }, [studentData]),
   );
-
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     setTimeout(() => {
-  //       setIsLoading(true);
-  //     }, 3000);
-  //   }, []),
-  // );
-
-  const animation = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     Animated.loop(
@@ -166,17 +124,20 @@ const StudentListPage = ({navigation}) => {
 
     fetchData();
   }, [studentList]);
+
   const reversedStudentList = [...studentList].reverse();
 
   return (
     <>
-      <ScrollView>
+      <ScrollView
+        style={{
+          flex: 1,
+          backgroundColor: '#ffffff',
+        }}>
         {isLoading ? (
           <Loading />
-        ) : studentData?.length === 0 ? (
-          <Nocontents />
-        ) : (
-          <>
+        ) : studentList && studentList?.length > 0 ? (
+          <View>
             {studentList.map((item, index) => {
               return (
                 <View
@@ -273,28 +234,16 @@ const StudentListPage = ({navigation}) => {
                 </View>
               );
             })}
-            {/* {studentList?.length > 0 ? (
-              <>
-                <View
-                  style={{
-                    width: window.WindowWidth * 0.92,
-                    alignSelf: 'center',
-                    // top: 50,
-                    margin: 10,
-                    top: '1%',
-                    backgroundColor: Color.ghostwhite,
-                    borderRadius: 10,
-                    borderWidth: 1,
-                    borderColor: Color.royalblue,
-                  }}>
-                  <Text style={styles.text1}>ଶିକ୍ଷାର୍ଥୀ ଚୟନ କରନ୍ତୁ </Text>
-                </View>
-              
-              </>
-            ) : (
-              <Nocontents />
-            )} */}
-          </>
+          </View>
+        ) : (
+          <View style={styles.noStudentContainer}>
+            <Image
+              source={require('../assets/Image/StudentPayments.jpg')}
+              style={styles.noStudentImage}
+              resizeMode="contain"
+            />
+            <Text style={styles.Fln}>No Students</Text>
+          </View>
         )}
       </ScrollView>
     </>
@@ -389,5 +338,31 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     color: 'black',
     left: '5%',
+  },
+  noStudentContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: '40%',
+  },
+  noStudentImage: {
+    width: windowWidth * 0.8, // 60% of the screen width
+    height: windowWidth * 0.8, // 60% of the screen width (keeps it square)
+  },
+  Fln: {
+    color: '#595F65',
+    fontSize: 18,
+    // top: 50,
+    // marginTop: 160,
+    fontFamily: FontFamily.poppinsMedium,
+    // paddingBottom: 40,
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    width: 370,
+    // paddingLeft: 20,
+    // paddingRight: 40,
+    textAlign: 'center',
+    alignSelf: 'center',
+    bottom: 0,
   },
 });

@@ -408,20 +408,22 @@ const StudentRegister = ({route, navigation}) => {
   }, []);
   const upadteSubmit = async e => {
     e.preventDefault();
-    if (count >= 3) {
-      Alert.alert(
-        'Warning',
-        'ଆପଣ ପୂର୍ବରୁ ଏହି ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିସାରିଛନ୍ତି । ଧ୍ୟାନ ଦେବେ ଆପଣ ଗୋଟିଏ ମୋବାଇଲ୍ ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିପାରିବେ।',
-      );
-      return;
-    }
+    // if (count >= 3) {
+    //   Alert.alert(
+    //     'Warning',
+    //     'ଆପଣ ପୂର୍ବରୁ ଏହି ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିସାରିଛନ୍ତି । ଧ୍ୟାନ ଦେବେ ଆପଣ ଗୋଟିଏ ମୋବାଇଲ୍ ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିପାରିବେ।',
+    //   );
+    //   return;
+    // }
     const phoneRegExp = /^[6-9]\d{9}$/;
     if (name === undefined || name === null || name.trim() === '') {
       setNameError(true);
-    } else if (!phoneRegExp.test('' + phone)) {
-      setNameError(false);
-      setPhoneError(true);
-    } else if (gender === undefined || gender === null || gender === '') {
+    }
+    // else if (!phoneRegExp.test('' + phone)) {
+    //   setNameError(false);
+    //   setPhoneError(true);
+    // }
+    else if (gender === undefined || gender === null || gender === '') {
       setNameError(false);
       setPhoneError(false);
       setClassError(false);
@@ -482,7 +484,7 @@ const StudentRegister = ({route, navigation}) => {
         studentid: route.params ? route.params.updateData.studentid : '',
         studentname: name,
         studentcategory: studentcategory,
-        phone: phone,
+        phone: phone?.length === 10 ? phone : '',
         gender: gender,
         parentsname: parentname.trim().toLowerCase(),
         dob: dob.split('-').reverse().join('-'),
@@ -528,30 +530,32 @@ const StudentRegister = ({route, navigation}) => {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (phone.length < 10) {
-      Alert.alert(
-        'Warning',
-        'ଦୟାକରି ମୋବାଇଲ୍ ନମ୍ୱର ଲମ୍ବାଇ ୧୦ ଡିଜିଟ୍ ହେବା ଆବଶ୍ୟକ।',
-      );
-      return;
-    }
+    // if (phone.length < 10) {
+    //   Alert.alert(
+    //     'Warning',
+    //     'ଦୟାକରି ମୋବାଇଲ୍ ନମ୍ୱର ଲମ୍ବାଇ ୧୦ ଡିଜିଟ୍ ହେବା ଆବଶ୍ୟକ।',
+    //   );
+    //   return;
+    // }
 
-    if (count >= 3) {
-      Alert.alert(
-        'Warning',
-        'ଆପଣ ପୂର୍ବରୁ ଏହି ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିସାରିଛନ୍ତି । ଧ୍ୟାନ ଦେବେ ଆପଣ ଗୋଟିଏ ମୋବାଇଲ୍ ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିପାରିବେ।',
-      );
-      return;
-    }
+    // if (count >= 3) {
+    //   Alert.alert(
+    //     'Warning',
+    //     'ଆପଣ ପୂର୍ବରୁ ଏହି ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିସାରିଛନ୍ତି । ଧ୍ୟାନ ଦେବେ ଆପଣ ଗୋଟିଏ ମୋବାଇଲ୍ ନମ୍ୱର୍ ରେ ୩ଜଣ ଶିକ୍ଷାର୍ଥୀଙ୍କ ପଞ୍ଜୀକରଣ କରିପାରିବେ।',
+    //   );
+    //   return;
+    // }
     const phoneRegExp = /^[6-9]\d{9}$/;
     if (name === undefined || name === null || name.trim() === '') {
       setNameError(true);
       setBackStatus(true);
-    } else if (!phoneRegExp.test('' + phone)) {
-      setNameError(false);
-      setPhoneError(true);
-      setBackStatus(true);
-    } else if (gender === undefined || gender === null || gender === '') {
+    }
+    // else if (!phoneRegExp.test('' + phone)) {
+    //   setNameError(false);
+    //   setPhoneError(true);
+    //   setBackStatus(true);
+    // }
+    else if (gender === undefined || gender === null || gender === '') {
       setNameError(false);
       setPhoneError(false);
       setClassError(false);
@@ -628,7 +632,7 @@ const StudentRegister = ({route, navigation}) => {
         studentcategory: studentcategory,
         program: studentclass,
         class: classlabal,
-        phone: phone,
+        phone: phone?.length === 10 ? phone : '',
         gender: gender,
         // dob: dob.toString(),
         dob: dob.split('-').reverse().join('-'),
@@ -644,7 +648,7 @@ const StudentRegister = ({route, navigation}) => {
         otp_status_message: 'success',
         otp_response_code: 200,
         otp_campain_id: 170197,
-        otp_mobile_number: phone,
+        otp_mobile_number: phone?.length === 10 ? phone : '',
         otp_message_id: 170197_3_7683939162_2,
         otp: rollno,
         sentToServer: true,
@@ -652,7 +656,7 @@ const StudentRegister = ({route, navigation}) => {
         otp_expire_on: new Date(
           new Date().setFullYear(new Date().getFullYear() + 1),
         ),
-        appVersion: '2.1.2',
+        appVersion: app_versions,
         // image: profileDetails.image,
       };
 
@@ -867,10 +871,10 @@ const StudentRegister = ({route, navigation}) => {
               name="name"
               editable={false}
               placeholderTextColor="#000000"
-              maxLength={10}
+              maxLength={13}
               placeholder="Phone Number"
-              value={phone}
-              onChangeText={value => setPhone(value)}
+              value={phone ? `+91${phone}` : '+91'}
+              onChangeText={value => setPhone(value.replace('+91', ''))}
             />
           ) : (
             <AppTextInput
@@ -880,16 +884,22 @@ const StudentRegister = ({route, navigation}) => {
               keyboardType="number-pad"
               name="name"
               placeholderTextColor="#000000"
-              maxLength={10}
+              maxLength={13}
               placeholder="Phone Number"
-              value={phone}
-              onChangeText={value => setPhone(value)}
+              value={phone ? `+91${phone}` : '+91'}
+              onChangeText={value => {
+                if (value.startsWith('+91')) {
+                  setPhone(value.slice(3));
+                } else if (value === '') {
+                  setPhone('');
+                }
+              }}
             />
           )}
 
-          {phone === undefined || phone === null || phone === '' ? (
+          {/* {phone === undefined || phone === null || phone === '' ? (
             <ErrorMessage visible={phoneError} error={t('phone_error')} />
-          ) : null}
+          ) : null} */}
 
           {/* Student Dob */}
 

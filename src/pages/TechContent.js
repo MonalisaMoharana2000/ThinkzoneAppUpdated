@@ -23,9 +23,9 @@ import {
   Linking,
 } from 'react-native';
 import RearrangeComponent from '../components/PuzzleComponent';
-// import DraggableFlatList, {
-//   ScaleDecorator,
-// } from 'react-native-draggable-flatlist';
+import DraggableFlatList, {
+  ScaleDecorator,
+} from 'react-native-draggable-flatlist';
 import Svg, {Rect, Circle} from 'react-native-svg';
 import RNFS from 'react-native-fs';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -59,7 +59,7 @@ import StarRating from 'react-native-star-rating-widget';
 import {WebView} from 'react-native-webview';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {app_versions} from './Home';
-import {openDatabase} from 'react-native-sqlite-storage';
+// import {openDatabase} from 'react-native-sqlite-storage';
 import PdfViewer from '../components/PdfViewer';
 import Orientation from 'react-native-orientation-locker';
 // import StarRating from 'react-native-star-rating';
@@ -76,6 +76,7 @@ import Api from '../environment/Api';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DragWordComponent from '../components/RearrangeWordComponent';
 import Loader from '../components/Loader';
+import PuzzleComponent from '../components/PuzzleComponent';
 const audioPlayer = new AudioRecorderPlayer();
 const textAudioPlayer = new AudioRecorderPlayer();
 const HEIGHT = Dimensions.get('window').height;
@@ -127,7 +128,7 @@ const TechContent = ({route, navigation}) => {
 
   // console.log('check2---->', check?.length > 0 ? check[0]?.inputAnswer : null);
   const [rearrangeWord, setRearrangeWord] = useState([]);
-  // console.log('rearrangeWord----->', rearrangeWord);
+  console.log('rearrangeWord----->', rearrangeWord);
   const [rearrangeSequence, setRearrangeSequence] = useState([]);
   const [refData, setRefData] = useState([]);
   // console.log('====================================refData',refData);
@@ -146,7 +147,8 @@ const TechContent = ({route, navigation}) => {
   const [checkUrl, setCheckUrl] = useState([]);
   const [feedbackModal, setFeedbackModal] = useState(false);
   const [topicQuizData2, setTopicQuizData2] = useState([]);
-  // console.log('topicQuizData------->', topicQuizData);
+  const [puzzleSequence, setPuzzleSequence] = useState([]);
+  console.log('puzzleSequence------->', puzzleSequence);
   const [gamifiedData, setGamifiedData] = useState([]);
   // console.log('gamifiedData----->', gamifiedData);
   const [quiz_status, setQuiz_status] = useState(
@@ -165,13 +167,16 @@ const TechContent = ({route, navigation}) => {
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [discussion, setDiscussion] = useState([]);
   console.log('====================================discussion', discussion);
-
+  const [puzzleOriginal, setPuzzleOriginal] = useState([]);
+  console.log('puzzleOriginal-------->', puzzleOriginal);
   const [loadDiscuss, setLoadDiscuss] = useState(false);
   //^--------------------------Hotspot states and related modal functions-------------------
   const [rectModalVisible, setRectModalVisible] = useState(false);
   const [moreModal, setMoreModal] = useState(false);
   const [discussModal, setDiscussModal] = useState(false);
   const [currentMessage, setCurrentMessage] = useState('');
+  const [puzzleMatchedStatus, setPuzzleMatchedStatus] = useState(false);
+  const [puzzleMatchedData, setPuzzleMatchedData] = useState([]);
   const rectPositions = [
     {x: 72, y: 70, message: 'ଏହା ଏକ ପର୍ଯ୍ୟବେକ୍ଷଣ ମାଧ୍ୟମରେ ଶିକ୍ଷଣ    '},
     {x: 72, y: 175, message: 'ଏହା ଏକ ଅଭ୍ୟାସ ଦ୍ଵାରା ଶିକ୍ଷଣ'},
@@ -244,37 +249,37 @@ const TechContent = ({route, navigation}) => {
   //^------------------------------------------------------------------------------------
 
   //------------------------------------Sqlite Storage-----------------------------------------
-  var db = openDatabase({name: 'TrainingDatabase.db'});
+  // var db = openDatabase({name: 'TrainingDatabase.db'});
   let [trainingItems, setTrainingItems] = useState([]);
   // console.log('trainingItems--->', trainingItems);
 
-  useEffect(() => {
-    const setupDatabase = async () => {
-      const itemLength = await new Promise((resolve, reject) => {
-        db.transaction(function (txn) {
-          txn.executeSql(
-            'CREATE TABLE IF NOT EXISTS table_training(_id INTEGER PRIMARY KEY AUTOINCREMENT, userid VARCHAR(20), username VARCHAR(20), managerid VARCHAR(20), managername VARCHAR(20), passcode VARCHAR(20), topicId INT(20),topicName INT(20), topicPercentage INT(10), contentData TEXT, videoPath INT(156))',
-            [],
-            async () => {
-              console.log('Table created successfully.');
-              // await deleteExistingData();
-              txn.executeSql(
-                'SELECT name FROM sqlite_master WHERE type="table" AND name="table_training"',
-                [],
-                function (tx, res) {
-                  resolve(res.rows.length);
-                },
-              );
-            },
-          );
-        });
-      });
+  // useEffect(() => {
+  //   const setupDatabase = async () => {
+  //     const itemLength = await new Promise((resolve, reject) => {
+  //       db.transaction(function (txn) {
+  //         txn.executeSql(
+  //           'CREATE TABLE IF NOT EXISTS table_training(_id INTEGER PRIMARY KEY AUTOINCREMENT, userid VARCHAR(20), username VARCHAR(20), managerid VARCHAR(20), managername VARCHAR(20), passcode VARCHAR(20), topicId INT(20),topicName INT(20), topicPercentage INT(10), contentData TEXT, videoPath INT(156))',
+  //           [],
+  //           async () => {
+  //             console.log('Table created successfully.');
+  //             // await deleteExistingData();
+  //             txn.executeSql(
+  //               'SELECT name FROM sqlite_master WHERE type="table" AND name="table_training"',
+  //               [],
+  //               function (tx, res) {
+  //                 resolve(res.rows.length);
+  //               },
+  //             );
+  //           },
+  //         );
+  //       });
+  //     });
 
-      console.log('Final item length:', itemLength);
-    };
+  //     console.log('Final item length:', itemLength);
+  //   };
 
-    setupDatabase();
-  }, []);
+  //   setupDatabase();
+  // }, []);
 
   // const fetchData = () => {
   //   db.transaction(function (txn) {
@@ -576,6 +581,10 @@ const TechContent = ({route, navigation}) => {
 
     fetchQuizData(); // Call the async function
   }, []);
+  console.log(
+    'route?.params?.whole_data?.topicId---------->',
+    route?.params?.whole_data?.topicId,
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -594,12 +603,12 @@ const TechContent = ({route, navigation}) => {
           x => x.type === 'puzzle',
         );
         rearrangeData = response?.data?.contentData.filter(
-          x => x.type === 'sentenceRearrangement',
+          x => x.type === 'rearrangement',
         );
         console.log('filteredData---->', filteredData);
 
         setPuzzles(filteredData);
-
+        setPuzzleOriginal(filteredData);
         setRearrangeWord(rearrangeData[0].value);
         setRearrangeSequence(shuffleArray(rearrangeData[0].value));
         console.log(
@@ -674,9 +683,6 @@ const TechContent = ({route, navigation}) => {
             }
           }
         }
-
-        // console.log();
-        // console.log('====================================');
         setRefLoad(true);
         const responseReference = await API.get(
           `getTchTrainingReference/${user[0].userid}/${
@@ -2160,6 +2166,7 @@ const TechContent = ({route, navigation}) => {
 
   const handleSend = async () => {
     // if (inputText.trim()) {
+
     const body = {
       discussionId: new Date().getTime(),
       topicId: route?.params?.whole_data?.topicId,
@@ -2338,6 +2345,132 @@ const TechContent = ({route, navigation}) => {
       ]);
     }
   };
+  const handleSaveRearrange = async item => {
+    console.log('item---->', item);
+
+    const answerItem = {
+      ...item,
+      answered: true,
+      value: rearrangeSequence,
+    };
+
+    console.log('====================================', answerItem);
+
+    const data = {
+      userid: user[0].userid,
+      username: user[0].username,
+      usertype: user[0].usertype,
+      managerid: user[0].managerid,
+      managername: user[0].managername,
+      passcode: user[0].passcode,
+      topicId: route?.params?.whole_data?.topicId,
+      appVersion: '2.3.9',
+      masterContentData: contentData,
+      transGamifiedObj: answerItem,
+    };
+
+    console.log('====================================1', data);
+    console.log('========================2', contentData);
+    console.log('====================================3', item);
+
+    console.log('data--->', data);
+
+    try {
+      const response = await API.post('saveTransTchTrainingContent', data);
+      if (response?.status === 200) {
+        setContentData(currentPuzzles =>
+          currentPuzzles.map(puzzle => {
+            // Log current puzzle for debugging
+            // console.log('currentPuzzles----->', puzzle);
+            // console.log('currentPuzzles2----->', puzzles[0].value);
+            // Conditionally add inputAnswer only if puzzle type is 'puzzle'
+            if (puzzle.type === 'rearrangement') {
+              return {
+                ...puzzle,
+                inputAnswer: puzzles[0]?.value,
+              };
+            }
+
+            // Return other items unchanged
+            return puzzle;
+          }),
+        );
+
+        Alert.alert('Saved', '', [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'default',
+          },
+          {
+            text: 'Ok',
+            onPress: () => navigation.goBack(),
+            style: 'default',
+          },
+        ]);
+      } else {
+        Alert.alert('Something went wrong!', '', [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'default',
+          },
+          {
+            text: 'Ok',
+            onPress: () => navigation.goBack(),
+            style: 'default',
+          },
+        ]);
+      }
+    } catch (err) {
+      console.log('err----->', err);
+    }
+
+    if (rearrangeMatchedStatus) {
+    } else {
+      setContentData(currentPuzzles =>
+        currentPuzzles.map(puzzle => {
+          // Log current puzzle for debugging
+          // console.log('currentPuzzles----->', puzzle);
+          // console.log('currentPuzzles2----->', puzzles[0]?.value);
+          // Conditionally add inputAnswer only if puzzle type is 'puzzle'
+          if (puzzle.type === 'rearrangement') {
+            return {
+              ...puzzle,
+              inputAnswer: rearrangeSequence,
+            };
+          }
+
+          // Return other items unchanged
+          return puzzle;
+        }),
+      );
+    }
+  };
+  let filteredRearrange = contentData?.filter(
+    item => item.type === 'rearrangement',
+  );
+  const renderItem = ({item, drag, isActive}) => (
+    console.log('itttem--------->', item),
+    (
+      // console.log('itttem2--------->', data),
+
+      <ScaleDecorator>
+        <TouchableOpacity
+          onPressIn={filteredRearrange[0]?.answered !== true ? drag : null}
+          disabled={isActive}
+          style={[
+            styles.buttonWrapper,
+            {
+              backgroundColor: isActive ? '#A3D735' : Color.royalblue,
+              color: isActive ? 'black' : 'white',
+            },
+          ]}>
+          <Text style={styles.buttonText}>{item.wordValue}</Text>
+        </TouchableOpacity>
+      </ScaleDecorator>
+    )
+  );
 
   //puzzle
   // const [puzzles, setPuzzles] = useState([
@@ -2358,6 +2491,7 @@ const TechContent = ({route, navigation}) => {
   console.log('indexPuzzle--->', indexPuzzle);
 
   const handleDragEndPuzzle = (index, newLevels) => {
+    setPuzzleSequence(newLevels);
     setIndexPuzzle(index); // Store the index of the dragged puzzle
     setPuzzles(currentPuzzles =>
       currentPuzzles.map((puzzle, i) =>
@@ -2365,26 +2499,83 @@ const TechContent = ({route, navigation}) => {
       ),
     );
   };
+  const handleMatched = (status, data) => {
+    setPuzzleMatchedStatus(status);
+    setPuzzleMatchedData(data);
+  };
+  let filteredPuzzle = contentData?.filter(item => item.type === 'puzzle');
+  console.log('filteredPuzzle--->', filteredPuzzle);
+  const handleSavePuzzle = async item => {
+    console.log('click---------------');
+    const answerItem = {
+      ...item,
+      answered: true,
+      value: puzzleSequence,
+    };
+    const data = {
+      userid: user[0].userid,
+      username: user[0].username,
+      usertype: user[0].usertype,
+      managerid: user[0].managerid,
+      managername: user[0].managername,
+      passcode: user[0].passcode,
+      topicId: route?.params?.whole_data?.topicId,
+      appVersion: '2.3.9',
+      masterContentData: contentData,
+      transGamifiedObj: answerItem,
+    };
 
-  const handleSavePuzzle = data => {
-    // console.log('currentPuzzles1----->', data);
-    setContentData(currentPuzzles =>
-      currentPuzzles.map(puzzle => {
-        // Log current puzzle for debugging
-        console.log('currentPuzzles----->', puzzle);
-        console.log('currentPuzzles2----->', puzzles[0].value);
-        // Conditionally add inputAnswer only if puzzle type is 'puzzle'
-        if (puzzle.type === 'puzzle') {
-          return {
-            ...puzzle,
-            inputAnswer: puzzles[0].value,
-          };
-        }
+    console.log('data--->', data);
+    try {
+      const response = await API.post('saveTransTchTrainingContent', data);
+      if (response?.status === 200) {
+        setContentData(currentPuzzles =>
+          currentPuzzles.map(puzzle => {
+            // Log current puzzle for debugging
+            // console.log('currentPuzzles----->', puzzle);
+            // console.log('currentPuzzles2----->', puzzles[0]?.value);
+            // Conditionally add inputAnswer only if puzzle type is 'puzzle'
+            if (puzzle.type === 'puzzle') {
+              return {
+                ...puzzle,
+                inputAnswer: puzzles[0]?.value,
+              };
+            }
 
-        // Return other items unchanged
-        return puzzle;
-      }),
-    );
+            // Return other items unchanged
+            return puzzle;
+          }),
+        );
+
+        Alert.alert('Saved', '', [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'default',
+          },
+          {
+            text: 'Ok',
+            onPress: () => navigation.goBack(),
+            style: 'default',
+          },
+        ]);
+      } else {
+        Alert.alert('Something went wrong!', '', [
+          {
+            text: 'Cancel',
+            onPress: () => null,
+            style: 'default',
+          },
+          {
+            text: 'Ok',
+            onPress: () => navigation.goBack(),
+            style: 'default',
+          },
+        ]);
+      }
+    } catch (err) {
+      console.log('err----->', err);
+    }
   };
 
   return (
@@ -2575,7 +2766,6 @@ const TechContent = ({route, navigation}) => {
                                                     left: 20,
                                                     top: -25,
                                                   }}>
-                                                  {' '}
                                                   Play Audio
                                                 </Text>
                                               </TouchableOpacity>
@@ -2586,7 +2776,7 @@ const TechContent = ({route, navigation}) => {
                                     </View>
                                   </>
                                 )}
-                                {item.type === 'text-audio' && (
+                                {/* {item.type === 'text-audio' && (
                                   <View
                                     style={{
                                       paddingBottom: 20,
@@ -2676,15 +2866,14 @@ const TechContent = ({route, navigation}) => {
                                               left: 20,
                                               top: -23,
                                             }}>
-                                            {' '}
                                             Play Audio
                                           </Text>
                                         </TouchableOpacity>
                                       )}
                                     </View>
                                   </View>
-                                )}
-                                {item.type === 'hotspot' && (
+                                )} */}
+                                {/* {item.type === 'hotspot' && (
                                   <View
                                     style={{
                                       alignSelf: 'center',
@@ -2794,8 +2983,10 @@ const TechContent = ({route, navigation}) => {
                                       </View>
                                     )}
                                   </View>
-                                )}
-                                {item.type === 'slider' && (
+                                )} */}
+                                {/**Commented for now */}
+
+                                {/* {item.type === 'slider' && (
                                   <View style={styles.carouselContainer}>
                                     <Carousel
                                       data={item.value}
@@ -2810,13 +3001,11 @@ const TechContent = ({route, navigation}) => {
                                         setActiveSlide(index)
                                       }
                                       loop={true}
-                                      // autoplay={false}
                                       autoplayDirection={'ltr'}
                                       sliderWidth={window.WindowWidth}
                                       itemWidth={window.WindowWidth * 0.9}
                                     />
 
-                                    {/* Pagination component */}
                                     <Pagination
                                       dotsLength={item?.value.length}
                                       activeDotIndex={activeSlide}
@@ -2836,7 +3025,7 @@ const TechContent = ({route, navigation}) => {
                                       }}
                                     />
                                   </View>
-                                )}
+                                )} */}
                                 {item.type === 'video' && (
                                   <View
                                     style={{
@@ -2923,7 +3112,6 @@ const TechContent = ({route, navigation}) => {
                                     </View>
                                   </View>
                                 )}
-
                                 {item.type === 'puzzle' && (
                                   <>
                                     <View
@@ -2934,26 +3122,61 @@ const TechContent = ({route, navigation}) => {
                                         borderRadius: 5,
                                         padding: 10,
                                       }}>
-                                      <RearrangeComponent
-                                        puzzles={puzzles}
+                                      <Text
+                                        style={{
+                                          fontFamily: FontFamily.poppinsMedium,
+                                          fontSize: 17,
+                                          color: 'black',
+                                          alignSelf: 'center',
+                                          padding: 5,
+                                          paddingBottom: 10,
+                                          fontWeight: 'bold',
+                                        }}>
+                                        {item.label}
+                                      </Text>
+                                      <PuzzleComponent
+                                        puzzles={
+                                          item?.answered === true
+                                            ? puzzleOriginal
+                                            : puzzles
+                                        }
                                         handleDragEnd={handleDragEndPuzzle}
                                         handleSave={handleSavePuzzle}
-                                        contentStatus={data?.contentStatus}
+                                        handleMatched={handleMatched}
+                                        contentStatus={
+                                          filteredPuzzle[0]?.answered
+                                        }
+                                        answered={
+                                          filteredPuzzle[0]?.answered === true
+                                        }
                                       />
                                       <TouchableOpacity
                                         style={[
                                           styles.button,
-                                          {alignSelf: 'center'},
-                                        ]}>
-                                        <Text style={styles.buttonText}>
-                                          Save
-                                        </Text>
+                                          {
+                                            alignSelf: 'center',
+                                            backgroundColor:
+                                              item?.answered === true
+                                                ? 'grey'
+                                                : 'blue',
+                                          },
+                                        ]}
+                                        onPress={() => handleSavePuzzle(item)}
+                                        disabled={item?.answered === true}>
+                                        {item?.answered === true ? (
+                                          <Text style={styles.buttonText}>
+                                            Saved
+                                          </Text>
+                                        ) : (
+                                          <Text style={styles.buttonText}>
+                                            Save
+                                          </Text>
+                                        )}
                                       </TouchableOpacity>
                                     </View>
                                   </>
                                 )}
-
-                                {item.type === 'sentenceRearrangement' && (
+                                {item.type === 'rearrangement' && (
                                   <>
                                     <View
                                       style={{
@@ -2963,22 +3186,80 @@ const TechContent = ({route, navigation}) => {
                                         borderRadius: 5,
                                         padding: 10,
                                       }}>
+                                      <Text
+                                        style={{
+                                          fontFamily: FontFamily.poppinsMedium,
+                                          fontSize: 17,
+                                          color: 'black',
+                                          alignSelf: 'center',
+                                          padding: 5,
+                                          paddingBottom: 10,
+                                          fontWeight: 'bold',
+                                        }}>
+                                        {item.label}
+                                      </Text>
                                       <DragWordComponent
-                                        data={rearrangeSequence}
+                                        data={
+                                          item?.answered === true
+                                            ? rearrangeWord
+                                            : rearrangeSequence
+                                        }
                                         renderItem={renderItem}
                                         handleDragEnd={handleDragEnd}
                                         contentStatus={data?.contentStatus}
                                       />
-
                                       <TouchableOpacity
                                         style={[
                                           styles.button,
-                                          {alignSelf: 'center', top: '2%'},
-                                        ]}>
-                                        <Text style={styles.buttonText}>
-                                          Save
-                                        </Text>
+                                          {
+                                            alignSelf: 'center',
+                                            top: '2%',
+                                            backgroundColor:
+                                              item?.answered === true
+                                                ? 'grey'
+                                                : '#0060ca',
+                                          },
+                                        ]}
+                                        onPress={() =>
+                                          handleSaveRearrange(item)
+                                        }
+                                        disabled={item?.answered === true}>
+                                        {item?.answered === true ? (
+                                          <Text style={styles.buttonText}>
+                                            Saved
+                                          </Text>
+                                        ) : (
+                                          <Text style={styles.buttonText}>
+                                            Save
+                                          </Text>
+                                        )}
                                       </TouchableOpacity>
+                                      {/* <TouchableOpacity
+                                        tyle={[
+                                          styles.button,
+                                          {
+                                            alignSelf: 'center',
+                                            top: '2%',
+                                            backgroundColor:
+                                              item?.answered === true
+                                                ? 'grey'
+                                                : 'blue',
+                                          },
+                                        ]}
+                                        onPress={() =>
+                                          handleSaveRearrange(item)
+                                        }
+                                        disabled={item?.answered === true}>
+                                        {item?.answered === true ? (
+                                          <Text style={styles.buttonText}>
+                                            Saved
+                                          </Text>
+                                        ) : (
+                                          <Text style={styles.buttonText}>
+                                            Save
+                                          </Text>
+                                        )}
+                                      </TouchableOpacity> */}
                                     </View>
                                   </>
                                 )}
@@ -3142,8 +3423,7 @@ const TechContent = ({route, navigation}) => {
                                 textAlign: 'center',
                                 color: 'black',
                               }}>
-                              {' '}
-                              ଅଧିକ ଜାଣିବା{' '}
+                              ଅଧିକ ଜାଣିବା
                             </Text>
 
                             {refLoad ? (
@@ -3383,7 +3663,7 @@ const TechContent = ({route, navigation}) => {
                                 </Text>
                               </TouchableOpacity>
                             )}
-                            <TouchableOpacity
+                            {/* <TouchableOpacity
                               style={styles.button}
                               onPress={() => saveOffline(contentData)}>
                               <Text
@@ -3402,7 +3682,7 @@ const TechContent = ({route, navigation}) => {
                                   style={{left: '85%'}}
                                 />
                               </Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity> */}
                           </View>
                         </View>
                         <FabButton
@@ -3738,7 +4018,6 @@ const TechContent = ({route, navigation}) => {
                   ]}>
                   <View style={{alignSelf: 'center'}}>
                     <Text style={styles.modalText}>
-                      {' '}
                       ଆପଣ ପଢିଥିବା ବିଷୟଟିକୁ ରେଟିଂ ଦିଅନ୍ତୁ ।
                     </Text>
 
@@ -3821,7 +4100,7 @@ const TechContent = ({route, navigation}) => {
                         alignSelf: 'center',
                       },
                     ]}>
-                    Congratulations! {''}
+                    Congratulations!
                   </Text>
                   {/* <Text
                     style={{
@@ -3848,10 +4127,7 @@ const TechContent = ({route, navigation}) => {
                     ]}>
                     {username} ଆପଣଙ୍କ କୁଇଜ୍ ସଫଳତାର ସହ ସେଭ୍ ହୋଇଛି ଆପଣ {modalMark}
                     % ସ୍କୋର କରିଛନ୍ତି ଏବଂ
-                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-                      {' '}
-                      ୧୦
-                    </Text>{' '}
+                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>୧୦</Text>
                     ଟି କଏନ ହାସଲ କରିଛନ୍ତି ।
                   </Text>
 
@@ -3937,7 +4213,7 @@ const TechContent = ({route, navigation}) => {
                         alignSelf: 'center',
                       },
                     ]}>
-                    Congratulations! {''}
+                    Congratulations!
                   </Text>
                   <Text
                     style={{
@@ -3962,10 +4238,7 @@ const TechContent = ({route, navigation}) => {
                       },
                     ]}>
                     ଆପଣ ସଫଳତାର ସହ ନିଜର ମତାମତ ଦେଇଛନ୍ତି ଏବଂ ଆପଣ
-                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>
-                      {' '}
-                      ୧୧{' '}
-                    </Text>{' '}
+                    <Text style={{fontSize: 20, fontWeight: 'bold'}}>୧୧</Text>
                     ଟି କଏନ ହାସଲ କରିଛନ୍ତି । ଏବେ ଆପଣ ପରବର୍ତୀ ବିଷୟ କୁ ଯାଇପାରିବେ ।
                   </Text>
 

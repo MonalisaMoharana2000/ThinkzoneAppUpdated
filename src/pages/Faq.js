@@ -142,7 +142,7 @@ const Faq = ({navigation}) => {
         <Loading />
       ) : faqSections ? (
         <View>
-          <ScrollView horizontal={true}>
+          <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
             {faqSections.map((item, index) => (
               <TouchableOpacity
                 key={index}
@@ -185,6 +185,7 @@ const Faq = ({navigation}) => {
                 borderRadius: 12,
               }}>
               <ScrollView
+                showsVerticalScrollIndicator={false}
                 style={{
                   backgroundColor: 'white',
                   borderRadius: 6,

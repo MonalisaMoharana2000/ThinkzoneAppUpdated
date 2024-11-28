@@ -9,7 +9,6 @@ import React, {
 import {useFocusEffect, useNavigationState} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AppTourProvider} from '@nghinv/react-native-app-tour';
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -32,9 +31,11 @@ import {
   BackHandler,
   DeviceEventEmitter,
   PermissionsAndroid,
-  Easing,
   FlatList,
+  Animated,
+  Easing,
 } from 'react-native';
+import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 import API from '../environment/Api';
 import * as window from '../utils/dimensions';
@@ -46,6 +47,10 @@ import CarouselVideo from '../components/CarouselVideo';
 import moment from 'moment';
 import {fetchUserDataThunk} from '../redux_toolkit/features/users/UserThunk';
 import YouTube from 'react-native-youtube-iframe';
+import FastImage from 'react-native-fast-image';
+import ImageSlider from '../components/ImageSlider';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 const {width} = Dimensions.get('window');
 
 const Home = ({navigation}, props) => {
@@ -117,7 +122,7 @@ const Home = ({navigation}, props) => {
           appVersion: app_versions,
         };
         console.log('data---->', data);
-        const response = await Api.put(`syncAppSession`, data);
+        const response = await API.put(`syncAppSession`, data);
         console.log('sessionresponse--->', response.data, response.status);
         if (response.status === 200) {
           console.log('sessionresponse2--->', response.data, response.status);
@@ -130,7 +135,7 @@ const Home = ({navigation}, props) => {
 
   const handleSessionOut = async () => {
     dispatch(types.logOutUser());
-    const response = await Api.patch(
+    const response = await API.patch(
       `updateLogoutSession/${user[0].userid}/tz/${app_versions}`,
     );
     console.log('response--->', response.data, app_versions);
@@ -139,7 +144,7 @@ const Home = ({navigation}, props) => {
   const fetchSessionData = async () => {
     const storedDeviceId = await AsyncStorage.getItem('deviceId');
     try {
-      const response = await Api.get(
+      const response = await API.get(
         `getUserAppSession/${'tz'}/${user[0].usertype}/${
           user[0].userid
         }/${storedDeviceId}`,
@@ -194,6 +199,9 @@ const Home = ({navigation}, props) => {
       setScrollEnabled(true);
     }, 6000);
   };
+  const handleSliderChange = pageUrl => {
+    navigation.navigate('Page', {pageUrl}); // Navigate to the 'Page' screen and pass the pageUrl
+  };
 
   const inputReducer = (state, action) => {
     if (action.type === 'SET_APPTOUR') {
@@ -205,7 +213,6 @@ const Home = ({navigation}, props) => {
   const exampleOneViewRef = useRef(null);
   const exampleTwoViewRef = useRef(null);
   const exampleThreeViewRef = useRef(null);
-
   const exampleFourViewRef = useRef(null);
   const exampleFiveViewRef = useRef(null);
   const exampleSixViewRef = useRef(null);
@@ -216,13 +223,9 @@ const Home = ({navigation}, props) => {
   const exampleElevenViewRef = useRef(null);
   const exampleTweleveViewRef = useRef(null);
   const exampleThirteenViewRef = useRef(null);
-
   const exampleFourteenViewRef = useRef(null);
-
   const exampleFifteenViewRef = useRef(null);
-
   const exampleSixteenViewRef = useRef(null);
-
   const [appTourTargets, dispatchAppTour, state] = useReducer(inputReducer, {
     appTour: [],
   });
@@ -429,21 +432,65 @@ const Home = ({navigation}, props) => {
     descriptionTextColor: '#ffffff',
   };
 
+  // const getToken = async () => {
+  //   try {
+  //     if (tokenRetrieved) return;
+  //     const token = await messaging().getToken();
+  //     console.log('================token', token);
+  //     const largeIcon =
+  //       Platform.OS === 'android'
+  //         ? '@drawable/ic_notification'
+  //         : 'ic_notification';
+  //     const fcm_obj = {
+  //       userid: user[0]?.userid,
+  //       username: user[0]?.username,
+  //       token: token,
+  //       refresh_token: token,
+  //       largeIcon: largeIcon,
+  //     };
+  //     console.log('fcm_obj------->', fcm_obj);
+  //     const getRes = await API.get(`getfcmtokenidbyuserid/${user[0]?.userid}`);
+  //     // const getRes = await axios.get(
+  //     //   `https://thinkzone.in.net/thinkzone/getfcmtokenidbyuserid/${user[0]?.userid}`,
+  //     // );
+  //     console.log('getRes', getRes.data);
+  //     if (getRes.data?.status == 'success') {
+  //       const tid = getRes?.data?.data[0]._id;
+  //       await API.put(`updatefcmtokenid/${tid}`, fcm_obj);
+  //       // await axios.put(
+  //       //   `https://thinkzone.in.net/thinkzone/updatefcmtokenid/${tid}`,
+  //       //   fcm_obj,
+  //       // );
+  //       console.log('FCM token updated successfully');
+  //     } else {
+  //       await API.post(`createnewfcmtokenid`, fcm_obj);
+  //       // await axios.post(
+  //       //   `https://thinkzone.in.net/thinkzone/createnewfcmtokenid`,
+  //       //   fcm_obj,
+  //       // );
+  //       console.log('New FCM token created successfully');
+  //     }
+  //     setTokenRetrieved(true);
+  //   } catch (error) {
+  //     console.error('Error retrieving or saving FCM token:', error);
+  //   }
+  // };
+
   const getToken = async () => {
     try {
-      if (tokenRetrieved) return; // Exit if token was already retrieved
+      if (tokenRetrieved) return;
 
       // Retrieve the FCM token
       const token = await messaging().getToken();
       console.log('================token', token);
 
-      // Define the large icon based on platform
+      // Set the notification icon based on platform
       const largeIcon =
         Platform.OS === 'android'
           ? '@drawable/ic_notification'
           : 'ic_notification';
 
-      // Create the FCM object
+      // Prepare the object to send to the backend
       const fcm_obj = {
         userid: user[0]?.userid,
         username: user[0]?.username,
@@ -453,23 +500,25 @@ const Home = ({navigation}, props) => {
       };
       console.log('fcm_obj------->', fcm_obj);
 
-      // Check if the user has an existing FCM token
-      const getRes = await API.get(`getfcmtokenidbyuserid/${user[0]?.userid}`);
-      console.log('getRes', getRes.data);
+      // Use the new API to get or update the token by user ID
+      const response = await API.post(
+        `createOrUpdateTokenByUserId/${user[0]?.userid}`,
+        {token},
+      );
+      // const response = await axios.post(
+      //   `https://thinkzone.in.net/thinkzone/createOrUpdateTokenByUserId/${user[0]?.userid}`,
+      //   fcm_obj,
+      // );
 
-      if (getRes?.data?.length > 0 && getRes.data?.status == 'success') {
-        // If a token exists, update it
-        const tid = getRes?.data[0]?._id;
-        console.log('updatefcmtokenid_id', tid);
-        await API.put(`updatefcmtokenid/${tid}`, fcm_obj);
-        console.log('FCM token updated successfully');
+      console.log('Response from API:', response.data);
+
+      if (response.data?.status === 'success') {
+        console.log('FCM token handled successfully');
       } else {
-        // If no token exists, create a new one
-        await API.post(`createnewfcmtokenid`, fcm_obj);
-        console.log('New FCM token created successfully');
+        console.error('Error handling FCM token:', response.data?.error);
       }
 
-      setTokenRetrieved(true); // Mark as token retrieved to prevent further calls
+      setTokenRetrieved(true);
     } catch (error) {
       console.error('Error retrieving or saving FCM token:', error);
     }
@@ -781,21 +830,24 @@ const Home = ({navigation}, props) => {
   }, []);
 
   useEffect(() => {
-    if (user?.length > 0 && user[0]?.usertype) {
-      API.get(`getDboardSliders/${user[0]?.usertype}/${'image'}`).then(
-        response => {
-          // console.log('response------------------>', response.data);
+    const fetchData = async () => {
+      if (user?.length > 0 && user[0]?.usertype) {
+        try {
+          const response = await API.get(
+            `getDboardSliders/${user[0].usertype}/image`,
+          );
           setImageSlider(response.data);
+          // Optionally set other states if needed:
           // setAchieve(response.data);
           // setMaintainanceStatus(response.data);
-          // setmaintainanceModal(response.data?.overallApp);
-          // setmaintainanceModal(false);
-        },
-        err => {
-          //
-        },
-      );
-    }
+          // setmaintainanceModal(response.data?.overallApp || false);
+        } catch (error) {
+          console.error('Failed to fetch data:', error);
+        }
+      }
+    };
+
+    fetchData();
   }, [user]);
 
   //Check acahievement data
@@ -865,7 +917,7 @@ const Home = ({navigation}, props) => {
       }
     }
   };
-  const app_versions = '2.1.1';
+  const app_versions = '2.2.0';
 
   const dispatch = useDispatch();
 
@@ -880,38 +932,46 @@ const Home = ({navigation}, props) => {
   const [statusData, setStatusData] = useState([]);
   const [statusMsg, setStatusMsg] = useState([]);
   const [statusModal, setStatusModal] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   //-----------To be replaced with the single navigation--------
 
-  // useEffect(() => {
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     () => {
-  //       Alert.alert(
-  //         'Exit App',
-  //         'Do you want to exit the app?',
-  //         [
-  //           {
-  //             text: 'Cancel',
-  //             onPress: () => null,
-  //             style: 'cancel',
-  //           },
-  //           {
-  //             text: 'OK',
-  //             onPress: () => {
-  //               BackHandler.exitApp();
-  //             },
-  //           },
-  //         ],
-  //         {cancelable: false},
-  //       );
+  // Function to check if the user is logged in
+  const checkLoginStatus = useCallback(async () => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+      setIsLoggedIn(!!userToken); // If token exists, user is logged in
+    } catch (e) {
+      console.error('Failed to fetch user token:', e);
+    }
+  }, []);
 
-  //       return true;
-  //     },
-  //   );
+  useEffect(() => {
+    checkLoginStatus();
+  }, [checkLoginStatus]);
 
-  //   return () => backHandler.remove();
-  // }, []);
+  // Handle back button press with confirmation
+  useEffect(() => {
+    const handleBackPress = () => {
+      Alert.alert(
+        'Exit App',
+        'Do you want to exit the app?',
+        [
+          {text: 'Cancel', onPress: () => null, style: 'cancel'},
+          {text: 'Yes', onPress: () => BackHandler.exitApp()},
+        ],
+        {cancelable: true},
+      );
+      return true; // prevent default behavior
+    };
+
+    // Add event listener for back button
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+    // Remove listener on component unmount
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+  }, []);
 
   const handleDynamiclink = async ({url}) => {
     let decodeUrl = url.split('=');
@@ -1538,23 +1598,7 @@ const Home = ({navigation}, props) => {
   const [isFlatListFocused, setIsFlatListFocused] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentlyPlayingIndex, setCurrentlyPlayingIndex] = useState(null);
-  const flatListRef = useRef(null);
   const currentIndex = useRef(0);
-
-  useEffect(() => {
-    if (imageSlider.length === 0) return; // Don't set up interval if there's no images
-
-    const interval = setInterval(() => {
-      currentIndex.current = (currentIndex.current + 1) % imageSlider.length;
-      flatListRef.current?.scrollToIndex({
-        index: currentIndex.current,
-        animated: true,
-      });
-    }, 3000); // Change this duration as needed
-
-    return () => clearInterval(interval); // Cleanup on component unmount
-  }, [imageSlider.length]); // Dependencies array includes the length of imageSlider
-
   const fetchDboardSliders = async () => {
     try {
       const response = await API.get(`getDboardSliders/fellow/${'video'}`);
@@ -1564,17 +1608,9 @@ const Home = ({navigation}, props) => {
     }
   };
   useEffect(() => {
-    // if (user[0]?.usertype) {
-    //   // Ensure usertype is available before calling the API
     fetchDboardSliders();
-    // }
-  }, []); // Added user as a dependency to rerun when it changes
-
-  // const mediaUrl = 'A4LduNvkwvo';
-  // console.log(mediaUrl, 'mediaUrl--------------------------------------->');
+  }, []);
   const lastIndex = videos.length - 1;
-
-  // const scrollViewRef = useRef();
   const [sBadges, setSbadges] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
@@ -1635,27 +1671,6 @@ const Home = ({navigation}, props) => {
     }
   }, [sBadges]);
 
-  // useEffect(() => {
-  //   const animation = Animated.loop(
-  //     Animated.timing(rotateValue, {
-  //       toValue: 1,
-  //       duration: 3000, // 3 seconds for one complete rotation
-  //       easing: Easing.linear,
-  //       useNativeDriver: true,
-  //     }),
-  //   );
-
-  //   animation.start();
-
-  //   return () => {
-  //     animation.stop(); // Cleanup function to stop the animation
-  //   };
-  // }, [rotateValue]);
-
-  // const rotate = rotateValue.interpolate({
-  //   inputRange: [0, 1],
-  //   outputRange: ['0deg', '360deg'],
-  // });
   const openCmq = () => {
     navigation.navigate('commonmonthlypage');
   };
@@ -1668,6 +1683,28 @@ const Home = ({navigation}, props) => {
     const index = Math.round(event.nativeEvent.contentOffset.x / width);
     setActiveSlide(index % imageSlider.length); // Adjust the activeSlide index
   };
+
+  const pulseAnimation = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnimation, {
+          toValue: 1.1,
+          duration: 800,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnimation, {
+          toValue: 1,
+          duration: 800,
+          easing: Easing.inOut(Easing.ease),
+          useNativeDriver: true,
+        }),
+      ]),
+    ).start();
+  }, [pulseAnimation]);
+
   return (
     <>
       <ScrollView
@@ -2185,38 +2222,9 @@ const Home = ({navigation}, props) => {
                     ) : null}
                   </View>
 
-                  <FlatList
-                    ref={flatListRef}
-                    data={imageSlider}
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={({item}) => (
-                      <TouchableOpacity
-                        onPress={() => handlePageChange(item?.navigateTo)}>
-                        <View
-                          style={{
-                            width: width - 40, // Width adjustment for each image
-                            overflow: 'hidden', // Prevent any overflow issues
-                          }}>
-                          <CarouselImage data={item.mediaUrl} />
-                        </View>
-                      </TouchableOpacity>
-                    )}
-                    keyExtractor={(item, index) => index.toString()}
-                    snapToAlignment="center"
-                    snapToInterval={width - 40 + 10} // Snap to the width of the item plus separator
-                    decelerationRate="fast" // Use fast for smoother transitions
-                    style={{width, marginLeft: 20}} // Set width for FlatList
-                    contentContainerStyle={{
-                      paddingHorizontal: 40, // Equal space on sides
-                    }}
-                    ItemSeparatorComponent={() => (
-                      <View style={{width: 20, marginLeft: 15}} />
-                    )} // Gap between items
-                    onScrollToIndexFailed={info => {
-                      console.warn('Index failed to scroll: ', info); // Handle failed index scroll
-                    }}
+                  <ImageSlider
+                    imageSlider={imageSlider}
+                    handlePageChange={handleSliderChange}
                   />
 
                   <View style={styles.view}>
@@ -2228,11 +2236,13 @@ const Home = ({navigation}, props) => {
                           fontSize: FontSize.size_mid_9,
                           textTransform: 'uppercase',
                           textAlign: 'center',
+
                           left: '2%',
                           fontFamily: FontFamily.balooBhaina2Medium,
                           // paddingTop: 10,
-                          paddingBottom: 12,
-
+                          // paddingBottom: 12,
+                          paddingTop: 10,
+                          paddingLeft: 11,
                           // fontWeight:"bold"
                         },
                       ]}>
@@ -2247,25 +2257,15 @@ const Home = ({navigation}, props) => {
                         // marginLeft: 30,
                         // justifyContent: 'space-between',
                         // paddingRight: 40,
-                        padding: '4.5%',
-                        justifyContent: 'flex-end',
+                        // padding: '4.5%',
+                        // justifyContent: 'flex-end',
+                        paddingTop: 8,
+                        paddingBottom: 20,
                         // marginLeft: '6%',
                       }}>
                       <ScrollView
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}>
-                        {/* <TouchableOpacity
-              onPress={() => navigation.navigate('studentregister')}>
-              <Image
-                ref={exampleFiveViewRef}
-                style={styles.tinyLogo}
-                source={require('../assets/Image/iconusersprofileadd.png')}
-              />
-              <View style={styles.text_sign}>
-                <Text style={styles.FlngatiText}>ପଞ୍ଜୀକରଣ</Text>
-              </View>
-            </TouchableOpacity> */}
-
                         <TouchableOpacity
                           onPress={() => {
                             maintainanceStatus?.studDetails
@@ -2280,7 +2280,7 @@ const Home = ({navigation}, props) => {
                           />
                           <View style={styles.text_sign}>
                             <Text style={styles.FlngatiText}>
-                              ଶିକ୍ଷାର୍ଥୀ ସୂଚନା
+                              ଶିକ୍ଷାର୍ଥୀ {'\n'}ସୂଚନା
                             </Text>
                           </View>
                         </TouchableOpacity>
@@ -2303,7 +2303,25 @@ const Home = ({navigation}, props) => {
                           </View>
                         </TouchableOpacity>
 
-                        {/* <TouchableOpacity
+                        <TouchableOpacity
+                          onPress={() => {
+                            maintainanceStatus?.studAssess
+                              ? navigation.navigate('moduleunderdevlopment')
+                              : navigation.navigate('studentlistpage');
+                          }}>
+                          <Image
+                            ref={exampleEightViewRef}
+                            style={styles.tinyLogo}
+                            source={require('../assets/Image/task-square.png')}
+                          />
+                          <View style={styles.text_sign}>
+                            <Text style={styles.FlngatiText}>
+                              ଶିକ୍ଷାର୍ଥୀ ବିକାଶ
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
                           onPress={() => {
                             maintainanceStatus?.payment
                               ? navigation.navigate('moduleunderdevlopment')
@@ -2324,37 +2342,7 @@ const Home = ({navigation}, props) => {
                               ଦେୟ
                             </Text>
                           </View>
-                        </TouchableOpacity> */}
-
-                        <TouchableOpacity
-                          onPress={() => {
-                            maintainanceStatus?.studAssess
-                              ? navigation.navigate('moduleunderdevlopment')
-                              : navigation.navigate('studentlistpage');
-                          }}>
-                          <Image
-                            ref={exampleEightViewRef}
-                            style={styles.tinyLogo}
-                            source={require('../assets/Image/task-square.png')}
-                          />
-                          <View style={styles.text_sign}>
-                            <Text style={styles.FlngatiText}>
-                              ଶିକ୍ଷାର୍ଥୀ ବିକାଶ
-                            </Text>
-                          </View>
                         </TouchableOpacity>
-                        {/* <TouchableOpacity
-                          onPress={() =>
-                            navigation.navigate('Games', {
-                              type: 'Games',
-                            })
-                          }>
-                          <Image
-                            style={styles.tinyLogo}
-                            source={require('../assets/Image/iconschoolbook1.png')}
-                          />
-                          <Text style={styles.FlngatiText}>ଖେଳ</Text>
-                        </TouchableOpacity> */}
                       </ScrollView>
                     </View>
                   </View>
@@ -2642,59 +2630,59 @@ const Home = ({navigation}, props) => {
                         : openMopragati();
                     }}
                     style={{marginTop: 8}}>
+                    {/* Main Image */}
                     <Image
                       source={require('../assets/Image/mopragati.png')}
                       resizeMode="contain"
                       style={{
-                        height: window.WindowHeigth * 0.2,
-                        width: window.WindowWidth * 0.9,
+                        height: windowHeight * 0.2,
+                        width: windowWidth * 0.9,
                         borderRadius: 5,
                         marginLeft: 18,
                         borderColor: 'black',
                       }}
                     />
-                    {/* <Image
-                      source={require('../assets/Image/touch1.gif')}
+                    {/* Animated "Click Me" Indicator */}
+                    <Animated.View
                       style={{
-                        width: 40,
-                        height: 40,
                         position: 'absolute',
                         zIndex: 1,
-                        backgroundColor: 'white',
-
                         alignSelf: 'center',
-                        borderRadius: 50,
-                        width: 35.72,
-                        height: 35.66,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        position: 'absolute',
-                        top: 20,
-
-                        // bottom: '-13%', // Ensure the GIF is on top
-                      }}
-                    /> */}
+                        top: windowHeight * 0.1,
+                        transform: [{scale: pulseAnimation}],
+                      }}>
+                      <View
+                        style={{
+                          width: 35.72,
+                          height: 35.66,
+                          backgroundColor: Color.ghostwhite, // golden color
+                          borderRadius: 20,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          shadowColor: 'black',
+                          shadowOffset: {width: 0, height: 2},
+                          shadowOpacity: 0.3,
+                          shadowRadius: 3,
+                          elevation: 5,
+                          marginTop: -60,
+                          marginRight: 20,
+                        }}>
+                        <Image
+                          source={require('../assets/Image/touch.gif')}
+                          style={{
+                            borderRadius: 50,
+                            width: 35.72,
+                            height: 35.66,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            // position: 'absolute',
+                            // top: 20,
+                            // bottom: '-13%', // Ensure the GIF is on top
+                          }}
+                        />
+                      </View>
+                    </Animated.View>
                   </TouchableOpacity>
-                  {/* <TouchableOpacity
-                    onPress={() => {
-                      maintainanceStatus?.tchReward
-                        ? navigation.navigate('moduleunderdevlopment')
-                        : openRewardModal();
-                    }}
-                    style={{marginTop: 15}}>
-                    <Image
-                      source={require('../assets/Image/GroupRewards.png')}
-                      resizeMode="contain"
-                      style={{
-                        height: window.WindowHeigth * 0.2,
-                        width: window.WindowWidth * 0.9,
-                        borderRadius: 5,
-                        marginLeft: 18,
-                        borderColor: 'black',
-                      }}
-                    />
-                  </TouchableOpacity> */}
-
                   <View style={[styles.view, {marginBottom: 15}]}>
                     <Text
                       style={[
@@ -2718,29 +2706,6 @@ const Home = ({navigation}, props) => {
                         horizontal={true}
                         showsHorizontalScrollIndicator={false}>
                         <TouchableOpacity
-                          onPress={() => {
-                            maintainanceStatus?.payment
-                              ? navigation.navigate('moduleunderdevlopment')
-                              : navigation.navigate('payment', {
-                                  type: 'payment',
-                                });
-                          }}>
-                          <Image
-                            // ref={exampleThirteenViewRef}
-                            style={[styles.tinyLogo, {marginLeft: 17}]}
-                            // source={require('../assets/img/hbl/bill.png')}
-
-                            source={require('../assets/Image/iconmoneyemptywallettime.png')}
-                          />
-                          <View style={styles.text_sign}>
-                            <Text
-                              style={[styles.FlngatiTexts, {marginRight: 18}]}>
-                              ଦେୟ
-                            </Text>
-                          </View>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
                           onPress={() =>
                             navigation.navigate('dictionary', {
                               type: 'dictionary',
@@ -2748,12 +2713,14 @@ const Home = ({navigation}, props) => {
                           }>
                           <Image
                             // ref={exampleFourteenViewRef}
-                            style={[styles.tinyLogo, {marginLeft: 17}]}
+                            ref={exampleSixViewRef}
+                            resizeMode="cover"
+                            style={[styles.tinyLogo]}
                             source={require('../assets/Image/icondesign-toolscolorswatch.png')}
                           />
                           <View style={styles.text_sign}>
                             <Text
-                              style={[styles.FlngatiTexts, {marginRight: 18}]}>
+                              style={[styles.FlngatiTexts, {marginRight: 10}]}>
                               ଅଭିଧାନ
                             </Text>
                           </View>
@@ -2768,14 +2735,11 @@ const Home = ({navigation}, props) => {
                                 })
                           }>
                           <Image
-                            style={[styles.tinyLogo, {marginLeft: 17}]}
+                            style={[styles.tinyLogo, {marginRight: -10}]}
                             source={require('../assets/Image/iconcontent-editarchivebook.png')}
                           />
                           <View style={styles.text_sign}>
-                            <Text
-                              style={[styles.FlngatiTexts, {marginRight: 18}]}>
-                              ଦସ୍ତାବିଜ
-                            </Text>
+                            <Text style={[styles.FlngatiTexts]}>ଦସ୍ତାବିଜ</Text>
                           </View>
                         </TouchableOpacity>
 
@@ -2787,12 +2751,12 @@ const Home = ({navigation}, props) => {
                           }}>
                           <Image
                             // ref={exampleSixteenViewRef}
-                            style={[styles.tinyLogo, {marginLeft: 17}]}
+                            style={[styles.tinyLogo]}
                             source={require('../assets/Image/messages.png')}
                           />
                           <View style={styles.text_sign}>
                             <Text
-                              style={[styles.FlngatiTexts, {marginRight: 17}]}>
+                              style={[styles.FlngatiTexts, {marginRight: 8}]}>
                               ମତାମତ
                             </Text>
                           </View>

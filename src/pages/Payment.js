@@ -1,31 +1,22 @@
+import React, {useEffect, useState, useCallback, useRef} from 'react';
 import {
   StyleSheet,
   Text,
   View,
   FlatList,
-  TouchableOpacity,
   Alert,
-  ActivityIndicator,
-  Pressable,
   BackHandler,
   Image,
   Dimensions,
 } from 'react-native';
-import Color from '../utils/Colors';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import React from 'react';
-import {useEffect, useState, useCallback, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import Colors from '../utils/Colors';
 import API from '../environment/Api';
 import ButtomSheet from '../components/BottomSheet';
 import AppTextInput from '../components/TextInput';
 import * as window from '../utils/dimensions';
-import LinearGradient from 'react-native-linear-gradient';
-import Modals from '../components/Modals';
 import PaymentAccordion from '../components/PaymentAccordian';
 import {FontFamily} from '../GlobalStyle';
-import * as types from '../redux_toolkit/features/users/UserSlice';
 import Loading from '../components/Loading';
 import {
   fetchPaymentDetails,
@@ -34,6 +25,7 @@ import {
 } from '../redux_toolkit/features/users/UserThunk';
 import {fetchStudentsDataThunk} from '../redux_toolkit/features/students/StudentThunk';
 import {useFocusEffect} from '@react-navigation/native';
+
 const windowWidth = Dimensions.get('window').width;
 
 const Payment = ({route, navigation}) => {
@@ -48,28 +40,27 @@ const Payment = ({route, navigation}) => {
   const [paidAmount, setPayedAmount] = useState(0);
   const [paindingAmount, setPaindingAmount] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [customModal, setCustomModal] = useState(true);
   const [paymentRecord, setPaymentRecord] = useState([]);
   const [studentData, setStudentData] = useState([]);
-  console.log('studentData_UseState', studentData);
-  const studentList = useSelector(state => state.StudentSlice.students);
-  // console.log('student_List_payment---->', studentList);
-  const teacherdata = useSelector(state => state.UserSlice.user);
-  console.log('teacherdata-------------->', teacherdata?.data?.resData);
-  // const studentData = useSelector(state => state.UserSlice?.payments);
 
+  const studentList = useSelector(state => state.StudentSlice.students);
+  const teacherdata = useSelector(state => state.UserSlice.user);
+
+  console.log('studentData_UseState', studentData);
+  console.log('teacherdata-------------->', teacherdata?.data?.resData);
+
+  // Fetch student data with payment details
   useEffect(() => {
     const fetchData = async () => {
       if (!teacherdata[0]?.userid) {
         console.warn('User ID is undefined.');
+        setIsLoading(false); // Stop loading if no user ID is present
         return;
       }
       console.log(
         'Fetching payment details for user ID:',
         teacherdata[0].userid,
       );
-      setIsLoading(true);
-
       try {
         const response = await API.get(
           `getstudentswithpaymentdetails/${teacherdata[0].userid}`,
@@ -86,30 +77,31 @@ const Payment = ({route, navigation}) => {
     fetchData();
   }, [teacherdata]);
 
-  useEffect(() => {
-    if (!teacherdata[0]?.userid) {
-    } else {
-      dispatch(fetchPaymentDetails(teacherdata[0]?.userid));
-    }
-  }, [teacherdata]);
-
+  // Fetch students data when focused
   useFocusEffect(
     useCallback(() => {
-      try {
+      if (teacherdata[0]?.userid) {
         dispatch(fetchStudentsDataThunk(teacherdata[0]?.userid));
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching or modifying student data:', error);
-      } finally {
-        setIsLoading(false);
       }
-    }, [teacherdata, studentData]),
+    }, [teacherdata]),
   );
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.goBack();
+        return true;
+      },
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const handleOpenBottomSheet = useCallback(() => {
     modalRef.current?.open();
   }, []);
-  //
+
   const savePayment = () => {
     if (inputTotalAmount <= 0 || inputPaidAmount <= 0) {
       Alert.alert('Info', 'Please enter valid amounts for payment!');
@@ -141,7 +133,6 @@ const Payment = ({route, navigation}) => {
       .then(res => {
         if (res.status === 200) {
           Alert.alert('Info', 'Payment saved successfully!');
-          // Optionally reset state or update UI after successful save
         } else {
           Alert.alert('Error', 'Failed to save payment. Please try again.');
         }
@@ -152,58 +143,9 @@ const Payment = ({route, navigation}) => {
       });
   };
 
-  const closeModal = () => {
-    setCustomModal(false);
-    navigation.goBack();
-  };
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      if (studentData?.length === 0) {
-        setCustomModal(true);
-      }
-    }, 2000);
-
-    return () => clearTimeout(timeoutId);
-  }, [studentData]);
-
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
-        Alert.alert(
-          '',
-          'Do you want to Leave this page?',
-          [
-            {
-              text: 'Cancel',
-              onPress: () => null,
-              style: 'cancel',
-            },
-            {
-              text: 'OK',
-              onPress: () => {
-                navigation.goBack();
-              },
-            },
-          ],
-          {cancelable: false},
-        );
-
-        return true;
-      },
-    );
-
-    return () => backHandler.remove();
-  }, []);
-
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: '#ffffff',
-      }}>
-      {isLoading && !teacherdata[0]?.userid && !studentData ? (
+    <View style={{flex: 1, backgroundColor: '#ffffff'}}>
+      {isLoading ? (
         <Loading />
       ) : studentData && studentData.length > 0 ? (
         <View>
@@ -229,7 +171,7 @@ const Payment = ({route, navigation}) => {
       ) : (
         <View style={styles.noStudentContainer}>
           <Image
-            source={require('../assets/Image/StudentPayments.jpg')} // replace with your image path
+            source={require('../assets/Image/StudentPayments.jpg')}
             style={styles.noStudentImage}
             resizeMode="contain"
           />

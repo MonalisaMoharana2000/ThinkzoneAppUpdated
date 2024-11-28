@@ -254,10 +254,9 @@ const TechAssignment = ({navigation, route}) => {
                     textTransform: 'capitalize',
                     // width: 200,
                     alignSelf: 'center',
-                    
                   },
                 ]}>
-               Congratulations 🎊
+                Congratulations 🎊
               </Text>
 
               <Text
@@ -315,9 +314,9 @@ const TechAssignment = ({navigation, route}) => {
         {assignment_status === true && (
           // <View style={styles.container}>
           <ImageBackground
-          style={styles.root}
-          source={require('../assets/Photos/assignmentbg.jpg')}
-          resizeMode="cover">
+            style={styles.root}
+            source={require('../assets/Photos/assignmentbg.jpg')}
+            resizeMode="cover">
             {loading ? (
               <Loading />
             ) : assignment_question.length > 0 ? (

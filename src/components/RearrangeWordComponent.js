@@ -5,13 +5,12 @@ import {View, StyleSheet, Text, ScrollView, Image} from 'react-native';
 import DraggableFlatList, {
   ScaleDecorator,
 } from 'react-native-draggable-flatlist';
+import {TouchableOpacity} from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
+import Api from '../environment/Api';
+import {useSelector, useDispatch} from 'react-redux';
 
-const DragWordComponent = ({
-  data,
-  renderItem,
-  handleDragEnd,
-  contentStatus,
-}) => {
+const DragWordContent = ({data, renderItem, handleDragEnd, contentStatus}) => {
   //   const firstRowData = data.slice(0, 3);
   //   const secondRowData = data.slice(3);
 
@@ -23,8 +22,14 @@ const DragWordComponent = ({
             <DraggableFlatList
               data={data}
               renderItem={renderItem}
-              keyExtractor={item => item.wordId.toString()}
-              onDragEnd={({data}) => handleDragEnd(data)}
+              keyExtractor={item => item.wordId}
+              onDragEnd={({from, to}) => {
+                handleDragEnd({
+                  from: from,
+                  to: to,
+                  data,
+                });
+              }}
               horizontal={true}
               contentContainerStyle={styles.buttonContainer}
             />
@@ -50,7 +55,7 @@ const DragWordComponent = ({
   );
 };
 
-export default DragWordComponent;
+export default DragWordContent;
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
@@ -60,7 +65,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f3f2ff',
     borderColor: 'black',
     borderWidth: 0.2,
-    width: window.WindowWidth * 1,
+    width: '100%',
   },
 
   rowContainer: {

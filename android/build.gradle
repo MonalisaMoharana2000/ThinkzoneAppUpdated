@@ -12,9 +12,16 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle")
-        classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+       // Specify a stable version for Android Gradle Plugin
+        classpath("com.android.tools.build:gradle:8.1.1")
+        
+        // Specify React Native Gradle Plugin
+        classpath("com.facebook.react:react-native-gradle-plugin:latest.release")  // use the latest release or specify a version
+        
+        // Use the Kotlin version specified in ext
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+        
+        // Google Services plugin for Firebase
         classpath 'com.google.gms:google-services:4.3.15' 
     }
 }

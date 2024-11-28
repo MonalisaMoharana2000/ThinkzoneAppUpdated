@@ -29,7 +29,6 @@ import Tooltip from 'react-native-walkthrough-tooltip';
 import DropdownComponent from '../components/DropdownComponent';
 import * as Progress from 'react-native-progress';
 
-
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch, useSelector} from 'react-redux';
@@ -498,9 +497,12 @@ const Mopragati = ({navigation}) => {
 
   totalModules = dummyData1?.filter(x => x.moduleIsComplete === true);
   console.log('totalModules--->', totalModules);
-  const modulePercentage = (Array.isArray(totalModules) && Array.isArray(dummyData1) && dummyData1.length > 0)
-  ? (totalModules.length / dummyData1.length) * 100
-  : 0; // Default value if data is missing or invalid
+  const modulePercentage =
+    Array.isArray(totalModules) &&
+    Array.isArray(dummyData1) &&
+    dummyData1.length > 0
+      ? (totalModules.length / dummyData1.length) * 100
+      : 0; // Default value if data is missing or invalid
   console.log('modulePercentage--->', modulePercentage);
 
   const handleTrainingClick = async item => {
@@ -908,7 +910,7 @@ const Mopragati = ({navigation}) => {
                           />
                         )}
                         <Image
-                          source={require('../assets/Image/touch.png')}
+                          source={require('../assets/Image/touch1.png')}
                           style={{
                             width: 40,
                             height: 40,
@@ -980,7 +982,7 @@ const Mopragati = ({navigation}) => {
                             />
                           )}
                           <Image
-                            source={require('../assets/Image/touch.png')}
+                            source={require('../assets/Image/touch1.png')}
                             style={{
                               width: 40,
                               height: 40,
@@ -1113,7 +1115,6 @@ const Mopragati = ({navigation}) => {
                 <Progress.Circle
                   size={55}
                   color={'white'}
-                  
                   progress={modulePercentage / 100 || 0}
                   textStyle={{color: 'white'}}
                   thickness={3}

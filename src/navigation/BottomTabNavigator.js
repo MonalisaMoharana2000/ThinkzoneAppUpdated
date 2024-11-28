@@ -15,10 +15,10 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Color, FontFamily} from '../GlobalStyle';
 import API from '../environment/Api';
 import {useSelector} from 'react-redux';
-import Home from '../Pages/Home';
-import Profile from '../Pages/Profile';
-import Leaderboard from '../Pages/Leaderboard';
-import Myachivement from '../Pages/Myachivement';
+import Home from '../pages/Home';
+import Profile from '../pages/Profile';
+import Leaderboard from '../pages/Leaderboard';
+import Myachivement from '../pages/Myachivement';
 const Tab = createBottomTabNavigator();
 const {height, width} = Dimensions.get('window');
 
@@ -118,7 +118,6 @@ const BottomTabNavigator = ({navigation}) => {
   useEffect(() => {
     const backAction = () => {
       if (selectedTab === 'Home') {
-        // Exit the app if on the Home screen
         Alert.alert(
           'Exit App',
           'Do you want to exit the app?',
@@ -143,7 +142,6 @@ const BottomTabNavigator = ({navigation}) => {
         selectedTab === 'Leaderboard' ||
         selectedTab === 'Myachivement'
       ) {
-        // Navigate back to Home if on the Profile screen
         setSelectedTab('Home');
         navigation.navigate('HomeTab');
         return true;
@@ -158,7 +156,16 @@ const BottomTabNavigator = ({navigation}) => {
 
     return () => backHandler.remove();
   }, [selectedTab]);
-
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.goBack();
+        return true;
+      },
+    );
+    return () => backHandler.remove();
+  }, [navigation]);
   return (
     <>
       <Tab.Navigator

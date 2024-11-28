@@ -30,7 +30,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import SearchBar from '../components/SearchBar';
-import Norecord from '../components/Norecord';
 import InputModal from '../components/InputModal';
 import Api from '../environment/Api';
 import Loading from '../components/Loading';
@@ -40,9 +39,10 @@ import {
   deleteStudentsDataThunk,
   fetchStudentsDataThunk,
 } from '../redux_toolkit/features/students/StudentThunk';
+const windowWidth = Dimensions.get('window').width;
 
 const StudentList = ({navigation, route}) => {
-  const windowWidth = Dimensions.get('window').width;
+  // const windowWidth = Dimensions.get('window').width;
   const windowHeight = Dimensions.get('window').height;
   const [refreshing, setRefreshing] = React.useState(false);
   const dispatch = useDispatch();
@@ -320,112 +320,107 @@ const StudentList = ({navigation, route}) => {
         {isLoading ? (
           <Loading />
         ) : (
-          <>
-            <View style={{marginTop: -3}}>
-              <View>
-                <View style={styles.editFormContainer}>
-                  {studentData.length != 0 && (
-                    <SearchBar
-                      placeholder="Search Student"
-                      onChangeText={text => searchStudent(text)}
-                      keyboardType="default"
+          <View style={{marginTop: -3}}>
+            <View>
+              <View style={styles.editFormContainer}>
+                {studentData.length != 0 && (
+                  <SearchBar
+                    placeholder="Search Student"
+                    onChangeText={text => searchStudent(text)}
+                    keyboardType="default"
+                  />
+                )}
+
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('studentregister')}
+                  style={{
+                    width: windowWidth * 0.95,
+                    paddingBottom: 30,
+                    borderRadius: 10,
+                    top: 10,
+                    backgroundColor: 'white',
+                    alignSelf: 'center',
+                    justifyContent: 'space-evenly',
+                    marginBottom: 20,
+                  }}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Image
+                      style={styles.tinyLogo}
+                      source={require('../assets/Image/iconusersprofileadd.png')}
                     />
-                  )}
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 15,
+                          color: '#333333',
+                          alignSelf: 'center',
+                          top: 20,
+                          textTransform: 'capitalize',
+                          paddingLeft: 10,
+                          fontFamily: FontFamily.poppinsMedium,
+                          width: 250,
+                        }}>
+                        Register New Student
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 10,
 
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('studentregister')}
-                    style={{
-                      width: windowWidth * 0.95,
-                      paddingBottom: 30,
-                      borderRadius: 10,
-                      top: 10,
-                      backgroundColor: 'white',
-                      alignSelf: 'center',
-                      justifyContent: 'space-evenly',
-                      marginBottom: 20,
-                    }}>
-                    <View style={{flexDirection: 'row'}}>
-                      <Image
-                        style={styles.tinyLogo}
-                        source={require('../assets/Image/iconusersprofileadd.png')}
-                      />
-                      <View>
-                        <Text
-                          style={{
-                            fontSize: 15,
-                            color: '#333333',
-                            alignSelf: 'center',
-                            top: 20,
-                            textTransform: 'capitalize',
-                            paddingLeft: 10,
-                            fontFamily: FontFamily.poppinsMedium,
-                            width: 250,
-                          }}>
-                          Register New Student
-                        </Text>
-                        <Text
-                          style={{
-                            fontSize: 10,
-
-                            paddingLeft: 12,
-                            textAlign: 'left',
-                            top: 20,
-                            fontFamily: FontFamily.poppinsMedium,
-                            color: '#666666',
-                          }}>
-                          Tap here to add a new student
-                        </Text>
-                      </View>
+                          paddingLeft: 12,
+                          textAlign: 'left',
+                          top: 20,
+                          fontFamily: FontFamily.poppinsMedium,
+                          color: '#666666',
+                        }}>
+                        Tap here to add a new student
+                      </Text>
                     </View>
-                  </TouchableOpacity>
+                  </View>
+                </TouchableOpacity>
 
-                  {studentList.length === 0 ? (
-                    <Norecord />
-                  ) : (
-                    <>
-                      {verifiedModalStatus && (
-                        <InputModal
-                          Title={'Roll No Verification'}
-                          description={`We Will send you a roll number on 
+                {studentList?.length > 0 ? (
+                  <>
+                    {verifiedModalStatus && (
+                      <InputModal
+                        Title={'Roll No Verification'}
+                        description={`We Will send you a roll number on 
        +91-${verifiedStudent.phone}`}
-                          visible={verifiedModalStatus}
-                          onClose={() => {
-                            set_roll_number_error(false);
-                            setVerifiedModalStatus(false);
-                          }}
-                          // onClose={resendOtp}
-                          onSubmit={verifiyOTP}
-                          onEdit={resendOtp}
-                          onChangeText={handleVerifyChange}
-                          maxLength={6}
-                          roll_number_error={roll_number_error}
-                        />
-                      )}
+                        visible={verifiedModalStatus}
+                        onClose={() => {
+                          set_roll_number_error(false);
+                          setVerifiedModalStatus(false);
+                        }}
+                        // onClose={resendOtp}
+                        onSubmit={verifiyOTP}
+                        onEdit={resendOtp}
+                        onChangeText={handleVerifyChange}
+                        maxLength={6}
+                        roll_number_error={roll_number_error}
+                      />
+                    )}
 
-                      {sortedStudentList.map((item, index) => (
-                        <View key={index} style={styles.contener}>
-                          <View style={{flexDirection: 'row'}}>
-                            <TouchableOpacity
-                              onPress={() => {
-                                navigation.navigate('callresponseList', {
-                                  item,
-                                });
-                              }}>
-                              <Image
-                                style={styles.call}
-                                source={require('../assets/Image/Group-call.png')}
-                              />
-                            </TouchableOpacity>
-                            <View
-                              style={{
-                                top: 15,
-                              }}>
-                              <Text style={styles.name}>
-                                {item.studentname}
-                              </Text>
-                            </View>
+                    {sortedStudentList.map((item, index) => (
+                      <View key={index} style={styles.contener}>
+                        <View style={{flexDirection: 'row'}}>
+                          <TouchableOpacity
+                            onPress={() => {
+                              navigation.navigate('callresponseList', {
+                                item,
+                              });
+                            }}>
+                            <Image
+                              style={styles.call}
+                              source={require('../assets/Image/Group-call.png')}
+                            />
+                          </TouchableOpacity>
+                          <View
+                            style={{
+                              top: 15,
+                            }}>
+                            <Text style={styles.name}>{item.studentname}</Text>
+                          </View>
 
-                            {/* <View style={{}}>
+                          {/* <View style={{}}>
                               {item?.otp_isverified == true ? (
                                 <View onPress={() => {}}>
                                   <Text style={styles.verifi}>
@@ -481,76 +476,83 @@ const StudentList = ({navigation, route}) => {
                                 </TouchableOpacity>
                               )}
                             </View> */}
-                          </View>
-                          <View
-                            style={{
-                              flexDirection: 'row',
-                              alignSelf: 'flex-end',
-                              justifyContent: 'flex-end',
-                              right: 5,
-                              top: 10,
-                              marginLeft: 30,
-                            }}>
-                            <TouchableOpacity
-                              onPress={() => listItemUpdatePressed(item)}
-                              updateButton={true}
-                              bgcolor={Color.success}
-                              style={styles.editIcon}>
-                              <FontAwesome5
-                                name="edit"
-                                size={22}
-                                color={Color.royalblue}
-                              />
-                            </TouchableOpacity>
-
-                            <TouchableOpacity
-                              onPress={() => listItemDeletePressed(item)}
-                              deleteButton={true}
-                              bgcolor={Color.danger}
-                              style={styles.delIcon}>
-                              <MaterialIcons
-                                name="delete"
-                                size={29}
-                                color={'#eb3875'}
-                              />
-                            </TouchableOpacity>
-                          </View>
-                          <View
-                            style={{
-                              paddingTop: 10,
-                            }}>
-                            <Text style={styles.pogram}>
-                              Program :
-                              <Text style={{textTransform: 'uppercase'}}>
-                                {item.program}
-                              </Text>
-                            </Text>
-
-                            {item.program == 'pge' ? (
-                              <Text style={styles.class}>
-                                Class : {item.class}
-                              </Text>
-                            ) : (
-                              <Text style={styles.class}>
-                                Level : {item.class}
-                              </Text>
-                            )}
-                            <Text style={styles.register}>
-                              Registered on :
-                              <Text style={{textTransform: 'uppercase'}}>
-                                {moment(item.createdon).format('DD/MM/YY')}
-                              </Text>
-                            </Text>
-                          </View>
                         </View>
-                      ))}
-                    </>
-                  )}
-                </View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignSelf: 'flex-end',
+                            justifyContent: 'flex-end',
+                            right: 5,
+                            top: 10,
+                            marginLeft: 30,
+                          }}>
+                          <TouchableOpacity
+                            onPress={() => listItemUpdatePressed(item)}
+                            updateButton={true}
+                            bgcolor={Color.success}
+                            style={styles.editIcon}>
+                            <FontAwesome5
+                              name="edit"
+                              size={22}
+                              color={Color.royalblue}
+                            />
+                          </TouchableOpacity>
+
+                          <TouchableOpacity
+                            onPress={() => listItemDeletePressed(item)}
+                            deleteButton={true}
+                            bgcolor={Color.danger}
+                            style={styles.delIcon}>
+                            <MaterialIcons
+                              name="delete"
+                              size={29}
+                              color={'#eb3875'}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                        <View
+                          style={{
+                            paddingTop: 10,
+                          }}>
+                          <Text style={styles.pogram}>
+                            Program :
+                            <Text style={{textTransform: 'uppercase'}}>
+                              {item.program}
+                            </Text>
+                          </Text>
+
+                          {item.program == 'pge' ? (
+                            <Text style={styles.class}>
+                              Class : {item.class}
+                            </Text>
+                          ) : (
+                            <Text style={styles.class}>
+                              Level : {item.class}
+                            </Text>
+                          )}
+                          <Text style={styles.register}>
+                            Registered on :
+                            <Text style={{textTransform: 'uppercase'}}>
+                              {moment(item.createdon).format('DD/MM/YY')}
+                            </Text>
+                          </Text>
+                        </View>
+                      </View>
+                    ))}
+                  </>
+                ) : (
+                  <View style={styles.noStudentContainer}>
+                    <Image
+                      source={require('../assets/Image/StudentPayments-removebg.png')}
+                      style={styles.noStudentImage}
+                      resizeMode="contain"
+                    />
+                    <Text style={styles.Fln}>No Students</Text>
+                  </View>
+                )}
               </View>
             </View>
-            {/* )} */}
-          </>
+          </View>
         )}
 
         <Modal animationType="slide" transparent={true} visible={modal}>
@@ -825,5 +827,33 @@ const styles = StyleSheet.create({
     right: 20,
     position: 'absolute',
     marginRight: 18,
+  },
+  noStudentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // marginBottom: 50,
+    marginTop: 60,
+  },
+  noStudentImage: {
+    width: windowWidth * 0.8, // 60% of the screen width
+    height: windowWidth * 0.8, // 60% of the screen width (keeps it square)
+  },
+  Fln: {
+    color: '#595F65',
+    fontSize: 18,
+    // top: 50,
+    // marginTop: 160,
+    fontFamily: FontFamily.poppinsMedium,
+    // paddingBottom: 40,
+    paddingTop: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
+    width: 370,
+    // paddingLeft: 20,
+    // paddingRight: 40,
+    textAlign: 'center',
+    alignSelf: 'center',
+    bottom: 0,
   },
 });

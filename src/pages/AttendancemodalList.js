@@ -68,11 +68,11 @@ const AttendancemodalList = ({navigation, route}) => {
     React.useCallback(() => {
       const fetchData = async () => {
         const res = await API.get(
-          `getattendanceofteacherbydate/${route.params.userid}/${route.params.date}`,
+          `getattendanceofteacherbydate/${route?.params?.userid}/${route?.params?.date}`,
         );
         console.log('res------>', res.data);
         setAttendanceCheck(res.data);
-        setNewStudentList(res.data);
+        setNewStudentList(res.data || []);
       };
       fetchData();
     }, [attendanceLists]),
@@ -874,5 +874,6 @@ const styles = StyleSheet.create({
     color: 'grey',
     marginBottom: 250,
     marginTop: '-16%',
+    marginLeft: 20,
   },
 });

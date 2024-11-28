@@ -140,7 +140,7 @@ const Profile = ({navigation}) => {
   const displayAlert = () => {
     navigation.navigate('editprofile', [userdata]);
   };
-  const app_versions = '2.1.1';
+  const app_versions = '2.2.0';
   const logout2 = async () => {
     try {
       await GoogleSignin.hasPlayServices();
@@ -341,6 +341,7 @@ const Profile = ({navigation}) => {
       },
     );
   }, []);
+
   const openModal = index => {
     setSelectedIndex(index);
     setModalVisible(true);
@@ -483,7 +484,7 @@ const Profile = ({navigation}) => {
                   );
                 }}>
                 <Image
-                  style={{width: '90%', height: '80%'}}
+                  style={{width: '100%', height: '100%'}}
                   resizeMode="cover"
                   source={require('../assets/Image/whatsapp.png')}
                 />
@@ -498,7 +499,7 @@ const Profile = ({navigation}) => {
                   // height: 19,
                   textAlign: 'right',
                   // textTransform: 'capitalize',
-                  left: '-10%',
+                  left: '-12%',
                   // marginLeft: -140,
                   color: 'white',
                   marginTop: -30,
@@ -844,7 +845,7 @@ const Profile = ({navigation}) => {
                 <Text
                   style={{
                     marginLeft: 50,
-                    marginTop: 10,
+                    marginTop: 14,
                     color: Color.gray_100,
                     fontWeight: '700',
                     fontFamily: FontFamily.poppinsMedium,
@@ -883,7 +884,7 @@ const Profile = ({navigation}) => {
                 <Text
                   style={{
                     marginLeft: 50,
-                    marginTop: 10,
+                    marginTop: 14,
                     color: Color.gray_100,
                     fontWeight: '700',
 
@@ -920,7 +921,7 @@ const Profile = ({navigation}) => {
                 <Text
                   style={{
                     marginLeft: 50,
-                    marginTop: 10,
+                    marginTop: 14,
                     color: Color.gray_100,
                     fontWeight: '700',
                     fontFamily: FontFamily.poppinsMedium,
@@ -944,18 +945,18 @@ const Profile = ({navigation}) => {
                 }}>
                 <Image
                   style={[
-                    {marginTop: 10},
+                    {marginTop: 10, width: 30, height: 30},
                     // styles.iconusersuserTag,
                     styles.iconusersuserPosition,
-                    styles.iconusersuserLayout,
+                    // styles.iconusersuserLayout,
                   ]}
                   resizeMode="cover"
-                  source={require('../assets/Image/refresh-right-square.png')}
+                  source={require('../assets/Image/exit.png')}
                 />
                 <Text
                   style={{
-                    marginLeft: 50,
-                    marginTop: 10,
+                    marginLeft: 53,
+                    marginTop: 15,
                     color: Color.gray_100,
                     fontWeight: '700',
                     fontFamily: FontFamily.poppinsMedium,
@@ -965,7 +966,32 @@ const Profile = ({navigation}) => {
                 </Text>
               </TouchableOpacity>
             </View>
-
+            <TouchableOpacity
+              style={{
+                marginTop: 10,
+                flexDirection: 'row',
+                width: window.WindowWidth * 0.96,
+                height: window.WindowHeigth * 0.08,
+                backgroundColor: 'white',
+                borderRadius: 10,
+                alignSelf: 'center',
+              }}
+              onPress={() => Linking.openURL('mailto:mis.thinkzone@gmail.com')}>
+              <Text
+                style={{
+                  marginLeft: 26,
+                  marginTop: 10,
+                  color: Color.gray_100,
+                  fontWeight: '700',
+                  fontFamily: FontFamily.poppinsMedium,
+                  fontSize: 15,
+                }}>
+                For any queries related to the app, please contact -{' '}
+                <Text style={{color: 'blue', textDecorationLine: 'underline'}}>
+                  mis.thinkzone@gmail.com
+                </Text>
+              </Text>
+            </TouchableOpacity>
             <View>
               <Text
                 style={{
@@ -983,10 +1009,10 @@ const Profile = ({navigation}) => {
                   fontSize: FontSize.size_smi,
                   textAlign: 'center',
                   paddingHorizontal: 30,
-                  paddingBottom: 20,
+                  paddingBottom: 70,
                   // position: 'absolute',
                 }}>
-                App Version : 2.1.1
+                {app_versions}
               </Text>
             </View>
           </View>
@@ -1295,8 +1321,8 @@ const styles = StyleSheet.create({
     // textAlign: 'left',
   },
   iconusersuserLayout: {
-    height: 24,
-    width: 24,
+    height: 25,
+    width: 25,
   },
   privacyPolicyPosition: {
     top: 14,
@@ -2210,7 +2236,7 @@ const styles = StyleSheet.create({
   iconnotificationnotification: {
     height: '4.38%',
     width: '8.25%',
-    top: '6.38%',
+    top: '5.38%',
     // bottom: '75.25%',
     left: '81.11%',
     right: '9.17%',

@@ -91,11 +91,11 @@ const App = () => {
       const permissionsToRequest = [
         PERMISSIONS.ANDROID.CAMERA,
         PERMISSIONS.ANDROID.RECORD_AUDIO,
-        PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
-        PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
-        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
-        PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
         PERMISSIONS.ANDROID.POST_NOTIFICATIONS,
+        // PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
+        // PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE,
+        // PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        // PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION,
       ];
 
       if (Platform.OS === 'android') {
@@ -159,7 +159,7 @@ const App = () => {
   //     Alert.alert('Gateway Timeout: The server is not responding!');
   //   } else if (error.response?.status === 500) {
   //     Alert.alert('Internal Server Error: Something went wrong on the server.');
-  //   } 
+  //   }
   // };
 
   useEffect(() => {

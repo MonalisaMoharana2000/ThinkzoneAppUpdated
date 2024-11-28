@@ -26,7 +26,7 @@ import RearrangeComponent from '../components/PuzzleComponent';
 // import DraggableFlatList, {
 //   ScaleDecorator,
 // } from 'react-native-draggable-flatlist';
-// import Svg, {Rect, Circle} from 'react-native-svg';
+import Svg, {Rect, Circle} from 'react-native-svg';
 import RNFS from 'react-native-fs';
 import ImagePicker from 'react-native-image-crop-picker';
 import * as SIZES from '../utils/dimensions';

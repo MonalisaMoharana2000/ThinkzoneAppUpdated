@@ -33,7 +33,7 @@ import SearchBar from '../components/SearchBar';
 import InputModal from '../components/InputModal';
 import Api from '../environment/Api';
 import Loading from '../components/Loading';
-import {openDatabase} from 'react-native-sqlite-storage';
+// import {openDatabase} from 'react-native-sqlite-storage';
 import {app_versions} from './Home';
 import {
   deleteStudentsDataThunk,

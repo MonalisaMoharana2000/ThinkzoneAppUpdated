@@ -84,14 +84,19 @@ const FillInTheBlank = ({navigation, route}) => {
   }, [gamifiedData]);
 
   const handleOptionClick = (questionId, option, questionData) => {
-    console.log('questionId---->', questionId, questionData);
+    console.log('questionId:', questionId, 'questionData:', questionData);
 
     const question = questions.find(q => q.id === questionId);
 
-    // Alert for already selected options in paragraph type
+    if (!question) {
+      console.error(`Question with ID ${questionId} not found.`);
+      return;
+    }
+
+    // Check for duplicate selection in paragraph-type questions
     if (
       question.type === 'paragraph' &&
-      question.selectedOptions.includes(option)
+      question.selectedOptions?.includes(option)
     ) {
       Alert.alert(
         '⚠️ Option Already Selected',
@@ -100,47 +105,37 @@ const FillInTheBlank = ({navigation, route}) => {
       return;
     }
 
-    if (selectedBlank === null) {
-      setQuestions(prevQuestions =>
-        prevQuestions.map(q =>
-          q.id === questionId
-            ? {
-                ...q,
-                selectedOption: option,
-                userInput: [
-                  {
-                    blank: questionData?.correctInput[0]?.blank || 1,
-                    answer: option,
-                    correct: questionData?.correctInput[0].answer === option,
-                  },
-                ],
-              }
-            : q,
-        ),
-      );
-    } else {
-      setQuestions(prevQuestions =>
-        prevQuestions.map(q =>
-          q.id === questionId
-            ? {
-                ...q,
-                selectedOptions: q.selectedOptions.map((opt, idx) =>
+    setQuestions(prevQuestions =>
+      prevQuestions.map(q => {
+        if (q.id !== questionId) return q;
+
+        const updatedUserInput = [
+          ...(q.userInput || []),
+          {
+            blank: selectedBlank !== null ? selectedBlank + 1 : 1,
+            answer: option,
+            correct:
+              questionData?.correctInput?.[selectedBlank ?? 0]?.answer ===
+              option,
+          },
+        ];
+
+        return {
+          ...q,
+          selectedOption: selectedBlank === null ? option : q.selectedOption,
+          selectedOptions:
+            selectedBlank !== null
+              ? q.selectedOptions.map((opt, idx) =>
                   idx === selectedBlank ? option : opt,
-                ),
-                userInput: [
-                  ...(q.userInput || []),
-                  {
-                    blank: selectedBlank + 1,
-                    answer: option,
-                    correct:
-                      questionData?.correctInput[selectedBlank]?.answer ===
-                      option,
-                  },
-                ],
-              }
-            : q,
-        ),
-      );
+                )
+              : q.selectedOptions,
+          userInput: updatedUserInput,
+        };
+      }),
+    );
+
+    // Reset selectedBlank after updating
+    if (selectedBlank !== null) {
       setSelectedBlank(null);
     }
   };
@@ -352,38 +347,38 @@ const FillInTheBlank = ({navigation, route}) => {
     // );
 
     // Uncomment the API call to submit data
-    Api.post(`saveTransTchTrainingGamified`, submissionPayload)
-      .then(res => {
-        if (res.status === 200 || res.status === 201) {
-          console.log('Woo hoo, success');
-          Alert.alert(
-            '🎉 Success',
-            'ଆପଣଙ୍କର ଉତ୍ତର ସଫଳତାର ସହିତ ସଂରକ୍ଷିତ ହୋଇଛି! ✅',
-            [
-              {
-                text: 'ବହୁତ ଭଲ 🚀',
-                style: 'default',
-              },
-            ],
-            {cancelable: true},
-          );
-          navigation.goBack();
-        }
-      })
-      .catch(error => {
-        console.log('oh no...error');
-        Alert.alert(
-          '❌ ତ୍ରୁଟି',
-          `କିଛି ଭୁଲ ହୋଇଗଲା, ଦୟାକରି କିଛି ସମୟ ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।`,
-          [
-            {
-              text: 'ଠିକ ଅଛି 😟',
-              style: 'default',
-            },
-          ],
-          {cancelable: true},
-        );
-      });
+    // Api.post(`saveTransTchTrainingGamified`, submissionPayload)
+    //   .then(res => {
+    //     if (res.status === 200 || res.status === 201) {
+    //       console.log('Woo hoo, success');
+    //       Alert.alert(
+    //         '🎉 Success',
+    //         'ଆପଣଙ୍କର ଉତ୍ତର ସଫଳତାର ସହିତ ସଂରକ୍ଷିତ ହୋଇଛି! ✅',
+    //         [
+    //           {
+    //             text: 'ବହୁତ ଭଲ 🚀',
+    //             style: 'default',
+    //           },
+    //         ],
+    //         {cancelable: true},
+    //       );
+    //       navigation.goBack();
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log('oh no...error');
+    //     Alert.alert(
+    //       '❌ ତ୍ରୁଟି',
+    //       `କିଛି ଭୁଲ ହୋଇଗଲା, ଦୟାକରି କିଛି ସମୟ ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।`,
+    //       [
+    //         {
+    //           text: 'ଠିକ ଅଛି 😟',
+    //           style: 'default',
+    //         },
+    //       ],
+    //       {cancelable: true},
+    //     );
+    //   });
   };
 
   return (

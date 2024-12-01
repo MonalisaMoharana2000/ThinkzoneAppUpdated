@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
+import Colors from '../utils/Colors';
 import {
   View,
   Text,
@@ -14,195 +15,25 @@ import {
   Alert,
   BackHandler,
 } from 'react-native';
+import {clearUser} from '../redux_toolkit/features/users/UserSlice';
 import * as window from '../utils/dimensions';
 import {useDispatch} from 'react-redux';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+
 import {Color, FontFamily, FontSize, Border} from '../GlobalStyle';
 
 import {authNewUserThunk} from '../redux_toolkit/features/users/UserThunk';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import {Color} from '../GlobalStyle';
 import {ScrollView} from 'react-native-gesture-handler';
-
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 const App = ({navigation}) => {
-  const [userId, setUserId] = useState('');
-  console.log('userId--->', userId);
-  const [password, setPassword] = useState('');
-  const [userIdError, setUserIdError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [loader, setLoader] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const loginScale = new Animated.Value(1);
-  const registerScale = new Animated.Value(1);
-  const [shakeAnimation] = useState(new Animated.Value(0));
-  const [borderColorAnimation] = useState(new Animated.Value(0));
-  const loginChildPosition = useRef(new Animated.Value(370)).current;
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const debounceTimer = useRef(null);
   const dispatch = useDispatch();
-  const handleInputFocus = () => {
-    // Move loginChildPosition to 400 when an input is focused
-    Animated.timing(loginChildPosition, {
-      toValue: 320,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  };
-  const handlePressIn = scale => {
-    Animated.spring(scale, {
-      toValue: 0.9,
-      useNativeDriver: true,
-    }).start();
-  };
+  const [loader, setLoader] = useState(false);
 
-  const handlePressOut = scale => {
-    Animated.spring(scale, {
-      toValue: 1,
-      friction: 3,
-      tension: 40,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const handleBlur = () => {
-    Animated.timing(borderColorAnimation, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
-  };
-
-  const handleUserIdChange = text => {
-    const filteredText = text.replace(/[^\d@a-zA-Z.]/g, '');
-
-    setUserId(filteredText);
-
-    setUserIdError('');
-
-    // Clear any previous debounce timers
-    if (debounceTimer.current) clearTimeout(debounceTimer.current);
-
-    // Set a debounce timer for validation
-    debounceTimer.current = setTimeout(() => {
-      validateUserId(filteredText);
-    }, 1000);
-  };
-
-  const validateUserId = text => {
-    if (text.length === 0) {
-      setUserIdError('');
-    } else if (
-      !/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(text) &&
-      (!/^\d{10}$/.test(text) || text.length !== 10)
-    ) {
-      setUserIdError('Enter a valid User ID');
-      setLoader(false);
-      startShakeAnimation();
-    } else {
-      setUserIdError('');
-    }
-  };
-
-  const validatePassword = () => {
-    if (password.length === 0) {
-      setPasswordError('Password is required');
-      startShakeAnimation();
-    } else {
-      setPasswordError('');
-    }
-  };
-
-  const startShakeAnimation = () => {
-    shakeAnimation.setValue(0);
-    Animated.sequence([
-      Animated.timing(shakeAnimation, {
-        toValue: 10,
-        duration: 50,
-        useNativeDriver: false,
-      }),
-      Animated.timing(shakeAnimation, {
-        toValue: -10,
-        duration: 50,
-        useNativeDriver: false,
-      }),
-      Animated.timing(shakeAnimation, {
-        toValue: 10,
-        duration: 50,
-        useNativeDriver: false,
-      }),
-      Animated.timing(shakeAnimation, {
-        toValue: 0,
-        duration: 50,
-        useNativeDriver: false,
-      }),
-    ]).start();
-  };
-
-  const handleLogin = async () => {
-    setLoader(true);
-    setUserIdError('');
-    setPasswordError('');
-    // setUserId('');
-    // setPassword('');
-    if (!userId && !password) {
-      setUserIdError('User ID is required');
-      setPasswordError('Password is required');
-      startShakeAnimation();
-      setLoader(false);
-      return;
-    } else if (!userId) {
-      setUserIdError('User ID is required');
-      startShakeAnimation();
-      setPasswordError('');
-      setLoader(false);
-      return;
-    } else if (!password) {
-      setLoader(false);
-      setUserIdError('');
-      setPasswordError('Password is required');
-      startShakeAnimation();
-      return;
-    }
-
-    validateUserId(userId);
-    validatePassword();
-
-    try {
-      const data = {id: userId, password: password};
-      if (!userIdError && !passwordError && userId && password) {
-        const res = await dispatch(authNewUserThunk(data));
-        if (res?.payload?.error?.status === 401) {
-          setLoader(false);
-          setPasswordError(res?.payload?.error?.data?.msg);
-        } else if (res.payload?.status === 200) {
-          setLoader(false);
-          ToastAndroid.show('Logged In', ToastAndroid.SHORT);
-          navigation.navigate('Home');
-          await AsyncStorage.setItem(
-            'userData',
-            JSON.stringify(res.payload.data),
-          );
-
-          // Animate loginChild to move to the top
-          Animated.timing(loginChildPosition, {
-            toValue: -100,
-            duration: 700,
-            useNativeDriver: false,
-          }).start();
-        } else {
-          setLoader(false);
-        }
-      }
-    } catch (error) {
-      setLoader(false);
-      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
-    }
-  };
-
-  const borderColor = borderColorAnimation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['#F0F0F0', '#007BFF'],
-  });
+  const loginChildPosition = useRef(new Animated.Value(370)).current;
 
   useEffect(() => {
     const backHandler = BackHandler.addEventListener(
@@ -234,6 +65,229 @@ const App = ({navigation}) => {
     return () => backHandler.remove();
   }, []);
 
+  useEffect(() => {
+    GoogleSignin.configure();
+    return () => {
+      GoogleSignin.signOut();
+    };
+  }, []);
+
+  const handleClearCachedToken = async () => {
+    try {
+      await GoogleSignin.signOut();
+    } catch (error) {
+      if (error.response.status === 413) {
+        console.log('error is---------------->', error);
+        Alert.alert('The entity is too large !');
+      } else if (error.response.status === 504) {
+        console.log('Error is--------------------->', error);
+        Alert.alert('Gateway Timeout: The server is not responding!');
+      } else if (error.response.status === 500) {
+        console.error('Error is------------------->:', error);
+        Alert.alert(
+          'Internal Server Error: Something went wrong on the server.',
+        );
+      } else {
+        console.error('Error is------------------->:', error);
+      }
+    }
+  };
+
+  const handleToggle = async value => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      checkEmailAvailability(userInfo.user.email);
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      } else {
+      }
+    }
+  };
+
+  const checkEmailAvailability = async email => {
+    console.log('Email:', email);
+
+    try {
+      setLoader(true);
+
+      handleClearCachedToken();
+
+      const data = {
+        loginType: 'google',
+        emailid: email,
+        contactnumber: '',
+      };
+      console.log('Data to be sent:', data);
+
+      // Dispatch the action for creating a new user
+      const res = await dispatch(authNewUserThunk(data));
+      console.log('================pscd request-------->', res);
+
+      const resData = res.payload?.data?.resData?.[0];
+      const status = res.payload?.status;
+      console.log('req------>', res?.payload?.error);
+      const error = res?.payload?.error;
+      if (resData) {
+        const {emailidVerified, phoneNumberVerified} = resData;
+
+        if (status === 200 && emailidVerified && phoneNumberVerified) {
+          // await AsyncStorage.setItem(
+          //   'userData',
+          //   JSON.stringify(res.payload.data),
+          // );
+          navigation.replace('Home');
+        } else if (emailidVerified && !phoneNumberVerified) {
+          showAlert('Phone Number not verified', 'Login');
+        } else if (!emailidVerified && phoneNumberVerified) {
+          showAlert('Email id not verified', 'Login');
+        } else if (!emailidVerified && !phoneNumberVerified) {
+          showAlert('Phone number and email id not verified', 'Login');
+        } else {
+          showAlert('Something went wrong!', 'Login');
+        }
+      } else if (res.payload?.data?.resData?.length > 1) {
+        Alert.alert(
+          'More than 1 data is being saved in this id! Please contact your manager.',
+          '',
+          [{text: 'OK', style: 'destructive'}],
+          {cancelable: false},
+        );
+      } else if (status === 401 && error?.passcodeStatus === 'requested') {
+        showAlert(
+          'Passcode Requested',
+          'Login',
+          'Passcode has been requested. Please wait.',
+        );
+      } else if (status === 401 && error?.passcodeStatus === 'rejected') {
+        showAlert(
+          'Passcode  Rejected',
+          'Login',
+          'Passcode has been Rejected. Please wait.',
+        );
+      } else if (status === 400) {
+        Alert.alert(
+          'Info',
+          `${msg}`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                dispatch(clearUser());
+                navigation.navigate('Login');
+              },
+              style: 'default',
+            },
+          ],
+          {cancelable: false},
+        );
+      } else if (status === 502) {
+        Alert.alert(
+          'Server Not Responding',
+          `We are working to fix this as soon as possible, please try again in a short while.`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                dispatch(clearUser());
+                navigation.navigate('Login');
+              },
+              style: 'default',
+            },
+          ],
+          {cancelable: false},
+        );
+      } else if (status === 500) {
+        Alert.alert(
+          'Server Issue',
+          `We are working to fix this as soon as possible, please try again in a short while.`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                dispatch(clearUser());
+                navigation.navigate('Login');
+              },
+              style: 'default',
+            },
+          ],
+          {cancelable: false},
+        );
+      }
+
+      console.log('===================res', res.payload?.data);
+
+      if (
+        res.payload?.data?.userExists === false &&
+        res.payload?.data?.unique === true &&
+        res.payload?.data?.contactnumber?.length === 0 &&
+        res.payload?.data?.emailid
+      ) {
+        navigation.navigate('Page1', {email: email});
+      }
+
+      if (res.payload?.data?.status === 'accessDenied') {
+        navigation.navigate('Login');
+      }
+
+      // Ensure the loading indicator is shown for at least 9 seconds
+      setTimeout(() => {
+        setLoader(false);
+      }, 9000);
+    } catch (error) {
+      console.log('Error occurred:', error);
+
+      // Ensure the loading state is reset in case of an error
+      setLoader(false);
+
+      if (error.response) {
+        const {status} = error.response;
+
+        if (status === 413) {
+          console.error('Error 413: Entity too large.');
+          Alert.alert('Error', 'The entity is too large!');
+        } else if (status === 504) {
+          console.error('Error 504: Gateway Timeout.');
+          Alert.alert(
+            'Error',
+            'Gateway Timeout: The server is not responding!',
+          );
+        } else if (status === 500) {
+          console.error('Error 500: Internal Server Error.');
+          Alert.alert(
+            'Error',
+            'Internal Server Error: Something went wrong on the server.',
+          );
+        } else {
+          console.error('Unknown error:', error);
+          Alert.alert('Error', 'An unexpected error occurred.');
+        }
+      } else {
+        // Handle cases where `error.response` is undefined (like network errors)
+        console.error('Network or other error:', error.message);
+        Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+      }
+    }
+  };
+  const showAlert = (message, navigateTo, title = '') => {
+    Alert.alert(
+      title || message,
+      '',
+      [
+        {
+          text: 'OK',
+          onPress: () => {
+            dispatch(clearUser());
+            navigation.navigate(navigateTo);
+          },
+          style: 'default',
+        },
+      ],
+      {cancelable: false},
+    );
+  };
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -242,110 +296,72 @@ const App = ({navigation}) => {
       <ScrollView contentContainerStyle={{flexGrow: 1}}>
         <View style={styles.container}>
           <Animated.View
-            style={[
-              styles.loginChild,
-              {top: loginChildPosition}, // Bind position to animation
-            ]}
+            style={[styles.loginChild, {top: loginChildPosition}]}
           />
           <Image
             style={[styles.kindergartenStudentPana1, styles.groupChildPosition]}
             resizeMode="cover"
             source={require('../assets/Image/kindergarten-studentpana-1.png')}
           />
-          <View style={styles.inputWrapper}>
-            <Animated.View
-              style={[
-                styles.inputContainer,
-                {transform: [{translateX: shakeAnimation}], borderColor},
-              ]}>
-              <TextInput
-                placeholder="User ID"
-                placeholderTextColor="black"
-                autoCapitalize="none"
-                value={userId}
-                onChangeText={handleUserIdChange}
-                onBlur={handleBlur}
-                onFocus={handleInputFocus}
-                style={styles.input}
-              />
-            </Animated.View>
-            {userIdError ? (
-              <Text style={styles.errorText}>{userIdError}</Text>
-            ) : null}
-            <Animated.View style={[styles.inputContainer, {borderColor}]}>
-              <View style={styles.passwordInputWrapper}>
-                <TextInput
-                  placeholder="Password"
-                  placeholderTextColor="black"
-                  autoCapitalize="none"
-                  value={password}
-                  onFocus={handleInputFocus}
-                  onChangeText={text => {
-                    setPassword(text);
-                    setPasswordError('');
-                  }}
-                  secureTextEntry={!isPasswordVisible}
-                  onBlur={handleBlur}
-                  style={styles.input}
+
+          <View>
+            <TouchableOpacity
+              onPress={handleToggle}
+              style={{
+                top: 15,
+                margin: 8,
+                paddingLeft: 20,
+                paddingRight: 20,
+                paddingTop: 5,
+                paddingBottom: 5,
+                height: 45,
+                width: window.WindowWidth * 0.75,
+                justifyContent: loader ? 'center' : 'flex-start',
+                alignItems: 'center',
+                marginTop: 420,
+                backgroundColor: 'white',
+                flexDirection: 'row',
+                // justifyContent: 'space-between',
+                marginRight: 10,
+                marginLeft: 50,
+                borderRadius: 22,
+              }}>
+              {loader ? (
+                <ActivityIndicator
+                  size="small"
+                  color={Colors.primary}
+                  style={{}}
                 />
-                <TouchableOpacity
-                  style={styles.eyeIcon}
-                  onPress={() => setIsPasswordVisible(!isPasswordVisible)} // Toggle the password visibility
-                >
-                  <AntDesign
-                    name={isPasswordVisible ? 'eye' : 'eyeo'}
-                    size={20}
-                    color="black"
+              ) : (
+                <>
+                  <Image
+                    source={require('../assets/Photos/googles.png')}
+                    style={{
+                      width: 24,
+                      height: 24,
+                      // marginTop: -1,
+
+                      // justifyContent: 'center',
+                      marginRight: 15,
+                    }}
                   />
-                </TouchableOpacity>
-              </View>
-            </Animated.View>
-            {passwordError ? (
-              <Text style={styles.errorText}>{passwordError}</Text>
-            ) : null}
-            <View>
-              <Animated.View
-                style={[
-                  styles.buttonContainer,
-                  {transform: [{scale: loginScale}]},
-                ]}>
-                <TouchableOpacity
-                  onPressIn={() => handlePressIn(loginScale)}
-                  onPressOut={() => handlePressOut(loginScale)}
-                  onPress={handleLogin}
-                  style={[styles.button, styles.loginButton]}>
-                  {loader ? (
-                    <ActivityIndicator size="small" color="black" />
-                  ) : (
-                    <Text style={styles.buttonText}>
-                      Login{' '}
-                      <AntDesign
-                        name="login"
-                        size={20}
-                        color={Color.royalblue}
-                      />{' '}
-                    </Text>
-                  )}
-                </TouchableOpacity>
-              </Animated.View>
-            </View>
-            <View style={styles.termsContainer}>
-              <TouchableOpacity
-                onPress={() =>
-                  Linking.openURL(
-                    'https://sites.google.com/view/thinkzoneapp/home',
-                  )
-                }>
-                <Text style={[styles.termsText]}>
-                  By continuing, you agree to our{' '}
-                  <Text style={styles.underlineText}>Terms and Conditions</Text>{' '}
-                  and <Text style={styles.underlineText}>Privacy Policy</Text>.
-                </Text>
-              </TouchableOpacity>
-              <Text style={styles.termsText}>
-                This app is currently available for use in India 🇮🇳
-              </Text>
-            </View>
+                  <Text
+                    style={{
+                      width: '100%',
+
+                      textAlign: 'left',
+
+                      fontSize: 13,
+                      width: 250,
+                      fontWeight: '500',
+                      color: '#333333',
+                      fontFamily: FontFamily.poppinsMedium,
+                    }}>
+                    Continue With Google
+                  </Text>
+                </>
+              )}
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

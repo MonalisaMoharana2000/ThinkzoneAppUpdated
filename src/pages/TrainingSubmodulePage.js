@@ -204,13 +204,13 @@ const TrainingSubmodulePage = ({navigation, route}) => {
           //   data_type: c_type,
           // });
         } else {
-          navigation.navigate('moduleunderdevlopment');
-          // navigation.navigate('Games', {
-          //   data: topic,
-          //   whole_data: item,
-          //   data_type: c_type,
-          //   trainingType: trainingType,
-          // });
+          // navigation.navigate('moduleunderdevlopment');
+          navigation.navigate('Games', {
+            data: topic,
+            whole_data: item,
+            data_type: c_type,
+            trainingType: trainingType,
+          });
         }
       }
     }

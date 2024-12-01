@@ -15,9 +15,9 @@ export const authNewUserThunk = createAsyncThunk(
   'user/createuser',
   async data => {
     try {
-      // let response = await API.post(`authenticateuser`, data);
+      let response = await API.post(`authenticateuser`, data);
       // console.log('=========================auth', response.data);
-      let response = await API.get(`authUser/${data.id}/${data.password}`);
+      //  let response = await API.get(`authUser/${data.id}/${data.password}`);
       console.log('=========================auth', response.data);
       return {
         data: response.data,

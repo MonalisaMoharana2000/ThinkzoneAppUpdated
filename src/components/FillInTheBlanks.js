@@ -19,7 +19,7 @@ const windowHeight = Dimensions.get('window').height;
 const FillInTheBlank = ({navigation, route}) => {
   const [gamifiedData, setGamifiedData] = useState([]);
   const [questions, setQuestions] = useState([]);
-  console.log('questions------->', questions);
+  console.log('questions:', JSON.stringify(questions, null, 2));
   const [selectedBlank, setSelectedBlank] = useState(null);
   console.log('selectedBlank--->', selectedBlank);
 
@@ -109,16 +109,32 @@ const FillInTheBlank = ({navigation, route}) => {
       prevQuestions.map(q => {
         if (q.id !== questionId) return q;
 
-        const updatedUserInput = [
-          ...(q.userInput || []),
-          {
+        const updatedUserInput = (q.userInput || []).map(input =>
+          input.blank === (selectedBlank !== null ? selectedBlank + 1 : 1)
+            ? {
+                ...input,
+                answer: option,
+                correct:
+                  questionData?.correctInput?.[selectedBlank ?? 0]?.answer ===
+                  option,
+              }
+            : input,
+        );
+
+        if (
+          !updatedUserInput.some(
+            input =>
+              input.blank === (selectedBlank !== null ? selectedBlank + 1 : 1),
+          )
+        ) {
+          updatedUserInput.push({
             blank: selectedBlank !== null ? selectedBlank + 1 : 1,
             answer: option,
             correct:
               questionData?.correctInput?.[selectedBlank ?? 0]?.answer ===
               option,
-          },
-        ];
+          });
+        }
 
         return {
           ...q,
@@ -211,13 +227,14 @@ const FillInTheBlank = ({navigation, route}) => {
     const userInputData = gamifiedData
       .filter(gameItem => gameItem.gameType === 'fillInBlanks')
       .map(gameItem => {
-        const fillInBlanksArr = gameItem.fillInBlanksArr.map(
+        const updatedFillInBlanksArr = gameItem.fillInBlanksArr.map(
           (fillInBlank, index) => {
-            const relatedQuestion = questions[index];
-            let userInput = [];
+            const relatedQuestion = questions.find(
+              q => q.questionId === gameItem.questionId,
+            );
+            if (relatedQuestion && !fillInBlank.userInput.length) {
+              let userInput = [];
 
-            if (relatedQuestion) {
-              // Handle single type questions
               if (relatedQuestion.type === 'single') {
                 userInput = [
                   {
@@ -228,9 +245,7 @@ const FillInTheBlank = ({navigation, route}) => {
                       relatedQuestion.correctInput[0].answer,
                   },
                 ];
-              }
-              // Handle paragraph type questions
-              else if (relatedQuestion.type === 'paragraph') {
+              } else if (relatedQuestion.type === 'paragraph') {
                 userInput = relatedQuestion.selectedOptions.map(
                   (selectedOption, i) => {
                     const correctAnswer = relatedQuestion.correctInput.find(
@@ -245,44 +260,25 @@ const FillInTheBlank = ({navigation, route}) => {
                 );
               }
 
-              // If it's the last question, use selected options as answers
-              if (index === questions.length - 1) {
-                userInput = [
-                  {
-                    blank: 1,
-                    answer:
-                      relatedQuestion.selectedOptions[0] || 'default answer',
-                    correct: relatedQuestion.selectedOptions[0] === 'rthg',
-                  },
-                  {
-                    blank: 2,
-                    answer:
-                      relatedQuestion.selectedOptions[1] || 'default answer',
-                    correct:
-                      relatedQuestion.selectedOptions[1] === 'trhgtrghbe',
-                  },
-                ];
-              }
+              return {
+                ...fillInBlank,
+                userInput,
+              };
             }
-
-            return {
-              ...fillInBlank,
-              userInput: userInput.length > 0 ? userInput : [],
-            };
+            return fillInBlank;
           },
         );
 
         return {
           ...gameItem,
-          fillInBlanksArr,
+          fillInBlanksArr: updatedFillInBlanksArr,
         };
       });
+
     console.log('userInputData:', JSON.stringify(userInputData, null, 2));
-    console.log('question:', JSON.stringify(questions, null, 2));
 
     const createData3 = (userInputData, questions) => {
       return userInputData.map(item1 => {
-        // Find corresponding questions in data2 by matching text in fillInBlanksArr
         item1.fillInBlanksArr = item1.fillInBlanksArr.map(blankItem => {
           const matchedData2 = questions.find(d2 => d2.text === blankItem.text);
 
@@ -298,33 +294,20 @@ const FillInTheBlank = ({navigation, route}) => {
     };
 
     const data3 = createData3(userInputData, questions);
-    // console.log(data3);
 
-    console.log('Submission Payload:', JSON.stringify(data3, null, 2));
-    // console.log('Submission Payload1:', JSON.stringify(questions, null, 2));
+    const updateData = data3?.map((question, qIndex) => ({
+      ...question,
+      answered: true,
+      fillInBlanksArr: question?.fillInBlanksArr.map(correct => ({
+        text: question.text,
+        correctInput: correct,
+        options: question.options,
+        // userInput: correct.userInput,
+      })),
+    }));
 
-    // Update data with user input for submission
-    const updateData = data3?.map((question, qIndex) => {
-      const userInput = userInputData[qIndex].userInput;
-      return {
-        ...question,
-        answered: true,
-        // fillInBlanksArr: question,
-        fillInBlanksArr: question?.fillInBlanksArr.map((correct, index) => ({
-          text: question.text,
-          correctInput: correct,
-          options: question.options,
-          userInput: correct.userInput,
-        })),
-        inputAnswer: question?.fillInBlanksArr.map((correct, index) => ({
-          text: question.text,
-          correctInput: correct,
-          options: question.options,
-          userInput: correct.userInput,
-        })),
-      };
-    });
     console.log('Submission Payload3:', JSON.stringify(updateData, null, 2));
+
     const submissionPayload = {
       answered: 'yes',
       gamifiedSecuredMarks: 0,

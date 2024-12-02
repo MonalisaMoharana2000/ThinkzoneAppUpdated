@@ -15,6 +15,7 @@ import {
   View,
   Image,
   ActivityIndicator,
+  BackHandler,
 } from 'react-native';
 import Colors from '../utils/Colors';
 import Loading from '../components/Loading';
@@ -25,6 +26,7 @@ const CommonMonthlyReview = ({route, navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [reviewQuestions, setReviewQuestions] = useState([]);
   const [header, setHeader] = useState('');
+  const [backStatus, setBackStatus] = useState(false);
   //  console.log('header----->', header);
   console.log('reviewQuestions--->', reviewQuestions);
   const user = useSelector(state => state.userdata.user?.resData);

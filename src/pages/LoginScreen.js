@@ -134,10 +134,10 @@ const App = ({navigation}) => {
         const {emailidVerified, phoneNumberVerified} = resData;
 
         if (status === 200 && emailidVerified && phoneNumberVerified) {
-          // await AsyncStorage.setItem(
-          //   'userData',
-          //   JSON.stringify(res.payload.data),
-          // );
+          await AsyncStorage.setItem(
+            'userData',
+            JSON.stringify(res.payload.data),
+          );
           navigation.replace('Home');
         } else if (emailidVerified && !phoneNumberVerified) {
           showAlert('Phone Number not verified', 'Login');

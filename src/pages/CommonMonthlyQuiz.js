@@ -31,10 +31,10 @@ const CommonMonthlyQuiz = ({route, navigation}) => {
   console.log('data_quiz--->', data_quiz);
 
   const {topicId, topicName} = data_quiz;
-  console.log('data_quiz--->', data_quiz, topicId);
+  console.log('data_quiz1--->', topicName);
   // const user = useSelector(state => state.userdata.user?.resData);
 
-  const user = useSelector(state => state.UserSlice.user);
+  const user = useSelector(state => state.UserSlice?.user);
 
   // console.log('user--->', user);
   const {userid, username} = user[0];
@@ -628,11 +628,11 @@ const CommonMonthlyQuiz = ({route, navigation}) => {
                       style={{
                         color: 'white',
                         fontSize: 18,
-                        marginTop: 15,
+                        // marginTop: 15,
                         alignSelf: 'flex-start',
-                        left: '95%',
-                        top: 5,
-                        width: 320,
+                        left: '12%',
+                        top: 17,
+                        //width: 320,
                       }}>
                       {topicName.toUpperCase()}
                       {/* {eceHeading.map(x => x.header)} */}

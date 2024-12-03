@@ -894,7 +894,7 @@ const Profile = ({navigation}) => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <View style={{marginTop: 10}}>
+            {/* <View style={{marginTop: 10}}>
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate('downloadfile');
@@ -930,7 +930,7 @@ const Profile = ({navigation}) => {
                   Offline Activities
                 </Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
             <View style={{marginTop: 10}}>
               <TouchableOpacity
                 onPress={logOut}

@@ -624,7 +624,9 @@ const Profile = ({navigation}) => {
               <ProfileItem
                 iconSource={require('../assets/Image/personalcard.png')}
                 label="Aadhaar Number :"
-                value={userdata[0]?.aadhaar}
+                value={
+                  userdata[0]?.aadhaar === '' ? 'NA' : userdata[0]?.aadhaar
+                }
               />
             </View>
             {/* <View

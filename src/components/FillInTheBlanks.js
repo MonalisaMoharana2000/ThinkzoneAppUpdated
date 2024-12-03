@@ -330,38 +330,38 @@ const FillInTheBlank = ({navigation, route}) => {
     // );
 
     // Uncomment the API call to submit data
-    // Api.post(`saveTransTchTrainingGamified`, submissionPayload)
-    //   .then(res => {
-    //     if (res.status === 200 || res.status === 201) {
-    //       console.log('Woo hoo, success');
-    //       Alert.alert(
-    //         '🎉 Success',
-    //         'ଆପଣଙ୍କର ଉତ୍ତର ସଫଳତାର ସହିତ ସଂରକ୍ଷିତ ହୋଇଛି! ✅',
-    //         [
-    //           {
-    //             text: 'ବହୁତ ଭଲ 🚀',
-    //             style: 'default',
-    //           },
-    //         ],
-    //         {cancelable: true},
-    //       );
-    //       navigation.goBack();
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log('oh no...error');
-    //     Alert.alert(
-    //       '❌ ତ୍ରୁଟି',
-    //       `କିଛି ଭୁଲ ହୋଇଗଲା, ଦୟାକରି କିଛି ସମୟ ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।`,
-    //       [
-    //         {
-    //           text: 'ଠିକ ଅଛି 😟',
-    //           style: 'default',
-    //         },
-    //       ],
-    //       {cancelable: true},
-    //     );
-    //   });
+    Api.post(`saveTransTchTrainingGamified`, submissionPayload)
+      .then(res => {
+        if (res.status === 200 || res.status === 201) {
+          console.log('Woo hoo, success');
+          Alert.alert(
+            '🎉 Success',
+            'ଆପଣଙ୍କର ଉତ୍ତର ସଫଳତାର ସହିତ ସଂରକ୍ଷିତ ହୋଇଛି! ✅',
+            [
+              {
+                text: 'ବହୁତ ଭଲ 🚀',
+                style: 'default',
+              },
+            ],
+            {cancelable: true},
+          );
+          navigation.goBack();
+        }
+      })
+      .catch(error => {
+        console.log('oh no...error');
+        Alert.alert(
+          '❌ ତ୍ରୁଟି',
+          `କିଛି ଭୁଲ ହୋଇଗଲା, ଦୟାକରି କିଛି ସମୟ ପରେ ପୁନର୍ବାର ଚେଷ୍ଟା କରନ୍ତୁ।`,
+          [
+            {
+              text: 'ଠିକ ଅଛି 😟',
+              style: 'default',
+            },
+          ],
+          {cancelable: true},
+        );
+      });
   };
 
   return (

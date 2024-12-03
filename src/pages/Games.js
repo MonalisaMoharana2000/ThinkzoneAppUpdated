@@ -50,7 +50,10 @@ const Games = ({navigation, route}) => {
   );
 
   const gameTypeToScreen = {
-    rearrangement: {title: 'Re-arrange Words', screen: 'RearrangeWords'},
+    rearrangement: {
+      title: 'Re-arrange Words',
+      screen: 'RearrangeWordsGamified',
+    },
     puzzle: {title: 'Puzzle Game', screen: 'Puzzles'},
     matching: {title: 'Matching Exercises', screen: 'MatchingExercises'},
     fillInBlanks: {title: 'Fill In the Blanks', screen: 'FillInTheBlanks'},

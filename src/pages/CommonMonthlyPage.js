@@ -53,6 +53,17 @@ const CommonMonthlyPage = ({navigation}) => {
   // console.log('appStateVisible------------->', appStateVisible);
   const [getStartTime, setGetStartTime] = useState(null);
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.goBack();
+        return true;
+      },
+    );
+    return () => backHandler.remove();
+  }, [navigation]);
+
   //for user back button press timespent calculation
   //!----------------------Commented as per discussion since not required to spend more time on Quiz page-----------------
   // useEffect(() => {

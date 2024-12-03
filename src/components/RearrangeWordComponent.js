@@ -1,18 +1,19 @@
-import React, {useState, useEffect} from 'react';
-import * as window from '../utils/dimensions';
+import React from 'react';
+import {View, StyleSheet, ScrollView, Image} from 'react-native';
+import DraggableFlatList from 'react-native-draggable-flatlist';
 
-import {View, StyleSheet, Text, ScrollView, Image} from 'react-native';
-import DraggableFlatList, {
-  ScaleDecorator,
-} from 'react-native-draggable-flatlist';
-import {TouchableOpacity} from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
-import Api from '../environment/Api';
-import {useSelector, useDispatch} from 'react-redux';
+const DragWordContent = ({data, setData, renderItem, handleDragEnd}) => {
+  const onDragEnd = ({from, to}) => {
+    const updatedData = [...data];
+    const movedItem = updatedData.splice(from, 1)[0]; // Remove item at 'from' index
+    updatedData.splice(to, 0, movedItem); // Insert item at 'to' index
 
-const DragWordContent = ({data, renderItem, handleDragEnd, contentStatus}) => {
-  //   const firstRowData = data.slice(0, 3);
-  //   const secondRowData = data.slice(3);
+    // Update state with the new order
+    // setData(updatedData);
+
+    // Call the provided handleDragEnd function with updated data
+    handleDragEnd({data: updatedData});
+  };
 
   return (
     <View>
@@ -22,31 +23,14 @@ const DragWordContent = ({data, renderItem, handleDragEnd, contentStatus}) => {
             <DraggableFlatList
               data={data}
               renderItem={renderItem}
-              keyExtractor={item => item.wordId}
-              onDragEnd={({from, to}) => {
-                handleDragEnd({
-                  from: from,
-                  to: to,
-                  data,
-                });
-              }}
+              keyExtractor={item => item.wordId.toString()}
+              onDragEnd={onDragEnd}
               horizontal={true}
               contentContainerStyle={styles.buttonContainer}
             />
           </View>
           <Image
-            style={{
-              width: 50,
-              // width:window.WindowWidth0.8,
-              top: 2,
-              height: 50,
-
-              paddingBottom: 20,
-              borderRadius: 10,
-              borderColor: 'black',
-
-              alignSelf: 'center',
-            }}
+            style={styles.swapImage}
             source={require('../assets/Image/swap.gif')}
           />
         </View>
@@ -56,9 +40,9 @@ const DragWordContent = ({data, renderItem, handleDragEnd, contentStatus}) => {
 };
 
 export default DragWordContent;
+
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
@@ -67,7 +51,6 @@ const styles = StyleSheet.create({
     borderWidth: 0.2,
     width: '100%',
   },
-
   rowContainer: {
     flexDirection: 'row',
     marginBottom: 20,
@@ -77,14 +60,12 @@ const styles = StyleSheet.create({
   buttonContainer: {
     justifyContent: 'center',
     paddingHorizontal: 10,
-    // backgroundColor: 'red',
   },
   buttonWrapper: {
     marginHorizontal: 10,
     padding: 15,
     borderRadius: 8,
     backgroundColor: 'blue',
-    // height: 50,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -94,7 +75,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  activeItem: {
-    backgroundColor: '#ddd',
+  swapImage: {
+    width: 50,
+    height: 50,
+    paddingBottom: 20,
+    borderRadius: 10,
+    borderColor: 'black',
+    alignSelf: 'center',
   },
 });

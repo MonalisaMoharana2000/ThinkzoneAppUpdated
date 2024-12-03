@@ -598,29 +598,11 @@ const CommonMonthlyQuiz = ({route, navigation}) => {
                       left: '27%',
                       flexDirection: 'row',
                     }}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        Alert.alert(
-                          'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
-                          'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
-                          [
-                            {
-                              text: 'Cancel',
-                              onPress: () => null,
-                              style: 'default',
-                            },
-                            {
-                              text: 'Ok',
-                              onPress: () => navigation.goBack(),
-                              style: 'default',
-                            },
-                          ],
-                        );
-                      }}>
+                    <TouchableOpacity onPress={() => navigation.goBack()}>
                       <AntDesign
                         name="arrowleft"
                         size={23}
-                        style={{left: '152%', marginTop: 22}}
+                        style={{left: '152%', marginTop: 27}}
                         color="white"
                       />
                     </TouchableOpacity>
@@ -631,7 +613,7 @@ const CommonMonthlyQuiz = ({route, navigation}) => {
                         // marginTop: 15,
                         alignSelf: 'flex-start',
                         left: '12%',
-                        top: 17,
+                        top: 27,
                         //width: 320,
                       }}>
                       {topicName.toUpperCase()}

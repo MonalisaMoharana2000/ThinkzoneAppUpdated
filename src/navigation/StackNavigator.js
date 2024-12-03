@@ -70,6 +70,7 @@ import CallResponse from '../pages/CallResponse';
 import AttendancemodalList from '../pages/AttendancemodalList';
 import CommonMonthlyQuiz from '../pages/CommonMonthlyQuiz';
 import NotificationPage from '../pages/NotificationPage';
+import RearrangeWordsGamified from '../pages/RearrangeWordsGamified';
 
 const Stack = createNativeStackNavigator();
 
@@ -637,6 +638,20 @@ const StackNavigator = ({navigation}) => {
       <Stack.Screen
         name="RearrangeWords"
         component={RearrangeWords}
+        options={{
+          title: 'Re-arrange Words',
+          headerStyle: {
+            backgroundColor: Color.royalblue, // Set background color here
+          },
+          headerTitleStyle: {
+            fontFamily: FontFamily.poppinsMedium,
+          },
+          headerTintColor: 'white',
+        }}
+      />
+      <Stack.Screen
+        name="RearrangeWordsGamified"
+        component={RearrangeWordsGamified}
         options={{
           title: 'Re-arrange Words',
           headerStyle: {

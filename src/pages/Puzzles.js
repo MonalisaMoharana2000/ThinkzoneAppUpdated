@@ -19,6 +19,7 @@ import RearrangeComponent from '../components/PuzzleComponent';
 
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import PuzzleComponent from '../components/PuzzleComponent';
+import PuzzleComponentGamified from '../components/PuzzleComponentGamified';
 
 const Puzzles = ({route}) => {
   const data = route?.params?.match;
@@ -34,7 +35,7 @@ const Puzzles = ({route}) => {
 
   const navigation = useNavigation();
   const [puzzles, setPuzzles] = useState([data]);
-  console.log('game puzzles-------->', puzzles);
+  console.log('Submission Payload:', JSON.stringify(puzzles, null, 2));
   // console.log('game puzzles2-------->', puzzles[0].otherData);
   const [shuffle, setShuffle] = useState([]);
   // const [puzzles, setPuzzles] = useState([
@@ -206,7 +207,7 @@ const Puzzles = ({route}) => {
           </View>
         )}
         <GestureHandlerRootView>
-          <PuzzleComponent
+          <PuzzleComponentGamified
             puzzles={puzzles}
             handleDragEnd={handleDragEnd}
             handleSave={handleMatched}

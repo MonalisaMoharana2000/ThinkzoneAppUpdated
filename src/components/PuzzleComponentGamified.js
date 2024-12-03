@@ -117,7 +117,7 @@ const PuzzleItem = ({
   );
 };
 
-const PuzzleComponent = ({
+const PuzzleComponentGamified = ({
   puzzles,
   handleDragEnd,
   contentStatus,
@@ -136,8 +136,11 @@ const PuzzleComponent = ({
             (
               <PuzzleItem
                 levels={
+                  // answered
+                  //   ? item?.value || []
+                  //   : item?.value || item?.correctAnswer || []
                   answered
-                    ? item?.value || []
+                    ? item?.otherData?.inputAnswer || []
                     : item?.value || item?.correctAnswer || []
                 }
                 onDragEnd={newLevels => handleDragEnd(index, newLevels)}
@@ -168,7 +171,7 @@ const PuzzleComponent = ({
   );
 };
 
-export default PuzzleComponent;
+export default PuzzleComponentGamified;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -193,7 +193,7 @@ const TechContent = ({route, navigation}) => {
     React.useCallback(() => {
       Api.get(`getuserbyuserid/${userdata[0].userid}`)
         .then(response => {
-          //console.log(response.data, 'profileresponse------>');
+          console.log(response.data, 'profileresponse------>');
           setUserdata(response.data);
         })
         .catch(error => {
@@ -2176,6 +2176,7 @@ const TechContent = ({route, navigation}) => {
       msgType: 'sent',
       username: userdata[0].username,
       usertype: userdata[0].usertype,
+      firstname: userdata[0].firstname,
       managerid: userdata[0].managerid,
       managername: userdata[0].managername,
       passcode: userdata[0].passcode,
@@ -3471,6 +3472,43 @@ const TechContent = ({route, navigation}) => {
                                 color="black"
                               />
                             </TouchableOpacity>
+                            <View
+                              style={{
+                                backgroundColor: '#0060ca',
+                                // height: 66,
+                                width: window.WindowWidth * 1.1,
+                                // marginTop: -19
+                                marginTop: -37,
+                                // marginLeft: -20,
+                                paddingBottom: 20,
+                                alignSelf: 'flex-start',
+                                // left: '19%',
+                                right: '7%',
+                                flexDirection: 'row',
+                              }}>
+                              <TouchableOpacity
+                                onPress={() => closeDiscusModal()}>
+                                <AntDesign
+                                  name="arrowleft"
+                                  size={23}
+                                  style={{left: '152%', marginTop: 34}}
+                                  color="white"
+                                />
+                              </TouchableOpacity>
+                              <Text
+                                style={{
+                                  color: 'white',
+                                  fontSize: 18,
+                                  // marginTop: 15,
+                                  alignSelf: 'flex-start',
+                                  left: '12%',
+                                  top: 34,
+                                  //width: 320,
+                                }}>
+                                {topicName.toUpperCase()}
+                                {/* {eceHeading.map(x => x.header)} */}
+                              </Text>
+                            </View>
 
                             {loadDiscuss ? ( // Loader view when loading
                               <View style={styles.loaderContainer}>
@@ -3525,9 +3563,10 @@ const TechContent = ({route, navigation}) => {
                                         </View>
 
                                         <Text style={styles.username}>
-                                          {item.userid === userdata[0]?.userid
-                                            ? item.username
-                                            : item.username}
+                                          {item.firstname ===
+                                          userdata[0]?.firstname
+                                            ? item.firstname
+                                            : item.firstname}
                                           {item.userid ===
                                             userdata[0]?.userid && (
                                             <Image

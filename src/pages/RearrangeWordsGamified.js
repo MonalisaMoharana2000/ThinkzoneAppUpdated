@@ -14,10 +14,10 @@ import {useNavigation} from '@react-navigation/native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import DragWordComponent from '../components/RearrangeWordComponent';
 
-const RearrangeWords = ({route}) => {
+const RearrangeWordsGamified = ({route}) => {
   const {multipledata, topicData, gamifiedData, match} = route.params;
   const [data, setData] = useState(multipledata);
-  console.log('data======>', data);
+  console.log('Submission Payload1:', JSON.stringify(data, null, 2));
   const navigation = useNavigation();
   const user = useSelector(state => state.UserSlice.user);
   const {userid, username, usertype, managerid, managername, passcode} =
@@ -55,11 +55,11 @@ const RearrangeWords = ({route}) => {
   }, [multipledata]);
 
   const handleDragEnd = (newData, questionId) => {
-    console.log('newData----->', newData);
+    console.log('Submission Payload:', JSON.stringify(newData, null, 2));
     setData(prevData => {
       return prevData.map(questionData => {
         if (questionData.questionId === questionId) {
-          const updatedCorrectAnswer = newData?.map((item, index) => ({
+          const updatedCorrectAnswer = newData.data?.map((item, index) => ({
             ...item,
             wordOrder: index + 1,
           }));
@@ -168,7 +168,7 @@ const RearrangeWords = ({route}) => {
   );
 };
 
-export default RearrangeWords;
+export default RearrangeWordsGamified;
 
 const styles = StyleSheet.create({
   container: {

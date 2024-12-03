@@ -372,68 +372,70 @@ const FillInTheBlank = ({navigation, route}) => {
         </View>
       ) : filteredData[0]?.answered === true ? (
         <View style={styles.container}>
-          {filteredData?.map((data, dataIndex) =>
-            data.answered
-              ? data.fillInBlanksArr?.map((question, index) => (
-                  <View
-                    key={`${dataIndex}-${index}`}
-                    style={styles.questionContainer}>
-                    <Text style={styles.serialNumber}>{dataIndex + 1}.</Text>
-                    <View>
-                      <TouchableOpacity style={styles.questionButton}>
-                        <Text style={styles.questionText}>
-                          {question.correctInput.text
-                            .split('__________')
-                            .map((part, partIndex) => (
-                              <React.Fragment key={partIndex}>
-                                {part}
-                                {partIndex !==
-                                  question.correctInput.text.split('__________')
-                                    .length -
-                                    1 && (
-                                  <Text
-                                    style={[
-                                      styles.blank,
-                                      {textDecorationLine: 'underline'},
-                                    ]}>
-                                    {
-                                      // Display the user's answer if provided, otherwise show '__________'
-                                      question.userInput[partIndex]?.answer ||
-                                        '__________'
-                                    }
-                                  </Text>
-                                )}
-                              </React.Fragment>
-                            ))}
-                        </Text>
-                      </TouchableOpacity>
-                      <View style={styles.optionList}>
-                        {question.correctInput.options.map(
-                          (option, optIndex) => (
-                            <TouchableOpacity
-                              key={optIndex}
-                              style={[
-                                styles.optionButton,
-                                {
-                                  backgroundColor: question.userInput.some(
-                                    input => input.answer === option,
-                                  )
-                                    ? '#d1e7dd'
-                                    : '#ffffff',
-                                },
-                              ]}>
-                              <Text style={styles.optionButtonText}>
-                                {option}
-                              </Text>
-                            </TouchableOpacity>
-                          ),
-                        )}
-                      </View>
+          {filteredData?.map((data, dataIndex) => {
+            if (!data.answered) return null;
+
+            return data.fillInBlanksArr?.map((question, index) => {
+              const correctInputText = question?.correctInput?.text || '';
+              const userInput = question?.correctInput?.userInput || [];
+              const options = question?.correctInput?.options || [];
+
+              return (
+                <View
+                  key={`${dataIndex}-${index}`}
+                  style={styles.questionContainer}>
+                  {/* Serial Number */}
+                  <Text style={styles.serialNumber}>{dataIndex + 1}.</Text>
+
+                  {/* Question */}
+                  <View>
+                    <TouchableOpacity style={styles.questionButton}>
+                      <Text style={styles.questionText}>
+                        {correctInputText
+                          .split('__________')
+                          .map((part, partIndex) => (
+                            <React.Fragment key={partIndex}>
+                              {part}
+                              {partIndex !==
+                                correctInputText.split('__________').length -
+                                  1 && (
+                                <Text
+                                  style={[
+                                    styles.blank,
+                                    {textDecorationLine: 'underline'},
+                                  ]}>
+                                  {userInput[partIndex]?.answer || '__________'}
+                                </Text>
+                              )}
+                            </React.Fragment>
+                          ))}
+                      </Text>
+                    </TouchableOpacity>
+
+                    {/* Options */}
+                    <View style={styles.optionList}>
+                      {options.map((option, optIndex) => (
+                        <TouchableOpacity
+                          key={optIndex}
+                          style={[
+                            styles.optionButton,
+                            {
+                              backgroundColor: userInput.some(
+                                input => input.answer === option,
+                              )
+                                ? '#d1e7dd'
+                                : '#ffffff',
+                            },
+                          ]}>
+                          <Text style={styles.optionButtonText}>{option}</Text>
+                        </TouchableOpacity>
+                      ))}
                     </View>
                   </View>
-                ))
-              : null,
-          )}
+                </View>
+              );
+            });
+          })}
         </View>
       ) : (
         questions.map((question, index) => (

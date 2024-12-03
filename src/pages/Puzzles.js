@@ -103,13 +103,13 @@ const Puzzles = ({route}) => {
       console.log('response------->', res.data);
 
       if (res.status === 200) {
-        Alert.alert(`${res.data.msg}`, '', [
-          {
-            text: 'Ok',
-            onPress: () => navigation.goBack(),
-            style: 'default',
-          },
-        ]);
+        // Alert.alert(`${res.data.msg}`, '', [
+        //   {
+        //     text: 'Ok',
+        //     onPress: () => navigation.goBack(),
+        //     style: 'default',
+        //   },
+        // ]);
       } else {
         navigation.goBack();
       }

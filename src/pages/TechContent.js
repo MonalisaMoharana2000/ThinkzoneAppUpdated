@@ -21,6 +21,7 @@ import {
   Dimensions,
   ToastAndroid,
   Linking,
+  SafeAreaView,
 } from 'react-native';
 import RearrangeComponent from '../components/PuzzleComponent';
 import DraggableFlatList, {
@@ -2187,30 +2188,30 @@ const TechContent = ({route, navigation}) => {
       submoduleName: route?.params?.data?.submoduleName,
     };
     console.log('body---->', body);
+    if (inputText?.length > 0) {
+      const response = await API.post(`saveTchTrainingDiscussion`, body);
 
-    const response = await API.post(`saveTchTrainingDiscussion`, body);
+      console.log('discussion data--->', response.data, response.status);
+      if (response.status === 200) {
+        getContentDiscussion();
+        setInputText('');
+      }
 
-    console.log('discussion data--->', response.data, response.status);
-    if (response.status === 200) {
-      getContentDiscussion();
       setInputText('');
+    } else {
+      Alert.alert('Write something', '', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'default',
+        },
+        {
+          text: 'Ok',
+          onPress: () => closeDiscusModal(),
+          style: 'default',
+        },
+      ]);
     }
-
-    // setAnswers([
-    //   ...answers,
-    //   {
-    //     text: inputText,
-    //     likes: 0,
-    //     hearts: 0,
-    //     reactions: 0,
-    //     liked: false,
-    //     hearted: false,
-    //     reacted: false,
-    //     username: 'User2',
-    //     profilePicture: 'https://via.placeholder.com/50', // Placeholder image URL
-    //   },
-    // ]);
-    setInputText('');
   };
   // };
 
@@ -2332,7 +2333,7 @@ const TechContent = ({route, navigation}) => {
     console.log(areSequencesEqual);
 
     if (areSequencesEqual) {
-      Alert.alert('Sequenced', '', [
+      Alert.alert('Save ', '', [
         {
           text: 'Cancel',
           onPress: () => null,
@@ -3122,6 +3123,7 @@ const TechContent = ({route, navigation}) => {
                                         borderColor: 'black',
                                         borderRadius: 5,
                                         padding: 10,
+                                        left: '0.5%',
                                       }}>
                                       <Text
                                         style={{
@@ -3842,101 +3844,103 @@ const TechContent = ({route, navigation}) => {
 
             {/* Quiz2 starts here */}
             <View>
-              {quiz_status2 === true && (
-                <>
+              <SafeAreaView style={styles.container} edges={[]}>
+                {quiz_status2 === true && (
                   <>
-                    {topicQuizData2?.length > 0 ? (
-                      <Modal
-                        animationType="slide"
-                        onRequestClose={() => back()}
-                        transparent={true}
-                        visible={quiz_status2}>
-                        <View style={[styles.centeredView]}>
-                          <View
-                            style={[
-                              styles.modalView,
-                              {
-                                height: window.WindowHeigth * 1,
-                                // marginTop: -0,
-                                top: -10,
-                                width: window.WindowWidth * 2,
-                              },
-                            ]}>
+                    <>
+                      {topicQuizData2?.length > 0 ? (
+                        <Modal
+                          animationType="slide"
+                          onRequestClose={() => back()}
+                          transparent={true}
+                          visible={quiz_status2}>
+                          <View style={[styles.centeredView]}>
                             <View
-                              style={{
-                                backgroundColor: '#0060ca',
-                                height: 66,
-                                width: window.WindowWidth * 1.1,
-
-                                marginTop: -38,
-                                flexDirection: 'row',
-                                // marginLeft: -20,
-                                marginBottom: 3,
-                              }}>
-                              <TouchableOpacity
-                                onPress={() => {
-                                  Alert.alert(
-                                    'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
-                                    'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
-                                    [
-                                      {
-                                        text: 'Cancel',
-                                        onPress: () => null,
-                                        style: 'default',
-                                      },
-                                      {
-                                        text: 'Ok',
-                                        onPress: () => navigation.goBack(),
-                                        style: 'default',
-                                      },
-                                    ],
-                                  );
-                                }}>
-                                <AntDesign
-                                  name="arrowleft"
-                                  size={23}
-                                  style={{left: '122%', marginTop: 25}}
-                                  color="white"
-                                />
-                              </TouchableOpacity>
-                              <Text
+                              style={[
+                                styles.modalView,
+                                {
+                                  height: window.WindowHeigth * 1,
+                                  // marginTop: -0,
+                                  top: -10,
+                                  width: window.WindowWidth * 2,
+                                },
+                              ]}>
+                              <View
                                 style={{
-                                  color: 'white',
-                                  fontSize: 18,
-                                  // marginTop: 15,
-                                  alignSelf: 'center',
-                                  left: '15%',
-                                  top: 5,
+                                  backgroundColor: '#0060ca',
+                                  height: 66,
+                                  width: window.WindowWidth * 1.1,
+
+                                  marginTop: -35,
+                                  flexDirection: 'row',
+                                  // marginLeft: -20,
+                                  marginBottom: 3,
                                 }}>
-                                {data.topicName}
-                              </Text>
-                            </View>
-                            <View style={{alignSelf: 'center', right: '27%'}}>
-                              <NewQuizTemplate
-                                textInputRef={textInputRef}
-                                handleSaveAssessment={onend_quiz2}
-                                topicQuizData={topicQuizData2}
-                                handleAnswerChange={handleAnswerChange2}
-                                handleOptionSelect={handleOptionSelect2}
-                                closeModal={closeModals2}
-                                handleOptionSelectMulti={
-                                  handleOptionSelectMulti2
-                                }
-                                imageUrl={imageUrls2}
-                                onImageSelected={handleImageSelected2}
-                                azureUpload={azureUpload2}
-                                // answerReset={answerReset}
-                              />
+                                <TouchableOpacity
+                                  onPress={() => {
+                                    Alert.alert(
+                                      'ଧ୍ୟାନ ଦିଅନ୍ତୁ!',
+                                      'ଆପଣ ନିବେଶ କରିଥିବା ତଥ୍ୟ Save ହେବ ନାହିଁ। ଆପଣ ଏହା ଅବଗତ ଅଛନ୍ତି ତ?',
+                                      [
+                                        {
+                                          text: 'Cancel',
+                                          onPress: () => null,
+                                          style: 'default',
+                                        },
+                                        {
+                                          text: 'Ok',
+                                          onPress: () => navigation.goBack(),
+                                          style: 'default',
+                                        },
+                                      ],
+                                    );
+                                  }}>
+                                  <AntDesign
+                                    name="arrowleft"
+                                    size={23}
+                                    style={{left: '122%', marginTop: 25}}
+                                    color="white"
+                                  />
+                                </TouchableOpacity>
+                                <Text
+                                  style={{
+                                    color: 'white',
+                                    fontSize: 18,
+                                    // marginTop: 15,
+                                    alignSelf: 'center',
+                                    left: '15%',
+                                    top: 5,
+                                  }}>
+                                  {data.topicName}
+                                </Text>
+                              </View>
+                              <View style={{alignSelf: 'center', right: '27%'}}>
+                                <NewQuizTemplate
+                                  textInputRef={textInputRef}
+                                  handleSaveAssessment={onend_quiz2}
+                                  topicQuizData={topicQuizData2}
+                                  handleAnswerChange={handleAnswerChange2}
+                                  handleOptionSelect={handleOptionSelect2}
+                                  closeModal={closeModals2}
+                                  handleOptionSelectMulti={
+                                    handleOptionSelectMulti2
+                                  }
+                                  imageUrl={imageUrls2}
+                                  onImageSelected={handleImageSelected2}
+                                  azureUpload={azureUpload2}
+                                  // answerReset={answerReset}
+                                />
+                              </View>
                             </View>
                           </View>
-                        </View>
-                      </Modal>
-                    ) : (
-                      <Nocontents />
-                    )}
+                        </Modal>
+                      ) : (
+                        <Nocontents />
+                      )}
+                    </>
                   </>
-                </>
-              )}
+                )}
+              </SafeAreaView>
             </View>
 
             {/* Gamified Quiz starts */}

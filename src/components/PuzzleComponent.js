@@ -73,18 +73,18 @@ const PuzzleItem = ({
       JSON.stringify(sequence1) === JSON.stringify(sequence2);
     console.log(areSequencesEqual);
     if (areSequencesEqual) {
-      Alert.alert('Matched', '', [
-        {
-          text: 'Cancel',
-          onPress: () => null,
-          style: 'default',
-        },
-        {
-          text: 'Ok',
-          onPress: () => handleSave(),
-          style: 'default',
-        },
-      ]);
+      // Alert.alert('Matched', '', [
+      //   {
+      //     text: 'Cancel',
+      //     onPress: () => null,
+      //     style: 'default',
+      //   },
+      //   {
+      //     text: 'Ok',
+      //     onPress: () => handleSave(),
+      //     style: 'default',
+      //   },
+      // ]);
     }
   };
 
@@ -160,6 +160,7 @@ const PuzzleComponent = ({
             zIndex: 5,
             alignSelf: 'center',
             bottom: 0,
+            right: '5%',
           }}
           source={require('../assets/Image/top.gif')}
         />
@@ -176,6 +177,8 @@ const styles = StyleSheet.create({
     // paddingTop: 10,
     // padding: 10,
     // margin: '1%',
+    width: 350,
+    left: '2%',
     alignSelf: 'center',
   },
   puzzleItem: {

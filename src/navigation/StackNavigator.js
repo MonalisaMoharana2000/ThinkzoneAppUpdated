@@ -1132,7 +1132,12 @@ const StackNavigator = ({navigation}) => {
           title: 'Fill In The Blanks',
           headerTitleStyle: {
             fontFamily: FontFamily.poppinsMedium,
+            color: 'white',
           },
+          headerStyle: {
+            backgroundColor: '#0060ca',
+          },
+          headerTintColor: 'white',
         }}
       />
     </Stack.Navigator>
